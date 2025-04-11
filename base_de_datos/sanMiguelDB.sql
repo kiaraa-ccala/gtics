@@ -19,7 +19,7 @@ USE `mydb` ;
 -- Table `mydb`.`Sector`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Sector` (
-  `idSector` INT NOT NULL,
+  `idSector` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   PRIMARY KEY (`idSector`))
 ENGINE = InnoDB;
@@ -150,7 +150,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`ComplejoDeportivo`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`ComplejoDeportivo` (
-  `idComplejoDeportivo` INT NOT NULL,
+  `idComplejoDeportivo` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `direccion` VARCHAR(45) NULL,
   `idSector` INT NOT NULL,

@@ -29,7 +29,7 @@
 <h2 class="mt-4">Lista de Complejos</h2>
 
 <div class="mb-3">
-    <a href="/crear" class="btn btn-primary">Nuevo Complejo</a>
+    <a href="/complejos/new" class="btn btn-primary">Nuevo Complejo</a>
 </div>
 
 <form action="/employees" method="get" class="mb-3 row">
@@ -56,17 +56,16 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="complejo : ${complejoList}">
-        <td th:text="${complejo.id}">1</td>
-        <td th:text="${complejo.nombre}">Nombre</td>
-        <td th:text="${complejo.direccion}">Dirección</td>
-        <td th:text="${complejo.sector != null ? complejo.sector.nombre : '---'}">Sector</td>
-        <td th:text="${complejo.numeroSoporte}">Soporte</td>
-        <td th:text="${complejo.latitud}">Lat</td>
-        <td th:text="${complejo.longitud}">Long</td>
+    <tr th:each="complejo : ${complejos}">
+        <td th:text="${complejo.getIdComplejoDeportivo()}">1</td>
+        <td th:text="${complejo.getNombre()}">Nombre</td>
+        <td th:text="${complejo.getDireccion()}">Dirección</td>
+        <td th:text="${complejo.getSector() != null ? complejo.getSector().getNombre() : '---'}">Sector</td>
+        <td th:text="${complejo.getNumeroSoporte()}">Soporte</td>
+        <td th:text="${complejo.getLatitud()}">Lat</td>
+        <td th:text="${complejo.getLongitud()}">Long</td>
         <td>
-            <a th:href="@{/complejos/edit(id=${complejo.id})}" class="btn btn-sm btn-primary">Editar</a>
-            <a th:href="@{/complejos/delete(id=${complejo.id})}" class="btn btn-sm btn-danger"
+            <a th:href="@{/complejos/delete(id=${complejo.getIdComplejoDeportivo()})}" class="btn btn-sm btn-danger"
                onclick="return confirm('¿Seguro?')">Borrar</a>
         </td>
     </tr>
