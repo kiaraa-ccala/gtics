@@ -12,10 +12,10 @@ INSERT INTO ComplejoDeportivo (idComplejoDeportivo, nombre, direccion, idSector,
 select * from ComplejoDeportivo;
 
 -- Tercerizado (proveedor)
-INSERT INTO Tercerizado (idTercerizado, ruc, direccionFiscal) VALUES
+INSERT INTO mydb.Tercerizado (idTercerizado, ruc, direccionFiscal) VALUES
 (1, '12345678901', 'Av. Proveedores 321');
 
-select * from tercerizado;
+select * from Tercerizado;
 
 
 INSERT INTO Foto (idFoto, nombreFoto, urlFoto) VALUES
@@ -24,7 +24,7 @@ INSERT INTO Foto (idFoto, nombreFoto, urlFoto) VALUES
 (3, 'carla.jpg', 'http://fotos.com/carla.jpg'),
 (4, 'diego.jpg', 'http://fotos.com/diego.jpg');
 
-select * from foto;
+select * from Foto;
 
 -- Usuarios (revisar idSector si puede ser null)!!!!!!!!!!!!!!!!!!!!!!
 INSERT INTO Usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto) VALUES
@@ -33,9 +33,7 @@ INSERT INTO Usuario (idUsuario, nombre, apellido, dni, direccion, distrito, prov
 (3, 'Daniel', 'Vargas', '34567890', 'Calle Parque San Martin 241', 'Pueblo Libre', 'Lima', 'Lima', 1, 1, 3),
 (4, 'Mathias', 'Tirado', '45678901', 'Av. La Mar 400', 'San Miguel', 'Lima', 'Lima', null, null, 4);
 
-
-select * from usuario;
-
+select * from Usuario;
 
 -- Roles
 INSERT INTO Roles (idRol, nombre) VALUES
@@ -44,7 +42,7 @@ INSERT INTO Roles (idRol, nombre) VALUES
 (3, 'coordinador'),
 (4, 'usuario');
 
-select * from roles;
+select * from Roles;
 
 -- Rol por usuario
 INSERT INTO RolUsuario (idRolUsuario, idUsuario, idRol) VALUES
@@ -60,7 +58,7 @@ INSERT INTO Credencial (idCredencial, correo, password, idUsuario) VALUES
 (3, 'daniel.vargas@gmail.com', 'daniel', 3),
 (4, 'mathias.tirado@hotmail.com', 'matisaurio', 4);
 
-select * from credencial;
+select * from Credencial;
 
 SELECT 
   CONCAT(u.nombre, ' ', u.apellido) AS usuario,
@@ -89,7 +87,7 @@ INSERT INTO Servicio (idServicio, nombre) VALUES
 (2, 'Grass'),
 (3, 'Gimnasio');
 
-select * from instanciaservicio;
+select * from Servicio;
 
 -- Instancias para Complejo Central (id = 1)
 INSERT INTO InstanciaServicio (idInstanciaServicio, idServicio, idComplejoDeportivo, nombre, capacidadMaxima, modoAcceso) VALUES
@@ -105,13 +103,15 @@ INSERT INTO InstanciaServicio (idInstanciaServicio, idServicio, idComplejoDeport
 INSERT INTO InstanciaServicio (idInstanciaServicio, idServicio, idComplejoDeportivo, nombre, capacidadMaxima, modoAcceso) VALUES
 (5, 3, 3, 'Guimnasio San Miguel 1', '50', 'libre');
 
+select * from InstanciaServicio; 
+
 
 INSERT INTO InformacionPago (idInformacionPago, fecha, hora, tipo, total, estado) VALUES
 (1, '2025-04-10', '10:00:00', 'tarjeta', 50.00, 'pagado'),
 (2, '2025-04-10', '11:00:00', 'efectivo', 30.00, 'pagado'),
 (3, '2025-04-11', '08:00:00', 'tarjeta', 60.00, 'pagado'),
 (4, '2025-04-11', '09:00:00', 'tarjeta', 45.00, 'pendiente');
-select * from informacionpago;
+select * from InformacionPago;
 
 
 SELECT idServicio, idComplejoDeportivo, idInstanciaServicio FROM InstanciaServicio;
