@@ -1,7 +1,10 @@
 package com.example.proyectosanmiguel.entity;
 
 import jakarta.persistence.*;
+import lombok.*;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "Sector")
 public class Sector {
