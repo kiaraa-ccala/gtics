@@ -7,8 +7,8 @@ import jakarta.persistence.*;
 public class Sector {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idSector")
-    private Integer id;
-
+    @Column(name = "idSector", nullable = false)
+    private Integer idSector;
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
 }

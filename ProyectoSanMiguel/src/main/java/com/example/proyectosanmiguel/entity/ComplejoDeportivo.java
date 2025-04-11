@@ -13,24 +13,19 @@ import lombok.Setter;
 public class ComplejoDeportivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idComplejoDeportivo")
-    private Long id;
-
-    @Column(name = "nombre")
+    @Column(name = "idComplejoDeportivo", nullable = false)
+    private Integer idComplejoDeportivo;
+    @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
-    @Column(name = "direccion")
+    @Column(name = "direccion", nullable = false, length = 45)
     private String direccion;
-
     @ManyToOne
-    @JoinColumn(name = "idSector")
+    @JoinColumn(name = "idSector", nullable = false)
     private Sector sector;
-
-    @Column(name = "numeroSoporte")
+    @Column(name = "numeroSoporte", nullable = false, length = 45)
     private String numeroSoporte;
-
-    @Column(name = "latitud")
+    @Column(name = "latitud", nullable = false)
     private Double latitud;
-
-    @Column(name = "longitud")
+    @Column(name = "longitud", nullable = false)
     private Double longitud;
 }
