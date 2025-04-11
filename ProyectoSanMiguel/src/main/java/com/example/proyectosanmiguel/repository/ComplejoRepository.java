@@ -4,5 +4,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ComplejoRepository extends JpaRepository<ComplejoDeportivo, Long> {
+public interface ComplejoRepository extends JpaRepository<ComplejoDeportivo, Integer> {
 }
