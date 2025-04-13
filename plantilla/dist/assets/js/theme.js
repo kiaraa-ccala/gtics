@@ -216,7 +216,7 @@ function layout_change(layout) {
     dark_flag = true;
 
     // Update logo to white version for dark theme
-    updateLogo('.pc-sidebar .m-header .logo-lg', '../assets/images/logo-white.svg');
+    updateLogo('.pc-sidebar .m-header .logo-lg', '../assets/images/logo-.svg');
     updateLogo('.navbar-brand .logo-lg', '../assets/images/logo-white.svg');
     updateLogo('.auth-main.v1 .auth-sidefooter img', '../assets/images/logo-white.svg');
     updateLogo('.footer-top .footer-logo', '../assets/images/logo-white.svg');

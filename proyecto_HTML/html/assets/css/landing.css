@@ -418,7 +418,7 @@ header .container {
 }
 [data-pc-theme=dark].landing-page .bg-white {
   background: #1b232d !important;
-  --bs-white: lighten($dark-layout-color, 4%);
+  --bs-white: lighten(dark-layout-color, 4%);
 }
 [data-pc-theme=dark].landing-page .bg-gray-100 {
   background: var(--bs-dark);
