@@ -1,9 +1,8 @@
 <!doctype html>
 <html lang="en">
   <!-- [Head] start -->
-
   <head>
-    <title>Listado plantilla</title>
+    <title>Registro de Asistencia</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -21,7 +20,11 @@
     <!-- [Favicon] icon -->
     <link rel="icon" href="../assets/images/logo-circular.png" type="image/x-icon" />
 
-    <link rel="stylesheet" href="../assets/css/plugins/style.css" />
+    <!-- [Page specific CSS] start -->
+    <!-- data tables css -->
+    <link rel="stylesheet" href="../assets/css/plugins/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins/buttons.bootstrap5.min.css" />
+    <!-- [Page specific CSS] end -->
     <!-- [Font] Family -->
     <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
     <!-- [phosphor Icons] https://phosphoricons.com/ -->
@@ -47,7 +50,6 @@
   </head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
-
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
     <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
@@ -70,7 +72,6 @@
         <div class="navbar-content" >
 
           <ul class="pc-navbar">
-
             <li class="pc-item pc-caption">
               <label data-i18n="Inicio">Inicio</label>
             </li>
@@ -82,7 +83,7 @@
                 <span class="pc-mtext" data-i18n="Inicio">Personal general</span>
               </a>
               <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+                <li class="pc-it  em"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
               </ul>
             </li>
             <li class="pc-item pc-caption">
@@ -192,7 +193,8 @@
           </ul>
         </div>
       </div>
-    </nav><!-- [ Sidebar Menu ] end -->
+    </nav>
+<!-- [ Sidebar Menu ] end -->
  <!-- [ Header Topbar ] start -->
     <header class="pc-header">
       <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
@@ -211,11 +213,8 @@
             </li>
             <li class="pc-h-item d-none d-md-inline-flex">
               <form class="form-search">
-                <i class="search-icon">
-                  <svg class="pc-icon">
-                    <use xlink:href="#custom-search-normal-1"></use>
-                  </svg>
-                </i>
+                <i class="bi bi-search"></i>
+
                 <input type="search" class="form-control" placeholder="Buscar" />
               </form>
             </li>
@@ -394,11 +393,11 @@
         </div>
       </div>
     </header>
-<!-- [ Header ] end -->
 
-    <!-- [ Main Content ] start -->
-    <div class="pc-container" style="background: #e0f6ff">
-      <div class="pc-content">
+
+
+    <section class="pc-container">
+      <div class="pc-content" style="background: #e0f6ff">
         <!-- [ breadcrumb ] start -->
         <div class="page-header">
           <div class="page-block">
@@ -406,13 +405,13 @@
               <div class="col-md-12">
                 <ul class="breadcrumb">
                   <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Reportes</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Listado plantilla</li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Asistencia</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Registro</li>
                 </ul>
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">Listado plantilla</h2>
+                  <h2 class="mb-0">Registro de asistencia</h2>
                 </div>
               </div>
             </div>
@@ -423,270 +422,227 @@
 
         <!-- [ Main Content ] start -->
         <div class="row">
-          <div class="col-12">
-            <div class="card table-card">
-              <div class="card-header">
-                <div class="d-sm-flex align-items-center justify-content-between">
-                  <h5 class="mb-3 mb-sm-0">Lista</h5>
-                  <div>
-                    <a href="../admins/course-student-add.html" class="btn btn-primary">Añadir miembro</a>
+
+        </div>
+        <div class="row">
+          <!-- HTML5 Export Buttons table start -->
+          <div class="col-sm-12">
+            <div class="card">
+
+              <div class="card-body">
+                <div class="dt-search mb-3">
+                  <!-- Filtros personalizados + buscador en una fila -->
+                  <!-- Filtros + campo de búsqueda -->
+                  <div class="d-flex align-items-center gap-3 mb-3 filters-row" style="flex-wrap: nowrap; overflow-x: auto;">
+                    <!-- Filtro por tipo -->
+                    <div style="min-width: 150px;">
+                      <select class="form-select">
+                        <option>Todos</option>
+                        <option>Documentos</option>
+                        <option>Videos</option>
+                        <option>Imágenes</option>
+                      </select>
+                    </div>
+
+                    <!-- Filtro por fecha -->
+                    <div style="min-width: 150px;">
+                      <input type="date" class="form-control" id="example-datemax" max="1979-12-31" />
+                    </div>
                   </div>
+
+
                 </div>
-              </div>
-              <div class="card-body pt-3">
-                <div class="table-responsive">
-                  <table class="table table-hover" id="pc-dt-simple">
+                <div class="dt-responsive table-responsive">
+                  <table id="basic-btn" class="table table-striped table-bordered nowrap">
                     <thead>
                       <tr>
-                        <th>Nombre</th>
-                        <th>Telefono</th>
-                        <th>Zona</th>
-                        <th>Correo</th>
-                        <th>Estado</th>
-                        <th>Rol</th>
-                        <th>Fecha de ingreso</th>
-                        <th>Acciones</th>
+                        <th>Complejo</th>
+                        <th>Servicio</th>
+                        <th>Ingreso Total</th>
+                        <th>Tarjeta</th>
+                        <th>Transferencia</th>
+                        <th>Variación total mensual</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-1.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Airi Satou</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.COM., M.COM.</td>
-                        <td>Info@123.com</td>
-
-                        <td class="text-success"><i class="fas fa-circle f-10 m-r-10"></i> Activo</td>
-                        <td><span class="badge bg-light-warning">Vecino</span></td>
-
-                        <td>2023/09/12</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Tiger Nixon</td>
+                        <td>System Architect</td>
+                        <td>Edinburgh</td>
+                        <td>61</td>
+                        <td>2011/04/25</td>
+                        <td>$320,800</td>
                       </tr>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-2.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Ashton Cox</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.COM., M.COM.</td>
-                        <td>Info@123.com</td>
-
-                        <td class="text-success"><i class="fas fa-circle f-10 m-r-10"></i> Activo</td>
-                        <td><span class="badge bg-light-warning">Vecino</span></td>
-
-
-                        <td>2023/12/24</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Garrett Winters</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>63</td>
+                        <td>2011/07/25</td>
+                        <td>$170,750</td>
                       </tr>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-3.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Bradley Greer</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.A, B.C.A</td>
-                        <td>Info@123.com</td>
-
-
-                        <td class="text-secondary"><i class="fas fa-circle f-10 m-r-10"></i> Inactivo</td>
-                        <td><span class="badge bg-light-primary">Administrador</span></td>
-
-
-
-                        <td>2022/09/19</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Ashton Cox</td>
+                        <td>Junior Technical Author</td>
+                        <td>San Francisco</td>
+                        <td>66</td>
+                        <td>2009/01/12</td>
+                        <td>$86,000</td>
                       </tr>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-4.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Brielle Williamson</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.A, B.C.A</td>
-                        <td>Info@123.com</td>
-
-                        <td class="text-success"><i class="fas fa-circle f-10 m-r-10"></i> Activo</td>
-                        <td><span class="badge bg-light-info">Coordinador</span></td>
-
-
-                        <td>2022/08/22</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Cedric Kelly</td>
+                        <td>Senior Javascript Developer</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2012/03/29</td>
+                        <td>$433,060</td>
                       </tr>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-5.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Airi Satou</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.COM., M.COM.</td>
-                        <td>Info@123.com</td>
-
-                        <td class="text-secondary"><i class="fas fa-circle f-10 m-r-10"></i> Inactivo </td>
-                        <td><span class="badge bg-light-primary">Administrador</span></td>
-
-
-                        <td>2023/09/12</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Airi Satou</td>
+                        <td>Accountant</td>
+                        <td>Tokyo</td>
+                        <td>33</td>
+                        <td>2008/11/28</td>
+                        <td>$162,700</td>
                       </tr>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-6.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Ashton Cox</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.COM., M.COM.</td>
-                        <td>Info@123.com</td>
-
-                        <td class="text-success"><i class="fas fa-circle f-10 m-r-10"></i> Activo</td>
-                        <td><span class="badge bg-light-warning">Vecino</span></td>
-
-
-                        <td>2023/12/24</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Brielle Williamson</td>
+                        <td>Integration Specialist</td>
+                        <td>New York</td>
+                        <td>61</td>
+                        <td>2012/12/02</td>
+                        <td>$372,000</td>
                       </tr>
                       <tr>
-                        <td>
-                          <div class="d-flex align-items-center">
-                            <div class="flex-shrink-0">
-                              <img src="../assets/images/user/avatar-7.jpg" alt="user image" class="img-radius wid-40" />
-                            </div>
-                            <div class="flex-grow-1 ms-3">
-                              <h6 class="mb-0">Bradley Greer</h6>
-                            </div>
-                          </div>
-                        </td>
-                        <td>(123) 4567 890</td>
-                        <td>B.A, B.C.A</td>
-                        <td>Info@123.com</td>
-
-                        <td class="text-success"><i class="fas fa-circle f-10 m-r-10"></i> Activo </td>
-                        <td><span class="badge bg-light-info">Coordinador</span></td>
-
-
-                        <td>2022/09/19</td>
-                        <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-edit f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-trash f-20"></i>
-                          </a>
-                        </td>
+                        <td>Herrod Chandler</td>
+                        <td>Sales Assistant</td>
+                        <td>San Francisco</td>
+                        <td>59</td>
+                        <td>2012/08/06</td>
+                        <td>$137,500</td>
                       </tr>
-
-
+                      <tr>
+                        <td>Rhona Davidson</td>
+                        <td>Integration Specialist</td>
+                        <td>Tokyo</td>
+                        <td>55</td>
+                        <td>2010/10/14</td>
+                        <td>$327,900</td>
+                      </tr>
+                      <tr>
+                        <td>Colleen Hurst</td>
+                        <td>Javascript Developer</td>
+                        <td>San Francisco</td>
+                        <td>39</td>
+                        <td>2009/09/15</td>
+                        <td>$205,500</td>
+                      </tr>
+                      <tr>
+                        <td>Sonya Frost</td>
+                        <td>Software Engineer</td>
+                        <td>Edinburgh</td>
+                        <td>23</td>
+                        <td>2008/12/13</td>
+                        <td>$103,600</td>
+                      </tr>
+                      <tr>
+                        <td>Jena Gaines</td>
+                        <td>Office Manager</td>
+                        <td>London</td>
+                        <td>30</td>
+                        <td>2008/12/19</td>
+                        <td>$90,560</td>
+                      </tr>
+                      <tr>
+                        <td>Quinn Flynn</td>
+                        <td>Support Lead</td>
+                        <td>Edinburgh</td>
+                        <td>22</td>
+                        <td>2013/03/03</td>
+                        <td>$342,000</td>
+                      </tr>
+                      <tr>
+                        <td>Charde Marshall</td>
+                        <td>Regional Director</td>
+                        <td>San Francisco</td>
+                        <td>36</td>
+                        <td>2008/10/16</td>
+                        <td>$470,600</td>
+                      </tr>
+                      <tr>
+                        <td>Haley Kennedy</td>
+                        <td>Senior Marketing Designer</td>
+                        <td>London</td>
+                        <td>43</td>
+                        <td>2012/12/18</td>
+                        <td>$313,500</td>
+                      </tr>
+                      <tr>
+                        <td>Tatyana Fitzpatrick</td>
+                        <td>Regional Director</td>
+                        <td>London</td>
+                        <td>19</td>
+                        <td>2010/03/17</td>
+                        <td>$385,750</td>
+                      </tr>
+                      <tr>
+                        <td>Michael Silva</td>
+                        <td>Marketing Designer</td>
+                        <td>London</td>
+                        <td>66</td>
+                        <td>2012/11/27</td>
+                        <td>$198,500</td>
+                      </tr>
+                      <tr>
+                        <td>Paul Byrd</td>
+                        <td>Chief Financial Officer (CFO)</td>
+                        <td>New York</td>
+                        <td>64</td>
+                        <td>2010/06/09</td>
+                        <td>$725,000</td>
+                      </tr>
+                      <tr>
+                        <td>Gloria Little</td>
+                        <td>Systems Administrator</td>
+                        <td>New York</td>
+                        <td>59</td>
+                        <td>2009/04/10</td>
+                        <td>$237,500</td>
+                      </tr>
+                      <tr>
+                        <td>Bradley Greer</td>
+                        <td>Software Engineer</td>
+                        <td>London</td>
+                        <td>41</td>
+                        <td>2012/10/13</td>
+                        <td>$132,000</td>
+                      </tr>
+                      <tr>
+                        <td>Dai Rios</td>
+                        <td>Personnel Lead</td>
+                        <td>Edinburgh</td>
+                        <td>35</td>
+                        <td>2012/09/26</td>
+                        <td>$217,500</td>
+                      </tr>
                     </tbody>
+
                   </table>
                 </div>
               </div>
             </div>
           </div>
+          <!-- HTML5 Export Buttons end -->
+          <!-- Column Selectors table start -->
+          <!-- Column Selectors end -->
+          <!-- Excel - Cell Background table start -->
+          <!-- Excel - Cell Background end -->
+          <!-- Custom File (JSON) table start -->
+          <!-- Custom File (JSON) table end -->
         </div>
         <!-- [ Main Content ] end -->
       </div>
-    </div>
-    <!-- [ Main Content ] end -->
+    </section>
     <footer class="pc-footer" style="background: #e0f6ff">
       <div class="footer-wrapper container-fluid">
         <div class="row">
@@ -694,13 +650,7 @@
             <p class="m-0">
               © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
           </div>
-          <div class="col-auto my-1">
-            <ul class="list-inline footer-link mb-0">
-              <li class="list-inline-item"><a href="../index.html">Home</a></li>
-              <li class="list-inline-item"><a href="https://phoenixcoded.gitbook.io/able-pro/" target="_blank">Documentation</a></li>
-              <li class="list-inline-item"><a href="https://phoenixcoded.authordesk.app/" target="_blank">Support</a></li>
-            </ul>
-          </div>
+
         </div>
       </div>
     </footer>
@@ -717,7 +667,17 @@
 <script src="../assets/js/theme.js"></script>
 <script src="../assets/js/multi-lang.js"></script>
 <script src="../assets/js/plugins/feather.min.js"></script>
-
+<div class="floting-button">
+  <a
+    href="https://1.envato.market/zNkqj6"
+    class="btn btn btn-danger buynowlinks d-inline-flex align-items-center gap-2"
+    data-bs-toggle="tooltip"
+    title="Buy Now"
+  >
+    <i class="ph-duotone ph-shopping-cart"></i>
+    <span>Buy Now</span>
+  </a>
+</div>
 
 <script>
   layout_change('light');
@@ -744,16 +704,61 @@
 </script>
 
 
-    <script type="module">
-      import { DataTable } from '../assets/js/plugins/module.js';
-      new DataTable('#pc-dt-simple');
+    <!-- [Page Specific JS] start -->
+    <!-- datatable Js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+    <script src="../assets/js/plugins/buttons.colVis.min.js"></script>
+    <script src="../assets/js/plugins/buttons.print.min.js"></script>
+    <script src="../assets/js/plugins/pdfmake.min.js"></script>
+    <script src="../assets/js/plugins/jszip.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.buttons.min.js"></script>
+    <script src="../assets/js/plugins/vfs_fonts.js"></script>
+    <script src="../assets/js/plugins/buttons.html5.min.js"></script>
+    <script src="../assets/js/plugins/buttons.bootstrap5.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
+    <script>
+      // Eliminar DataTable previa
+      if ($.fn.DataTable.isDataTable('#basic-btn')) {
+        $('#basic-btn').DataTable().destroy();
+      }
+
+      // Inicializar DataTable con botones y buscador visible
+      const dt = $('#basic-btn').DataTable({
+        dom: "<'d-flex justify-content-start gap-2 mb-2'B><'dt-search-row'f>t<'bottom'ip>",
+        buttons: ['copy', 'excel', 'pdf', 'print'],
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+          search: "Buscar:"
+        }
+      });
+
+      // Mover el buscador debajo de los filtros
+      setTimeout(() => {
+        const dtSearch = document.querySelector('.dt-search-row');
+        const filtersRow = document.querySelector('.filters-row');
+
+        if (dtSearch && filtersRow) {
+          dtSearch.classList.remove('dt-search-row');
+          dtSearch.classList.add('ms-auto', 'mb-0');
+          filtersRow.appendChild(dtSearch);
+        }
+        // Cambiar placeholder
+        const input = dtSearch?.querySelector('input');
+        if (input) input.placeholder = "Buscar";
+      }, 100);
     </script>
 
 
-
-
-
     <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
       /* Ítems del menú: blanco */
       .pc-sidebar .pc-link,
       .pc-sidebar .pc-mtext,
