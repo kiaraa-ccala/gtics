@@ -1,0 +1,930 @@
+<!doctype html>
+<html lang="en">
+  <!-- [Head] start -->
+
+  <head>
+    <title>Bienvenido Coordinador</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
+    />
+    <meta
+      name="keywords"
+      content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard"
+    />
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="../assets/images/logo.jpg" type="image/x-icon" />
+    <!-- [Font] Family -->
+    <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="../assets/fonts/phosphor/duotone/style.css" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/tabler-icons.min.css" />
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/feather.css" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/fontawesome.css" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/material.css" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="../assets/css/style.css" id="main-style-link" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+    <script src="../assets/js/tech-stack.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
+    <script type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
+    <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
+    <link rel="stylesheet" href="../assets/css/style-preset.css" />
+  </head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+ <nav class="pc-sidebar" style="background-color: #1a3570;">
+  <div class="navbar-wrapper text-white" >
+    <div class="m-header" style="background-color: #fffffb;">
+
+      <a  class="b-brand text-primary">
+        <img src="../assets/images/logo-sanM.png" class="img-fluid" style="height: 40px;" alt="logoSM" />
+
+        <span class="badge bg-light-success rounded-pill ms-2 theme-version">Registrado</span>
+      </a>
+    </div>
+    <div class="navbar-content" >
+
+      <ul class="pc-navbar">
+        <li class="pc-item pc-caption">
+          <label data-i18n="Inicio">Inicio</label>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon">
+               <i class="bi bi-house-door-fill"></i>
+            </span>
+            <span class="pc-mtext" data-i18n="Inicio">Personal general</span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-it  em"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+          </ul>
+        </li>
+        <li class="pc-item pc-caption">
+          <label data-i18n="Estadisticas">Estadisticas</label>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon">
+               <i class="bi bi-columns-gap"></i>
+            </span>
+
+
+            <span class="pc-mtext" data-i18n="Personales">Personal general</span>
+
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+          </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-status-up"></use>
+              </svg>
+            </span>
+            <span class="pc-mtext" data-i18n="Financieros">Financiaros</span>
+
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+          </ul>
+        </li>
+
+        <li class="pc-item pc-caption">
+          <label data-i18n="Gestión y reportes">Administrador Panel</label>
+          <svg class="pc-icon">
+            <use xlink:href="#custom-layer"></use>
+          </svg>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-layer"></use>
+              </svg>
+            </span>
+            <span class="pc-mtext" data-i18n="Reportes">Reportes</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item pc-hasmenu">
+              <a class="pc-link" href="#!">
+                <span data-i18n="Servicios">Servicios</span>
+                <span class="pc-arrow"></i></span
+                ></a>
+
+            </li>
+
+            <li class="pc-item pc-hasmenu">
+              <a class="pc-link" href="#!">
+                <span data-i18n="Financiero"></span>
+                <span class="pc-arrow"></i></span
+              ></a>
+            </li>
+
+          </ul>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-user"></use>
+              </svg>
+            </span>
+            <span class="pc-mtext" data-i18n="Miembros">Miembros</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item"><a class="pc-link" href="../admins/membership-list.html" data-i18n="Listado plantilla">Lista</a></li>
+            <li class="pc-item"><a class="pc-link" href="../admins/membership-list.html" data-i18n="Añadir">Añadir</a></li>
+          </ul>
+
+
+        </li>
+
+
+
+        <li class="pc-item pc-caption">
+          <label data-i18n="Asistencia">Asistencia</label>
+          <svg class="pc-icon">
+            <use xlink:href="#custom-shopping-bag"></use>
+          </svg>
+        </li>
+        <li class="pc-item">
+          <a href="../application/calendar.html" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-calendar-1"></use>
+              </svg>
+            </span>
+            <span class="pc-mtext" data-i18n="Registro">Registro</span></a
+          >
+        </li>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+ <header class="pc-header">
+  <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+<div class="me-auto pc-mob-drp">
+  <ul class="list-unstyled">
+    <!-- ======= Menu collapse Icon ===== -->
+    <li class="pc-h-item pc-sidebar-collapse">
+      <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+        <i class="ti ti-menu-2"></i>
+      </a>
+    </li>
+    <li class="pc-h-item pc-sidebar-popup">
+      <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+        <i class="ti ti-menu-2"></i>
+      </a>
+    </li>
+    <li class="pc-h-item d-none d-md-inline-flex">
+      <form class="form-search">
+        <i class="search-icon">
+          <svg class="pc-icon">
+            <use xlink:href="#custom-search-normal-1"></use>
+          </svg>
+        </i>
+        <input type="search" class="form-control" placeholder="Buscar" />
+      </form>
+    </li>
+  </ul>
+</div>
+<!-- [Mobile Media Block end] -->
+<div class="ms-auto">
+  <ul class="list-unstyled">
+
+    <li class="d-flex justify-content-center align-items-center">
+
+      <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+        Registrado
+      </span>
+    </li>
+
+
+
+
+
+
+    <li class="dropdown pc-h-item">
+      <a
+        class="pc-head-link dropdown-toggle arrow-none me-0"
+        data-bs-toggle="dropdown"
+        href="#"
+        role="button"
+        aria-haspopup="false"
+        aria-expanded="false"
+      >
+        <svg class="pc-icon">
+          <use xlink:href="#custom-notification"></use>
+        </svg>
+        <span class="badge bg-success pc-h-badge">3</span>
+      </a>
+      <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+        <div class="dropdown-header d-flex align-items-center justify-content-between">
+          <h5 class="m-0">Notificaciones</h5>
+          <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
+        </div>
+        <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
+          <p class="text-span">Hoy</p>
+          <div class="card mb-2">
+            <div class="card-body">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <svg class="pc-icon text-primary">
+                    <use xlink:href="#custom-layer"></use>
+                  </svg>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <span class="float-end text-sm text-muted">hace 2 min</span>
+                  <h5 class="text-body mb-2">Actualización comentario: Canchas en mal estado</h5>
+                  <p class="mb-0"
+                    >Encargado Tony vargas de la municipalidad ha respondido el comentario.</p
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="card mb-2">
+            <div class="card-body">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <svg class="pc-icon text-primary">
+                    <use xlink:href="#custom-sms"></use>
+                  </svg>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <span class="float-end text-sm text-muted">hace 1 hora</span>
+                  <h5 class="text-body mb-2">Mensaje</h5>
+                  <p class="mb-0">Tu registro se ha realizado de manera correcta. </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="text-span">Ayer</p>
+          <div class="card mb-2">
+            <div class="card-body">
+              <div class="d-flex">
+                <div class="flex-shrink-0">
+                  <svg class="pc-icon text-primary">
+                    <use xlink:href="#custom-document-text"></use>
+                  </svg>
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <span class="float-end text-sm text-muted">hace 2 horas</span>
+                  <h5 class="text-body mb-2">Nuevo comentario realizado</h5>
+                  <p class="mb-0"
+                    >Se pierden implementos dentro del complejo deportivo</p
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="text-center py-2">
+          <a href="#!" class="link-danger">Vaciar bandeja</a>
+        </div>
+      </div>
+    </li>
+    <li class="dropdown pc-h-item header-user-profile">
+      <a
+        class="pc-head-link dropdown-toggle arrow-none me-0"
+        data-bs-toggle="dropdown"
+        href="#"
+        role="button"
+        aria-haspopup="false"
+        data-bs-auto-close="outside"
+        aria-expanded="false"
+      >
+        <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+      </a>
+      <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+        <div class="dropdown-header d-flex align-items-center justify-content-between">
+          <h5 class="m-0">Mi perfil</h5>
+        </div>
+        <div class="dropdown-body">
+          <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+            <div class="d-flex mb-1">
+              <div class="flex-shrink-0">
+                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h6 class="mb-1"> Gestor-DTI </h6>
+                <span>daniel.merino@sanmi.gob.pe</span>
+              </div>
+            </div>
+            <hr class="border-secondary border-opacity-50" />
+            <div class="card">
+              <div class="card-body py-3">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0 d-inline-flex align-items-center"
+                    ><svg class="pc-icon text-muted me-2">
+                      <use xlink:href="#custom-notification-outline"></use></svg
+                    >Notificaciones</h5>
+                  <div class="form-check form-switch form-check-reverse m-0">
+                    <input class="form-check-input f-18" type="checkbox" role="switch" />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr class="border-secondary border-opacity-50" />
+            <p class="text-span">Usuarios</p>
+            <a href="#" class="dropdown-item">
+              <span>
+                <i class="bi bi-card-checklist"></i>
+                <span>Gestionar</span>
+              </span>
+            </a>
+
+
+
+            <a href="#" class="dropdown-item">
+              <span>
+                <i class="bi bi-person-fill-add text-muted me-2"></i>
+
+                <span>Agregar</span>
+              </span>
+            </a>
+
+
+            <hr class="border-secondary border-opacity-50" />
+            <div class="d-grid mb-3">
+              <button class="btn btn-primary">
+                <svg class="pc-icon me-2">
+                  <use xlink:href="#custom-logout-1-outline"></use></svg
+                >Salir
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+  </ul>
+</div>
+ </div>
+</header>
+<div class="offcanvas pc-announcement-offcanvas offcanvas-end" tabindex="-1" id="announcement" aria-labelledby="announcementLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="announcementLabel">What's new announcement?</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <p class="text-span">Today</p>
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
+          <div class="badge bg-light-success f-12">Big News</div>
+          <p class="mb-0 text-muted">2 min ago</p>
+          <span class="badge dot bg-warning"></span>
+        </div>
+        <h5 class="mb-3">Able Pro is Redesigned</h5>
+        <p class="text-muted">Able Pro is completely renowed with high aesthetics User Interface.</p>
+        <img src="../assets/images/layout/img-announcement-1.png" alt="img" class="img-fluid mb-3" />
+        <div class="row">
+          <div class="col-12">
+            <div class="d-grid"
+              ><a class="btn btn-outline-secondary" href="https://1.envato.market/zNkqj6" target="_blank">Check Now</a></div
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
+          <div class="badge bg-light-warning f-12">Offer</div>
+          <p class="mb-0 text-muted">2 hour ago</p>
+          <span class="badge dot bg-warning"></span>
+        </div>
+        <h5 class="mb-3">Able Pro is in best offer price</h5>
+        <p class="text-muted">Download Able Pro exclusive on themeforest with best price. </p>
+        <a href="https://1.envato.market/zNkqj6" target="_blank"
+          ><img src="../assets/images/layout/img-announcement-2.png" alt="img" class="img-fluid"
+        /></a>
+      </div>
+    </div>
+
+    <p class="text-span mt-4">Yesterday</p>
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
+          <div class="badge bg-light-primary f-12">Blog</div>
+          <p class="mb-0 text-muted">12 hour ago</p>
+          <span class="badge dot bg-warning"></span>
+        </div>
+        <h5 class="mb-3">Featured Dashboard Template</h5>
+        <p class="text-muted">Do you know Able Pro is one of the featured dashboard template selected by Themeforest team.?</p>
+        <img src="../assets/images/layout/img-announcement-3.png" alt="img" class="img-fluid" />
+      </div>
+    </div>
+    <div class="card mb-3">
+      <div class="card-body">
+        <div class="align-items-center d-flex flex-wrap gap-2 mb-3">
+          <div class="badge bg-light-primary f-12">Announcement</div>
+          <p class="mb-0 text-muted">12 hour ago</p>
+          <span class="badge dot bg-warning"></span>
+        </div>
+        <h5 class="mb-3">Buy Once - Get Free Updated lifetime</h5>
+        <p class="text-muted">Get the lifetime free updates once you purchase the Able Pro.</p>
+        <img src="../assets/images/layout/img-announcement-4.png" alt="img" class="img-fluid" />
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Header ] end -->
+
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container">
+      <div class="pc-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card welcome-banner bg-blue-800">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="p-3">
+                      <h2 class="text-white">¡Bienvenido Coordinador Cristhian!</h2>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Comentarios enviados</h6>
+                  </div>
+                  
+                </div>
+
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-primary">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            opacity="0.4"
+                            d="M7 9H17"
+                            stroke="#4680FF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M7 13H13"
+                            stroke="#4680FF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M21 12C21 16.4183 16.9706 20 12 20C10.412 20 8.92635 19.6104 7.68298 18.9321L3 20L4.136 15.6734C3.42157 14.5525 3 13.3174 3 12C3 7.58172 7.02944 4 12 4C16.9706 4 21 7.58172 21 12Z"
+                            stroke="#4680FF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                      <h5 class="mb-1">22 sent</h5>
+                      <p class="text-primary mb-0"><i class="ti ti-check"></i> 16</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Última hora de entrada</h5>
+                  </div>                
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-warning">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <!-- Campanas -->
+                        <path
+                          d="M5 4L3 6"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M19 4L21 6"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        
+                        <!-- Cuerpo del reloj -->
+                        <path
+                          d="M12 21C16.4183 21 20 17.4183 20 13C20 8.58172 16.4183 5 12 5C7.58172 5 4 8.58172 4 13C4 17.4183 7.58172 21 12 21Z"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        
+                        <!-- Manecillas -->
+                        <path
+                          d="M12 13V9"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M12 13L14.5 14.5"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                      <h5 class="mb-1">08:35 AM</h5>
+                      <p class="text-warning mb-0"><i class="ti ti-check"></i> 86%</p>                    
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Complejo asignado</h5>
+                  </div>
+                  
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-success">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <!-- Disco izquierdo -->
+                        <path
+                          d="M3 8V16"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M5 6V18"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        
+                        <!-- Barra -->
+                        <path
+                          d="M5 12H19"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                        
+                        <!-- Disco derecho -->
+                        <path
+                          d="M19 6V18"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M21 8V16"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                      <h5 class="mb-1">Manuel Peredo</h5>
+                      <p class="text-success mb-0"><i class="ti ti-map-pin"></i> La Marina 123 </p>                    
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Horas semanales</h5>
+                  </div>
+                  
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-danger">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                          stroke="#DC2626"
+                          stroke-width="1.5"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          opacity="0.6"
+                          d="M12 6V12L16 14"
+                          stroke="#DC2626"
+                          stroke-width="1.5"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                     <h5 class="mb-1">15</h5>
+                      <p class="text-danger mb-0"><i class="ti ti-check"></i> 98.1%</p>                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Registra tu entrada</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-flex justify-content-center"> <!-- Cambiado a justify-content-center -->
+                  <style>
+                    .circle-button {
+                      width: 40vw;
+                      max-width: 200px;
+                      aspect-ratio: 1/1;
+                      border-radius: 50%;
+                      background-color: #fbbebe;
+                      border: 2px solid black;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      cursor: pointer;
+                      padding: 0;
+                      transition: background-color 0.3s ease;
+                    }
+                    .circle-button:hover {
+                      background-color: #c85858;
+                    }
+                  </style>
+                  <button class="circle-button">
+                    <!-- Icono SVG estilo reloj + marcador -->
+                    <img src="../assets/images/reloj_gps.png" alt="geo" style="width: 70%;">
+                  </button>
+                </div>
+                <br>
+                <h5 class=""><b>NOTA:</b></h5>
+                <p class="">Al presionar el botón se activará la geolocalización, asegurese de estar dentro del complejo</p>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Tus comentarios</h5>
+              </div>
+              <div class="card-body">
+                <div class="d-grid gap-2">
+                  <a href="#" class="btn btn-link-secondary">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-success rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <p class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">Accidentes en el complejo</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="btn btn-link-secondary">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-success rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <p class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">Uso indebido de instalaciones</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="btn btn-link-secondary">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-warning rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <p class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">Canchas en mal estado</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="btn btn-link-secondary">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-success rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <p class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">Falta de iluminación</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                  <a href="#" class="btn btn-link-secondary">
+                    <div class="d-flex align-items-center">
+                      <div class="flex-shrink-0">
+                        <span class="p-1 d-block bg-success rounded-circle">
+                          <span class="visually-hidden">New alerts</span>
+                        </span>
+                      </div>
+                      <div class="flex-grow-1 mx-2">
+                        <p class="mb-0 d-grid text-start">
+                          <span class="text-truncate w-100">Perdida de implementos</span>
+                        </p>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+                <br>
+                <div class="d-grid mt-3">
+                  <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                    ><i class="ti ti-plus"></i> Nuevo comentario</button
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card">
+              <div class="card-header">
+                <h5 class="mb-0">Ingresa a tu perfil</h5>
+              </div>
+              <div class="card-body">
+                <div class="text-center d-grid gap-3">
+                  <!-- Imagen centrada con borde -->
+                  <img src="../assets/images/cris.png" alt="img" class="img-bordered mx-auto" style="width: 50%;border:3px solid black;border-radius:4px">
+                  <br>
+                  <!-- Botón centrado -->
+                  <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                    <i class="ti ti-user-circle"></i> Ve a tu perfil
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer">
+      <div class="footer-wrapper container-fluid">
+        <div class="row">
+          <div class="col my-1">
+            <p class="m-0"
+              >© Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+ 
+    <!-- [Page Specific JS] start -->
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="../assets/js/widgets/all-earnings-graph.js"></script>
+    <script src="../assets/js/widgets/page-views-graph.js"></script>
+    <script src="../assets/js/widgets/total-task-graph.js"></script>
+    <script src="../assets/js/widgets/download-graph.js"></script>
+    <script src="../assets/js/widgets/customer-rate-graph.js"></script>
+    <script src="../assets/js/widgets/tasks-graph.js"></script>
+    <script src="../assets/js/widgets/total-income-graph.js"></script>
+    <!-- [Page Specific JS] end -->
+    <!-- Required Js -->
+    <script src="../assets/js/plugins/popper.min.js"></script>
+    <script src="../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="../assets/js/plugins/i18next.min.js"></script>
+    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+    <script src="../assets/js/icon/custom-font.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/multi-lang.js"></script>
+    <script src="../assets/js/plugins/feather.min.js"></script>
+    
+    
+    <script>
+      layout_change('light');
+    </script>
+      
+    <script>
+      change_box_container('false');
+    </script>
+     
+    <script>
+      layout_caption_change('true');
+    </script>
+     
+    <script>
+      layout_rtl_change('false');
+    </script>
+     
+    <script>
+      preset_change('preset-1');
+    </script>
+     
+    <script>
+      main_layout_change('vertical');
+    </script>
+    
+
+  </body>
+  <!-- [Body] end -->
+</html>
