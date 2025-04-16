@@ -1,0 +1,828 @@
+<!doctype html>
+<html lang="es">
+  <!-- [Head] start -->
+
+  <head>
+    <title>Monitorear Servicios</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
+    />
+    <meta
+      name="keywords"
+      content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard"
+    />
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="../assets/images/logo-circular.png" type="image/x-icon" />
+    <!-- data tables css -->
+    <link rel="stylesheet" href="../assets/css/plugins/dataTables.bootstrap5.min.css" />
+    <link rel="stylesheet" href="../assets/css/plugins/buttons.bootstrap5.min.css" />
+    
+    <!-- [Page specific CSS] start -->
+    <link rel="stylesheet" href="../assets/css/plugins/datepicker-bs5.min.css" />
+    <!-- [Page specific CSS] end -->
+    <!-- [Font] Family -->
+    <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="../assets/fonts/phosphor/duotone/style.css" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/tabler-icons.min.css" />
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/feather.css" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/fontawesome.css" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/material.css" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="../assets/css/style.css" id="main-style-link" />
+    <script src="../assets/js/tech-stack.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
+    <script type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
+    <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
+    <link rel="stylesheet" href="../assets/css/style-preset.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+
+  </head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+<nav class="pc-sidebar" style="background-color: #1a3570;">
+  <div class="navbar-wrapper text-white" >
+    <div class="m-header" style="background-color: #fffffb;">
+
+      <a  class="b-brand text-primary">
+        <img src="../assets/images/logo-sanM.png" class="img-fluid" style="height: 40px;" alt="logoSM" />
+
+        <span class="badge bg-light-success rounded-pill ms-2 theme-version">admin</span>
+      </a>
+    </div>
+    <div class="navbar-content" >
+
+      <ul class="pc-navbar">
+
+        <li class="pc-item pc-caption">
+          <label data-i18n="Inicio">Inicio</label>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+        <span class="pc-micon">
+           <i class="bi bi-house-door-fill"></i>
+        </span>
+            <span class="pc-mtext" data-i18n="Página inicio">Página inicio</span>
+          </a>
+          
+        </li>
+        <li class="pc-item pc-caption">
+          <label data-i18n="Servicios">Servicios</label>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+        <span class="pc-micon">
+           <i class="bi bi-columns-gap"></i>
+        </span>
+
+
+            <span class="pc-mtext" data-i18n="Agregar Servicios">Agregar Servicio</span>
+
+          </a>
+          
+        </li>
+        
+
+        <li class="pc-item pc-caption">
+          <label data-i18n="Gestión Horarios">Gestion Horario</label>
+          <svg class="pc-icon">
+            <use xlink:href="#custom-layer"></use>
+          </svg>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+        <span class="pc-micon">
+          <svg class="pc-icon">
+            <use xlink:href="#custom-layer"></use>
+          </svg>
+        </span>
+            <span class="pc-mtext" data-i18n="Horarios">Horarios</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item pc-hasmenu">
+              <a class="pc-link" href="#!">
+                <span data-i18n="Agregar Horario">Agregar</span>
+                <span class="pc-arrow"></i></span
+                ></a>
+
+            </li>
+
+            <li class="pc-item pc-hasmenu">
+              <a class="pc-link" href="#!">
+                <span data-i18n="Ver Horario">Ver</span>
+                <span class="pc-arrow"></i></span
+                ></a>
+            </li>
+
+          </ul>
+        </li>
+        
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+ <header class="pc-header">
+  <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+    <div class="me-auto pc-mob-drp">
+      <ul class="list-unstyled">
+        <!-- ======= Menu collapse Icon ===== -->
+        <li class="pc-h-item pc-sidebar-collapse">
+          <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+        <li class="pc-h-item pc-sidebar-popup">
+          <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+        <li class="pc-h-item d-none d-md-inline-flex">
+          <form class="form-search">
+            <i class="search-icon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-search-normal-1"></use>
+              </svg>
+            </i>
+            <input type="search" class="form-control" placeholder="Buscar" />
+          </form>
+        </li>
+      </ul>
+    </div>
+    <!-- [Mobile Media Block end] -->
+    <div class="ms-auto">
+      <ul class="list-unstyled">
+
+        <li class="d-flex justify-content-center align-items-center">
+
+  <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+    admin
+  </span>
+        </li>
+
+
+
+
+
+
+        <li class="dropdown pc-h-item">
+          <a
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  aria-expanded="false"
+          >
+            <svg class="pc-icon">
+              <use xlink:href="#custom-notification"></use>
+            </svg>
+            <span class="badge bg-success pc-h-badge">3</span>
+          </a>
+          <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+            <div class="dropdown-header d-flex align-items-center justify-content-between">
+              <h5 class="m-0">Notificaciones</h5>
+              <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
+            </div>
+            <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
+              <p class="text-span">Hoy</p>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-layer"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 2 min</span>
+                      <h5 class="text-body mb-2">Se te ha asignado la zona sur</h5>
+                      <p class="mb-0"
+                      >Buenas tardes administrador Tony, este mensaje es para...</p
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-sms"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 1 hora</span>
+                      <h5 class="text-body mb-2">Mensaje</h5>
+                      <p class="mb-0">Cierre de plataforma: proximas actualizaciones y recursos en proceso. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="text-span">Ayer</p>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-document-text"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 2 horas</span>
+                      <h5 class="text-body mb-2">Complejos disponibles</h5>
+                      <p class="mb-0"
+                      >Actualización de los complejos que estrán operativos durante la semana.</p
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center py-2">
+              <a href="#!" class="link-danger">Vaciar bandeja</a>
+            </div>
+          </div>
+        </li>
+        <li class="dropdown pc-h-item header-user-profile">
+          <a
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  data-bs-auto-close="outside"
+                  aria-expanded="false"
+          >
+            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+          </a>
+          <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+            <div class="dropdown-header d-flex align-items-center justify-content-between">
+              <h5 class="m-0">Mi perfil</h5>
+            </div>
+            <div class="dropdown-body">
+              <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+                <div class="d-flex mb-1">
+                  <div class="flex-shrink-0">
+                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1"> Administrador </h6>
+                    <span>tony.flores@sanmi.gob.pe</span>
+                  </div>
+                </div>
+                <hr class="border-secondary border-opacity-50" />
+                <div class="card">
+                  <div class="card-body py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0 d-inline-flex align-items-center"
+                      ><svg class="pc-icon text-muted me-2">
+                        <use xlink:href="#custom-notification-outline"></use></svg
+                      >Notificaciones</h5>
+                      <div class="form-check form-switch form-check-reverse m-0">
+                        <input class="form-check-input f-18" type="checkbox" role="switch" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </a>
+                <div class="d-grid mb-3">
+                  <button class="btn btn-primary">
+                    <svg class="pc-icon me-2">
+                      <use xlink:href="#custom-logout-1-outline"></use></svg
+                    >Salir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Estadisticas</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Financieras</li>
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Monitoreo de Servicios</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <div class="col-md-6 col-xxl-3">
+                <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 me-3">
+                          <input type="date" class="form-control mb-2" id="fecha" onchange="actualizarFecha()" />
+                          <br>
+                          <p class="mb-0 text-sm"><strong>Estás viendo:</strong> <span id="mes-actual">Abril 2025</span></p>
+                        </div>
+                        <div class="flex-shrink-0">
+                          <div class="avtar avtar-l bg-light-primary rounded-circle">
+                            <i class="ph-duotone ph-calendar f-28"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6 col-xxl-3">
+            <div class="card" style="background-color: #D2FFD7 ;">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 me-3">
+                    <h4 class="mb-1">10</h4>
+                    <p class="mb-1 fw-medium text-muted">Ambientes con disponibilidad</p>
+                    <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="avtar avtar-l bg-light-primary rounded-circle">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card" style="background-color: #ebebeb  ;">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 me-3">
+                    <h4 class="mb-1">5</h4>
+                    <p class="mb-1 fw-medium text-muted">Completamente Reservados</p>
+                    <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="avtar avtar-l bg-light-primary rounded-circle">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xxl-3">
+            <div class="card" style="background-color: #FFBEBE   ;">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 me-3">
+                    <h4 class="mb-1">6</h4>
+                    <p class="mb-1 fw-medium text-muted">En mantenimiento/reparación</p>
+                    <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="avtar avtar-l bg-light-primary rounded-circle">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nueva card para selector de fecha -->
+  
+        </div>
+         
+          
+        
+
+          <div class="row">
+        
+            <div class="col-xl-4 col-md-6">
+              <div class="card">
+                <div class="card-body pb-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Uso de Servicios</h5>
+                    <div class="dropdown">
+                      <a
+                        class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
+                        href="#"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        <i class="ti ti-dots-vertical f-18"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">Zona Sur</a>
+                        <a class="dropdown-item" href="#">Zona Norte</a>
+                        <a class="dropdown-item" href="#">Zona Este</a>
+                        <a class="dropdown-item" href="#">Zona Oeste</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="total-income-graph2"></div>
+                  <div class="mb-2 mt-3 d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-warning f-12"></i> Gimnasio</h6>
+                    <p class="mb-0 text-muted">65% <i class="ti ti-arrow-narrow-up" style="color: green;"></i></p>
+                  </div>
+                  <div class="mb-2 d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-success f-12"></i> Lozas Deportivas</h6>
+                    <p class="mb-0 text-muted">53% <i class="ti ti-arrow-narrow-up" style="color: green;"></i></p>
+                  </div>
+                  <div class="mb-2 d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-primary f-12"></i> Piscinas</h6>
+                    <p class="mb-0 text-muted">22% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"
+                      ><i class="fas fa-circle text-primary text-opacity-25 f-12"></i> Pista de atletismo</h6
+                    >
+                    <p class="mb-0 text-muted">20% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
+                  </div>
+                  <div class="d-grid mt-3">
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                      ><i class="ti ti-external-link"></i> Ver todos los complejos</button
+                    >
+                  </div>
+                  <div class="d-grid mt-3">
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                      ><i class="ti ti-plus"></i> Añadir nuevo complejo</button
+                    >
+                  </div>
+                  <div class="d-grid mt-3">
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                      ><i class="ti ti-external-link"></i> Programar mantenimiento</button
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-8 col-md-6">
+                <div class="card">
+    
+                  <div class="card-body">
+                    <div class="dt-responsive table-responsive">
+                      <table id="basic-btn" class="table table-striped table-bordered nowrap">
+                        <thead>
+                          <tr>
+                            <th>Complejo</th>
+                            <th>Servicio</th>
+                            <th>Sector</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Complejo Deportivo El Mirador</td>
+                            <td>Piscina</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Centro Atlético NovaFit</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Parque Deportivo Horizonte</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>Zona Max Training Club</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>EcoArena Multideportes</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Estadio y Centro Deportivo Altavista</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Piscina</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Complejo Deportivo El Mirador</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Centro Atlético NovaFit</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Parque Deportivo Horizonte</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Zona Max Training Club</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>EcoArena Multideportes</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Estadio y Centro Deportivo Altavista</td>
+                            <td>Piscina</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>Complejo Deportivo El Mirador</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Centro Atlético NovaFit</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Parque Deportivo Horizonte</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Zona Max Training Club</td>
+                            <td>Piscina</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>EcoArena Multideportes</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                        </tbody>
+    
+                      </table>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+          </div>
+     
+
+    
+  
+        </div>
+
+    
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer" style="background: #e0f6ff">
+      <div class="footer-wrapper container-fluid">
+        <div class="row">
+          <div class="col my-1">
+            <p class="m-0">
+              © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+          </div>
+        
+        </div>
+      </div>
+    </footer>
+ <!-- Required Js -->
+<script src="../assets/js/plugins/popper.min.js"></script>
+<script src="../assets/js/plugins/simplebar.min.js"></script>
+<script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+<script src="../assets/js/plugins/i18next.min.js"></script>
+<script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+<script src="../assets/js/icon/custom-font.js"></script>
+<script src="../assets/js/script.js"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/multi-lang.js"></script>
+<script src="../assets/js/plugins/feather.min.js"></script>
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+    <!-- [Page Specific JS] start -->
+    <!-- bootstrap-datepicker -->
+    <script src="../assets/js/plugins/datepicker-full.min.js"></script>
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="../assets/js/plugins/peity-vanilla.min.js"></script>
+    <!-- custom widgets js -->
+    <script src="../assets/js/widgets/revenue-analytics-chart.js"></script>
+    <script src="../assets/js/widgets/membership-state-chart.js"></script>
+    <script src="../assets/js/widgets/membership-activity-line-chart.js"></script>
+    <script src="../assets/js/widgets/invoice-chart.js"></script>
+    <script src="../assets/js/widgets/total-income-graph2.js"></script>
+    <!-- jQuery y DataTables JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.buttons.min.js"></script>
+    <script src="../assets/js/plugins/buttons.bootstrap5.min.js"></script>
+    <script src="../assets/js/plugins/jszip.min.js"></script>
+    <script src="../assets/js/plugins/pdfmake.min.js"></script>
+    <script src="../assets/js/plugins/vfs_fonts.js"></script>
+    <script src="../assets/js/plugins/buttons.html5.min.js"></script>
+    <script src="../assets/js/plugins/buttons.print.min.js"></script>
+
+    <!-- [Page Specific JS] end -->
+
+    <!-- Script para actualizar fecha -->
+  <script>
+    function actualizarFecha() {
+      const inputFecha = document.getElementById("fecha").value;
+      if (inputFecha) {
+        const fecha = new Date(inputFecha);
+        const opciones = { month: 'long', year: 'numeric' };
+        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+        document.getElementById("mes-actual").innerText = capitalizarPrimeraLetra(fechaFormateada);
+      }
+    }
+
+    function capitalizarPrimeraLetra(texto) {
+      return texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+  </script>
+
+  <script>
+    // [ HTML5 Export Buttons ]
+    $('#basic-btn').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['copy', 'csv', 'excel', 'print']
+    });
+
+    // [ Column Selectors ]
+    $('#cbtn-selectors').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          exportOptions: {
+            columns: [0, ':visible']
+          }
+        },
+        {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+        {
+          extend: 'pdfHtml5',
+          exportOptions: {
+            columns: [0, 1, 2, 5]
+          }
+        },
+        'colvis'
+      ]
+    });
+
+    // [ Excel - Cell Background ]
+    $('#excel-bg').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          customize: function (xlsx) {
+            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+            $('row c[r^="F"]', sheet).each(function () {
+              if ($('is t', this).text().replace(/[^\d]/g, '') * 1 >= 500000) {
+                $(this).attr('s', '20');
+              }
+            });
+          }
+        }
+      ]
+    });
+
+    // [ Custom File (JSON) ]
+    $('#pdf-json').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          text: 'JSON',
+          action: function (e, dt, button, config) {
+            var data = dt.buttons.exportData();
+            $.fn.dataTable.fileSave(new Blob([JSON.stringify(data)]), 'Export.json');
+          }
+        }
+      ]
+    });
+  </script>
+  
+  
+
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+
+
+  </body>
+  <!-- [Body] end -->
+</html>
