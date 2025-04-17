@@ -794,7 +794,6 @@
     });
   </script>
   
-  
 
     <style>
       /* Ítems del menú: blanco */
@@ -835,20 +834,32 @@
             <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
             <input type="text" class="form-control" id="nombreComplejo" required>
           </div>
+        
           <div class="mb-3">
-            <label for="tipoServicio" class="form-label">Tipo de Servicio</label>
-            <select class="form-select" id="tipoServicio" required>
-              <option value="">Seleccionar</option>
+            <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
+            <select class="form-select" id="tipoServicio" multiple required>
               <option value="Gimnasio">Gimnasio</option>
-              <option value="Lozas Deportivas">Lozas Deportivas</option>
-              <option value="Piscinas">Piscinas</option>
+              <option value="Cancha de losa">Cancha de losa</option>
+              <option value="Cancha de grass">Cancha de grass</option>
+              <option value="Piscina">Piscina</option>
+              <option value="Pista de atletismo">Pista de atletismo</option>
             </select>
+            <div class="form-text">Mantén presionada Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples</div>
           </div>
+        
+          <!-- Aquí se generarán los inputs adicionales -->
+          <div id="inputsServiciosExtras"></div>
+        
           <div class="mb-3">
             <label for="direccionComplejo" class="form-label">Dirección</label>
             <input type="text" class="form-control" id="direccionComplejo" required>
           </div>
-          <!-- Puedes añadir más campos aquí según tu necesidad -->
+        
+          <div class="mb-3">
+            <label for="numSoporte" class="form-label">Número de soporte</label>
+            <input type="text" class="form-control" id="numSoporte" required>
+          </div>
+        
           <div class="text-end">
             <button type="submit" class="btn btn-primary">Guardar</button>
           </div>
@@ -857,6 +868,45 @@
     </div>
   </div>
 </div>
+
+
+
+<script>
+  const tipoServicioSelect = document.getElementById("tipoServicio");
+  const inputsServiciosExtras = document.getElementById("inputsServiciosExtras");
+
+  tipoServicioSelect.addEventListener("change", () => {
+    const seleccionados = Array.from(tipoServicioSelect.selectedOptions).map(opt => opt.value);
+    inputsServiciosExtras.innerHTML = ""; // Limpiar inputs previos
+
+    if (seleccionados.includes("Cancha de losa")) {
+      inputsServiciosExtras.innerHTML += `
+        <div class="mb-3">
+          <label for="cantidadLosa" class="form-label">Cantidad de canchas de losa</label>
+          <input type="number" class="form-control" id="cantidadLosa" name="cantidadLosa" min="1" required>
+        </div>
+      `;
+    }
+
+    if (seleccionados.includes("Cancha de grass")) {
+      inputsServiciosExtras.innerHTML += `
+        <div class="mb-3">
+          <label for="cantidadGrass" class="form-label">Cantidad de canchas de grass</label>
+          <input type="number" class="form-control" id="cantidadGrass" name="cantidadGrass" min="1" required>
+        </div>
+      `;
+    }
+
+    if (seleccionados.includes("Piscina")) {
+      inputsServiciosExtras.innerHTML += `
+        <div class="mb-3">
+          <label for="cantidadCarriles" class="form-label">Cantidad de carriles de la piscina</label>
+          <input type="number" class="form-control" id="cantidadCarriles" name="cantidadCarriles" min="1" required>
+        </div>
+      `;
+    }
+  });
+</script>
   </body>
   <!-- [Body] end -->
 </html>
