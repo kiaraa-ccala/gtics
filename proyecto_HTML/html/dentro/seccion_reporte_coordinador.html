@@ -3,7 +3,7 @@
   <!-- [Head] start -->
 
   <head>
-    <title>Bienvenido a tus comentarios</title>
+    <title>Bienvenido a tus reportes</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -106,7 +106,7 @@
   
   
           <li class="pc-item pc-caption">
-            <label data-i18n="Comentarios">Comentarios</label>
+            <label data-i18n="Reportes">Reportes</label>
             <svg class="pc-icon">
               <use xlink:href="#custom-shopping-bag"></use>
             </svg>
@@ -118,7 +118,7 @@
                   <use xlink:href="#custom-message-2"></use>
                 </svg>
               </span>
-              <span class="pc-mtext" data-i18n="Mis Comentarios">Mis Comentarios</span></a
+              <span class="pc-mtext" data-i18n="Mis Reportes">Mis Reportes</span></a
             >
           </li>
   
@@ -203,9 +203,9 @@
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="float-end text-sm text-muted">hace 2 min</span>
-                    <h5 class="text-body mb-2">Actualización comentario: Canchas en mal estado</h5>
+                    <h5 class="text-body mb-2">Actualización Reporte: Canchas en mal estado</h5>
                     <p class="mb-0"
-                      >Encargado Tony vargas de la municipalidad ha respondido el comentario.</p
+                      >Encargado Tony vargas de la municipalidad ha respondido el reporte.</p
                     >
                   </div>
                 </div>
@@ -238,7 +238,7 @@
                   </div>
                   <div class="flex-grow-1 ms-3">
                     <span class="float-end text-sm text-muted">hace 2 horas</span>
-                    <h5 class="text-body mb-2">Nuevo comentario realizado</h5>
+                    <h5 class="text-body mb-2">Nuevo reporte realizado</h5>
                     <p class="mb-0"
                       >Se pierden implementos dentro del complejo deportivo</p
                     >
@@ -326,7 +326,7 @@
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">Sección de comentarios</h2>
+                  <h2 class="mb-0">Sección de reportes</h2>
                 </div>
               </div>
             </div>
@@ -344,7 +344,7 @@
                 <div class="card h-100">
                   <div class="card-body d-flex flex-column">
                     <div class="d-flex align-items-center justify-content-between mb-3">
-                      <h4 class="mb-0">Distribución de comentarios</h4>
+                      <h4 class="mb-0">Distribución de reportes</h4>
                       <div class="dropdown">
                         <a class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
                            href="#" data-bs-toggle="dropdown"
@@ -360,19 +360,19 @@
                     </div>
                     
                     <div class="d-grid mt-auto pt-3">
-                      <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
-                        <i class="ti ti-plus"></i> Añadir nuevo comentario
+                      <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#nuevoComplejoReporte" >
+                        <i class="ti ti-plus"></i> Añadir nuevo reporte
                       </button>
                     </div>
                   </div>
                 </div>
               </div>
           
-              <!-- Sección de comentarios (derecha) - SOLO CAMBIÉ EL ESPACIADO -->
+              <!-- Sección de reportes (derecha) - SOLO CAMBIÉ EL ESPACIADO -->
               <div class="col-12 col-lg-6">
                 <div class="card h-100">
                   <div class="card-header">
-                    <h5 class="mb-0">Tus comentarios</h5>
+                    <h5 class="mb-0">Tus reportes</h5>
                   </div>
                   <div class="card-body d-flex flex-column">
                     <div class="d-grid gap-3" style="margin-bottom: 1rem;"> <!-- Ajusté este gap -->
@@ -450,7 +450,7 @@
                     
                     <div class="d-grid mt-auto"> <!-- Mantengo el botón abajo -->
                       <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
-                        <i class="ti ti-plus"></i> Ver mis comentarios
+                        <i class="ti ti-plus"></i> Ver mis reportes
                       </button>
                     </div>
                   </div>
@@ -596,245 +596,7 @@
 </script>
 
 
-<div class="offcanvas border-0 pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">
-  <div class="offcanvas-header">
-    <h5 class="offcanvas-title">Settings</h5>
-    <button type="button" class="btn btn-icon btn-link-danger ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"
-      ><i class="ti ti-x"></i
-    ></button>
-  </div>
-  <div class="pct-body customizer-body">
-    <div class="offcanvas-body py-0">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item">
-          <div class="pc-dark">
-            <h6 class="mb-1">Theme Mode</h6>
-            <p class="text-muted text-sm">Choose light or dark mode or Auto</p>
-            <div class="row theme-color theme-layout">
-              <div class="col-4">
-                <div class="d-grid">
-                  <button
-                    class="preset-btn btn active"
-                    data-value="true"
-                    onclick="layout_change('light');"
-                    data-bs-toggle="tooltip"
-                    title="Light"
-                  >
-                    <svg class="pc-icon text-warning">
-                      <use xlink:href="#custom-sun-1"></use>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="d-grid">
-                  <button class="preset-btn btn" data-value="false" onclick="layout_change('dark');" data-bs-toggle="tooltip" title="Dark">
-                    <svg class="pc-icon">
-                      <use xlink:href="#custom-moon"></use>
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div class="col-4">
-                <div class="d-grid">
-                  <button
-                    class="preset-btn btn"
-                    data-value="default"
-                    onclick="layout_change_default();"
-                    data-bs-toggle="tooltip"
-                    title="Automatically sets the theme based on user's operating system's color scheme."
-                  >
-                    <span class="pc-lay-icon d-flex align-items-center justify-content-center">
-                      <i class="ph-duotone ph-cpu"></i>
-                    </span>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <h6 class="mb-1">Theme Contrast</h6>
-          <p class="text-muted text-sm">Choose theme contrast</p>
-          <div class="row theme-contrast">
-            <div class="col-6">
-              <div class="d-grid">
-                <button
-                  class="preset-btn btn"
-                  data-value="true"
-                  onclick="layout_theme_contrast_change('true');"
-                  data-bs-toggle="tooltip"
-                  title="True"
-                >
-                  <svg class="pc-icon">
-                    <use xlink:href="#custom-mask"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="d-grid">
-                <button
-                  class="preset-btn btn active"
-                  data-value="false"
-                  onclick="layout_theme_contrast_change('false');"
-                  data-bs-toggle="tooltip"
-                  title="False"
-                >
-                  <svg class="pc-icon">
-                    <use xlink:href="#custom-mask-1-outline"></use>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <h6 class="mb-1">Custom Theme</h6>
-          <p class="text-muted text-sm">Choose your primary theme color</p>
-          <div class="theme-color preset-color">
-            <a href="#!" data-bs-toggle="tooltip" title="Blue" class="active" data-value="preset-1"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Indigo" data-value="preset-2"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Purple" data-value="preset-3"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Pink" data-value="preset-4"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Red" data-value="preset-5"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Orange" data-value="preset-6"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Yellow" data-value="preset-7"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Green" data-value="preset-8"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Teal" data-value="preset-9"><i class="ti ti-checks"></i></a>
-            <a href="#!" data-bs-toggle="tooltip" title="Cyan" data-value="preset-10"><i class="ti ti-checks"></i></a>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <h6 class="mb-1">Theme layout</h6>
-          <p class="text-muted text-sm">Choose your layout</p>
-          <div class="theme-main-layout d-flex align-center gap-1 w-100">
-            <a href="#!" data-bs-toggle="tooltip" title="Vertical" class="active" data-value="vertical">
-              <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
-            </a>
-            <a href="#!" data-bs-toggle="tooltip" title="Horizontal" data-value="horizontal">
-              <img src="../assets/images/customizer/horizontal.svg" alt="img" class="img-fluid" />
-            </a>
-            <a href="#!" data-bs-toggle="tooltip" title="Color Header" data-value="color-header">
-              <img src="../assets/images/customizer/color-header.svg" alt="img" class="img-fluid" />
-            </a>
-            <a href="#!" data-bs-toggle="tooltip" title="Compact" data-value="compact">
-              <img src="../assets/images/customizer/compact.svg" alt="img" class="img-fluid" />
-            </a>
-            <a href="#!" data-bs-toggle="tooltip" title="Tab" data-value="tab">
-              <img src="../assets/images/customizer/tab.svg" alt="img" class="img-fluid" />
-            </a>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <h6 class="mb-1">Sidebar Caption</h6>
-          <p class="text-muted text-sm">Sidebar Caption Hide/Show</p>
-          <div class="row theme-color theme-nav-caption">
-            <div class="col-6">
-              <div class="d-grid">
-                <button
-                  class="preset-btn btn-img btn active"
-                  data-value="true"
-                  onclick="layout_caption_change('true');"
-                  data-bs-toggle="tooltip"
-                  title="Caption Show"
-                >
-                  <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
-                </button>
-              </div>
-            </div>
-            <div class="col-6">
-              <div class="d-grid">
-                <button
-                  class="preset-btn btn-img btn"
-                  data-value="false"
-                  onclick="layout_caption_change('false');"
-                  data-bs-toggle="tooltip"
-                  title="Caption Hide"
-                >
-                  <img src="../assets/images/customizer/caption-off.svg" alt="img" class="img-fluid" />
-                </button>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="pc-rtl">
-            <h6 class="mb-1">Theme Layout</h6>
-            <p class="text-muted text-sm">LTR/RTL</p>
-            <div class="row theme-color theme-direction">
-              <div class="col-6">
-                <div class="d-grid">
-                  <button
-                    class="preset-btn btn-img btn active"
-                    data-value="false"
-                    onclick="layout_rtl_change('false');"
-                    data-bs-toggle="tooltip"
-                    title="LTR"
-                  >
-                    <img src="../assets/images/customizer/ltr.svg" alt="img" class="img-fluid" />
-                  </button>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="d-grid">
-                  <button
-                    class="preset-btn btn-img btn"
-                    data-value="true"
-                    onclick="layout_rtl_change('true');"
-                    data-bs-toggle="tooltip"
-                    title="RTL"
-                  >
-                    <img src="../assets/images/customizer/rtl.svg" alt="img" class="img-fluid" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item pc-box-width">
-          <div class="pc-container-width">
-            <h6 class="mb-1">Layout Width</h6>
-            <p class="text-muted text-sm">Choose Full or Container Layout</p>
-            <div class="row theme-color theme-container">
-              <div class="col-6">
-                <div class="d-grid">
-                  <button
-                    class="preset-btn btn-img btn active"
-                    data-value="false"
-                    onclick="change_box_container('false')"
-                    data-bs-toggle="tooltip"
-                    title="Full Width"
-                  >
-                    <img src="../assets/images/customizer/full.svg" alt="img" class="img-fluid" />
-                  </button>
-                </div>
-              </div>
-              <div class="col-6">
-                <div class="d-grid">
-                  <button
-                    class="preset-btn btn-img btn"
-                    data-value="true"
-                    onclick="change_box_container('true')"
-                    data-bs-toggle="tooltip"
-                    title="Fixed Width"
-                  >
-                    <img src="../assets/images/customizer/fixed.svg" alt="img" class="img-fluid" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-        <li class="list-group-item">
-          <div class="d-grid">
-            <button class="btn btn-light-danger" id="layoutreset">Reset Layout</button>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
+
 
     <style>
       /* Ítems del menú: blanco */
@@ -872,6 +634,194 @@
           padding-top: 30px;
         }
       </style>
+
+<!-- Modal tipo popup -->
+<div class="modal fade" id="nuevoComplejoReporte" tabindex="-1" aria-labelledby="nuevoComplejoReporteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="nuevoComplejoReporteLabel">Crear Nuevo Reporte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formComentario" action="/ruta-a-donde-enviar" method="post">
+          <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">Título del reporte</label>
+                      <input type="text" class="form-control" placeholder="Ingrese el título" />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                      <label class="form-label">Descripción de la situación</label>
+                      <input type="textarea" class="form-control" placeholder="Ingrese la descripción" />
+                    </div>
+                  </div>
+                  <div class="col-md-12">
+                    <div class="mb-3">
+                        <label class="form-label">Ingrese una imagen de la situación (.png)</label>
+                        <input class="form-control" type="file" id="imagenSituacion" accept=".png" />
+                      </div>
+                      
+                      <div class="mb-3">
+                        <img
+                          id="previewSituacion"
+                          src="#"
+                          alt="Previsualización"
+                          class="img-fluid"
+                          style="display: none; border: 1px solid #ccc; padding: 5px; border-radius: 6px;"
+                        />
+                      </div>
+                  </div>
+                  <div class="col-md-12 text-end">
+                    <button type="button" class="btn btn-primary" id="btnAbrirAdvertencia">Añadir</button>
+                  </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Popup 1: Confirmación antes de enviar -->
+<div id="popupAdvertencia" class="popup-overlay">
+  <div class="popup">
+    <h2>¡LEA CON ATENCIÓN!</h2>
+    <p>UNA VEZ REALIZADO EL COMENTARIO NO PODRÁ BORRARSE<br>
+    Revise correctamente los datos y la descripción pues esta será enviada a la municipalidad, una vez hecho presione el botón “Enviar comentario”.</p>
+    <div class="popup-buttons">
+      <button id="btnEnviarComentario" class="btn btn-primary">ENVIAR COMENTARIO</button>
+      <button onclick="cerrarPopup('popupAdvertencia')" class="btn btn-danger">REGRESAR</button>
+    </div>
+  </div>
+</div>
+
+<!-- Popup 2: Confirmación final -->
+<div id="popupConfirmacion" class="popup-overlay">
+  <div class="popup" style="text-align: center;">
+    <h2 style="color: green;">COMENTARIO ENVIADO</h2>
+    <p>Pronto recibirá un correo confirmándole que el comentario se recibió de manera correcta. Esté pendiente de su correo y gracias por su servicio al complejo.</p>
+    <div style="font-size: 4rem;">✅</div>
+  </div>
+</div>
+<script>
+  // Cierra el popup de confirmación si haces clic fuera del contenido
+  popupConfirmacion.addEventListener('click', function (e) {
+    if (e.target === popupConfirmacion) {
+      popupConfirmacion.style.display = 'none';
+    }
+  });
+</script>
+<style>
+  .popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .popup {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .popup h2 {
+    margin-bottom: 1rem;
+    text-align: center;
+  }
+  
+  .popup p {
+    text-align: center;
+    font-size: 1rem;
+    color: #333;
+  }
+  
+  .popup-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1.5rem;
+  }
+</style>
+
+<script>
+  const input = document.getElementById('imagenSituacion');
+  const preview = document.getElementById('previewSituacion');
+
+  input.addEventListener('change', function () {
+    const file = this.files[0];
+
+    if (file && file.type === 'image/png') {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      }
+
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = '#';
+      preview.style.display = 'none';
+      alert('Por favor, selecciona una imagen en formato PNG.');
+    }
+  });
+</script>
+<script>
+  const btnAbrirAdvertencia = document.getElementById('btnAbrirAdvertencia');
+  const popupAdvertencia = document.getElementById('popupAdvertencia');
+  const popupConfirmacion = document.getElementById('popupConfirmacion');
+  const btnEnviarComentario = document.getElementById('btnEnviarComentario');
+  const form = document.getElementById('formComentario');
+
+  // Mostrar popup de advertencia
+  btnAbrirAdvertencia.addEventListener('click', function () {
+    const modalInstance = bootstrap.Modal.getInstance(document.getElementById('nuevoComplejoReporte'));
+    if (modalInstance) {
+      modalInstance.hide(); // ⬅️ Esto cierra el modal Bootstrap
+    }
+  
+    popupAdvertencia.style.display = 'flex'; // ⬅️ Esto abre el popup personalizado
+  });
+
+  // Enviar comentario y mostrar confirmación
+  btnEnviarComentario.addEventListener('click', function (e) {
+    e.preventDefault();
+  
+    // Validar el formulario manualmente
+    if (form.checkValidity()) {
+      popupAdvertencia.style.display = 'none';
+      popupConfirmacion.style.display = 'flex';
+  
+      // Espera 1.5 segundos y envía el form (opcional: para que se vea el popup un momento)
+      setTimeout(() => {
+        form.submit();
+      }, 1500);
+    } else {
+      // Mostrar validación nativa del navegador
+      form.reportValidity();
+    }
+  });
+
+  // Cerrar popup de confirmación al hacer clic afuera
+  popupConfirmacion.addEventListener('click', function (e) {
+    if (e.target === popupConfirmacion) {
+      popupConfirmacion.style.display = 'none';
+    }
+  });
+
+  // Botón "REGRESAR"
+  function cerrarPopup(id) {
+    document.getElementById(id).style.display = 'none';
+  }
+</script>
 
 
   </body>
