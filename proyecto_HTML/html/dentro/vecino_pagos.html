@@ -1,0 +1,1620 @@
+<!doctype html>
+<html lang="en">
+  <!-- [Head] start -->
+
+  <head>
+    <title>Checkout</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
+    />
+    <meta
+      name="keywords"
+      content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard"
+    />
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="../assets/images/logo-circular.png" type="image/x-icon" />
+     <!-- [Font] Family -->
+    <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="../assets/fonts/phosphor/duotone/style.css" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/tabler-icons.min.css" />
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/feather.css" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/fontawesome.css" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/material.css" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="../assets/css/style.css" id="main-style-link" />
+    <script src="../assets/js/tech-stack.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
+    <script type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
+    <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
+    <link rel="stylesheet" href="../assets/css/style-preset.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  </head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+    <nav class="pc-sidebar" style="background-color: #1a3570;">
+      <div class="navbar-wrapper text-white" >
+        <div class="m-header" style="background-color: #fffffb;">
+
+          <a  class="b-brand text-primary">
+            <img src="../assets/images/logo-sanM.png" class="img-fluid" style="height: 40px;" alt="logoSM" />
+
+            <span class="badge bg-light-success rounded-pill ms-2 theme-version">gestor-DTI</span>
+          </a>
+        </div>
+        <div class="navbar-content" >
+
+          <ul class="pc-navbar">
+            <li class="pc-item pc-caption">
+              <label data-i18n="Inicio">Inicio</label>
+            </li>
+            <li class="pc-item pc-hasmenu">
+              <a href="#!" class="pc-link">
+            <span class="pc-micon">
+               <i class="bi bi-house-door-fill"></i>
+            </span>
+                <span class="pc-mtext" data-i18n="Inicio">Personal general</span>
+              </a>
+              <ul class="pc-submenu">
+                <li class="pc-it  em"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+              </ul>
+            </li>
+            <li class="pc-item pc-caption">
+              <label data-i18n="Estadisticas">Estadisticas</label>
+            </li>
+            <li class="pc-item pc-hasmenu">
+              <a href="#!" class="pc-link">
+            <span class="pc-micon">
+               <i class="bi bi-columns-gap"></i>
+            </span>
+
+
+                <span class="pc-mtext" data-i18n="Personales">Personal general</span>
+
+              </a>
+              <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+              </ul>
+            </li>
+            <li class="pc-item pc-hasmenu">
+              <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-status-up"></use>
+              </svg>
+            </span>
+                <span class="pc-mtext" data-i18n="Financieros">Financiaros</span>
+
+              </a>
+              <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="../dashboard/index.html" data-i18n="Default">Tablero gestión</a></li>
+              </ul>
+            </li>
+
+            <li class="pc-item pc-caption">
+              <label data-i18n="Gestión y reportes">Administrador Panel</label>
+              <svg class="pc-icon">
+                <use xlink:href="#custom-layer"></use>
+              </svg>
+            </li>
+            <li class="pc-item pc-hasmenu">
+              <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-layer"></use>
+              </svg>
+            </span>
+                <span class="pc-mtext" data-i18n="Reportes">Reportes</span>
+                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+              </a>
+              <ul class="pc-submenu">
+                <li class="pc-item pc-hasmenu">
+                  <a class="pc-link" href="#!">
+                    <span data-i18n="Servicios">Servicios</span>
+                    <span class="pc-arrow"></i></span
+                    ></a>
+
+                </li>
+
+                <li class="pc-item pc-hasmenu">
+                  <a class="pc-link" href="#!">
+                    <span data-i18n="Financiero"></span>
+                    <span class="pc-arrow"></i></span
+                    ></a>
+                </li>
+
+              </ul>
+            </li>
+            <li class="pc-item pc-hasmenu">
+              <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-user"></use>
+              </svg>
+            </span>
+                <span class="pc-mtext" data-i18n="Miembros">Miembros</span>
+                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+              </a>
+              <ul class="pc-submenu">
+                <li class="pc-item"><a class="pc-link" href="../admins/membership-list.html" data-i18n="Listado plantilla">Lista</a></li>
+                <li class="pc-item"><a class="pc-link" href="../admins/membership-list.html" data-i18n="Añadir">Añadir</a></li>
+              </ul>
+
+
+            </li>
+
+
+
+            <li class="pc-item pc-caption">
+              <label data-i18n="Asistencia">Asistencia</label>
+              <svg class="pc-icon">
+                <use xlink:href="#custom-shopping-bag"></use>
+              </svg>
+            </li>
+            <li class="pc-item">
+              <a href="../application/calendar.html" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-calendar-1"></use>
+              </svg>
+            </span>
+                <span class="pc-mtext" data-i18n="Registro">Registro</span></a
+              >
+            </li>
+
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <!-- [ Sidebar Menu ] end -->
+    <!-- [ Header Topbar ] start -->
+    <header class="pc-header">
+      <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+        <div class="me-auto pc-mob-drp">
+          <ul class="list-unstyled">
+            <!-- ======= Menu collapse Icon ===== -->
+            <li class="pc-h-item pc-sidebar-collapse">
+              <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <li class="pc-h-item pc-sidebar-popup">
+              <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+                <i class="ti ti-menu-2"></i>
+              </a>
+            </li>
+            <li class="pc-h-item d-none d-md-inline-flex">
+              <form class="form-search">
+                <i class="bi bi-search"></i>
+
+                <input type="search" class="form-control" placeholder="Buscar" />
+              </form>
+            </li>
+          </ul>
+        </div>
+        <!-- [Mobile Media Block end] -->
+        <div class="ms-auto">
+          <ul class="list-unstyled">
+
+            <li class="d-flex justify-content-center align-items-center">
+
+      <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+        gestor-DTI
+      </span>
+            </li>
+
+
+
+
+
+
+            <li class="dropdown pc-h-item">
+              <a
+                      class="pc-head-link dropdown-toggle arrow-none me-0"
+                      data-bs-toggle="dropdown"
+                      href="#"
+                      role="button"
+                      aria-haspopup="false"
+                      aria-expanded="false"
+              >
+                <svg class="pc-icon">
+                  <use xlink:href="#custom-notification"></use>
+                </svg>
+                <span class="badge bg-success pc-h-badge">3</span>
+              </a>
+              <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+                <div class="dropdown-header d-flex align-items-center justify-content-between">
+                  <h5 class="m-0">Notificaciones</h5>
+                  <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
+                </div>
+                <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
+                  <p class="text-span">Hoy</p>
+                  <div class="card mb-2">
+                    <div class="card-body">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0">
+                          <svg class="pc-icon text-primary">
+                            <use xlink:href="#custom-layer"></use>
+                          </svg>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <span class="float-end text-sm text-muted">hace 2 min</span>
+                          <h5 class="text-body mb-2">Asignación adminsitrador: zona sur</h5>
+                          <p class="mb-0"
+                          >Se mando correo a administador Juan Mathias Machado para la zona.</p
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card mb-2">
+                    <div class="card-body">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0">
+                          <svg class="pc-icon text-primary">
+                            <use xlink:href="#custom-sms"></use>
+                          </svg>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <span class="float-end text-sm text-muted">hace 1 hora</span>
+                          <h5 class="text-body mb-2">Mensaje</h5>
+                          <p class="mb-0">Cierre de plataforma: proximas actualizaciones y recursos en proceso. </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="text-span">Ayer</p>
+                  <div class="card mb-2">
+                    <div class="card-body">
+                      <div class="d-flex">
+                        <div class="flex-shrink-0">
+                          <svg class="pc-icon text-primary">
+                            <use xlink:href="#custom-document-text"></use>
+                          </svg>
+                        </div>
+                        <div class="flex-grow-1 ms-3">
+                          <span class="float-end text-sm text-muted">hace 2 horas</span>
+                          <h5 class="text-body mb-2">Registro semanal</h5>
+                          <p class="mb-0"
+                          >Actualización de estadisticas semanales: 4 personales activos nuevos en zona norte.</p
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-center py-2">
+                  <a href="#!" class="link-danger">Vaciar bandeja</a>
+                </div>
+              </div>
+            </li>
+            <li class="dropdown pc-h-item header-user-profile">
+              <a
+                      class="pc-head-link dropdown-toggle arrow-none me-0"
+                      data-bs-toggle="dropdown"
+                      href="#"
+                      role="button"
+                      aria-haspopup="false"
+                      data-bs-auto-close="outside"
+                      aria-expanded="false"
+              >
+                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+              </a>
+              <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+                <div class="dropdown-header d-flex align-items-center justify-content-between">
+                  <h5 class="m-0">Mi perfil</h5>
+                </div>
+                <div class="dropdown-body">
+                  <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+                    <div class="d-flex mb-1">
+                      <div class="flex-shrink-0">
+                        <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                      </div>
+                      <div class="flex-grow-1 ms-3">
+                        <h6 class="mb-1"> Gestor-DTI </h6>
+                        <span>daniel.merino@sanmi.gob.pe</span>
+                      </div>
+                    </div>
+                    <hr class="border-secondary border-opacity-50" />
+                    <div class="card">
+                      <div class="card-body py-3">
+                        <div class="d-flex align-items-center justify-content-between">
+                          <h5 class="mb-0 d-inline-flex align-items-center"
+                          ><svg class="pc-icon text-muted me-2">
+                            <use xlink:href="#custom-notification-outline"></use></svg
+                          >Notificaciones</h5>
+                          <div class="form-check form-switch form-check-reverse m-0">
+                            <input class="form-check-input f-18" type="checkbox" role="switch" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr class="border-secondary border-opacity-50" />
+                    <p class="text-span">Usuarios</p>
+                    <a href="#" class="dropdown-item">
+              <span>
+                <i class="bi bi-card-checklist"></i>
+                <span>Gestionar</span>
+              </span>
+                    </a>
+
+
+
+                    <a href="#" class="dropdown-item">
+              <span>
+                <i class="bi bi-person-fill-add text-muted me-2"></i>
+
+                <span>Agregar</span>
+              </span>
+                    </a>
+
+
+                    <hr class="border-secondary border-opacity-50" />
+                    <div class="d-grid mb-3">
+                      <button class="btn btn-primary">
+                        <svg class="pc-icon me-2">
+                          <use xlink:href="#custom-logout-1-outline"></use></svg
+                        >Salir
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Servicios</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Checkout</li>
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Checkout</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <!-- [ sample-page ] start -->
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <ul class="nav nav-tabs checkout-tabs mb-0" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="ecomtab-tab-1"
+                      data-bs-toggle="tab"
+                      href="#ecomtab-1"
+                      role="tab"
+                      aria-controls="ecomtab-1"
+                      aria-selected="true"
+                    >
+                      <div class="d-flex align-items-center">
+                        <div class="avtar avtar-s">
+                          <i class="ti ti-shopping-cart"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                          <h5 class="mb-0">Detalles de compra</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="ecomtab-tab-2"
+                      data-bs-toggle="tab"
+                      href="#ecomtab-2"
+                      role="tab"
+                      aria-controls="ecomtab-2"
+                      aria-selected="true"
+                    >
+                      <div class="d-flex align-items-center">
+                        <div class="avtar avtar-s">
+                          <i class="ti ti-building-skyscraper"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                          <h5 class="mb-0">Información</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="ecomtab-tab-3"
+                      data-bs-toggle="tab"
+                      href="#ecomtab-3"
+                      role="tab"
+                      aria-controls="ecomtab-3"
+                      aria-selected="true"
+                    >
+                      <div class="d-flex align-items-center">
+                        <div class="avtar avtar-s">
+                          <i class="ti ti-credit-card"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                          <h5 class="mb-0">Pago</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane show active" id="ecomtab-1" role="tabpanel" aria-labelledby="ecomtab-tab-1">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row align-items-center my-2">
+                          <div class="col">
+                            <div class="progress" style="height: 6px">
+                              <div class="progress-bar bg-primary" style="width: 33%"></div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <p class="mb-0 h6">Paso 1</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card-body border-bottom">
+                        <h5>Cart Item <span class="ms-2 f-14 px-2 badge bg-light-secondary rounded-pill">3</span></h5>
+                      </div>
+                      <div class="card-body p-0 table-body">
+                        <div class="table-responsive">
+                          <table class="table mb-0" id="pc-dt-simple">
+                            <thead>
+                              <tr>
+                                <th>Productos</th>
+                                <th class="text-end">Precio</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-end"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                    <img src="../assets/images/application/img-prod-2.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <div class="flex-grow-1 ms-3">
+                                      <h5 class="mb-1">Apple MacBook Pro</h5>
+                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">$100.00</h5>
+                                  <span class="text-sm text-muted text-decoration-line-through">$129.99</span>
+                                </td>
+                                <td class="text-center">
+                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                    <button type="button" onclick="decreaseValue('number')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-minus"></i
+                                    ></button>
+                                    <input
+                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                      type="text"
+                                      id="number"
+                                      value="0"
+                                    />
+                                    <button type="button" onclick="increaseValue('number')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-plus"></i
+                                    ></button>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">$100.00</h5>
+                                </td>
+                                <td class="text-end">
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                    <img src="../assets/images/application/img-prod-3.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <div class="flex-grow-1 ms-3">
+                                      <h5 class="mb-1">Apple MacBook Pro</h5>
+                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">$100.00</h5>
+                                  <span class="text-sm text-muted text-decoration-line-through">$129.99</span>
+                                </td>
+                                <td class="text-center">
+                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                    <button type="button" onclick="decreaseValue('number2')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-minus"></i
+                                    ></button>
+                                    <input
+                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                      type="text"
+                                      id="number2"
+                                      value="0"
+                                    />
+                                    <button type="button" onclick="increaseValue('number2')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-plus"></i
+                                    ></button>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">$100.00</h5>
+                                </td>
+                                <td class="text-end">
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                    <img src="../assets/images/application/img-prod-4.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <div class="flex-grow-1 ms-3">
+                                      <h5 class="mb-1">Apple MacBook Pro</h5>
+                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">$100.00</h5>
+                                  <span class="text-sm text-muted text-decoration-line-through">$129.99</span>
+                                </td>
+                                <td class="text-center">
+                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                    <button type="button" onclick="decreaseValue('number1')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-minus"></i
+                                    ></button>
+                                    <input
+                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                      type="text"
+                                      id="number1"
+                                      value="0"
+                                    />
+                                    <button type="button" onclick="increaseValue('number1')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-plus"></i
+                                    ></button>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">$100.00</h5>
+                                </td>
+                                <td class="text-end">
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <a href="../application/ecom_product.html" class="btn btn-link-secondary d-inline-flex align-items-center"
+                        ><i class="ti ti-chevron-left me-2"></i> Back to Shopping</a
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                          Have a coupon code?
+                        </button>
+                        <div class="input-group my-2">
+                          <input type="text" class="form-control" placeholder="Discount Coupon" />
+                          <button class="btn btn-outline-secondary" type="button">Apply</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body py-2">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item px-0">
+                            <h5 class="mb-0">Order Summary</h5>
+                          </li>
+                          <li class="list-group-item px-0">
+                            <div class="float-end"> <h5 class="mb-0">$300.00</h5> </div><span class="text-muted">Sub Total</span>
+                          </li>
+                          <li class="list-group-item px-0">
+                            <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Estimated Delivery</span>
+                          </li>
+                          <li class="list-group-item px-0">
+                            <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Voucher</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body py-2">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item px-0">
+                            <div class="float-end">
+                              <h5 class="mb-0">$300.00</h5>
+                            </div>
+                            <h5 class="mb-0 d-inline-block">Total</h5>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center text-muted my-4">
+                      <div class="avtar avtar-s bg-light-primary flex-shrink-0 me-2">
+                        <i class="material-icons-two-tone text-primary f-20">security</i>
+                      </div>
+                      <span class="text-muted text-sm w-100">Safe & Secure Payment. Easy returns. 100% Athentic products.</span>
+                    </div>
+                    <div class="d-grid mb-3">
+                      <button class="btn btn-primary">Place an Order</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="ecomtab-2" role="tabpanel" aria-labelledby="ecomtab-tab-2">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row align-items-center mb-3">
+                          <div class="col">
+                            <div class="progress" style="height: 6px">
+                              <div class="progress-bar bg-primary" style="width: 66%"></div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <p class="mb-0 h6">Step 2</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="collapse multi-collapse show" id="multiCollapseExample1">
+                        <div class="card-body border-bottom">
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h5 class="mb-0">Shipping Information</h5>
+                            </div>
+                            <div class="col-auto">
+                              <button
+                                class="btn btn-primary"
+                                type="button"
+                                data-bs-toggle="collapse"
+                                data-bs-target=".multi-collapse"
+                                aria-expanded="false"
+                                aria-controls="multiCollapseExample1 multiCollapseExample2"
+                                >Add new Address</button
+                              >
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="address-check-block">
+                            <div class="address-check border rounded p-3">
+                              <div class="form-check">
+                                <input type="radio" name="radio1" class="form-check-input input-primary" id="address-check-1" checked="" />
+                                <label class="form-check-label d-block" for="address-check-1">
+                                  <span class="h6 mb-0 d-block">Ian Carpenter <small class="text-muted">(Home)</small></span>
+                                  <span class="text-muted address-details"
+                                    >1754 Ureate Path, 695 Newga View, Seporcus, Rhode Island, Belgium - SA5 5BO</span
+                                  >
+                                  <span class="row align-items-center justify-content-between">
+                                    <span class="col-sm-6">
+                                      <span class="text-muted mb-0">+91 1234567890</span>
+                                    </span>
+                                    <span class="col-sm-6 text-sm-end">
+                                      <span class="address-btns d-flex align-items-center justify-content-end">
+                                        <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default me-1">
+                                          <i class="ti ti-trash f-20"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary">Deliver to this address</button>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="address-check border rounded p-3">
+                              <div class="form-check">
+                                <input type="radio" name="radio1" class="form-check-input input-primary" id="address-check-2" />
+                                <label class="form-check-label d-block" for="address-check-2">
+                                  <span class="h6 mb-0 d-block">Ian Carpenter <small class="text-muted">(Home)</small></span>
+                                  <span class="text-muted address-details"
+                                    >1754 Ureate Path, 695 Newga View, Seporcus, Rhode Island, Belgium - SA5 5BO</span
+                                  >
+                                  <span class="row align-items-center justify-content-between">
+                                    <span class="col-sm-6">
+                                      <span class="text-muted mb-0">+91 1234567890</span>
+                                    </span>
+                                    <span class="col-sm-6 text-sm-end">
+                                      <span class="address-btns d-flex align-items-center justify-content-end">
+                                        <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default me-1">
+                                          <i class="ti ti-trash f-20"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary">Deliver to this address</button>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="address-check border rounded p-3">
+                              <div class="form-check">
+                                <input type="radio" name="radio1" class="form-check-input input-primary" id="address-check-3" />
+                                <label class="form-check-label d-block" for="address-check-3">
+                                  <span class="h6 mb-0 d-block">Ian Carpenter <small class="text-muted">(Home)</small></span>
+                                  <span class="text-muted address-details"
+                                    >1754 Ureate Path, 695 Newga View, Seporcus, Rhode Island, Belgium - SA5 5BO</span
+                                  >
+                                  <span class="row align-items-center justify-content-between">
+                                    <span class="col-sm-6">
+                                      <span class="text-muted mb-0">+91 1234567890</span>
+                                    </span>
+                                    <span class="col-sm-6 text-sm-end">
+                                      <span class="address-btns d-flex align-items-center justify-content-end">
+                                        <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default me-1">
+                                          <i class="ti ti-trash f-20"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary">Deliver to this address</button>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                            <div class="address-check border rounded p-3">
+                              <div class="form-check">
+                                <input type="radio" name="radio1" class="form-check-input input-primary" id="address-check-4" />
+                                <label class="form-check-label d-block" for="address-check-4">
+                                  <span class="h6 mb-0 d-block">Ian Carpenter <small class="text-muted">(Home)</small></span>
+                                  <span class="text-muted address-details"
+                                    >1754 Ureate Path, 695 Newga View, Seporcus, Rhode Island, Belgium - SA5 5BO</span
+                                  >
+                                  <span class="row align-items-center justify-content-between">
+                                    <span class="col-sm-6">
+                                      <span class="text-muted mb-0">+91 1234567890</span>
+                                    </span>
+                                    <span class="col-sm-6 text-sm-end">
+                                      <span class="address-btns d-flex align-items-center justify-content-end">
+                                        <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default me-1">
+                                          <i class="ti ti-trash f-20"></i>
+                                        </a>
+                                        <button class="btn btn-sm btn-outline-primary">Deliver to this address</button>
+                                      </span>
+                                    </span>
+                                  </span>
+                                </label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="collapse multi-collapse" id="multiCollapseExample2">
+                        <div class="card-body border-bottom">
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h5 class="mb-0">Add new address</h5>
+                            </div>
+                            <div class="col-auto"> </div>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-12">
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Address Type :<small class="text-muted d-block">Enter Add Type</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="addtypecheck1" checked />
+                                    <label class="form-check-label" for="addtypecheck1"> Home (All day Delivery) </label>
+                                  </div>
+                                  <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="addtypecheck2" />
+                                    <label class="form-check-label" for="addtypecheck2"> Work (Between 10 AM to 5 PM) </label>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >First Name :<small class="text-muted d-block">Enter your first name</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Last Name :<small class="text-muted d-block">Enter your last name</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Email Id :<small class="text-muted d-block">Enter Email id</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="email" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Date of Birth :<small class="text-muted d-block">Enter the date of birth</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="date" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Phone number :<small class="text-muted d-block">Enter Phone number</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >City :<small class="text-muted d-block">Enter City name</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3">
+                                <div class="form-check">
+                                  <input class="form-check-input" type="checkbox" value="" id="checkaddres" checked />
+                                  <label class="form-check-label" for="checkaddres"> Save this new address for future shipping </label>
+                                </div>
+                              </div>
+                              <div class="text-end btn-page mb-0 mt-4">
+                                <button
+                                  class="btn btn-outline-secondary"
+                                  type="button"
+                                  data-bs-toggle="collapse"
+                                  data-bs-target=".multi-collapse"
+                                  aria-expanded="false"
+                                  aria-controls="multiCollapseExample1 multiCollapseExample2"
+                                  >Cancel</button
+                                >
+                                <button class="btn btn-primary" onClick="change_tab('#ecomtab-3')">Save & Deliver to this Address</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                      <button class="btn btn-link-primary"
+                        ><i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Back to Cart</button
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                          Have a coupon code?
+                        </button>
+                        <div class="input-group my-2">
+                          <input type="text" class="form-control" placeholder="Discount Coupon" />
+                          <button class="btn btn-outline-secondary" type="button">Apply</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-header">
+                        <h5>Order Summary</h5>
+                      </div>
+                      <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">
+                            <div class="d-flex align-items-start">
+                              <img
+                                class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                src="../assets/images/application/img-prod-2.jpg"
+                                alt="User image"
+                              />
+                              <div class="flex-grow-1 mx-2">
+                                <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                <h5 class="mb-1"
+                                  ><b>$275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">$325</span></h5
+                                >
+                              </div>
+                              <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                <i class="ti ti-trash f-20"></i>
+                              </a>
+                            </div>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="d-flex align-items-start">
+                              <img
+                                class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                src="../assets/images/application/img-prod-3.jpg"
+                                alt="User image"
+                              />
+                              <div class="flex-grow-1 mx-2">
+                                <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                <h5 class="mb-1"
+                                  ><b>$275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">$325</span></h5
+                                >
+                              </div>
+                              <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                <i class="ti ti-trash f-20"></i>
+                              </a>
+                            </div>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="d-flex align-items-start">
+                              <img
+                                class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                src="../assets/images/application/img-prod-4.jpg"
+                                alt="User image"
+                              />
+                              <div class="flex-grow-1 mx-2">
+                                <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                <h5 class="mb-1"
+                                  ><b>$275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">$325</span></h5
+                                >
+                              </div>
+                              <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                <i class="ti ti-trash f-20"></i>
+                              </a>
+                            </div>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="float-end"> <h5 class="mb-0">$300.00</h5> </div><span class="text-muted">Sub Total</span>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Estimated Delivery</span>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Voucher</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body py-2">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item px-0">
+                            <div class="float-end">
+                              <h5 class="mb-0">$300.00</h5>
+                            </div>
+                            <h5 class="mb-0 d-inline-block">Total</h5>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="d-flex align-items-center text-muted my-4">
+                      <div class="avtar avtar-s bg-light-primary flex-shrink-0 me-2">
+                        <i class="material-icons-two-tone text-primary f-20">security</i>
+                      </div>
+                      <span class="text-muted text-sm w-100">Safe & Secure Payment. Easy returns. 100% Athentic products.</span>
+                    </div>
+                    <div class="d-grid mb-3">
+                      <button class="btn btn-primary">Process to Checkout</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="ecomtab-3" role="tabpanel" aria-labelledby="ecomtab-tab-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-xl-8">
+                      <div class="card">
+                        <div class="card-header">
+                          <div class="row align-items-center my-2">
+                            <div class="col">
+                              <div class="progress" style="height: 6px">
+                                <div class="progress-bar bg-primary" style="width: 99%"></div>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <p class="mb-0 h6">Step 3</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body border-bottom">
+                          <h5>Payment</h5>
+                        </div>
+                        <div class="card-body">
+                          <div class="address-check border rounded p-3">
+                            <div class="form-check">
+                              <input type="radio" name="radio11" class="form-check-input input-primary" checked="" />
+                              <label class="form-check-label d-block">
+                                <span class="row align-items-center justify-content-between">
+                                  <span class="col-6">
+                                    <span class="h6 mb-0 d-block"
+                                      >Ian Carpenter <small class="text-muted">(Home)</small>
+                                      <span class="badge bg-primary rounded-pill">Default</span></span
+                                    >
+                                  </span>
+                                  <span class="col-6 text-end">
+                                    <button class="btn btn-primary" onClick="change_tab('#ecomtab-2')"
+                                      ><i class="ti ti-edit-circle align-text-bottom me-1"></i>Change</button
+                                    >
+                                  </span>
+                                </span>
+                                <span class="text-muted address-details"
+                                  >1754 Ureate Path, 695 Newga View, Seporcus, Rhode Island, Belgium - SA5 5BO</span
+                                >
+                                <span class="row align-items-center justify-content-between">
+                                  <span class="col-6">
+                                    <span class="text-muted mb-0">+91 1234567890</span>
+                                  </span>
+                                </span>
+                              </label>
+                            </div>
+                          </div>
+                          <div class="row g-2">
+                            <div class="col-md-6">
+                              <div class="address-check border rounded">
+                                <div
+                                  class="form-check paycard"
+                                  style="background-image: url(../assets/images/application/img-pay-card-bg.png)"
+                                >
+                                  <input
+                                    type="radio"
+                                    name="payradio1"
+                                    class="form-check-input input-primary"
+                                    id="paycard-check-1"
+                                    checked=""
+                                  />
+                                  <label class="form-check-label d-block" for="paycard-check-1">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="d-flex align-items-start justify-content-between">
+                                        <h5>John Smith</h5>
+                                        <img src="../assets/images/application/mastercard.png" alt="images" class="img-fluid" />
+                                      </span>
+                                      <span class="row g-2 align-items-center justify-content-between mt-2 mb-5">
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">****</h5>
+                                        </span>
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">****</h5>
+                                        </span>
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">****</h5>
+                                        </span>
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">2599</h5>
+                                        </span>
+                                      </span>
+                                      <span class="row align-items-center justify-content-between">
+                                        <span class="col-auto">
+                                          <p class="mb-0"><span class="text-sm opacity-50">CVV</span> 085</p>
+                                        </span>
+                                        <span class="col-auto">
+                                          <p class="mb-0"><span class="text-sm opacity-50">Expire Date</span> 05/24</p>
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="address-check border rounded">
+                                <div
+                                  class="form-check paycard"
+                                  style="background-image: url(../assets/images/application/img-pay-card-bg.png)"
+                                >
+                                  <input type="radio" name="payradio1" class="form-check-input input-primary" id="paycard-check-2" />
+                                  <label class="form-check-label d-block" for="paycard-check-2">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="d-flex align-items-start justify-content-between">
+                                        <h5>Jennifer winget</h5>
+                                        <img src="../assets/images/application/visa.png" alt="images" class="img-fluid" />
+                                      </span>
+                                      <span class="row g-2 align-items-center justify-content-between mt-2 mb-5">
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">****</h5>
+                                        </span>
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">****</h5>
+                                        </span>
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">****</h5>
+                                        </span>
+                                        <span class="col-auto">
+                                          <h5 class="mb-0">2599</h5>
+                                        </span>
+                                      </span>
+                                      <span class="row align-items-center justify-content-between">
+                                        <span class="col-auto">
+                                          <p class="mb-0"><span class="text-sm opacity-50">CVV</span> 085</p>
+                                        </span>
+                                        <span class="col-auto">
+                                          <p class="mb-0"><span class="text-sm opacity-50">Expire Date</span> 05/24</p>
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="divider"><span>OR</span></div>
+                          <div class="row">
+                            <div class="col-xl-12 col-xxl-4">
+                              <div class="address-check border rounded">
+                                <div class="form-check">
+                                  <input
+                                    type="radio"
+                                    name="payoptradio1"
+                                    class="form-check-input input-primary"
+                                    id="payopn-check-1"
+                                    checked=""
+                                  />
+                                  <label class="form-check-label d-block" for="payopn-check-1">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="h5 mb-3 d-block">Credit Card</span>
+                                      <span class="d-flex align-items-center">
+                                        <span class="f-12 badge bg-success me-3">5% OFF</span>
+                                        <img src="../assets/images/application/card.png" alt="img" class="img-fluid ms-1" />
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                              <div class="address-check border rounded">
+                                <div class="form-check">
+                                  <input type="radio" name="payoptradio1" class="form-check-input input-primary" id="payopn-check-2" />
+                                  <label class="form-check-label d-block" for="payopn-check-2">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="h5 mb-3 d-block">Pay with PayPal</span>
+                                      <span class="d-flex align-items-center">
+                                        <span class="f-12 badge bg-success me-3">5% OFF</span>
+                                        <img src="../assets/images/application/paypal.png" alt="img" class="img-fluid ms-1" />
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                              <div class="address-check border rounded">
+                                <div class="form-check">
+                                  <input type="radio" name="payoptradio1" class="form-check-input input-primary" id="payopn-check-3" />
+                                  <label class="form-check-label d-block" for="payopn-check-3">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="d-flex align-items-center">
+                                        <span>
+                                          <span class="h5 mb-3 d-block">Cash on Delivery</span>
+                                          <span class="f-12 text-muted">When you use this payment</span>
+                                        </span>
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-12 mt-2">
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Card Number :<small class="text-muted d-block">Enter the 16 digit card number on the card</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Expiry Date :<small class="text-muted d-block">Enter the expiration on the card</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <div class="row">
+                                    <div class="col-6">
+                                      <input type="text" class="form-control" placeholder="Month" />
+                                    </div>
+                                    <div class="col-6">
+                                      <input type="text" class="form-control" placeholder="Year" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >CVV Number :<small class="text-muted d-block">Enter the 3 or 4 digit number on the card</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label"
+                                  >Password :<small class="text-muted d-block">Enter your dynamic password</small></label
+                                >
+                                <div class="col-lg-8">
+                                  <input type="password" class="form-control" />
+                                </div>
+                              </div>
+                              <div class="text-end btn-page mb-0 mt-4">
+                                <button class="btn btn-outline-secondary">Cancel</button>
+                                <button class="btn btn-primary">Save & Continue</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-link-primary"
+                          ><i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Back to Shipping Information</button
+                        >
+                      </div>
+                    </div>
+                    <div class="col-xl-4">
+                      <div class="card coupon-card bg-primary">
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-6 d-flex flex-column align-items-start justify-content-between">
+                              <div>
+                                <h4 class="text-white">Claim your rewards</h4>
+                                <span class="badge bg-warning f-14 py-2 px-3">ABLEPRO50</span>
+                              </div>
+                              <button class="btn btn-coupon mt-3">Apply Code</button>
+                            </div>
+                            <div class="col-6 text-end">
+                              <img src="../assets/images/application/img-coupon.png" alt="img" class="img-fluid" />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-body">
+                          <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                            Have a coupon code?
+                          </button>
+                          <div class="input-group my-2">
+                            <input type="text" class="form-control" placeholder="Discount Coupon" />
+                            <button class="btn btn-outline-secondary" type="button">Apply</button>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-header">
+                          <h5>Order Summary</h5>
+                        </div>
+                        <div class="card-body p-0">
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item">
+                              <div class="d-flex align-items-start">
+                                <img
+                                  class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                  src="../assets/images/application/img-prod-2.jpg"
+                                  alt="User image"
+                                />
+                                <div class="flex-grow-1 mx-2">
+                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                  <h5 class="mb-1"
+                                    ><b>$275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">$325</span>
+                                  </h5>
+                                </div>
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                  <i class="ti ti-trash f-20"></i>
+                                </a>
+                              </div>
+                            </li>
+                            <li class="list-group-item">
+                              <div class="d-flex align-items-start">
+                                <img
+                                  class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                  src="../assets/images/application/img-prod-3.jpg"
+                                  alt="User image"
+                                />
+                                <div class="flex-grow-1 mx-2">
+                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                  <h5 class="mb-1"
+                                    ><b>$275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">$325</span>
+                                  </h5>
+                                </div>
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                  <i class="ti ti-trash f-20"></i>
+                                </a>
+                              </div>
+                            </li>
+                            <li class="list-group-item">
+                              <div class="d-flex align-items-start">
+                                <img
+                                  class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                  src="../assets/images/application/img-prod-4.jpg"
+                                  alt="User image"
+                                />
+                                <div class="flex-grow-1 mx-2">
+                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                  <h5 class="mb-1"
+                                    ><b>$275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">$325</span>
+                                  </h5>
+                                </div>
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                  <i class="ti ti-trash f-20"></i>
+                                </a>
+                              </div>
+                            </li>
+                            <li class="list-group-item">
+                              <div class="float-end"> <h5 class="mb-0">$300.00</h5> </div><span class="text-muted">Sub Total</span>
+                            </li>
+                            <li class="list-group-item">
+                              <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Estimated Delivery</span>
+                            </li>
+                            <li class="list-group-item">
+                              <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Voucher</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="card">
+                        <div class="card-body py-2">
+                          <ul class="list-group list-group-flush">
+                            <li class="list-group-item px-0">
+                              <div class="float-end">
+                                <h5 class="mb-0">$300.00</h5>
+                              </div>
+                              <h5 class="mb-0 d-inline-block">Total</h5>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="d-flex align-items-center text-muted my-4">
+                        <div class="avtar avtar-s bg-light-primary flex-shrink-0 me-2">
+                          <i class="material-icons-two-tone text-primary f-20">security</i>
+                        </div>
+                        <span class="text-muted text-sm w-100">Safe & Secure Payment. Easy returns. 100% Athentic products.</span>
+                      </div>
+                      <div class="d-grid mb-3">
+                        <button class="btn btn-primary">Process to Payment</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- [ sample-page ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="couponModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="calendar-modal-title f-w-600 text-truncate">Festival gift for your</h4>
+            <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default" data-bs-dismiss="modal">
+              <i class="ti ti-x f-20"></i>
+            </a>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="card my-2 coupon-card bg-warning small-coupon-card">
+                  <div class="card-body py-2">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div>
+                        <h4 class="mb-0 text-white">Up to 50% Off</h4>
+                        <button class="btn btn-sm btn-coupon mt-2">ABLPRO50</button>
+                      </div>
+                      <img src="../assets/images/application/img-coupon-1.png" alt="img" class="img-fluid" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="card my-2 coupon-card bg-success small-coupon-card">
+                  <div class="card-body py-2">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <div>
+                        <h4 class="mb-0 text-white">Festival Fires</h4>
+                        <button class="btn btn-sm btn-coupon mt-2">FLAT05</button>
+                      </div>
+                      <img src="../assets/images/application/img-coupon-2.png" alt="img" class="img-fluid" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="overflow-hidden">
+              <div class="coupon-label coupon-label-primary">
+                <div class="d-flex align-items-center">
+                  <div class="avtar bg-light-primary">
+                    <i class="ti ti-gift f-22"></i>
+                  </div>
+                  <div class="flex-grow-1 mx-3">
+                    <h5 class="mb-1">Get $150 off on your subscription</h5>
+                    <p class="mb-0 text-sm text-muted">When you subscribe to the unlimited consultation plan on berry.</p>
+                  </div>
+                  <button class="btn coupon-btn btn-primary">SUB150</button>
+                </div>
+              </div>
+              <div class="coupon-label coupon-label-warning">
+                <div class="d-flex align-items-center">
+                  <div class="avtar bg-light-warning">
+                    <i class="ti ti-trophy f-22"></i>
+                  </div>
+                  <div class="flex-grow-1 mx-3">
+                    <h5 class="mb-1">Save up to $200</h5>
+                    <p class="mb-0 text-sm text-muted">Make 4 play store recharge code purchases & save up to $200</p>
+                  </div>
+                  <button class="btn coupon-btn btn-warning">UPTO200</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer" style="background: #e0f6ff">
+      <div class="footer-wrapper container-fluid">
+        <div class="row">
+          <div class="col my-1">
+            <p class="m-0">
+              © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+
+ <!-- Required Js -->
+<script src="../assets/js/plugins/popper.min.js"></script>
+<script src="../assets/js/plugins/simplebar.min.js"></script>
+<script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+<script src="../assets/js/plugins/i18next.min.js"></script>
+<script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+<script src="../assets/js/icon/custom-font.js"></script>
+<script src="../assets/js/script.js"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/multi-lang.js"></script>
+<script src="../assets/js/plugins/feather.min.js"></script>
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+    <!-- [Page Specific JS] start -->
+    <script>
+      function change_tab(tab_name) {
+        var someTabTriggerEl = document.querySelector('a[href="' + tab_name + '"]');
+        var actTab = new bootstrap.Tab(someTabTriggerEl);
+        actTab.show();
+      }
+      // quantity start
+      function increaseValue(counter) {
+        var value = parseInt(document.getElementById(counter).value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        document.getElementById(counter).value = value;
+      }
+      function decreaseValue(counter) {
+        var value = parseInt(document.getElementById(counter).value, 10);
+        value = isNaN(value) ? 0 : value;
+        value < 1 ? (value = 1) : '';
+        value--;
+        document.getElementById(counter).value = value;
+      }
+      // quantity end
+    </script>
+    <!-- [Page Specific JS] end -->
+
+    <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+
+
+  </body>
+  <!-- [Body] end -->
+</html>

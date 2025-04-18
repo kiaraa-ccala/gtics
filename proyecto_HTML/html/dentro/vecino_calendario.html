@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="en">
   <!-- [Head] start -->
+
   <head>
-    <title>Reporte Financiero</title>
+    <title>Calendar | Able Pro Dashboard Template</title>
     <!-- [Meta] -->
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
@@ -19,13 +20,7 @@
 
     <!-- [Favicon] icon -->
     <link rel="icon" href="../assets/images/logo-circular.png" type="image/x-icon" />
-
-    <!-- [Page specific CSS] start -->
-    <!-- data tables css -->
-    <link rel="stylesheet" href="../assets/css/plugins/dataTables.bootstrap5.min.css" />
-    <link rel="stylesheet" href="../assets/css/plugins/buttons.bootstrap5.min.css" />
-    <!-- [Page specific CSS] end -->
-    <!-- [Font] Family -->
+     <!-- [Font] Family -->
     <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
     <!-- [phosphor Icons] https://phosphoricons.com/ -->
     <link rel="stylesheet" href="../assets/fonts/phosphor/duotone/style.css" />
@@ -50,6 +45,7 @@
   </head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
+
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
     <!-- [ Pre-loader ] start -->
 <div class="loader-bg">
@@ -194,8 +190,8 @@
         </div>
       </div>
     </nav>
-<!-- [ Sidebar Menu ] end -->
- <!-- [ Header Topbar ] start -->
+    <!-- [ Sidebar Menu ] end -->
+    <!-- [ Header Topbar ] start -->
     <header class="pc-header">
       <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
         <div class="me-auto pc-mob-drp">
@@ -213,11 +209,8 @@
             </li>
             <li class="pc-h-item d-none d-md-inline-flex">
               <form class="form-search">
-                <i class="search-icon">
-                  <svg class="pc-icon">
-                    <use xlink:href="#custom-search-normal-1"></use>
-                  </svg>
-                </i>
+                <i class="bi bi-search"></i>
+
                 <input type="search" class="form-control" placeholder="Buscar" />
               </form>
             </li>
@@ -397,24 +390,23 @@
       </div>
     </header>
 
-
-
-    <section class="pc-container">
-      <div class="pc-content" style="background: #e0f6ff">
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
         <!-- [ breadcrumb ] start -->
         <div class="page-header">
           <div class="page-block">
             <div class="row align-items-center">
               <div class="col-md-12">
                 <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Reportes</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Financiero</li>
+                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Home</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Application</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Calendar</li>
                 </ul>
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">Reporte financiero</h2>
+                  <h2 class="mb-0">Calendar</h2>
                 </div>
               </div>
             </div>
@@ -425,205 +417,170 @@
 
         <!-- [ Main Content ] start -->
         <div class="row">
+          <!-- prettier-ignore -->
+          <div class="col-md-10 col-xxl-9 mb-4">
+            <h5>FullCalendar</h5>
+            <p class="text-muted">Full-sized drag & drop event calendar in JavaScript</p>
+            <div>
+              <a class="btn btn-sm btn-light-dark rounded-pill px-2" role="button" target="_blank" href="https://fullcalendar.io/">
+                <i class="ti ti-external-link me-1"></i>
+                Reference
+              </a>
+            </div>
+          </div>
 
         </div>
         <div class="row">
-          <!-- HTML5 Export Buttons table start -->
-          <div class="col-sm-12">
+          <!-- [ sample-page ] start -->
+          <div class="col-12">
             <div class="card">
-
-              <div class="card-body">
-                <div class="dt-responsive table-responsive">
-                  <table id="basic-btn" class="table table-striped table-bordered nowrap">
-                    <thead>
-                      <tr>
-                        <th>Complejo</th>
-                        <th>Servicio</th>
-                        <th>Ingreso Total</th>
-                        <th>Tarjeta</th>
-                        <th>Transferencia</th>
-                        <th>Variación total mensual</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>S/.1000</td>
-                        <td>S/.700</td>
-                        <td>S/.300</td>
-                        <td>+12%</td>
-                      </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Piscina</td>
-                        <td>S/.1500</td>
-                        <td>S/.700</td>
-                        <td>S/.200</td>
-                        <td>+4%</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Cancha de fútbol (Grass Sintético)</td>
-                        <td>S/.1000</td>
-                        <td>S/.800</td>
-                        <td>S/.400</td>
-                        <td>+8%</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Gimnasio</td>
-                        <td>S/.1200</td>
-                        <td>S/.900</td>
-                        <td>S/.400</td>
-                        <td>-2%</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>S/.1200</td>
-                        <td>S/.900</td>
-                        <td>S/.300</td>
-                        <td>+12%</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
-                        <td>Cancha de fútbol (Grass Sintético)</td>
-                        <td>S/.1000</td>
-                        <td>S/.700</td>
-                        <td>S/.400</td>
-                        <td>+8%</td>
-                      </tr>
-                      <tr>
-                        <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Pista de atletismo</td>
-                        <td>S/.1500</td>
-                        <td>S/.800</td>
-                        <td>S/.200</td>
-                        <td>-2%</td>
-                      </tr>
-                      <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Gimnasio</td>
-                        <td>S/.1000</td>
-                        <td>S/.700</td>
-                        <td>S/.200</td>
-                        <td>-2%</td>
-                      </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>S/.1200</td>
-                        <td>S/.900</td>
-                        <td>S/.300</td>
-                        <td>+12%</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Piscina</td>
-                        <td>S/.1000</td>
-                        <td>S/.800</td>
-                        <td>S/.400</td>
-                        <td>+4%</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Grass Sintético)</td>
-                        <td>S/.1500</td>
-                        <td>S/.700</td>
-                        <td>S/.200</td>
-                        <td>+12%</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Gimnasio</td>
-                        <td>S/.1200</td>
-                        <td>S/.800</td>
-                        <td>S/.400</td>
-                        <td>+8%</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
-                        <td>Piscina</td>
-                        <td>S/.1000</td>
-                        <td>S/.700</td>
-                        <td>S/.400</td>
-                        <td>+2%</td>
-                      </tr>
-                      <tr>
-                        <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>S/.1000</td>
-                        <td>S/.800</td>
-                        <td>S/.300</td>
-                        <td>+8%</td>
-                      </tr>
-                      <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Pista de atletismo</td>
-                        <td>S/.1500</td>
-                        <td>S/.800</td>
-                        <td>S/.200</td>
-                        <td>+4%</td>
-                      </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Pista de atletismo</td>
-                        <td>S/.1200</td>
-                        <td>S/.900</td>
-                        <td>S/.300</td>
-                        <td>+12%</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Cancha de fútbol (Grass Sintético)</td>
-                        <td>S/.1000</td>
-                        <td>S/.800</td>
-                        <td>S/.300</td>
-                        <td>+8%</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>S/.1000</td>
-                        <td>S/.700</td>
-                        <td>S/.400</td>
-                        <td>-2%</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Piscina</td>
-                        <td>S/.1200</td>
-                        <td>S/.700</td>
-                        <td>S/.200</td>
-                        <td>+4%</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
-                        <td>Gimnasio</td>
-                        <td>S/.1500</td>
-                        <td>S/.900</td>
-                        <td>S/.300</td>
-                        <td>+4%</td>
-                      </tr>
-                    </tbody>
-
-                  </table>
-                </div>
+              <div class="card-body position-relative">
+                <div id="calendar" class="calendar"></div>
               </div>
             </div>
           </div>
-          <!-- HTML5 Export Buttons end -->
-          <!-- Column Selectors table start -->
-          <!-- Column Selectors end -->
-          <!-- Excel - Cell Background table start -->
-          <!-- Excel - Cell Background end -->
-          <!-- Custom File (JSON) table start -->
-          <!-- Custom File (JSON) table end -->
+          <!-- [ sample-page ] end -->
         </div>
         <!-- [ Main Content ] end -->
       </div>
-    </section>
+    </div>
+
+    <div class="modal fade" id="calendar-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3 class="calendar-modal-title f-w-600 text-truncate">Modal title</h3>
+            <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
+              <i class="ti ti-x f-20"></i>
+            </a>
+          </div>
+          <div class="modal-body">
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-secondary">
+                  <i class="ti ti-heading f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1"><b>Title</b></h5>
+                <p class="pc-event-title text-muted"></p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-warning">
+                  <i class="ti ti-map-pin f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1"><b>Venue</b></h5>
+                <p class="pc-event-venue text-muted"></p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-danger">
+                  <i class="ti ti-calendar-event f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1"><b>Date</b></h5>
+                <p class="pc-event-date text-muted"></p>
+              </div>
+            </div>
+            <div class="d-flex">
+              <div class="flex-shrink-0">
+                <div class="avtar avtar-xs bg-light-primary">
+                  <i class="ti ti-file-text f-20"></i>
+                </div>
+              </div>
+              <div class="flex-grow-1 ms-3">
+                <h5 class="mb-1"><b>Description</b></h5>
+                <p class="pc-event-description text-muted"></p>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <ul class="list-inline me-auto mb-0">
+              <li class="list-inline-item align-bottom">
+                <a
+                  href="#"
+                  id="pc_event_remove"
+                  class="avtar avtar-s btn-link-danger btn-pc-default w-sm-auto"
+                  data-bs-toggle="tooltip"
+                  title="Delete"
+                >
+                  <i class="ti ti-trash f-18"></i>
+                </a>
+              </li>
+              <li class="list-inline-item align-bottom">
+                <a href="#" id="pc_event_edit" class="avtar avtar-s btn-link-success btn-pc-default" data-bs-toggle="tooltip" title="Edit">
+                  <i class="ti ti-edit-circle f-18"></i>
+                </a>
+              </li>
+            </ul>
+            <div class="flex-grow-1 text-end">
+              <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="offcanvas offcanvas-end cal-event-offcanvas" tabindex="-1" id="calendar-add_edit_event">
+      <div class="offcanvas-header">
+        <h3 class="f-w-600 text-truncate">Add Events</h3>
+        <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="offcanvas">
+          <i class="ti ti-x f-20"></i>
+        </a>
+      </div>
+      <div class="offcanvas-body">
+        <form id="pc-form-event" novalidate>
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input type="email" class="form-control" id="pc-e-title" placeholder="Enter event title" autofocus />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Venue</label>
+            <input type="email" class="form-control" id="pc-e-venue" placeholder="Enter event venue" />
+          </div>
+          <div>
+            <input type="hidden" class="form-control" id="pc-e-sdate" />
+            <input type="hidden" class="form-control" id="pc-e-edate" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" placeholder="Enter event description" rows="3" id="pc-e-description"></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Type</label>
+            <select class="form-select" id="pc-e-type">
+              <option value="empty" selected>Type</option>
+              <option value="event-primary">Primary</option>
+              <option value="event-secondary">Secondary</option>
+              <option value="event-success">Success</option>
+              <option value="event-danger">Danger</option>
+              <option value="event-warning">Warning</option>
+              <option value="event-info">Info</option>
+            </select>
+          </div>
+          <div class="row justify-content-between">
+            <div class="col-auto"
+              ><button type="button" class="btn btn-link-danger btn-pc-default" data-bs-dismiss="offcanvas"
+                ><i class="align-text-bottom me-1 ti ti-circle-x"></i> Close</button
+              ></div
+            >
+            <div class="col-auto">
+              <button id="pc_event_add" type="button" class="btn btn-secondary" data-pc-action="add">
+                <span id="pc-e-btn-text"><i class="align-text-bottom me-1 ti ti-calendar-plus"></i> Add</span>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- [ Main Content ] end -->
     <footer class="pc-footer" style="background: #e0f6ff">
       <div class="footer-wrapper container-fluid">
         <div class="row">
@@ -675,37 +632,12 @@
 </script>
 
 
-
     <!-- [Page Specific JS] start -->
-    <!-- datatable Js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="../assets/js/plugins/dataTables.min.js"></script>
-    <script src="../assets/js/plugins/dataTables.bootstrap5.min.js"></script>
-    <script src="../assets/js/plugins/buttons.colVis.min.js"></script>
-    <script src="../assets/js/plugins/buttons.print.min.js"></script>
-    <script src="../assets/js/plugins/pdfmake.min.js"></script>
-    <script src="../assets/js/plugins/jszip.min.js"></script>
-    <script src="../assets/js/plugins/dataTables.buttons.min.js"></script>
-    <script src="../assets/js/plugins/vfs_fonts.js"></script>
-    <script src="../assets/js/plugins/buttons.html5.min.js"></script>
-    <script src="../assets/js/plugins/buttons.bootstrap5.min.js"></script>
-    <script>
-      $(document).ready(function () {
-        if ($.fn.DataTable.isDataTable('#basic-btn')) {
-          $('#basic-btn').DataTable().destroy();
-        }
-
-        $('#basic-btn').DataTable({
-          dom: "<'d-flex justify-content-between align-items-center mb-2'<'dt-buttons'B><'dt-search'f>>t<'bottom'ip>",
-          buttons: ['copy', 'excel', 'pdf', 'print'],
-          language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
-          }
-        });
-      });
-    </script>
-
-
+    <!-- calender js -->
+    <script src="../assets/js/plugins/index.global.min.js"></script>
+    <!-- Sweet Alert -->
+    <script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
+    <script src="../assets/js/application/calendar.js"></script>
     <!-- [Page Specific JS] end -->
 
     <style>
@@ -736,15 +668,6 @@
         transition: all 0.2s ease-in-out;
       }
     </style>
-
-
-    <style>
-      #basic-btn_info {
-        display: none !important;
-      }
-    </style>
-
-
 
   </body>
   <!-- [Body] end -->

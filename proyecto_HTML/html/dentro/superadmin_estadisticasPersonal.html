@@ -459,9 +459,9 @@
                     </div>
                   </div>
                   <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Total Course</p>
+                    <p class="mb-1">Personal a tiempo</p>
                     <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">520+</h4>
+                      <h4 class="mb-0">40</h4>
                       <span class="text-warning fw-medium">30.6%</span>
                     </div>
                   </div>
@@ -479,9 +479,9 @@
                     </div>
                   </div>
                   <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">New Visitor</p>
+                    <p class="mb-1">Nuevo personal</p>
                     <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">800+</h4>
+                      <h4 class="mb-0">2+</h4>
                       <span class="text-success fw-medium">30.6%</span>
                     </div>
                   </div>
@@ -499,9 +499,9 @@
                     </div>
                   </div>
                   <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Total sale</p>
+                    <p class="mb-1">Personal ausente</p>
                     <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">1,065</h4>
+                      <h4 class="mb-0">5</h4>
                       <span class="text-danger fw-medium">30.6%</span>
                     </div>
                   </div>
@@ -514,7 +514,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between mb-3">
-                  <h5 class="mb-0">Visitors</h5>
+                  <h5 class="mb-0">Asistencia semanal</h5>
                   <div class="dropdown">
                     <a
                       class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
@@ -526,9 +526,9 @@
                       <i class="ti ti-dots-vertical f-18"></i>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end">
-                      <a class="dropdown-item" href="#">Today</a>
-                      <a class="dropdown-item" href="#">Weekly</a>
-                      <a class="dropdown-item" href="#">Monthly</a>
+                      <a class="dropdown-item" href="#">Hoy</a>
+                      <a class="dropdown-item" href="#">Semanal</a>
+                      <a class="dropdown-item" href="#">Mensual</a>
                     </div>
                   </div>
                 </div>
@@ -541,7 +541,7 @@
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center justify-content-between">
-                  <h5 class="mb-0">Repeat customer rate</h5>
+                  <h5 class="mb-0">Comparativa de asistencias</h5>
                   <div class="dropdown">
                     <a
                       class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
@@ -550,13 +550,8 @@
                       aria-haspopup="true"
                       aria-expanded="false"
                     >
-                      <i class="ti ti-dots f-18"></i>
                     </a>
-                    <div class="dropdown-menu dropdown-menu-end">
-                      <a class="dropdown-item" href="#">Today</a>
-                      <a class="dropdown-item" href="#">Weekly</a>
-                      <a class="dropdown-item" href="#">Monthly</a>
-                    </div>
+
                   </div>
                 </div>
                 <h5 class="text-end my-2">5.44% <span class="badge bg-success">+2.6%</span> </h5>
@@ -642,8 +637,14 @@
     <script src="../assets/js/widgets/customer-rate-graph.js"></script>
 
     <!-- [Page Specific JS] end -->
-   
-    
+
+    <script>
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      }
+
+    </script>
+
 
     <style>
       /* Ítems del menú: blanco */
