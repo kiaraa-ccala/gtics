@@ -49,7 +49,7 @@
     <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
     <link rel="stylesheet" href="../assets/css/style-preset.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
 
   </head>
   <!-- [Head] end -->
@@ -382,7 +382,7 @@
                   </div>
                   <div class="flex-shrink-0">
                     <div class="avtar avtar-l bg-light-primary rounded-circle">
-                      
+                      <i class="ti ti-checks"></i>
                     </div>
                   </div>
                 </div>
@@ -400,7 +400,7 @@
                   </div>
                   <div class="flex-shrink-0">
                     <div class="avtar avtar-l bg-light-primary rounded-circle">
-                      
+                      <i class="ti ti-reserved-line"></i>
                     </div>
                   </div>
                 </div>
@@ -419,7 +419,7 @@
                   </div>
                   <div class="flex-shrink-0">
                     <div class="avtar avtar-l bg-light-primary rounded-circle">
-                      
+                      <i class="ti ti-alert-circle"></i>
                     </div>
                   </div>
                 </div>
@@ -732,7 +732,21 @@
     // [ HTML5 Export Buttons ]
     $('#basic-btn').DataTable({
       dom: 'Bfrtip',
-      buttons: ['copy', 'csv', 'excel', 'print']
+      buttons: ['copy', 'csv', 'excel', 'print'],
+      language: {
+        "search": "Buscar:",
+        "lengthMenu": "Mostrar _MENU_ registros por página",
+        "zeroRecords": "No se encontraron resultados",
+        "info": "",
+        "infoEmpty": "No hay registros disponibles",
+        "infoFiltered": "(filtrado de _MAX_ registros totales)",
+        "paginate": {
+          "first": "Primero",
+          "last": "Último",
+          "next": "Siguiente",
+          "previous": "Anterior"
+        }
+      }
     });
 
     // [ Column Selectors ]
