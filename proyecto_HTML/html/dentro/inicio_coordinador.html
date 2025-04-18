@@ -105,7 +105,7 @@
 
 
         <li class="pc-item pc-caption">
-          <label data-i18n="Comentarios">Comentarios</label>
+          <label data-i18n="Reportes">Reportes</label>
           <svg class="pc-icon">
             <use xlink:href="#custom-shopping-bag"></use>
           </svg>
@@ -117,7 +117,7 @@
                 <use xlink:href="#custom-message-2"></use>
               </svg>
             </span>
-            <span class="pc-mtext" data-i18n="Mis Comentarios">Mis Comentarios</span></a
+            <span class="pc-mtext" data-i18n="Mis Reportes">Mis Reportes</span></a
           >
         </li>
 
@@ -202,9 +202,9 @@
                 </div>
                 <div class="flex-grow-1 ms-3">
                   <span class="float-end text-sm text-muted">hace 2 min</span>
-                  <h5 class="text-body mb-2">Actualización comentario: Canchas en mal estado</h5>
+                  <h5 class="text-body mb-2">Actualización reporte: Canchas en mal estado</h5>
                   <p class="mb-0"
-                    >Encargado Tony vargas de la municipalidad ha respondido el comentario.</p
+                    >Encargado Tony vargas de la municipalidad ha respondido el reporte.</p
                   >
                 </div>
               </div>
@@ -237,7 +237,7 @@
                 </div>
                 <div class="flex-grow-1 ms-3">
                   <span class="float-end text-sm text-muted">hace 2 horas</span>
-                  <h5 class="text-body mb-2">Nuevo comentario realizado</h5>
+                  <h5 class="text-body mb-2">Nuevo reporte realizado</h5>
                   <p class="mb-0"
                     >Se pierden implementos dentro del complejo deportivo</p
                   >
@@ -406,7 +406,7 @@
                 <div class="d-flex align-items-center">
                   
                   <div class="flex-grow-1 ms-3">
-                    <h5 class="mb-0">Comentarios enviados</h6>
+                    <h5 class="mb-0">Reportes enviados</h6>
                   </div>
                   
                 </div>
@@ -658,11 +658,12 @@
                       background-color: #c85858;
                     }
                   </style>
-                  <button class="circle-button">
+                  <button class="circle-button" id="geoButton">
                     <!-- Icono SVG estilo reloj + marcador -->
                     <img src="../assets/images/reloj_gps.png" alt="geo" style="width: 70%;">
                   </button>
                 </div>
+                <div class="overlay" id="overlay"></div>
                 <br>
                 <h5 class=""><b>NOTA:</b></h5>
                 <p class="">Al presionar el botón se activará la geolocalización, asegurese de estar dentro del complejo</p>
@@ -672,7 +673,7 @@
           <div class="col-lg-4">
             <div class="card">
               <div class="card-header">
-                <h5 class="mb-0">Tus comentarios</h5>
+                <h5 class="mb-0">Tus reportes</h5>
               </div>
               <div class="card-body">
                 <div class="d-grid gap-2">
@@ -750,7 +751,7 @@
                 <br>
                 <div class="d-grid mt-3">
                   <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                    ><i class="ti ti-external-link"></i> Ir a comentarios</button
+                    ><i class="ti ti-external-link"></i> Ir a reportes</button
                   >
                 </div>
               </div>
@@ -866,6 +867,146 @@
         transition: all 0.2s ease-in-out;
       }
     </style>
+    <!-- Popup Azul (Inicial) -->
+    <div class="popup popup-blue" id="initialPopup">
+      <h2><strong>ESTAS POR ACTIVAR LA GEOLOCALIZACIÓN</strong></h2>
+      <br>
+      <p>
+        ⚠️ Asegúrate de estar dentro de tu complejo deportivo asignado, de no estar dentro el registro fallará y deberá intentarlo otra vez
+      </p>
+      <button class="popup-button" id="confirmButton">CONFIRMAR</button>
+  </div>
+  
+  <!-- Popup Verde (Éxito) -->
+  <div class="popup popup-green" id="successPopup">
+      <h2><strong>¡REGISTRO EXITOSO!</strong></h2>
+      <h5>EL REGISTRO SE REALIZÓ DE MANERA CORRECTA</h5>
+      <p>Tu registro de asistencia se realizó correctamente<br>
+      ¡Que tengas un buen día!</p>
+      <button class="popup-button" id="closeSuccessButton">CERRAR</button>
+  </div>
+  
+  <!-- Popup Rojo (Error) - Solo diseño, no implementado -->
+  <div class="popup popup-red" id="errorPopup" style="display: none;">
+      <h2>¡ERROR AL REGISTRAR!</h2>
+      <p><strong>EL REGISTRO NO SE REALIZÓ CORRECTAMENTE</strong></p>
+      <p>debido a que te encuentras lejos del complejo deportivo, adeñaste a tu local designado e instruirlo de nuevo.</p>
+      <button class="popup-button">ENTENDIDO</button>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const geoButton = document.getElementById('geoButton');
+        const overlay = document.getElementById('overlay');
+        const initialPopup = document.getElementById('initialPopup');
+        const successPopup = document.getElementById('successPopup');
+        const confirmButton = document.getElementById('confirmButton');
+        const closeSuccessButton = document.getElementById('closeSuccessButton');
+        
+        // Mostrar popup azul al hacer clic en el botón circular
+        geoButton.addEventListener('click', function() {
+            overlay.style.display = 'block';
+            initialPopup.style.display = 'block';
+        });
+        
+        // Confirmar en popup azul muestra popup verde
+        confirmButton.addEventListener('click', function() {
+            initialPopup.style.display = 'none';
+            successPopup.style.display = 'block';
+        });
+        
+        // Cerrar popup verde
+        closeSuccessButton.addEventListener('click', function() {
+            successPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+        
+        // Cerrar popups al hacer clic en el overlay
+        overlay.addEventListener('click', function() {
+            initialPopup.style.display = 'none';
+            successPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+    });
+</script>
+<style>
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: none;
+    z-index: 1000;
+}
+
+.popup-blue {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.popup-green {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.popup-red {
+    background-color: #f44336;
+    color: white;
+}
+
+.popup h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.popup p {
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.popup-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.popup-blue .popup-button {
+    color: #4a90e2;
+}
+
+.popup-green .popup-button {
+    color: #4CAF50;
+}
+
+.popup-red .popup-button {
+    color: #f44336;
+}
+
+.popup-button:hover {
+    background-color: #f0f0f0;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+</style>
   </body>
   <!-- [Body] end -->
 </html>
