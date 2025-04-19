@@ -320,19 +320,15 @@
           <div class="page-block">
             <div class="row align-items-center">
               <div class="col-md-12">
-                
-              </div>
-              <div class="col-md-12">
-                <div class="page-header-title">
-                  <h1 class="mb-0">Todos tus reportes</h1>
-                  <br>
-                  <p>Selecciona uno para verlo a detalle</p>
+                <div class="d-flex flex-column">
+                  <h1 class="mb-2">Todos tus reportes</h1>
+                  <p class="mb-3">Selecciona uno para verlo a detalle</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <br>
+        
         <!-- [ breadcrumb ] end -->
 
 
@@ -343,11 +339,19 @@
               <!-- Sección de reportes (derecha) - SOLO CAMBIÉ EL ESPACIADO -->
               <div class="col-12 col-lg-12">
                 <div class="card h-100">
-                  <div class="card-header">
-                    <h5 class="mb-0">Tus reportes</h5>
+                  <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex align-items-center">
+                      <h5 class="mb-0 me-3">Tus reportes</h5>
+                      <div id="reportCount" class="text-muted">Mostrando 3 de 7 reportes</div>
+                    </div>
+                    <div class="search-box mt-2 mt-md-0" style="width: 300px;">
+                      <input type="text" id="searchInput" class="form-control" placeholder="Buscar reportes...">
+                      <i class="ti ti-search search-icon"></i>
+                    </div>
                   </div>
+                  
                   <div class="card-body d-flex flex-column">
-                    <div class="d-grid gap-3" style="margin-bottom: 1rem;"> <!-- Ajusté este gap -->
+                    <div id="reportsContainer" class="d-grid gap-3" style="margin-bottom: 1rem;"> <!-- Ajusté este gap -->
                       <a href="#" class="btn btn-link-secondary py-2">
                         <div class="d-flex align-items-center">
                             <div class="flex-shrink-0 me-3">
@@ -433,7 +437,11 @@
                         </div>
                       </a>
                     </div>
-                    
+                    <nav aria-label="Page navigation">
+                      <ul class="pagination justify-content-center" id="pagination">
+                        <!-- Los números de página se generarán dinámicamente -->
+                      </ul>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -631,7 +639,185 @@
   }
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Datos de ejemplo en español
+    const todosReportes = [
+      {
+        titulo: "Accidentes en el complejo",
+        estado: "success",
+        contenido: "Solicitamos su pronta atención debido a un accidente ocurrido en [nombre del complejo]. Sería importante revisar las medidas de seguridad para evitar futuras incidencias."
+      },
+      {
+        titulo: "Uso indebido de instalaciones",
+        estado: "success",
+        contenido: "Hemos observado que las instalaciones del complejo están siendo utilizadas para actividades no autorizadas, afectando la experiencia de los deportistas. Solicitamos su intervención para garantizar el buen uso del espacio."
+      },
+      {
+        titulo: "Canchas en mal estado",
+        estado: "danger",
+        contenido: "Notamos que las canchas de [nombre del complejo] presentan deterioro en su superficie, lo que podría representar un riesgo para los usuarios. Agradeceríamos su pronta revisión y mantenimiento."
+      },
+      {
+        titulo: "Falta de iluminación",
+        estado: "success",
+        contenido: "Queremos informar que la iluminación en [nombre del complejo] es insuficiente, lo que dificulta el uso de las canchas en horarios nocturnos y puede representar un riesgo para los deportistas. Agradecemos su pronta solución."
+      },
+      {
+        titulo: "Pérdida de implementos",
+        estado: "success",
+        contenido: "Se extraviaron algunos artículos deportivos como pelotas y conos. Se recomienda a los usuarios revisar sus pertenencias y reportar cualquier hallazgo al personal."
+      },
+      {
+        titulo: "Mal uso de las instalaciones",
+        estado: "success",
+        contenido: "Se observó el uso inadecuado de zonas comunes, como ingresar con calzado inapropiado o mover mobiliario sin autorización. Se recuerda respetar las normas del complejo."
+      },
+      {
+        titulo: "Limpieza de la piscina pendiente",
+        estado: "danger",
+        contenido: "La piscina requiere mantenimiento por acumulación de residuos. El acceso estará restringido hasta completar la limpieza."
+      }
+    ];
 
+    let paginaActual = 1;
+    const reportesPorPagina = 3;
+    let reportesFiltrados = [...todosReportes];
+
+    // Elementos del DOM
+    const contenedorReportes = document.getElementById('reportsContainer');
+    const paginacion = document.getElementById('pagination');
+    const buscador = document.getElementById('searchInput');
+    const contadorReportes = document.getElementById('reportCount');
+
+    // Función para mostrar reportes
+    function mostrarReportes(reportes, pagina) {
+      contenedorReportes.innerHTML = '';
+      const indiceInicio = (pagina - 1) * reportesPorPagina;
+      const indiceFin = indiceInicio + reportesPorPagina;
+      const reportesPagina = reportes.slice(indiceInicio, indiceFin);
+
+      if (reportesPagina.length === 0) {
+        contenedorReportes.innerHTML = '<p class="text-center text-muted">No se encontraron reportes</p>';
+        return;
+      }
+
+      reportesPagina.forEach(reporte => {
+        const elementoReporte = document.createElement('a');
+        elementoReporte.href = '#';
+        elementoReporte.className = 'btn btn-link-secondary py-2';
+        elementoReporte.innerHTML = `
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0 me-3">
+              <span class="d-block bg-${reporte.estado} rounded-circle" style="width: 12px; height: 12px;"></span>
+            </div>
+            <div class="flex-grow-1 text-start">
+              <h4 class="mb-0">${reporte.titulo}</h4>
+              <hr>
+              <p>${reporte.contenido}</p>
+            </div>
+          </div>
+        `;
+        contenedorReportes.appendChild(elementoReporte);
+      });
+
+      // Actualizar contador
+      const totalReportes = reportes.length;
+      const mostrandoDesde = indiceInicio + 1;
+      const mostrandoHasta = Math.min(indiceFin, totalReportes);
+      contadorReportes.textContent = `Mostrando ${mostrandoDesde}-${mostrandoHasta} de ${totalReportes} reportes`;
+    }
+
+    // Función para generar paginación
+    function configurarPaginacion(reportes) {
+      paginacion.innerHTML = '';
+      const totalPaginas = Math.ceil(reportes.length / reportesPorPagina);
+
+      if (totalPaginas <= 1) return;
+
+      // Botón Anterior
+      const liAnterior = document.createElement('li');
+      liAnterior.className = `page-item ${paginaActual === 1 ? 'disabled' : ''}`;
+      liAnterior.innerHTML = `<a class="page-link" href="#" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a>`;
+      liAnterior.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (paginaActual > 1) {
+          paginaActual--;
+          mostrarReportes(reportesFiltrados, paginaActual);
+          configurarPaginacion(reportesFiltrados);
+          window.scrollTo({top: contenedorReportes.offsetTop - 20, behavior: 'smooth'});
+        }
+      });
+      paginacion.appendChild(liAnterior);
+
+      // Números de página
+      for (let i = 1; i <= totalPaginas; i++) {
+        const li = document.createElement('li');
+        li.className = `page-item ${i === paginaActual ? 'active' : ''}`;
+        li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+        li.addEventListener('click', (e) => {
+          e.preventDefault();
+          paginaActual = i;
+          mostrarReportes(reportesFiltrados, paginaActual);
+          configurarPaginacion(reportesFiltrados);
+          window.scrollTo({top: contenedorReportes.offsetTop - 20, behavior: 'smooth'});
+        });
+        paginacion.appendChild(li);
+      }
+
+      // Botón Siguiente
+      const liSiguiente = document.createElement('li');
+      liSiguiente.className = `page-item ${paginaActual === totalPaginas ? 'disabled' : ''}`;
+      liSiguiente.innerHTML = `<a class="page-link" href="#" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a>`;
+      liSiguiente.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (paginaActual < totalPaginas) {
+          paginaActual++;
+          mostrarReportes(reportesFiltrados, paginaActual);
+          configurarPaginacion(reportesFiltrados);
+          window.scrollTo({top: contenedorReportes.offsetTop - 20, behavior: 'smooth'});
+        }
+      });
+      paginacion.appendChild(liSiguiente);
+    }
+
+    // Función para buscar reportes
+    function buscarReportes() {
+      const terminoBusqueda = buscador.value.toLowerCase();
+      reportesFiltrados = todosReportes.filter(reporte => 
+        reporte.titulo.toLowerCase().includes(terminoBusqueda) || 
+        reporte.contenido.toLowerCase().includes(terminoBusqueda)
+      );
+      paginaActual = 1;
+      mostrarReportes(reportesFiltrados, paginaActual);
+      configurarPaginacion(reportesFiltrados);
+    }
+
+    // Event listeners
+    buscador.addEventListener('input', buscarReportes);
+
+    // Inicializar
+    mostrarReportes(reportesFiltrados, paginaActual);
+    configurarPaginacion(reportesFiltrados);
+  });
+</script>
+<style>
+  .search-box {
+    position: relative;
+    width: 300px;
+  }
+  .search-box .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+  }
+  #searchInput {
+    padding-right: 35px;
+  }
+  
+</style>
 
   </body>
   <!-- [Body] end -->
