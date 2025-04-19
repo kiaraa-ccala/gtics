@@ -393,14 +393,13 @@
             <div class="row align-items-center">
               <div class="col-md-12">
                 <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Home</a></li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Application</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Calendar</li>
+                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Calendario</li>
                 </ul>
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">Calendar</h2>
+                  <h2 class="mb-0">Calendario</h2>
                 </div>
               </div>
             </div>
@@ -409,21 +408,6 @@
         <!-- [ breadcrumb ] end -->
 
 
-        <!-- [ Main Content ] start -->
-        <div class="row">
-          <!-- prettier-ignore -->
-          <div class="col-md-10 col-xxl-9 mb-4">
-            <h5>FullCalendar</h5>
-            <p class="text-muted">Full-sized drag & drop event calendar in JavaScript</p>
-            <div>
-              <a class="btn btn-sm btn-light-dark rounded-pill px-2" role="button" target="_blank" href="https://fullcalendar.io/">
-                <i class="ti ti-external-link me-1"></i>
-                Reference
-              </a>
-            </div>
-          </div>
-
-        </div>
         <div class="row">
           <!-- [ sample-page ] start -->
           <div class="col-12">
@@ -633,6 +617,89 @@
     <script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
     <script src="../assets/js/application/calendar.js"></script>
     <!-- [Page Specific JS] end -->
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const calendarEl = document.getElementById('calendar');
+        const form = document.getElementById('pc-form-event');
+
+        // Función para sumar 1 día (JS nativo)
+        function addOneDay(dateStr) {
+          const date = new Date(dateStr);
+          date.setDate(date.getDate() + 1);
+          return date.toISOString().split('T')[0];
+        }
+
+        const calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          locale: 'es',
+          editable: true,        // mover eventos
+          selectable: true,      // seleccionar fechas
+          eventResizableFromStart: true, // redimensionar desde el inicio también
+          headerToolbar: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          },
+
+          dateClick: function (info) {
+            // Rellenar los campos ocultos del formulario con la fecha
+            document.getElementById('pc-e-sdate').value = info.dateStr;
+            document.getElementById('pc-e-edate').value = info.dateStr;
+            const offcanvas = new bootstrap.Offcanvas('#calendar-add_edit_event');
+            offcanvas.show();
+          },
+
+          eventClick: function (info) {
+            alert(`Evento: ${info.event.title}`);
+            // Aquí puedes implementar lógica de edición si quieres
+          },
+
+          eventDrop: function (info) {
+            console.log(`Evento movido a: ${info.event.startStr}`);
+            // Aquí podrías actualizar en base de datos si fuera necesario
+          },
+
+          eventResize: function (info) {
+            console.log(`Evento redimensionado: ${info.event.startStr} -> ${info.event.endStr}`);
+            // Aquí también puedes actualizar datos
+          }
+        });
+
+        calendar.render();
+
+        // Botón "Agregar evento"
+        document.getElementById('pc_event_add').addEventListener('click', function () {
+          const title = document.getElementById('pc-e-title').value;
+          const start = document.getElementById('pc-e-sdate').value;
+          const end = addOneDay(start); // evento de 1 día que se puede redimensionar
+          const description = document.getElementById('pc-e-description').value;
+          const type = document.getElementById('pc-e-type').value;
+
+          if (title && start) {
+            calendar.addEvent({
+              title: title,
+              start: start,
+              end: end,
+              description: description,
+              classNames: [type]
+            });
+
+            // Cierra offcanvas y limpia formulario
+            const offcanvasEl = document.getElementById('calendar-add_edit_event');
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasEl);
+            offcanvasInstance.hide();
+            form.reset();
+          } else {
+            alert('Por favor, completa el título y la fecha');
+          }
+        });
+      });
+    </script>
+
+
+
+
 
     <style>
       #basic-btn_info {

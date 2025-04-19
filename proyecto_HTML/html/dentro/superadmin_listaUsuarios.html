@@ -964,6 +964,7 @@
       import { DataTable } from '../assets/js/plugins/module.js';
 
       const dt = new DataTable("#pc-dt-simple", {
+        perPage: 5,
         perPageSelect: false,
         labels: {
           placeholder: "Buscar...",
@@ -987,6 +988,8 @@
       };
       moverBuscador();
     </script>
+
+
     <style>
       #search-wrapper input {
         height: 36px;

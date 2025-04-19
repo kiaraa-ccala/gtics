@@ -687,6 +687,7 @@
     <script src="../assets/js/plugins/vfs_fonts.js"></script>
     <script src="../assets/js/plugins/buttons.html5.min.js"></script>
     <script src="../assets/js/plugins/buttons.bootstrap5.min.js"></script>
+
     <script>
       $(document).ready(function () {
         const idioma = {
@@ -703,7 +704,8 @@
         $('#basic-btn').DataTable({
           dom: domLayout,
           buttons: ['copy', 'csv', 'excel', 'print'],
-          language: idioma
+          language: idioma,
+          pageLength: 6
         });
 
         // Tabla con columnas seleccionables

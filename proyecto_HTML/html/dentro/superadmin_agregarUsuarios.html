@@ -432,58 +432,75 @@
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Nombre</label>
-                      <input type="text" class="form-control" placeholder="Ingrese el nombre" />
+                      <input type="text" class="form-control" placeholder="Ingrese el nombre" required />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Apellidos</label>
-                      <input type="text" class="form-control" placeholder="Ingrese los apellidos" />
+                      <input type="text" class="form-control" placeholder="Ingrese los apellidos" required  />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">DNI</label>
-                      <input type="password" class="form-control" placeholder="Ingrese el DNI" />
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        placeholder="Ingrese el DNI"
+                        min="0" 
+                        max="99999999" 
+                        oninput="this.value = this.value.slice(0, 8)" 
+                        required />
                     </div>
+                    
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Dirección</label>
-                      <input type="text" class="form-control" placeholder="Ingrese la dirección" />
+                      <input type="text" class="form-control" placeholder="Ingrese la dirección" required  />
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Zona</label>
-                      <select class="form-select">
-                        <option>Norte</option>
-                        <option>Este</option>
-                        <option>Oeste</option>
-                        <option>Sur</option>
+                      <select class="form-select" required>
+                        <option value="" disabled selected>Seleccione una zona</option>
+                        <option value="Norte">Norte</option>
+                        <option value="Este">Este</option>
+                        <option value="Oeste">Oeste</option>
+                        <option value="Sur">Sur</option>
                       </select>
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Correo electrónico</label>
-                      <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" />
+                      <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" required />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Fecha de registro</label>
-                      <input type="date" class="form-control" />
+                      <input type="date" class="form-control" required />
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Número telefónico</label>
-                      <input type="number" class="form-control" placeholder="Ingrese el número" />
+                      <input 
+                        type="number" 
+                        class="form-control" 
+                        placeholder="Ingrese el número"
+                        min="900000000" 
+                        max="999999999"
+                        oninput="this.value = this.value.slice(0, 9)"
+                        required />
                     </div>
                   </div>
+                  
 
                   <div class="col-md-12 text-end">
                     <button class="btn btn-primary">Añadir</button>

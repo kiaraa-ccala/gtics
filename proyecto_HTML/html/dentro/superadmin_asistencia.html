@@ -679,9 +679,11 @@
       const dt = $('#basic-btn').DataTable({
         dom: "<'d-flex justify-content-start gap-2 mb-2'B><'dt-search-row'f>t<'bottom'ip>",
         buttons: ['copy', 'excel', 'pdf', 'print'],
+        pageLength: 6,
         language: {
           url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
           search: "Buscar:"
+
         }
       });
 
