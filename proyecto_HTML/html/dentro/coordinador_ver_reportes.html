@@ -704,7 +704,9 @@
 
       reportesPagina.forEach(reporte => {
         const elementoReporte = document.createElement('a');
-        elementoReporte.href = '#';
+        elementoReporte.href = (reporte.estado === 'success') 
+          ? 'coordinador_reporte_recibido.html' 
+          : 'coordinador_reporte_no_recibido.html';
         elementoReporte.className = 'btn btn-link-secondary py-2';
         elementoReporte.innerHTML = `
           <div class="d-flex align-items-center">
