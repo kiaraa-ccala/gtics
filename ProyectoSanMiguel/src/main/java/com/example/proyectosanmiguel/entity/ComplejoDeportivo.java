@@ -8,7 +8,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-
 @Table(name = "ComplejoDeportivo")
 public class ComplejoDeportivo {
     @Id
@@ -20,7 +19,7 @@ public class ComplejoDeportivo {
     @Column(name = "direccion", nullable = false, length = 45)
     private String direccion;
     @ManyToOne
-    @JoinColumn(name = "idSector", nullable = false)
+    @JoinColumn(name = "idSector")
     private Sector sector;
     @Column(name = "numeroSoporte", nullable = false, length = 45)
     private String numeroSoporte;

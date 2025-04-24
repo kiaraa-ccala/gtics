@@ -19,7 +19,7 @@ USE `mydb` ;
 -- Table `mydb`.`Sector`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Sector` (
-  `idSector` INT NOT NULL AUTO_INCREMENT,
+  `idSector` INT NOT NULL,
   `nombre` VARCHAR(45) NULL,
   PRIMARY KEY (`idSector`))
 ENGINE = InnoDB;
@@ -29,8 +29,8 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Tercerizado`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Tercerizado` (
-  `idTercerizado` INT NOT NULL,
-  `ruc` VARCHAR(45) NULL,
+  `idTercerizado` INT NOT NULL AUTO_INCREMENT,
+  `ruc` VARCHAR(11) NULL,
   `direccionFiscal` VARCHAR(45) NULL,
   PRIMARY KEY (`idTercerizado`))
 ENGINE = InnoDB;
@@ -40,7 +40,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Foto`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Foto` (
-  `idFoto` INT NOT NULL,
+  `idFoto` INT NOT NULL AUTO_INCREMENT,
   `nombreFoto` VARCHAR(80) NULL,
   `foto` LONGBLOB NULL,
   `urlFoto` VARCHAR(100) NULL,
@@ -52,10 +52,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Usuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
-  `idUsuario` INT NOT NULL,
+  `idUsuario` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NULL,
   `apellido` VARCHAR(45) NULL,
-  `dni` VARCHAR(45) NULL,
+  `dni` VARCHAR(8) NULL,
   `direccion` VARCHAR(45) NULL,
   `distrito` VARCHAR(45) NULL,
   `provincia` VARCHAR(45) NULL,
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Usuario` (
   `idSector` INT NULL,
   `idTercerizado` INT NULL,
   `idFoto` INT NOT NULL,
-  PRIMARY KEY (`idUsuario`, `idFoto`),
+  PRIMARY KEY (`idUsuario`),
   INDEX `fk_usuarios_sector_idx` (`idSector` ASC) VISIBLE,
   INDEX `fk_usuarios_outsourced1_idx` (`idTercerizado` ASC) VISIBLE,
   INDEX `fk_Usuario_Foto1_idx` (`idFoto` ASC) VISIBLE,
@@ -89,7 +89,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Credencial`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Credencial` (
-  `idCredencial` INT NOT NULL,
+  `idCredencial` INT NOT NULL AUTO_INCREMENT,
   `correo` VARCHAR(45) NULL,
   `password` VARCHAR(45) NULL,
   `idUsuario` INT NOT NULL,
@@ -117,10 +117,10 @@ ENGINE = InnoDB;
 -- Table `mydb`.`RolUsuario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`RolUsuario` (
-  `idRolUsuario` INT NOT NULL,
+  `idRolUsuario` INT NOT NULL AUTO_INCREMENT,
   `idUsuario` INT NOT NULL,
   `idRol` INT NOT NULL,
-  PRIMARY KEY (`idRolUsuario`, `idUsuario`, `idRol`),
+  PRIMARY KEY (`idRolUsuario`),
   INDEX `fk_usuarios_has_roles_roles1_idx` (`idRol` ASC) VISIBLE,
   INDEX `fk_usuarios_has_roles_usuarios1_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_usuarios_has_roles_usuarios1`
@@ -211,7 +211,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Reserva`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Reserva` (
-  `idReserva` INT NOT NULL,
+  `idReserva` INT NOT NULL AUTO_INCREMENT,
   `idUsuario` INT NOT NULL,
   `idInformacionPago` INT NOT NULL,
   `fecha` DATE NULL,
@@ -222,7 +222,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Reserva` (
   `idServicio` INT NOT NULL,
   `idComplejoDeportivo` INT NOT NULL,
   `idInstanciaServicio` INT NOT NULL,
-  PRIMARY KEY (`idReserva`, `idInformacionPago`),
+  PRIMARY KEY (`idReserva`),
   INDEX `fk_ServiceAccess_Users1_idx` (`idUsuario` ASC) VISIBLE,
   INDEX `fk_ServiceAccess_PaymentInfo1_idx` (`idInformacionPago` ASC) VISIBLE,
   INDEX `fk_Reserva_InstanciaServicio1_idx` (`idServicio` ASC, `idComplejoDeportivo` ASC, `idInstanciaServicio` ASC) VISIBLE,
@@ -248,13 +248,13 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Tarifa`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Tarifa` (
-  `idTarifa` INT NOT NULL,
+  `idTarifa` INT NOT NULL AUTO_INCREMENT,
   `idServicio` INT NOT NULL,
   `tipoServicio` VARCHAR(45) NULL,
   `diaSemana` VARCHAR(45) NULL,
-  `horaInicio` VARCHAR(45) NULL,
-  `horaFin` VARCHAR(45) NULL,
-  `monto` VARCHAR(45) NULL,
+  `horaInicio` TIME NULL,
+  `horaFin` TIME NULL,
+  `monto` DECIMAL NULL,
   PRIMARY KEY (`idTarifa`),
   INDEX `fk_Prices_Services1_idx` (`idServicio` ASC) VISIBLE,
   CONSTRAINT `fk_Prices_Services1`
@@ -269,12 +269,12 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Descuento`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Descuento` (
-  `idDescuento` INT NOT NULL,
+  `idDescuento` INT NOT NULL AUTO_INCREMENT,
   `codigo` VARCHAR(45) NULL,
   `tipoDescuento` VARCHAR(45) NULL,
-  `valor` VARCHAR(45) NULL,
-  `fechaInicio` VARCHAR(45) NULL,
-  `fechaFinal` VARCHAR(45) NULL,
+  `valor` DECIMAL NULL,
+  `fechaInicio` DATE NULL,
+  `fechaFinal` DATE NULL,
   `idServicio` INT NOT NULL,
   PRIMARY KEY (`idDescuento`),
   INDEX `fk_Discount_Services1_idx` (`idServicio` ASC) VISIBLE,
@@ -296,7 +296,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Mantenimiento` (
   `fechaFin` DATE NULL,
   `horaInicio` TIME NULL,
   `horaFin` TIME NULL,
-  PRIMARY KEY (`idMantenimiento`, `idServicio`),
+  PRIMARY KEY (`idMantenimiento`),
   INDEX `fk_Mantenimiento_Servicio1_idx` (`idServicio` ASC) VISIBLE,
   CONSTRAINT `fk_Mantenimiento_Servicio1`
     FOREIGN KEY (`idServicio`)
@@ -310,7 +310,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`HorarioSemanal`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`HorarioSemanal` (
-  `idHorarioSemanal` INT NOT NULL,
+  `idHorarioSemanal` INT NOT NULL AUTO_INCREMENT,
   `idAdministrador` INT NOT NULL,
   `idCoordinador` INT NOT NULL,
   `fechaInicio` DATE NULL,
@@ -336,7 +336,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Horario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Horario` (
-  `idHorario` INT NOT NULL,
+  `idHorario` INT NOT NULL AUTO_INCREMENT,
   `idHorarioSemanal` INT NOT NULL,
   `idAdministrador` INT NOT NULL,
   `idCoordinador` INT NOT NULL,
@@ -364,14 +364,14 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Validacion`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Validacion` (
-  `idValidacion` INT NOT NULL,
+  `idValidacion` INT NOT NULL AUTO_INCREMENT,
   `timeStampValidacion` DATETIME NULL,
   `latitudCoordinador` DECIMAL NULL,
   `longitudCoordinador` DECIMAL NULL,
   `distanciaError` DECIMAL NULL,
   `resultado` VARCHAR(45) NULL,
   `idHorario` INT NOT NULL,
-  PRIMARY KEY (`idValidacion`, `idHorario`),
+  PRIMARY KEY (`idValidacion`),
   INDEX `fk_Validacion_Horario1_idx` (`idHorario` ASC) VISIBLE,
   CONSTRAINT `fk_Validacion_Horario1`
     FOREIGN KEY (`idHorario`)
@@ -385,7 +385,7 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Reporte`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Reporte` (
-  `idReporte` INT NOT NULL,
+  `idReporte` INT NOT NULL AUTO_INCREMENT,
   `tipoReporte` VARCHAR(45) NULL,
   `fechaRecepcion` DATE NULL,
   `estado` VARCHAR(45) NULL,
@@ -398,7 +398,7 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Reporte` (
   `Horario_idAdministrador` INT NOT NULL,
   `idCoordinador` INT NOT NULL,
   `idComplejoDeportivo` INT NOT NULL,
-  PRIMARY KEY (`idReporte`, `idHorario`, `idHorarioSemanal`, `Horario_idAdministrador`, `idCoordinador`, `idComplejoDeportivo`),
+  PRIMARY KEY (`idReporte`),
   INDEX `fk_Reporte_Reserva1_idx` (`idReserva` ASC) VISIBLE,
   INDEX `fk_Reporte_Horario1_idx` (`idHorario` ASC, `idHorarioSemanal` ASC, `Horario_idAdministrador` ASC, `idCoordinador` ASC, `idComplejoDeportivo` ASC) VISIBLE,
   CONSTRAINT `fk_Reporte_Reserva1`
@@ -418,11 +418,11 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Comentario`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Comentario` (
-  `idComentario` INT NOT NULL,
+  `idComentario` INT NOT NULL AUTO_INCREMENT,
   `fechaHora` DATETIME NULL,
   `contenido` VARCHAR(300) NULL,
   `idReporte` INT NOT NULL,
-  PRIMARY KEY (`idComentario`, `idReporte`),
+  PRIMARY KEY (`idComentario`),
   INDEX `fk_Comentario_Reporte1_idx` (`idReporte` ASC) VISIBLE,
   CONSTRAINT `fk_Comentario_Reporte1`
     FOREIGN KEY (`idReporte`)
@@ -436,12 +436,12 @@ ENGINE = InnoDB;
 -- Table `mydb`.`Evidencia`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Evidencia` (
-  `idEvidencia` INT NOT NULL,
+  `idEvidencia` INT NOT NULL AUTO_INCREMENT,
   `nombreArchivo` VARCHAR(100) NULL,
   `urlArchivo` VARCHAR(100) NULL,
   `archivo` LONGBLOB NULL,
   `idReporte` INT NOT NULL,
-  PRIMARY KEY (`idEvidencia`, `idReporte`),
+  PRIMARY KEY (`idEvidencia`),
   INDEX `fk_Evidencia_Reporte1_idx` (`idReporte` ASC) VISIBLE,
   CONSTRAINT `fk_Evidencia_Reporte1`
     FOREIGN KEY (`idReporte`)
@@ -449,7 +449,6 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Evidencia` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
