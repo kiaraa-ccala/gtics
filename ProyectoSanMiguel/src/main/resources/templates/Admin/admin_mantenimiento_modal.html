@@ -174,7 +174,7 @@
                   </div>
                   <div class="d-grid mt-3">
                     <div class="d-grid mt-3">
-                      <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalProgramarMantenimiento" data-bs-whatever="@getbootstrap"
+                      <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" type="button" data-bs-toggle="modal" data-bs-target="#modalProgramarMantenimiento" data-bs-whatever="@getbootstrap">
 
                         ><i class="ti ti-external-link"></i> Programar mantenimiento</button
                       >
@@ -225,108 +225,14 @@
                           </tr>
                         </thead>
                         <tbody>
-                          <tr>
-                            <td>Arena Vital Sports Center</td>
-                            <td>Cancha de fútbol (Losa)</td>
-                            <td>Zona Norte</td>
-                          </tr>
-                          <tr>
-                            <td>Complejo Deportivo El Mirador</td>
-                            <td>Piscina</td>
-                            <td>Zona Sur</td>
-                          </tr>
-                          <tr>
-                            <td>Centro Atlético NovaFit</td>
-                            <td>Pista de atletismo</td>
-                            <td>Zona Norte</td>
-                          </tr>
-                          <tr>
-                            <td>Parque Deportivo Horizonte</td>
-                            <td>Cancha de fútbol (Grass sintético)</td>
-                            <td>Zona Este</td>
-                          </tr>
-                          <tr>
-                            <td>Zona Max Training Club</td>
-                            <td>Gimnasio</td>
-                            <td>Zona Oeste</td>
-                          </tr>
-                          <tr>
-                            <td>EcoArena Multideportes</td>
-                            <td>Cancha de fútbol (Losa)</td>
-                            <td>Zona Norte</td>
-                          </tr>
-                          <tr>
-                            <td>Estadio y Centro Deportivo Altavista</td>
-                            <td>Pista de atletismo</td>
-                            <td>Zona Este</td>
-                          </tr>
-                          <tr>
-                            <td>Arena Vital Sports Center</td>
-                            <td>Piscina</td>
-                            <td>Zona Sur</td>
-                          </tr>
-                          <tr>
-                            <td>Complejo Deportivo El Mirador</td>
-                            <td>Gimnasio</td>
-                            <td>Zona Oeste</td>
-                          </tr>
-                          <tr>
-                            <td>Centro Atlético NovaFit</td>
-                            <td>Cancha de fútbol (Grass sintético)</td>
-                            <td>Zona Oeste</td>
-                          </tr>
-                          <tr>
-                            <td>Parque Deportivo Horizonte</td>
-                            <td>Cancha de fútbol (Losa)</td>
-                            <td>Zona Sur</td>
-                          </tr>
-                          <tr>
-                            <td>Zona Max Training Club</td>
-                            <td>Pista de atletismo</td>
-                            <td>Zona Este</td>
-                          </tr>
-                          <tr>
-                            <td>EcoArena Multideportes</td>
-                            <td>Gimnasio</td>
-                            <td>Zona Sur</td>
-                          </tr>
-                          <tr>
-                            <td>Estadio y Centro Deportivo Altavista</td>
-                            <td>Piscina</td>
-                            <td>Zona Norte</td>
-                          </tr>
-                          <tr>
-                            <td>Arena Vital Sports Center</td>
-                            <td>Cancha de fútbol (Grass sintético)</td>
-                            <td>Zona Este</td>
-                          </tr>
-                          <tr>
-                            <td>Complejo Deportivo El Mirador</td>
-                            <td>Cancha de fútbol (Losa)</td>
-                            <td>Zona Norte</td>
-                          </tr>
-                          <tr>
-                            <td>Centro Atlético NovaFit</td>
-                            <td>Pista de atletismo</td>
-                            <td>Zona Oeste</td>
-                          </tr>
-                          <tr>
-                            <td>Parque Deportivo Horizonte</td>
-                            <td>Cancha de fútbol (Grass sintético)</td>
-                            <td>Zona Oeste</td>
-                          </tr>
-                          <tr>
-                            <td>Zona Max Training Club</td>
-                            <td>Piscina</td>
-                            <td>Zona Sur</td>
-                          </tr>
-                          <tr>
-                            <td>EcoArena Multideportes</td>
-                            <td>Gimnasio</td>
-                            <td>Zona Norte</td>
+                          <tr th:each="instancia : ${instancias}">
+                            <td th:text="${instancia.complejoDeportivo.nombre}">Nombre Complejo</td>
+                            <td th:text="${instancia.servicio.nombre}">Nombre Servicio</td>
+                            <td th:text="${instancia.complejoDeportivo.sector.nombre}">Nombre Sector</td>
                           </tr>
                         </tbody>
-    
+
+
                       </table>
                       <br>
                     </div>
