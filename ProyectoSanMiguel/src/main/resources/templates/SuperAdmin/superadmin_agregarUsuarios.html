@@ -248,21 +248,23 @@
                 <div class="row">
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Nombre</label>
-                      <input type="text" class="form-control" placeholder="Ingrese el nombre" required />
+                      <label for="nombre" class="form-label">Nombre</label>
+                      <input name="nombre" id="nombre" type="text" class="form-control" placeholder="Ingrese el nombre" required />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Apellidos</label>
-                      <input type="text" class="form-control" placeholder="Ingrese los apellidos" required  />
+                      <label for="apellido" class="form-label">Apellido</label>
+                      <input name="apellido" id="apellido" type="text" class="form-control" placeholder="Ingrese los apellidos" required  />
                     </div>
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">DNI</label>
-                      <input 
-                        type="number" 
+                      <label for="dni" class="form-label">DNI</label>
+                      <input
+                        id="dni"
+                        name="dni"
+                        type="text"
                         class="form-control" 
                         placeholder="Ingrese el DNI"
                         min="0" 
@@ -274,29 +276,52 @@
                   </div>
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Dirección</label>
-                      <input type="text" class="form-control" placeholder="Ingrese la dirección" required  />
+                      <label for="direccion" class="form-label">Dirección</label>
+                      <input name="direccion" id="direccion" type="text" class="form-control" placeholder="Ingrese la dirección" required  />
                     </div>
                   </div>
 
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Zona</label>
-                      <select class="form-select" required>
-                        <option value="" disabled selected>Seleccione una zona</option>
-                        <option value="Norte">Norte</option>
-                        <option value="Este">Este</option>
-                        <option value="Oeste">Oeste</option>
-                        <option value="Sur">Sur</option>
+                      <label for="sector" class="form-label">Sector</label>
+                      <select name="sector" id="sector" class="form-select" required>
+                        <!-- Placeholder has NO `value` attribute (will be skipped in submission) -->
+                        <option disabled selected>Seleccione un sector</option>
+                        <option th:each="sector : ${sectores}"
+                                th:value="${sector.idSector}"
+                                th:text="${sector.nombre}"></option>
                       </select>
                     </div>
                   </div>
+
+
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Correo electrónico</label>
-                      <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" required />
+                      <label for="rol" class="form-label">Rol</label>
+                      <select name="rol" id="rol" class="form-select" required>
+                        <!-- Placeholder has NO `value` attribute (will be skipped in submission) -->
+                        <option disabled selected>Seleccione un rol</option>
+                        <option th:each="rol : ${roles}"
+                                th:value="${rol.getIdRol()}"
+                                th:text="${rol.getNombre()}"></option>
+                      </select>
                     </div>
                   </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="correo" class="form-label">Correo electrónico</label>
+                      <input type="email" name="correo" id="correo" class="form-control" placeholder="Ingrese el correo electrónico" required />
+                    </div>
+                  </div>
+
+                  <div class="col-md-6">
+                    <div class="mb-3">
+                      <label for="password" class="form-label">Contraseña</label>
+                      <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese la contraseña" required />
+                    </div>
+                  </div>
+
                   <div class="col-md-6">
                     <div class="mb-3">
                       <label class="form-label">Fecha de registro</label>
@@ -306,9 +331,11 @@
 
                   <div class="col-md-6">
                     <div class="mb-3">
-                      <label class="form-label">Número telefónico</label>
-                      <input 
-                        type="number" 
+                      <label for="telefono" class="form-label">Número telefónico</label>
+                      <input
+                        name="telefono"
+                        id="telefono"
+                        type="text"
                         class="form-control" 
                         placeholder="Ingrese el número"
                         min="900000000" 
