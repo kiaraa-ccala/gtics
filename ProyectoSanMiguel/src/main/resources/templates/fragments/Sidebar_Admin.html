@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+      <title>Sidebar Fragment</title>
+  </head>
+  <body>
+    <th:block th:fragment="sidebar">
+      <nav class="pc-sidebar" style="background-color: #1a3570;">
+        <div class="navbar-wrapper text-white">
+          <div class="m-header" style="background-color: #fffffb;">
+            <a class="b-brand text-primary">
+              <img th:src="@{/assets/images/logo-sanM.png}" class="img-fluid" style="height: 40px;" alt="logoSM" />
+              <span class="badge bg-light-success rounded-pill ms-2 theme-version">Registrado</span>
+            </a>
+          </div>
+          <div class="navbar-content">
+            <ul class="pc-navbar">
+              <li class="pc-item pc-caption">
+                <label data-i18n="Inicio">Inicio</label>
+              </li>
+
+              <li class="pc-item pc-hasmenu">
+                <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-element-plus"></use>
+              </svg>
+            </span>
+                  <span class="pc-mtext" data-i18n="Página Inicio">Página Inicio</span>
+                </a>
+              </li>
+
+              <li class="pc-item pc-caption">
+                <label data-i18n="Perfil">Perfil</label>
+              </li>
+
+              <li class="pc-item pc-hasmenu">
+                <a href="#!" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-user-square"></use>
+              </svg>
+            </span>
+                  <span class="pc-mtext" data-i18n="Mi perfil">Mi perfil</span>
+                </a>
+              </li>
+
+              <li class="pc-item pc-caption">
+                <label data-i18n="Comentarios">Comentarios</label>
+                <svg class="pc-icon">
+                  <use xlink:href="#custom-shopping-bag"></use>
+                </svg>
+              </li>
+
+              <li class="pc-item">
+                <a href="#" class="pc-link">
+            <span class="pc-micon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-message-2"></use>
+              </svg>
+            </span>
+                  <span class="pc-mtext" data-i18n="Mis Comentarios">Mis Comentarios</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </th:block>
+  </body>
+</html>
