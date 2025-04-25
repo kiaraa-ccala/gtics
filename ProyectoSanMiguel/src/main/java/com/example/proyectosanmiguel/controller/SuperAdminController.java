@@ -27,7 +27,7 @@ public class SuperAdminController {
 
         model.addAttribute("listaUsuarios", listaUsuarios);
 
-        return "SuperAdmin/superadmin_listaUsuarios";
+        return "SuperAdmin/superadmin_reporteFinanciero";
     }
 
 }

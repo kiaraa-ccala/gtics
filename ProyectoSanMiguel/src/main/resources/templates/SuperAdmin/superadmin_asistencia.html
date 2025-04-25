@@ -1,14 +1,16 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="fragments/head_superadmin :: head('Reporte Servicios')"></head>
+  <!-- [Head] start -->
+  <head th:replace="fragments/head_superadmin :: head('Registro de Asistencia')"></head>
+
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
 
-      <div class="loader-bg">
-        <div class="loader-track">
-          <div class="loader-fill"></div>
-        </div>
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
       </div>
+    </div>
 
     <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
 
@@ -30,11 +32,8 @@
             </li>
             <li class="pc-h-item d-none d-md-inline-flex">
               <form class="form-search">
-                <i class="search-icon">
-                  <svg class="pc-icon">
-                    <use xlink:href="#custom-search-normal-1"></use>
-                  </svg>
-                </i>
+                <i class="bi bi-search"></i>
+
                 <input type="search" class="form-control" placeholder="Buscar" />
               </form>
             </li>
@@ -50,6 +49,12 @@
         gestor-DTI
       </span>
             </li>
+
+
+
+
+
+
             <li class="dropdown pc-h-item">
               <a
                       class="pc-head-link dropdown-toggle arrow-none me-0"
@@ -140,7 +145,7 @@
                       data-bs-auto-close="outside"
                       aria-expanded="false"
               >
-                <img th:src="@{/assets/images/user/avatar-2.jpg}" alt="user-image" class="user-avtar" />
+                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
               </a>
               <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                 <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -150,7 +155,7 @@
                   <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
                     <div class="d-flex mb-1">
                       <div class="flex-shrink-0">
-                        <img th:src="@{/assets/images/user/avatar-2.jpg}" alt="user-image" class="user-avtar wid-35" />
+                        <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
                       </div>
                       <div class="flex-grow-1 ms-3">
                         <h6 class="mb-1"> Gestor-DTI </h6>
@@ -174,17 +179,23 @@
                     <hr class="border-secondary border-opacity-50" />
                     <p class="text-span">Usuarios</p>
                     <a href="#" class="dropdown-item">
-                      <span>
-                        <i class="bi bi-card-checklist"></i>
-                        <span>Gestionar</span>
-                      </span>
+              <span>
+                <i class="bi bi-card-checklist"></i>
+                <span>Gestionar</span>
+              </span>
                     </a>
+
+
+
                     <a href="#" class="dropdown-item">
-                      <span>
-                        <i class="bi bi-person-fill-add text-muted me-2"></i>
-                        <span>Agregar</span>
-                      </span>
+              <span>
+                <i class="bi bi-person-fill-add text-muted me-2"></i>
+
+                <span>Agregar</span>
+              </span>
                     </a>
+
+
                     <hr class="border-secondary border-opacity-50" />
                     <div class="d-grid mb-3">
                       <button class="btn btn-primary">
@@ -201,206 +212,191 @@
         </div>
       </div>
     </header>
+
+
+
     <section class="pc-container">
       <div class="pc-content" style="background: #e0f6ff">
-
+        <!-- [ breadcrumb ] start -->
         <div class="page-header">
           <div class="page-block">
             <div class="row align-items-center">
               <div class="col-md-12">
                 <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Reportes</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Financiero</li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Asistencia</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Registro</li>
                 </ul>
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">Reporte servicios</h2>
+                  <h2 class="mb-0">Registro de asistencia</h2>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
+
         <div class="row">
+
         </div>
         <div class="row">
+
           <div class="col-sm-12">
             <div class="card">
 
               <div class="card-body">
+                <div class="dt-search mb-3">
+
+                  <div class="d-flex align-items-center gap-3 mb-3 filters-row" style="flex-wrap: nowrap; overflow-x: auto;">
+
+                    <div style="min-width: 150px;">
+                      <select class="form-select">
+                        <option>Nombre</option>
+                        <option>Servicio</option>
+                        <option>Complejo</option>
+                        <option>Asistencia</option>
+                      </select>
+                    </div>
+
+
+                    <div style="min-width: 150px;">
+                      <input type="date" class="form-control" id="example-datemax" max="1979-12-31" />
+                    </div>
+                  </div>
+
+                </div>
                 <div class="dt-responsive table-responsive">
                   <table id="basic-btn" class="table table-striped table-bordered nowrap">
                     <thead>
                       <tr>
-                        <th>Complejo</th>
+                        <th>Nombre</th>
                         <th>Servicio</th>
-                        <th>Reservas totales</th>
-                        <th>Promedio ocupación</th>
-                        <th>Variación mensual</th>
-                        <th>Tráfico hora punta</th>
+                        <th>Complejo</th>
+                        <th>Asistencia</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
+                        <td>Valentina Rodríguez Pérez</td>
+                        <td>Cancha de fútbol (Losa)</td>
                         <td>Arena Vital Sports Center</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>130</td>
-                        <td>61%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>P</td>
                       </tr>
                       <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Piscina</td>
-                        <td>100</td>
-                        <td>63%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Pista de atletismo</td>
-                        <td>142</td>
-                        <td>66%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
+                        <td>Mateo Ramírez Gómez</td>
                         <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>120</td>
-                        <td>42%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>Complejo Deportivo El Mirador</td>
+                        <td>T</td>
                       </tr>
                       <tr>
-                        <td>Zona Max Training Club</td>
+                        <td>Camila Fernández Ruiz</td>
+                        <td>Pista de atletismo</td>
+                        <td>Centro Atlético NovaFit</td>
+                        <td>F</td>
+                      </tr>
+                      <tr>
+                        <td>Nicolás Ortega Salinas</td>
                         <td>Gimnasio</td>
-                        <td>25</td>
-                        <td>33%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Parque Deportivo Horizonte</td>
+                        <td>P</td>
                       </tr>
                       <tr>
-                        <td>EcoArena Multideportes</td>
+                        <td>Isabella Vargas León</td>
+                        <td>Piscina</td>
+                        <td>Zona Max Training Club</td>
+                        <td>P</td>
+                      </tr>
+                      <tr>
+                        <td>Santiago Morales Díaz</td>
                         <td>Cancha de fútbol (Losa)</td>
-                        <td>95</td>
-                        <td>61%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>EcoArena Multideportes</td>
+                        <td>-</td>
                       </tr>
                       <tr>
+                        <td>Sofía Herrera Campos</td>
+                        <td>Cancha de fútbol (Losa)</td>
                         <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Pista de atletismo</td>
-                        <td>100</td>
-                        <td>59%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>T</td>
                       </tr>
                       <tr>
+                        <td>Diego Méndez Ríos</td>
+                        <td>Pista de atletismo</td>
                         <td>Arena Vital Sports Center</td>
-                        <td>Piscina</td>
-                        <td>120</td>
-                        <td>55%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>P</td>
                       </tr>
                       <tr>
+                        <td>Martina Castillo Navarro</td>
+                        <td>Gimnasio</td>
                         <td>Complejo Deportivo El Mirador</td>
-                        <td>Gimnasio</td>
-                        <td>20</td>
-                        <td>39%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>P</td>
                       </tr>
                       <tr>
+                        <td>Lucas Peña Aguilar</td>
+                        <td>Piscina</td>
                         <td>Centro Atlético NovaFit</td>
+                        <td>F</td>
+                      </tr>
+                      <tr>
+                        <td>Antonella Soto Cárdenas</td>
                         <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>54</td>
-                        <td>53%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
                         <td>Parque Deportivo Horizonte</td>
+                        <td>F</td>
+                      </tr>
+                      <tr>
+                        <td>Tomás Rojas Varela</td>
                         <td>Cancha de fútbol (Losa)</td>
-                        <td>135</td>
-                        <td>60%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
                         <td>Zona Max Training Club</td>
-                        <td>Pista de atletismo</td>
-                        <td>124</td>
-                        <td>82%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>T</td>
                       </tr>
                       <tr>
+                        <td>Emilia Cabrera Montes</td>
+                        <td>Piscina</td>
                         <td>EcoArena Multideportes</td>
-                        <td>Gimnasio</td>
-                        <td>30</td>
-                        <td>36%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>-</td>
                       </tr>
                       <tr>
+                        <td>Alejandro Fuentes Pardo</td>
+                        <td>Cancha de fútbol (Losa)</td>
                         <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Piscina</td>
-                        <td>90</td>
-                        <td>43%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>-</td>
                       </tr>
                       <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>65</td>
-                        <td>19%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>35</td>
-                        <td>66%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Pista de atletismo</td>
-                        <td>68</td>
-                        <td>64%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>34</td>
-                        <td>59%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Piscina</td>
-                        <td>120</td>
-                        <td>41%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
+                        <td>Renata Lozano Cruz</td>
                         <td>Gimnasio</td>
-                        <td>136</td>
-                        <td>70%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>Arena Vital Sports Center</td>
+                        <td>P</td>
+                      </tr>
+                      <tr>
+                        <td>Julián Reyes Barrera</td>
+                        <td>Cancha de fútbol (Grass sintético)</td>
+                        <td>Complejo Deportivo El Mirador</td>
+                        <td>P</td>
+                      </tr>
+                      <tr>
+                        <td>Luna Delgado Espinoza</td>
+                        <td>Piscina</td>
+                        <td>Centro Atlético NovaFit</td>
+                        <td>-</td>
+                      </tr>
+                      <tr>
+                        <td>Gael Navarro Molina</td>
+                        <td>Pista de atletismo</td>
+                        <td>Parque Deportivo Horizonte</td>
+                        <td>T</td>
+                      </tr>
+                      <tr>
+                        <td>Catalina Jiménez Arce</td>
+                        <td>Cancha de fútbol (Grass sintético)</td>
+                        <td>Zona Max Training Club</td>
+                        <td>P</td>
+                      </tr>
+                      <tr>
+                        <td>Bruno Torres Valdés</td>
+                        <td>Gimnasio</td>
+                        <td>EcoArena Multideportes</td>
+                        <td>P</td>
                       </tr>
                     </tbody>
 
@@ -409,14 +405,16 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <!-- [ Main Content ] end -->
       </div>
     </section>
+
     <div th:replace="fragments/footer_superadmin :: footer"></div>
 
- <!-- Required Js -->
+
+    <!-- Required JS -->
     <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
     <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
     <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
@@ -429,6 +427,7 @@
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/multi-lang.js}"></script>
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
 
 
 <script>
@@ -455,12 +454,9 @@
   main_layout_change('vertical');
 </script>
 
- <div class="pct-c-btn">
-  <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_pc_layout">
-    <i class="ph-duotone ph-gear-six"></i>
-  </a>
-</div>
 
+    <!-- [Page Specific JS] start -->
+    <!-- datatable Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script th:src="@{/assets/js/plugins/dataTables.min.js}"></script>
@@ -474,96 +470,51 @@
     <script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
     <script th:src="@{/assets/js/plugins/buttons.bootstrap5.min.js}"></script>
 
+    <!-- CDN JSZip y pdfmake -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+
     <script>
-      $(document).ready(function () {
-        const idioma = {
-          url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-        };
+      // Eliminar DataTable previa
+      if ($.fn.DataTable.isDataTable('#basic-btn')) {
+        $('#basic-btn').DataTable().destroy();
+      }
 
-        const domLayout = "<'d-flex justify-content-between align-items-center mb-2'<'dt-buttons'B><'dt-search'f>>t<'bottom'ip>";
+      // Inicializar DataTable con botones y buscador visible
+      const dt = $('#basic-btn').DataTable({
+        dom: "<'d-flex justify-content-start gap-2 mb-2'B><'dt-search-row'f>t<'bottom'ip>",
+        buttons: ['copy', 'excel', 'pdf', 'print'],
+        pageLength: 6,
+        language: {
+          url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
+          search: "Buscar:"
 
-        // Tabla básica con botones
-        if ($.fn.DataTable.isDataTable('#basic-btn')) {
-          $('#basic-btn').DataTable().destroy();
         }
-
-        $('#basic-btn').DataTable({
-          dom: domLayout,
-          buttons: ['copy', 'csv', 'excel', 'print'],
-          language: idioma,
-          pageLength: 6
-        });
-
-        // Tabla con columnas seleccionables
-        if ($.fn.DataTable.isDataTable('#cbtn-selectors')) {
-          $('#cbtn-selectors').DataTable().destroy();
-        }
-
-        $('#cbtn-selectors').DataTable({
-          dom: domLayout,
-          buttons: [
-            {
-              extend: 'copyHtml5',
-              exportOptions: { columns: [0, ':visible'] }
-            },
-            {
-              extend: 'excelHtml5',
-              exportOptions: { columns: ':visible' }
-            },
-            {
-              extend: 'pdfHtml5',
-              exportOptions: { columns: [0, 1, 2, 5] }
-            },
-            'colvis'
-          ],
-          language: idioma
-        });
-
-        // Tabla con Excel y color de celda
-        if ($.fn.DataTable.isDataTable('#excel-bg')) {
-          $('#excel-bg').DataTable().destroy();
-        }
-
-        $('#excel-bg').DataTable({
-          dom: domLayout,
-          buttons: [
-            {
-              extend: 'excelHtml5',
-              customize: function (xlsx) {
-                var sheet = xlsx.xl.worksheets['sheet1.xml'];
-                $('row c[r^="F"]', sheet).each(function () {
-                  if ($('is t', this).text().replace(/[^\d]/g, '') * 1 >= 500000) {
-                    $(this).attr('s', '20');
-                  }
-                });
-              }
-            }
-          ],
-          language: idioma
-        });
-
-        // Tabla con botón personalizado para JSON
-        if ($.fn.DataTable.isDataTable('#pdf-json')) {
-          $('#pdf-json').DataTable().destroy();
-        }
-
-        $('#pdf-json').DataTable({
-          dom: domLayout,
-          buttons: [
-            {
-              text: 'JSON',
-              action: function (e, dt, button, config) {
-                var data = dt.buttons.exportData();
-                $.fn.dataTable.fileSave(new Blob([JSON.stringify(data)]), 'Export.json');
-              }
-            }
-          ],
-          language: idioma
-        });
       });
+
+      // Mover el buscador debajo de los filtros
+      setTimeout(() => {
+        const dtSearch = document.querySelector('.dt-search-row');
+        const filtersRow = document.querySelector('.filters-row');
+
+        if (dtSearch && filtersRow) {
+          dtSearch.classList.remove('dt-search-row');
+          dtSearch.classList.add('ms-auto', 'mb-0');
+          filtersRow.appendChild(dtSearch);
+        }
+        // Cambiar placeholder
+        const input = dtSearch?.querySelector('input');
+        if (input) input.placeholder = "Buscar";
+      }, 100);
     </script>
 
+
     <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
       /* Ítems del menú: blanco */
       .pc-sidebar .pc-link,
       .pc-sidebar .pc-mtext,
@@ -586,13 +537,9 @@
         background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
         transition: all 0.2s ease-in-out;
       }
+    </style>
 
-    </style>
-    <style>
-      #basic-btn_info {
-        display: none !important;
-      }
-    </style>
+
 
 
 

@@ -1,18 +1,22 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <head th:replace="fragments/head_superadmin :: head('Reporte Servicios')"></head>
+<html xmlns:th="http://www.thymeleaf.org">
+  <!-- [Head] start -->
+
+
+  <head th:replace="fragments/head_superadmin :: head('Reporte Financiero')"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
-
-      <div class="loader-bg">
-        <div class="loader-track">
-          <div class="loader-fill"></div>
-        </div>
-      </div>
-
+    <!-- [ Pre-loader ] start -->
+  <div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
     <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
-
-
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
     <header class="pc-header">
       <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
         <div class="me-auto pc-mob-drp">
@@ -140,7 +144,7 @@
                       data-bs-auto-close="outside"
                       aria-expanded="false"
               >
-                <img th:src="@{/assets/images/user/avatar-2.jpg}" alt="user-image" class="user-avtar" />
+                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
               </a>
               <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                 <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -201,30 +205,39 @@
         </div>
       </div>
     </header>
+
+
+
     <section class="pc-container">
       <div class="pc-content" style="background: #e0f6ff">
-
+        <!-- [ breadcrumb ] start -->
         <div class="page-header">
           <div class="page-block">
             <div class="row align-items-center">
               <div class="col-md-12">
                 <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
                   <li class="breadcrumb-item"><a href="javascript: void(0)">Reportes</a></li>
                   <li class="breadcrumb-item" aria-current="page">Financiero</li>
                 </ul>
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">Reporte servicios</h2>
+                  <h2 class="mb-0">Reporte financiero</h2>
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
         <div class="row">
+
         </div>
         <div class="row">
+          <!-- HTML5 Export Buttons table start -->
           <div class="col-sm-12">
             <div class="card">
 
@@ -235,172 +248,172 @@
                       <tr>
                         <th>Complejo</th>
                         <th>Servicio</th>
-                        <th>Reservas totales</th>
-                        <th>Promedio ocupación</th>
-                        <th>Variación mensual</th>
-                        <th>Tráfico hora punta</th>
+                        <th>Ingreso Total</th>
+                        <th>Tarjeta</th>
+                        <th>Transferencia</th>
+                        <th>Variación total mensual</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr>
                         <td>Arena Vital Sports Center</td>
                         <td>Cancha de fútbol (Losa)</td>
-                        <td>130</td>
-                        <td>61%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>S/.1000</td>
+                        <td>S/.700</td>
+                        <td>S/.300</td>
+                        <td>+12%</td>
                       </tr>
                       <tr>
                         <td>Complejo Deportivo El Mirador</td>
                         <td>Piscina</td>
-                        <td>100</td>
-                        <td>63%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>S/.1500</td>
+                        <td>S/.700</td>
+                        <td>S/.200</td>
+                        <td>+4%</td>
                       </tr>
                       <tr>
                         <td>Centro Atlético NovaFit</td>
-                        <td>Pista de atletismo</td>
-                        <td>142</td>
-                        <td>66%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Cancha de fútbol (Grass Sintético)</td>
+                        <td>S/.1000</td>
+                        <td>S/.800</td>
+                        <td>S/.400</td>
+                        <td>+8%</td>
                       </tr>
                       <tr>
                         <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>120</td>
-                        <td>42%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>Gimnasio</td>
+                        <td>S/.1200</td>
+                        <td>S/.900</td>
+                        <td>S/.400</td>
+                        <td>-2%</td>
                       </tr>
                       <tr>
                         <td>Zona Max Training Club</td>
-                        <td>Gimnasio</td>
-                        <td>25</td>
-                        <td>33%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Cancha de fútbol (Losa)</td>
+                        <td>S/.1200</td>
+                        <td>S/.900</td>
+                        <td>S/.300</td>
+                        <td>+12%</td>
                       </tr>
                       <tr>
                         <td>EcoArena Multideportes</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>95</td>
-                        <td>61%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>Cancha de fútbol (Grass Sintético)</td>
+                        <td>S/.1000</td>
+                        <td>S/.700</td>
+                        <td>S/.400</td>
+                        <td>+8%</td>
                       </tr>
                       <tr>
                         <td>Estadio y Centro Deportivo Altavista</td>
                         <td>Pista de atletismo</td>
-                        <td>100</td>
-                        <td>59%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>S/.1500</td>
+                        <td>S/.800</td>
+                        <td>S/.200</td>
+                        <td>-2%</td>
                       </tr>
                       <tr>
                         <td>Arena Vital Sports Center</td>
-                        <td>Piscina</td>
-                        <td>120</td>
-                        <td>55%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Gimnasio</td>
+                        <td>S/.1000</td>
+                        <td>S/.700</td>
+                        <td>S/.200</td>
+                        <td>-2%</td>
                       </tr>
                       <tr>
                         <td>Complejo Deportivo El Mirador</td>
-                        <td>Gimnasio</td>
-                        <td>20</td>
-                        <td>39%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>Cancha de fútbol (Losa)</td>
+                        <td>S/.1200</td>
+                        <td>S/.900</td>
+                        <td>S/.300</td>
+                        <td>+12%</td>
                       </tr>
                       <tr>
                         <td>Centro Atlético NovaFit</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>54</td>
-                        <td>53%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>Piscina</td>
+                        <td>S/.1000</td>
+                        <td>S/.800</td>
+                        <td>S/.400</td>
+                        <td>+4%</td>
                       </tr>
                       <tr>
                         <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>135</td>
-                        <td>60%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Cancha de fútbol (Grass Sintético)</td>
+                        <td>S/.1500</td>
+                        <td>S/.700</td>
+                        <td>S/.200</td>
+                        <td>+12%</td>
                       </tr>
                       <tr>
                         <td>Zona Max Training Club</td>
-                        <td>Pista de atletismo</td>
-                        <td>124</td>
-                        <td>82%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>Gimnasio</td>
+                        <td>S/.1200</td>
+                        <td>S/.800</td>
+                        <td>S/.400</td>
+                        <td>+8%</td>
                       </tr>
                       <tr>
                         <td>EcoArena Multideportes</td>
-                        <td>Gimnasio</td>
-                        <td>30</td>
-                        <td>36%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>Piscina</td>
+                        <td>S/.1000</td>
+                        <td>S/.700</td>
+                        <td>S/.400</td>
+                        <td>+2%</td>
                       </tr>
                       <tr>
                         <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Piscina</td>
-                        <td>90</td>
-                        <td>43%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>Cancha de fútbol (Losa)</td>
+                        <td>S/.1000</td>
+                        <td>S/.800</td>
+                        <td>S/.300</td>
+                        <td>+8%</td>
                       </tr>
                       <tr>
                         <td>Arena Vital Sports Center</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>65</td>
-                        <td>19%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Pista de atletismo</td>
+                        <td>S/.1500</td>
+                        <td>S/.800</td>
+                        <td>S/.200</td>
+                        <td>+4%</td>
                       </tr>
                       <tr>
                         <td>Complejo Deportivo El Mirador</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>35</td>
-                        <td>66%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>Pista de atletismo</td>
+                        <td>S/.1200</td>
+                        <td>S/.900</td>
+                        <td>S/.300</td>
+                        <td>+12%</td>
                       </tr>
                       <tr>
                         <td>Centro Atlético NovaFit</td>
-                        <td>Pista de atletismo</td>
-                        <td>68</td>
-                        <td>64%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>Cancha de fútbol (Grass Sintético)</td>
+                        <td>S/.1000</td>
+                        <td>S/.800</td>
+                        <td>S/.300</td>
+                        <td>+8%</td>
                       </tr>
                       <tr>
                         <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>34</td>
-                        <td>59%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
+                        <td>Cancha de fútbol (Losa)</td>
+                        <td>S/.1000</td>
+                        <td>S/.700</td>
+                        <td>S/.400</td>
+                        <td>-2%</td>
                       </tr>
                       <tr>
                         <td>Zona Max Training Club</td>
                         <td>Piscina</td>
-                        <td>120</td>
-                        <td>41%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                        <td>S/.1200</td>
+                        <td>S/.700</td>
+                        <td>S/.200</td>
+                        <td>+4%</td>
                       </tr>
                       <tr>
                         <td>EcoArena Multideportes</td>
                         <td>Gimnasio</td>
-                        <td>136</td>
-                        <td>70%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
+                        <td>S/.1500</td>
+                        <td>S/.900</td>
+                        <td>S/.300</td>
+                        <td>+4%</td>
                       </tr>
                     </tbody>
 
@@ -409,14 +422,17 @@
               </div>
             </div>
           </div>
-          
+
         </div>
         <!-- [ Main Content ] end -->
+
       </div>
     </section>
+
     <div th:replace="fragments/footer_superadmin :: footer"></div>
 
- <!-- Required Js -->
+
+    <!-- Required Js -->
     <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
     <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
     <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
@@ -429,7 +445,6 @@
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/multi-lang.js}"></script>
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
-
 
 <script>
   layout_change('light');
@@ -455,12 +470,10 @@
   main_layout_change('vertical');
 </script>
 
- <div class="pct-c-btn">
-  <a href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas_pc_layout">
-    <i class="ph-duotone ph-gear-six"></i>
-  </a>
-</div>
 
+
+    <!-- [Page Specific JS] start -->
+    <!-- datatable Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script th:src="@{/assets/js/plugins/dataTables.min.js}"></script>
@@ -476,94 +489,29 @@
 
     <script>
       $(document).ready(function () {
-        const idioma = {
-          url: "//cdn.datatables.net/plug-ins/1.13.6/i18n/es-ES.json"
-        };
-
-        const domLayout = "<'d-flex justify-content-between align-items-center mb-2'<'dt-buttons'B><'dt-search'f>>t<'bottom'ip>";
-
-        // Tabla básica con botones
         if ($.fn.DataTable.isDataTable('#basic-btn')) {
           $('#basic-btn').DataTable().destroy();
         }
 
         $('#basic-btn').DataTable({
-          dom: domLayout,
-          buttons: ['copy', 'csv', 'excel', 'print'],
-          language: idioma,
+          dom: "<'d-flex justify-content-between align-items-center mb-2'<'dt-buttons'B><'dt-search'f>>t<'bottom'ip>",
+          buttons: ['copy', 'excel', 'pdf', 'print'],
+          language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json'
+          },
           pageLength: 6
-        });
-
-        // Tabla con columnas seleccionables
-        if ($.fn.DataTable.isDataTable('#cbtn-selectors')) {
-          $('#cbtn-selectors').DataTable().destroy();
-        }
-
-        $('#cbtn-selectors').DataTable({
-          dom: domLayout,
-          buttons: [
-            {
-              extend: 'copyHtml5',
-              exportOptions: { columns: [0, ':visible'] }
-            },
-            {
-              extend: 'excelHtml5',
-              exportOptions: { columns: ':visible' }
-            },
-            {
-              extend: 'pdfHtml5',
-              exportOptions: { columns: [0, 1, 2, 5] }
-            },
-            'colvis'
-          ],
-          language: idioma
-        });
-
-        // Tabla con Excel y color de celda
-        if ($.fn.DataTable.isDataTable('#excel-bg')) {
-          $('#excel-bg').DataTable().destroy();
-        }
-
-        $('#excel-bg').DataTable({
-          dom: domLayout,
-          buttons: [
-            {
-              extend: 'excelHtml5',
-              customize: function (xlsx) {
-                var sheet = xlsx.xl.worksheets['sheet1.xml'];
-                $('row c[r^="F"]', sheet).each(function () {
-                  if ($('is t', this).text().replace(/[^\d]/g, '') * 1 >= 500000) {
-                    $(this).attr('s', '20');
-                  }
-                });
-              }
-            }
-          ],
-          language: idioma
-        });
-
-        // Tabla con botón personalizado para JSON
-        if ($.fn.DataTable.isDataTable('#pdf-json')) {
-          $('#pdf-json').DataTable().destroy();
-        }
-
-        $('#pdf-json').DataTable({
-          dom: domLayout,
-          buttons: [
-            {
-              text: 'JSON',
-              action: function (e, dt, button, config) {
-                var data = dt.buttons.exportData();
-                $.fn.dataTable.fileSave(new Blob([JSON.stringify(data)]), 'Export.json');
-              }
-            }
-          ],
-          language: idioma
         });
       });
     </script>
 
+
+    <!-- [Page Specific JS] end -->
+
     <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
       /* Ítems del menú: blanco */
       .pc-sidebar .pc-link,
       .pc-sidebar .pc-mtext,
@@ -586,8 +534,9 @@
         background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
         transition: all 0.2s ease-in-out;
       }
-
     </style>
+
+
     <style>
       #basic-btn_info {
         display: none !important;

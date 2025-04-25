@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head_superadmin :: head('Estadisticas Financieras')"></head>
+
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+
+    <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
+
+ <header class="pc-header">
+  <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+    <div class="me-auto pc-mob-drp">
+      <ul class="list-unstyled">
+        <!-- ======= Menu collapse Icon ===== -->
+        <li class="pc-h-item pc-sidebar-collapse">
+          <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+        <li class="pc-h-item pc-sidebar-popup">
+          <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+        <li class="pc-h-item d-none d-md-inline-flex">
+          <form class="form-search">
+            <i class="search-icon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-search-normal-1"></use>
+              </svg>
+            </i>
+            <input type="search" class="form-control" placeholder="Buscar" />
+          </form>
+        </li>
+      </ul>
+    </div>
+    <!-- [Mobile Media Block end] -->
+    <div class="ms-auto">
+      <ul class="list-unstyled">
+
+        <li class="d-flex justify-content-center align-items-center">
+
+  <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+    gestor-DTI
+  </span>
+        </li>
+        <li class="dropdown pc-h-item">
+          <a
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  aria-expanded="false"
+          >
+            <svg class="pc-icon">
+              <use xlink:href="#custom-notification"></use>
+            </svg>
+            <span class="badge bg-success pc-h-badge">3</span>
+          </a>
+          <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+            <div class="dropdown-header d-flex align-items-center justify-content-between">
+              <h5 class="m-0">Notificaciones</h5>
+              <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
+            </div>
+            <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
+              <p class="text-span">Hoy</p>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-layer"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 2 min</span>
+                      <h5 class="text-body mb-2">Asignación adminsitrador: zona sur</h5>
+                      <p class="mb-0"
+                      >Se mando correo a administador Juan Mathias Machado para la zona.</p
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-sms"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 1 hora</span>
+                      <h5 class="text-body mb-2">Mensaje</h5>
+                      <p class="mb-0">Cierre de plataforma: proximas actualizaciones y recursos en proceso. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="text-span">Ayer</p>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-document-text"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 2 horas</span>
+                      <h5 class="text-body mb-2">Registro semanal</h5>
+                      <p class="mb-0"
+                      >Actualización de estadisticas semanales: 4 personales activos nuevos en zona norte.</p
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center py-2">
+              <a href="#!" class="link-danger">Vaciar bandeja</a>
+            </div>
+          </div>
+        </li>
+        <li class="dropdown pc-h-item header-user-profile">
+          <a
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  data-bs-auto-close="outside"
+                  aria-expanded="false"
+          >
+            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+          </a>
+          <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+            <div class="dropdown-header d-flex align-items-center justify-content-between">
+              <h5 class="m-0">Mi perfil</h5>
+            </div>
+            <div class="dropdown-body">
+              <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+                <div class="d-flex mb-1">
+                  <div class="flex-shrink-0">
+                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1"> Gestor-DTI </h6>
+                    <span>daniel.merino@sanmi.gob.pe</span>
+                  </div>
+                </div>
+                <hr class="border-secondary border-opacity-50" />
+                <div class="card">
+                  <div class="card-body py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0 d-inline-flex align-items-center"
+                      ><svg class="pc-icon text-muted me-2">
+                        <use xlink:href="#custom-notification-outline"></use></svg
+                      >Notificaciones</h5>
+                      <div class="form-check form-switch form-check-reverse m-0">
+                        <input class="form-check-input f-18" type="checkbox" role="switch" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr class="border-secondary border-opacity-50" />
+                <p class="text-span">Usuarios</p>
+                <a href="#" class="dropdown-item">
+          <span>
+            <i class="bi bi-card-checklist"></i>
+            <span>Gestionar</span>
+          </span>
+                </a>
+
+
+
+                <a href="#" class="dropdown-item">
+          <span>
+            <i class="bi bi-person-fill-add text-muted me-2"></i>
+
+            <span>Agregar</span>
+          </span>
+                </a>
+
+
+                <hr class="border-secondary border-opacity-50" />
+                <div class="d-grid mb-3">
+                  <button class="btn btn-primary">
+                    <svg class="pc-icon me-2">
+                      <use xlink:href="#custom-logout-1-outline"></use></svg
+                    >Salir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Monitoreo general de personal</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <div class="avtar bg-light-primary">
+                      <i class="ti ti-users f-24"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <p class="mb-1">Total del personal</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h4 class="mb-0">45</h4>
+                      <span class="text-success fw-medium"> 2+ </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <div class="avtar bg-light-warning">
+                      <i class="ti ti-notebook f-24"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <p class="mb-1">Personal a tiempo</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h4 class="mb-0">40</h4>
+                      <span class="text-warning fw-medium">30.6%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <div class="avtar bg-light-success">
+                      <i class="ti ti-eye f-24"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <p class="mb-1">Nuevo personal</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h4 class="mb-0">2+</h4>
+                      <span class="text-success fw-medium">30.6%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-shrink-0">
+                    <div class="avtar bg-light-danger">
+                      <i class="ti ti-credit-card f-24"></i>
+                    </div>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <p class="mb-1">Personal ausente</p>
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h4 class="mb-0">5</h4>
+                      <span class="text-danger fw-medium">30.6%</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          <div class="col-lg-5 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                  <h5 class="mb-0">Asistencia semanal</h5>
+                  <div class="dropdown">
+                    <a
+                      class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
+                      href="#"
+                      data-bs-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                      <i class="ti ti-dots-vertical f-18"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-end">
+                      <a class="dropdown-item" href="#">Hoy</a>
+                      <a class="dropdown-item" href="#">Semanal</a>
+                      <a class="dropdown-item" href="#">Mensual</a>
+                    </div>
+                  </div>
+                </div>
+                <div id="visitors-bar-chart"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-7 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between">
+                  <h5 class="mb-0">Comparativa de asistencias</h5>
+                  <div class="dropdown">
+                    <a
+                      class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
+                      href="#"
+                      data-bs-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
+                    >
+                    </a>
+
+                  </div>
+                </div>
+                <h5 class="text-end my-2">5.44% <span class="badge bg-success">+2.6%</span> </h5>
+                <div id="customer-rate-graph"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+    <!-- Required JS -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+    <!-- [Page Specific JS] start -->
+    <!-- bootstrap-datepicker -->
+    <script th:src="@{/assets/js/plugins/datepicker-full.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/peity-vanilla.min.js}"></script>
+
+    <!-- custom widgets js -->
+    <script th:src="@{/assets/js/widgets/revenue-sales-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/invites-goal-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/course-report-bar-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-revenue-line-1-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-revenue-line-2-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/student-states-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/activity-line-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/widget-calender.js}"></script>
+    <script th:src="@{/assets/js/widgets/visitors-bar-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/earning-courses-line-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/table-donut.js}"></script>
+    <script th:src="@{/assets/js/widgets/customer-rate-graph.js}"></script>
+    <!-- [Page Specific JS] end -->
+
+
+    <script>
+      xaxis: {
+        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      }
+
+    </script>
+
+
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+
+
+  </body>
+  <!-- [Body] end -->
+</html>
