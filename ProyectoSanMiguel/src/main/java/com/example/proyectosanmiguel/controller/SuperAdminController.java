@@ -5,6 +5,7 @@ import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.List;
 
@@ -20,7 +21,7 @@ public class SuperAdminController {
 
     //Lista de Usuarios
 
-    @GetMapping({"/SuperAdmin", "/"})
+    @GetMapping({"/SuperAdmin", "/SuperAdmin/ListarUsuario"})
     public String mostrarListaUsuarios(Model model) {
 
         List<Usuario> listaUsuarios = usuarioRepository.findAll();
@@ -28,6 +29,13 @@ public class SuperAdminController {
         model.addAttribute("listaUsuarios", listaUsuarios);
 
         return "SuperAdmin/superadmin_listaUsuarios";
+    }
+
+    @GetMapping({"/SuperAdmin/CrearUsuario"})
+    public String formularioCreacionUsuario(Model model) {
+
+
+        return "SuperAdmin/superadmin_agregarUsuario";
     }
 
 }
