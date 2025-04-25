@@ -16,187 +16,7 @@
 
     <div th:replace="fragments/Sidebar_admin :: sidebar"></div>
 
- <header class="pc-header">
-  <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
-    <div class="me-auto pc-mob-drp">
-      <ul class="list-unstyled">
-        <!-- ======= Menu collapse Icon ===== -->
-        <li class="pc-h-item pc-sidebar-collapse">
-          <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
-            <i class="ti ti-menu-2"></i>
-          </a>
-        </li>
-        <li class="pc-h-item pc-sidebar-popup">
-          <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
-            <i class="ti ti-menu-2"></i>
-          </a>
-        </li>
-        <li class="pc-h-item d-none d-md-inline-flex">
-          <form class="form-search">
-            <i class="search-icon">
-              <svg class="pc-icon">
-                <use xlink:href="#custom-search-normal-1"></use>
-              </svg>
-            </i>
-            <input type="search" class="form-control" placeholder="Buscar" />
-          </form>
-        </li>
-      </ul>
-    </div>
-    <!-- [Mobile Media Block end] -->
-    <div class="ms-auto">
-      <ul class="list-unstyled">
-
-        <li class="d-flex justify-content-center align-items-center">
-
-  <span class="badge bg-light-success rounded-pill ms-2 theme-version">
-    admin
-  </span>
-        </li>
-
-
-
-
-
-
-        <li class="dropdown pc-h-item">
-          <a
-                  class="pc-head-link dropdown-toggle arrow-none me-0"
-                  data-bs-toggle="dropdown"
-                  href="#"
-                  role="button"
-                  aria-haspopup="false"
-                  aria-expanded="false"
-          >
-            <svg class="pc-icon">
-              <use xlink:href="#custom-notification"></use>
-            </svg>
-            <span class="badge bg-success pc-h-badge">3</span>
-          </a>
-          <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
-            <div class="dropdown-header d-flex align-items-center justify-content-between">
-              <h5 class="m-0">Notificaciones</h5>
-              <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
-            </div>
-            <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
-              <p class="text-span">Hoy</p>
-              <div class="card mb-2">
-                <div class="card-body">
-                  <div class="d-flex">
-                    <div class="flex-shrink-0">
-                      <svg class="pc-icon text-primary">
-                        <use xlink:href="#custom-layer"></use>
-                      </svg>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <span class="float-end text-sm text-muted">hace 2 min</span>
-                      <h5 class="text-body mb-2">Se te ha asignado la zona sur</h5>
-                      <p class="mb-0"
-                      >Buenas tardes administrador Tony, este mensaje es para...</p
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card mb-2">
-                <div class="card-body">
-                  <div class="d-flex">
-                    <div class="flex-shrink-0">
-                      <svg class="pc-icon text-primary">
-                        <use xlink:href="#custom-sms"></use>
-                      </svg>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <span class="float-end text-sm text-muted">hace 1 hora</span>
-                      <h5 class="text-body mb-2">Mensaje</h5>
-                      <p class="mb-0">Cierre de plataforma: proximas actualizaciones y recursos en proceso. </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <p class="text-span">Ayer</p>
-              <div class="card mb-2">
-                <div class="card-body">
-                  <div class="d-flex">
-                    <div class="flex-shrink-0">
-                      <svg class="pc-icon text-primary">
-                        <use xlink:href="#custom-document-text"></use>
-                      </svg>
-                    </div>
-                    <div class="flex-grow-1 ms-3">
-                      <span class="float-end text-sm text-muted">hace 2 horas</span>
-                      <h5 class="text-body mb-2">Complejos disponibles</h5>
-                      <p class="mb-0"
-                      >Actualización de los complejos que estrán operativos durante la semana.</p
-                      >
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="text-center py-2">
-              <a href="#!" class="link-danger">Vaciar bandeja</a>
-            </div>
-          </div>
-        </li>
-        <li class="dropdown pc-h-item header-user-profile">
-          <a
-                  class="pc-head-link dropdown-toggle arrow-none me-0"
-                  data-bs-toggle="dropdown"
-                  href="#"
-                  role="button"
-                  aria-haspopup="false"
-                  data-bs-auto-close="outside"
-                  aria-expanded="false"
-          >
-            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
-          </a>
-          <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
-            <div class="dropdown-header d-flex align-items-center justify-content-between">
-              <h5 class="m-0">Mi perfil</h5>
-            </div>
-            <div class="dropdown-body">
-              <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
-                <div class="d-flex mb-1">
-                  <div class="flex-shrink-0">
-                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
-                  </div>
-                  <div class="flex-grow-1 ms-3">
-                    <h6 class="mb-1"> Administrador </h6>
-                    <span>tony.flores@sanmi.gob.pe</span>
-                  </div>
-                </div>
-                <hr class="border-secondary border-opacity-50" />
-                <div class="card">
-                  <div class="card-body py-3">
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h5 class="mb-0 d-inline-flex align-items-center"
-                      ><svg class="pc-icon text-muted me-2">
-                        <use xlink:href="#custom-notification-outline"></use></svg>
-                      >Notificaciones</h5>
-                      
-                      <div class="form-check form-switch form-check-reverse m-0">
-                        <input class="form-check-input f-18" type="checkbox" role="switch" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                </a>
-                <div class="d-grid mb-3">
-                  <button class="btn btn-primary">
-                    <svg class="pc-icon me-2">
-                      <use xlink:href="#custom-logout-1-outline"></use></svg>
-                    >Salir
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </li>
-      </ul>
-    </div>
-  </div>
-</header>
+    <div th:replace="fragments/navbar :: header"></div>
     <!-- [ Main Content ] start -->
     <div class="pc-container" style="background: #e0f6ff">
       <div class="pc-content">
@@ -294,12 +114,7 @@
             </div>
           </div>
 
-          <!-- Nueva card para selector de fecha -->
-  
         </div>
-         
-          
-        
 
           <div class="row">
         
@@ -524,8 +339,6 @@
           <!-- ALERTA GLOBAL : esta sera para que me salga ujana alerta estilizada que sera recibida dentro de un scriotpt mas abajo-->
           <div id="alertaGlobalFixed" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
           z-index: 9999; min-width: 300px; max-width: 600px; display: none;"></div>
-
-
           <!-- Definición del ícono Bootstrap (puede ir una vez en el HTML) -->
           <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
             <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -599,43 +412,24 @@
               </div>
             </div>
           </div>
-
-     
-        
-    
-  
         </div>
-
-    
-        <!-- [ Main Content ] end -->
-      </div>
+    </div>
     </div>
     <!-- [ Main Content ] end -->
-    <footer class="pc-footer" style="background: #e0f6ff">
-      <div class="footer-wrapper container-fluid">
-        <div class="row">
-          <div class="col my-1">
-            <p class="m-0">
-              © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
-          </div>
-        
-        </div>
-      </div>
-    </footer>
- <!-- Required Js -->
-<script src="../assets/js/plugins/popper.min.js"></script>
-<script src="../assets/js/plugins/simplebar.min.js"></script>
-<script src="../assets/js/plugins/bootstrap.min.js"></script>
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+    <!-- Required Js -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
 
-<script src="../assets/js/plugins/i18next.min.js"></script>
-<script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
 
-<script src="../assets/js/icon/custom-font.js"></script>
-<script src="../assets/js/script.js"></script>
-<script src="../assets/js/theme.js"></script>
-<script src="../assets/js/multi-lang.js"></script>
-<script src="../assets/js/plugins/feather.min.js"></script>
-
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 
 
 <!-- FullCalendar JS -->
@@ -714,9 +508,6 @@
   </script>
   
 
-
-
-
 <!-- Para deshabilitar y limpiar de mantenimiento un dia-->
 <script>
 document.getElementById("mantenimientoUnDia").addEventListener("change", function () {
@@ -728,10 +519,6 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
     fechaFinInput.value = ""; 
   }
 });
-
-
-
-
 
 
 </script>
@@ -900,35 +687,33 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
   main_layout_change('vertical');
 </script>
 
+    <script th:src="@{/assets/js/plugins/datepicker-full.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/peity-vanilla.min.js}"></script>
 
-    <!-- [Page Specific JS] start -->
-    <!-- bootstrap-datepicker -->
-    <script src="../assets/js/plugins/datepicker-full.min.js"></script>
-    <script src="../assets/js/plugins/apexcharts.min.js"></script>
-    <script src="../assets/js/plugins/peity-vanilla.min.js"></script>
     <!-- custom widgets js -->
-    <script src="../assets/js/widgets/revenue-analytics-chart.js"></script>
-    <script src="../assets/js/widgets/membership-state-chart.js"></script>
-    <script src="../assets/js/widgets/membership-activity-line-chart.js"></script>
-    <script src="../assets/js/widgets/invoice-chart.js"></script>
-    <script src="../assets/js/widgets/total-income-graph2.js"></script>
+    <script th:src="@{/assets/js/widgets/revenue-analytics-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/membership-state-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/membership-activity-line-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/invoice-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-income-graph2.js}"></script>
+
     <!-- jQuery y DataTables JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="../assets/js/plugins/dataTables.min.js"></script>
-    <script src="../assets/js/plugins/dataTables.bootstrap5.min.js"></script>
-    <script src="../assets/js/plugins/dataTables.buttons.min.js"></script>
-    <script src="../assets/js/plugins/buttons.bootstrap5.min.js"></script>
-    <script src="../assets/js/plugins/jszip.min.js"></script>
-    <script src="../assets/js/plugins/pdfmake.min.js"></script>
-    <script src="../assets/js/plugins/vfs_fonts.js"></script>
-    <script src="../assets/js/plugins/buttons.html5.min.js"></script>
-    <script src="../assets/js/plugins/buttons.print.min.js"></script>
-    <!-- Bootstrap JS (Popper incluido) -->
+    <script th:src="@{/assets/js/plugins/dataTables.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.bootstrap5.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- [Page Specific JS] end -->
 
-    <!-- Script para actualizar fecha -->
+
   <script>
     function actualizarFecha() {
       const inputFecha = document.getElementById("fecha").value;
