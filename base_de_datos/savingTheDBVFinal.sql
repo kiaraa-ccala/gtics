@@ -21,8 +21,8 @@ CREATE TABLE `ComplejoDeportivo` (
   `direccion` VARCHAR(45),
   `idSector` INT NOT NULL,
   `numeroSoporte` VARCHAR(45),
-  `latitud` DECIMAL(10,8),
-  `longitud` DECIMAL(11,8),
+  `latitud` DECIMAL,
+  `longitud` DECIMAL,
   PRIMARY KEY (`idComplejoDeportivo`),
   FOREIGN KEY (`idSector`) REFERENCES `Sector`(`idSector`)
 );
