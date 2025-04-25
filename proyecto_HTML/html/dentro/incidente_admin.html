@@ -1,0 +1,1182 @@
+<!doctype html>
+<html lang="en">
+  <!-- [Head] start -->
+
+  <head>
+    <title>Bienvenido a tus comentarios</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="description"
+      content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
+    />
+    <meta
+      name="keywords"
+      content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard"
+    />
+    <meta name="author" content="Phoenixcoded" />
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" href="../assets/images/logo-circular.png" type="image/x-icon" />
+ <!-- [Font] Family -->
+    <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet" href="../assets/fonts/phosphor/duotone/style.css" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/tabler-icons.min.css" />
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet" href="../assets/fonts/feather.css" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/fontawesome.css" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet" href="../assets/fonts/material.css" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet" href="../assets/css/style.css" id="main-style-link" />
+    <script src="../assets/js/tech-stack.js"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
+    <script type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
+    <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
+    <link rel="stylesheet" href="../assets/css/style-preset.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" />
+ 
+
+
+    <style>
+      .archivo-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #fff;
+        padding: 6px 10px;
+        margin-bottom: 5px;
+        border-radius: 6px;
+        border: 1px solid #dee2e6;
+        font-size: 0.875rem;
+      }
+    
+      .archivo-link {
+        color: #0d6efd;
+        text-decoration: underline;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80%;
+      }
+    
+      .btn-eliminar {
+        background: none;
+        border: none;
+        color: #dc3545;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+ <nav class="pc-sidebar" style="background-color: #1a3570;">
+    <div class="navbar-wrapper text-white" >
+      <div class="m-header" style="background-color: #fffffb;">
+  
+        <a  class="b-brand text-primary">
+          <img src="../assets/images/logo-sanM.png" class="img-fluid" style="height: 40px;" alt="logoSM" />
+  
+          <span class="badge bg-light-success rounded-pill ms-2 theme-version">Registrado</span>
+        </a>
+      </div>
+      <div class="navbar-content" >
+  
+        <ul class="pc-navbar">
+          <li class="pc-item pc-caption">
+            <label data-i18n="Inicio">Inicio</label>
+          </li>
+          <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">
+              <span class="pc-micon">
+                <svg class="pc-icon">
+                  <use xlink:href="#custom-element-plus"></use>
+                </svg>
+              </span>
+              <span class="pc-mtext" data-i18n="Página Inicio">Página Inicio</span>
+            </a>
+            
+          </li>
+          <li class="pc-item pc-caption">
+            <label data-i18n="Perfil">Perfil</label>
+          </li>
+          
+          <li class="pc-item pc-hasmenu">
+            <a href="#!" class="pc-link">
+              <span class="pc-micon">
+                <svg class="pc-icon">
+                  <use xlink:href="#custom-user-square"></use>
+                </svg>
+              </span>
+              <span class="pc-mtext" data-i18n="Mi perfil">Mi perfil</span>
+  
+            </a>
+            
+          </li>
+  
+          
+          </li>
+          
+  
+  
+  
+          <li class="pc-item pc-caption">
+            <label data-i18n="Comentarios">Comentarios</label>
+            <svg class="pc-icon">
+              <use xlink:href="#custom-shopping-bag"></use>
+            </svg>
+          </li>
+          <li class="pc-item">
+            <a href="#" class="pc-link">
+              <span class="pc-micon">
+                <svg class="pc-icon">
+                  <use xlink:href="#custom-message-2"></use>
+                </svg>
+              </span>
+              <span class="pc-mtext" data-i18n="Mis Comentarios">Mis Comentarios</span></a
+            >
+          </li>
+  
+  
+        </ul>
+      </div>
+    </div>
+  </nav>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+ <header class="pc-header">
+    <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+  <div class="me-auto pc-mob-drp">
+    <ul class="list-unstyled">
+      <!-- ======= Menu collapse Icon ===== -->
+      <li class="pc-h-item pc-sidebar-collapse">
+        <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+          <i class="ti ti-menu-2"></i>
+        </a>
+      </li>
+      <li class="pc-h-item pc-sidebar-popup">
+        <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+          <i class="ti ti-menu-2"></i>
+        </a>
+      </li>
+      <li class="pc-h-item d-none d-md-inline-flex">
+        <form class="form-search">
+          <i class="search-icon">
+            <svg class="pc-icon">
+              <use xlink:href="#custom-search-normal-1"></use>
+            </svg>
+          </i>
+          <input type="search" class="form-control" placeholder="Buscar" />
+        </form>
+      </li>
+    </ul>
+  </div>
+  <!-- [Mobile Media Block end] -->
+  <div class="ms-auto">
+    <ul class="list-unstyled">
+  
+      <li class="d-flex justify-content-center align-items-center">
+  
+        <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+          Registrado
+        </span>
+      </li>
+  
+  
+  
+  
+  
+  
+      <li class="dropdown pc-h-item">
+        <a
+          class="pc-head-link dropdown-toggle arrow-none me-0"
+          data-bs-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="false"
+          aria-expanded="false"
+        >
+          <svg class="pc-icon">
+            <use xlink:href="#custom-notification"></use>
+          </svg>
+          <span class="badge bg-success pc-h-badge">3</span>
+        </a>
+        <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+          <div class="dropdown-header d-flex align-items-center justify-content-between">
+            <h5 class="m-0">Notificaciones</h5>
+            <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
+          </div>
+          <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
+            <p class="text-span">Hoy</p>
+            <div class="card mb-2">
+              <div class="card-body">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <svg class="pc-icon text-primary">
+                      <use xlink:href="#custom-layer"></use>
+                    </svg>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <span class="float-end text-sm text-muted">hace 2 min</span>
+                    <h5 class="text-body mb-2">Actualización comentario: Canchas en mal estado</h5>
+                    <p class="mb-0"
+                      >Encargado Tony vargas de la municipalidad ha respondido el comentario.</p
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card mb-2">
+              <div class="card-body">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <svg class="pc-icon text-primary">
+                      <use xlink:href="#custom-sms"></use>
+                    </svg>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <span class="float-end text-sm text-muted">hace 1 hora</span>
+                    <h5 class="text-body mb-2">Mensaje</h5>
+                    <p class="mb-0">Tu registro se ha realizado de manera correcta. </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="text-span">Ayer</p>
+            <div class="card mb-2">
+              <div class="card-body">
+                <div class="d-flex">
+                  <div class="flex-shrink-0">
+                    <svg class="pc-icon text-primary">
+                      <use xlink:href="#custom-document-text"></use>
+                    </svg>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <span class="float-end text-sm text-muted">hace 2 horas</span>
+                    <h5 class="text-body mb-2">Nuevo comentario realizado</h5>
+                    <p class="mb-0"
+                      >Se pierden implementos dentro del complejo deportivo</p
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="text-center py-2">
+            <a href="#!" class="link-danger">Vaciar bandeja</a>
+          </div>
+        </div>
+      </li>
+      <li class="dropdown pc-h-item header-user-profile">
+        <a
+          class="pc-head-link dropdown-toggle arrow-none me-0"
+          data-bs-toggle="dropdown"
+          href="#"
+          role="button"
+          aria-haspopup="false"
+          data-bs-auto-close="outside"
+          aria-expanded="false"
+        >
+          <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+        </a>
+        <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+          <div class="dropdown-header d-flex align-items-center justify-content-between">
+            <h5 class="m-0">Mi perfil</h5>
+          </div>
+          <div class="dropdown-body">
+            <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+              <div class="d-flex mb-1">
+                <div class="flex-shrink-0">
+                  <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                </div>
+                <div class="flex-grow-1 ms-3">
+                  <h6 class="mb-1"> Coordinador de complejo </h6>
+                  <span>cristian.flores@sanmi.gob.pe</span>
+                </div>
+              </div>
+              <hr class="border-secondary border-opacity-50" />
+              <div class="card">
+                <div class="card-body py-3">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0 d-inline-flex align-items-center"
+                      ><svg class="pc-icon text-muted me-2">
+                        <use xlink:href="#custom-notification-outline"></use></svg>
+                      >Notificaciones</h5>
+                    <div class="form-check form-switch form-check-reverse m-0">
+                      <input class="form-check-input f-18" type="checkbox" role="switch" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+  
+              <hr class="border-secondary border-opacity-50" />
+              <div class="d-grid mb-3">
+                <button class="btn btn-primary">
+                  <svg class="pc-icon me-2">
+                    <use xlink:href="#custom-logout-1-outline"></use></svg>
+                  >Salir
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+   </div>
+  </header>
+<!-- [ Header ] end -->
+
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">INCIDENCIA #34</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="container-fluid">
+          <div class="row">
+            <!-- Columna izquierda: Detalles del asunto y descripción -->
+            <div class="col-lg-5">
+              <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5><strong>ASUNTO:</strong> Corte de luz</h5>
+                  <span class="badge bg-danger">Cerrado</span>
+                </div>
+                <div class="card-body">
+                  <p><strong>DESCRIPCIÓN:</strong></p>
+                  <p>
+                    Se ha identificado una fuga de agua en la cancha de fútbol ubicada en [nombre o dirección del lugar], la cual es alquilada por la municipalidad para eventos deportivos y recreativos...
+                  </p>
+                  <div class="text-center mt-3">
+                    <img src="https://media.telemetro.com/p/1cb140baafe438aa30a06f1af8a20b79/adjuntos/311/imagenes/018/319/0018319409/1200x675/smart/imagepng.png" 
+                         alt="Evidencia de incidencia"
+                         class="img-fluid rounded shadow"
+                         style="max-width: 90%; height: auto;" />
+                    <p class="text-muted mt-2">Evidencia subida</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          
+            <!-- Columna derecha: Detalles específicos y comentarios -->
+            <div class="col-lg-7">
+              <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                  <h5><strong>Detalles de la Incidencia #34</strong></h5>
+                </div>
+                <div class="card-body">
+                  <div class="row align-items-start">
+                    <!-- Columna izquierda: detalles -->
+                    <div class="col-md-9">
+                      <div class="card bg-light p-3 rounded">
+                        <p><strong>Fecha:</strong> 04/04/2025 - 10:32 AM - Cancha 2 - Parque Chicama</p>
+                        <p><strong>Ubicación:</strong> Manco II, San Miguel 15087</p>
+                        <p><strong>Coordinador:</strong> Adrian Bala</p>
+                        <p><strong>Zona:</strong> Pando</p>
+                      </div>
+                    </div>
+                  
+                    <!-- Columna derecha: acciones -->
+                    <div class="col-md-3 d-flex flex-column align-items-center">
+                      <!-- Botón Procesar -->
+                      <button class="btn btn-outline-primary mb-3 w-100" data-bs-toggle="modal" data-bs-target="#modalCambiarEstado">
+                        <i class="fas fa-cogs me-2"></i> PROCESAR
+                      </button>
+                  
+                      <!-- Exportar datos -->
+                      <div class="bg-light rounded p-3 w-100 text-center">
+                        <p class="mb-2"><strong>Exportar datos:</strong></p>
+                        <div class="d-flex justify-content-around">
+                          <a href="#" class="text-decoration-none" title="Exportar a Word">
+                            <img src="https://cdn-icons-png.flaticon.com/512/281/281760.png" width="32" />
+                          </a>
+                          <a href="#" class="text-decoration-none" title="Exportar a PDF">
+                            <img src="https://cdn-icons-png.flaticon.com/512/337/337946.png" width="32" />
+                          </a>
+                          <a href="#" class="text-decoration-none" title="Exportar a Excel">
+                            <img src="https://cdn-icons-png.flaticon.com/512/732/732220.png" width="32" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <iframe
+                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.619040821633!2d-77.094658!3d-12.078195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105ce296e0d799f%3A0xbb9d44c18f873e8a!2sManco%20II%2C%20San%20Miguel%2015087!5e0!3m2!1ses-419!2spe!4v1681940331726!5m2!1ses-419!2spe"
+                      width="100%"
+                      height="200"
+                      style="border:0; border-radius: 8px;"
+                      allowfullscreen=""
+                      loading="lazy"
+                      referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                  </div>
+                  
+                  <div class="mt-4">
+                    <h5 class="mb-2"><strong>Acciones Realizadas:</strong></h5>
+                    <button class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalNuevaAccion">
+                      <i class="ti ti-plus me-2"></i>Agregar nueva acción
+                    </button>
+
+                    <div class="card shadow-sm mb-3" style="border-left: 4px solid #7267EF; border-radius: 0.5rem;">
+                      <div class="card-body">
+                        <div class="d-flex">
+                          
+                          <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <h6 class="mb-1">
+                                Juan Pérez <span class="badge bg-light-secondary text-muted fw-normal ms-1">Administrador</span>
+                              </h6>
+                              <small class="text-muted">18 abril 2025, 10:30 a.m.</small>
+                            </div>
+                            <div class="bg-light px-3 py-2 rounded mt-2">
+                              <p class="mb-0">Se realizó inspección en terreno. Se identificó rotura en tubería subterránea cerca del área norte de la cancha. Se procederá a cortar el suministro y reemplazar el tramo afectado.
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalDetalleAccion">Ver más</a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card shadow-sm mb-3" style="border-left: 4px solid #7267EF; border-radius: 0.5rem;">
+                      <div class="card-body">
+                        <div class="d-flex">
+                          
+                          <div class="flex-grow-1">
+                            <div class="d-flex justify-content-between align-items-center">
+                              <h6 class="mb-1">
+                                Juan Pérez <span class="badge bg-light-secondary text-muted fw-normal ms-1">Administrador</span>
+                              </h6>
+                              <small class="text-muted">20 abril 2025, 10:30 a.m.</small>
+                            </div>
+                            <div class="bg-light px-3 py-2 rounded mt-2">
+                              <p class="mb-0">Se realizo la reparacion de la rotura, en las proximas 5 horas se estara habilitando nuevamente el servicio. (Evidenciar)
+                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalDetalleAccion">Ver más</a>
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                  
+                  </div>
+                  <div class="d-grid gap-2 mt-4">
+                    <button class="btn btn-light-danger">TERMINAR</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Detalle -->
+         <!-- Modal -->
+          <div class="modal fade" id="modalCambiarEstado" tabindex="-1" aria-labelledby="modalCambiarEstadoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content shadow rounded-4">
+                <div class="modal-header bg-light border-0">
+                  <h5 class="modal-title fw-bold" id="modalCambiarEstadoLabel">
+                    <i class="bi bi-arrow-repeat me-2 text-primary"></i>Cambiar estado de la incidencia
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body py-4">
+                  <div class="d-flex flex-column gap-3 px-3">
+                    
+                    <!-- Estado: Abierto -->
+                    <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
+                            style="background-color: #fff3cd; border-radius: 12px;">
+                      <span><i class="bi bi-unlock me-2 text-warning"></i><strong>ABIERTO</strong></span>
+                      <i class="bi bi-chevron-right text-muted"></i>
+                    </button>
+                    
+                    <!-- Estado: En Proceso -->
+                    <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
+                            style="background-color: #d4edda; border-radius: 12px;">
+                      <span><i class="bi bi-hourglass-split me-2 text-success"></i><strong>EN PROCESO</strong></span>
+                      <i class="bi bi-chevron-right text-muted"></i>
+                    </button>
+                    
+                    <!-- Estado: Cerrado -->
+                    <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
+                            style="background-color: #f8d7da; border-radius: 12px;">
+                      <span><i class="bi bi-check2-circle me-2 text-danger"></i><strong>CERRADO</strong></span>
+                      <i class="bi bi-chevron-right text-muted"></i>
+                    </button>
+                    
+                  </div>
+                </div>
+                <div class="modal-footer border-0">
+                  <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+
+          <!-- Modal -->
+          <div class="modal fade" id="modalDetalleAccion" tabindex="-1" aria-labelledby="modalAccionResponsiveLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+              <div class="modal-content">
+                <div class="modal-header bg-light">
+                  <h5 class="modal-title" id="modalAccionResponsiveLabel">Detalle de Acción Realizada:</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row g-4">
+                    <!-- Columna izquierda: texto -->
+                    <div class="col-md-6">
+                      <p><strong>Hora:</strong> 18 abril 2025, 11:45 a.m.</p>
+                      <p><strong>Descripción:</strong> Se realizó la reparación de la rotura. En las próximas 5 horas se estará habilitando nuevamente el servicio.</p>
+
+                      <p class="mt-4">
+                        <strong>Certificado de conformidad:</strong>
+                        <i class="bi bi-file-earmark-word"></i>
+                        <a href="#"> Firma_conformidad.doc</a>
+                      </p>
+                      <p>
+                        <strong>Informe técnico:</strong>
+                        <i class="bi bi-file-earmark-pdf text-danger"></i>
+                        <a href="#"> Reviciones_servicios_SanMi.pdf</a>
+                      </p>
+                    </div>
+
+                    <!-- Columna derecha: imagen -->
+                    <div class="col-md-6 text-center">
+                      <img src="https://media.lv12.com.ar/p/0cfa4265608d6b79cd55c3e305ed6933/adjuntos/261/imagenes/001/064/0001064295/o.png" alt="Foto de inspección" class="img-fluid rounded shadow-sm">
+                    </div>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal fade" id="modalNuevaAccion" tabindex="-1" aria-labelledby="modalNuevaAccionLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-header bg-light">
+                  <h5 class="modal-title" id="modalNuevaAccionLabel">Agregar Nueva Acción</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <form id="formNuevaAccion">
+                  <div class="modal-body">
+                    <div class="row g-4">
+                      <!-- Columna izquierda: Descripción + Color -->
+                      <div class="col-md-6">
+                        
+                        <label class=" form-label">Descripción de la acción</label>
+                        <textarea class="form-control" name="descripcion" rows="6" placeholder="Escribe aquí..." required></textarea>
+                        <label class=" mt-3 form-label">Adjuntar documentos</label>
+                          <div id="customDropArea" class="border border-dashed p-4 rounded text-center bg-light" style="cursor: pointer;">
+                            <i class="bi bi-cloud-arrow-up fs-1 text-primary mb-2"></i>
+                            <p class="mb-0 text-muted">Arrastra aquí tus archivos o haz clic para seleccionar</p>
+                            <input type="file" id="fileInput" class="d-none" multiple accept=".pdf,.doc,.docx">
+                          </div>
+          
+                        
+                      </div>
+          
+                      <!-- Columna derecha: Archivos + Imagen + Preview -->
+                      <div class="col-md-6">
+                        <div class="mb-3">
+                          
+                        
+                          <!-- Vista de archivos -->
+                          <ul id="fileList" class="list-group mt-3 small"></ul>
+                        </div>
+          
+                        <!-- Input de imagen oculto -->
+                        <input type="file" accept="image/*" class="d-none" id="inputImagenEvidencia" name="imagen">
+
+                        <div class="border mt-3 p-3 text-center rounded bg-light">
+                          <strong>Imagen de Evidencia</strong>
+                          <div class="mt-2 mb-2">
+                            <img id="previewImagen" src="https://placehold.co/600x400?text=  " class="img-fluid rounded shadow-sm" style="max-height: 180px;" alt="Vista previa">
+                          </div>
+                          <div class="d-flex justify-content-center flex-wrap gap-2">
+                            <button type="button" id="botonImagen" class="btn btn-outline-primary btn-sm">
+                              <i class="bi bi-upload me-1"></i> Subir imagen
+                            </button>
+                            <button type="button" id="botonEliminarImagen" class="btn btn-outline-danger btn-sm d-none">
+                              <i class="bi bi-trash3 me-1"></i> Eliminar imagen
+                            </button>
+                          </div>
+                        </div>
+
+                        
+                        
+
+
+                        
+                        
+                      </div>
+                    </div>
+                  </div>
+          
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Guardar acción</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+          
+          <script>
+            document.getElementById('inputImagenEvidencia').addEventListener('change', function (e) {
+              const file = e.target.files[0];
+              const preview = document.getElementById('previewImagen');
+          
+              if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                  preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+              } else {
+                preview.src = 'https://placehold.co/600x400?text=  ';
+              }
+            });
+          </script>
+          
+          
+          
+
+          
+          
+          <!-- Script de Chart.js (se mantiene igual) -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('category-donut-chart');
+            
+            new Chart(ctx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Recibido', 'No recibido'],
+                datasets: [{
+                  data: [70, 30],
+                  backgroundColor: ['#28a745', '#dc3545'],
+                  borderWidth: 2,
+                  borderColor: '#fff'
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: {
+                      boxWidth: 12,
+                      padding: 15,
+                      font: {
+                        size: 13
+                      },
+                      usePointStyle: true
+                    }
+                  }
+                },
+                cutout: '72%',
+                animation: {
+                  animateScale: true,
+                  animateRotate: true
+                }
+              }
+            });
+          });
+          </script>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer" style="background: #e0f6ff">
+      <div class="footer-wrapper container-fluid">
+        <div class="row">
+          <div class="col my-1">
+            <p class="m-0">
+              © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+    <!-- [Page Specific JS] start -->
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <!-- custom widgets js -->
+    <script src="../assets/js/widgets/total-line-1-chart.js"></script>
+    <script src="../assets/js/widgets/total-line-2-chart.js"></script>
+    <script src="../assets/js/widgets/total-line-3-chart.js"></script>
+    <script src="../assets/js/widgets/cashflow-bar-chart.js"></script>
+    <!-- Required Js -->
+    <script src="../assets/js/plugins/popper.min.js"></script>
+    <script src="../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="../assets/js/plugins/i18next.min.js"></script>
+    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+    <script src="../assets/js/icon/custom-font.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/multi-lang.js"></script>
+    <script src="../assets/js/plugins/feather.min.js"></script>
+    <script src="../assets/js/widgets/category-donut-chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      const inputImagen = document.getElementById('inputImagenEvidencia');
+      const preview = document.getElementById('previewImagen');
+      const botonImagen = document.getElementById('botonImagen');
+      const botonEliminar = document.getElementById('botonEliminarImagen');
+    
+      // Cuando el botón "Subir/Cambiar imagen" se presiona, abrimos el input
+      botonImagen.addEventListener('click', () => inputImagen.click());
+    
+      // Cuando el input cambia (se selecciona imagen)
+      inputImagen.addEventListener('change', function (e) {
+        const file = e.target.files[0];
+    
+        if (file && file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            botonImagen.innerHTML = '<i class="bi bi-upload me-1"></i> Cambiar imagen';
+            botonEliminar.classList.remove('d-none');
+          };
+          reader.readAsDataURL(file);
+        } else {
+          // Si no es imagen válida, restaurar por si acaso
+          preview.src = 'https://placehold.co/600x400?text=  ';
+          botonImagen.innerHTML = '<i class="bi bi-upload me-1"></i> Subir imagen';
+          botonEliminar.classList.add('d-none');
+        }
+      });
+    
+      // Cuando se presiona "Eliminar imagen"
+      botonEliminar.addEventListener('click', () => {
+        inputImagen.value = '';
+        preview.src = 'https://placehold.co/600x400?text=  ';
+        botonImagen.innerHTML = '<i class="bi bi-upload me-1"></i> Subir imagen';
+        botonEliminar.classList.add('d-none');
+      });
+    </script>
+    
+    
+    
+    <script>
+      const dropArea = document.getElementById('customDropArea');
+      const fileInput = document.getElementById('fileInput');
+      const fileList = document.getElementById('fileList');
+      let archivosSeleccionados = [];
+    
+      dropArea.addEventListener('click', () => fileInput.click());
+    
+      dropArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropArea.classList.add('border-primary');
+        dropArea.style.backgroundColor = '#e6f4ff';
+      });
+    
+      dropArea.addEventListener('dragleave', () => {
+        dropArea.classList.remove('border-primary');
+        dropArea.style.backgroundColor = '#f8f9fa';
+      });
+    
+      dropArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropArea.classList.remove('border-primary');
+        dropArea.style.backgroundColor = '#f8f9fa';
+        manejarArchivos(e.dataTransfer.files);
+      });
+    
+      fileInput.addEventListener('change', () => {
+        manejarArchivos(fileInput.files);
+      });
+    
+      function manejarArchivos(files) {
+        for (let file of files) {
+          archivosSeleccionados.push(file);
+        }
+        renderizarLista();
+      }
+    
+      function eliminarArchivo(index) {
+        archivosSeleccionados.splice(index, 1);
+        renderizarLista();
+      }
+    
+      function renderizarLista() {
+        fileList.innerHTML = '';
+        archivosSeleccionados.forEach((file, index) => {
+          const contenedor = document.createElement('div');
+          contenedor.className = 'archivo-item';
+    
+          const link = document.createElement('a');
+          link.href = URL.createObjectURL(file);
+          link.download = file.name;
+          link.className = 'archivo-link';
+          link.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
+    
+          const eliminarBtn = document.createElement('button');
+          eliminarBtn.className = 'btn-eliminar';
+          eliminarBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
+          eliminarBtn.onclick = () => eliminarArchivo(index);
+    
+          contenedor.appendChild(link);
+          contenedor.appendChild(eliminarBtn);
+          fileList.appendChild(contenedor);
+        });
+      }
+    </script>
+    
+    
+
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+<div class="offcanvas border-0 pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Settings</h5>
+    <button type="button" class="btn btn-icon btn-link-danger ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"
+      ><i class="ti ti-x"></i
+    ></button>
+  </div>
+  <div class="pct-body customizer-body">
+    <div class="offcanvas-body py-0">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="pc-dark">
+            <h6 class="mb-1">Theme Mode</h6>
+            <p class="text-muted text-sm">Choose light or dark mode or Auto</p>
+            <div class="row theme-color theme-layout">
+              <div class="col-4">
+                <div class="d-grid">
+                  <button
+                    class="preset-btn btn active"
+                    data-value="true"
+                    onclick="layout_change('light');"
+                    data-bs-toggle="tooltip"
+                    title="Light"
+                  >
+                    <svg class="pc-icon text-warning">
+                      <use xlink:href="#custom-sun-1"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid">
+                  <button class="preset-btn btn" data-value="false" onclick="layout_change('dark');" data-bs-toggle="tooltip" title="Dark">
+                    <svg class="pc-icon">
+                      <use xlink:href="#custom-moon"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid">
+                  <button
+                    class="preset-btn btn"
+                    data-value="default"
+                    onclick="layout_change_default();"
+                    data-bs-toggle="tooltip"
+                    title="Automatically sets the theme based on user's operating system's color scheme."
+                  >
+                    <span class="pc-lay-icon d-flex align-items-center justify-content-center">
+                      <i class="ph-duotone ph-cpu"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Theme Contrast</h6>
+          <p class="text-muted text-sm">Choose theme contrast</p>
+          <div class="row theme-contrast">
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                  class="preset-btn btn"
+                  data-value="true"
+                  onclick="layout_theme_contrast_change('true');"
+                  data-bs-toggle="tooltip"
+                  title="True"
+                >
+                  <svg class="pc-icon">
+                    <use xlink:href="#custom-mask"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                  class="preset-btn btn active"
+                  data-value="false"
+                  onclick="layout_theme_contrast_change('false');"
+                  data-bs-toggle="tooltip"
+                  title="False"
+                >
+                  <svg class="pc-icon">
+                    <use xlink:href="#custom-mask-1-outline"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Custom Theme</h6>
+          <p class="text-muted text-sm">Choose your primary theme color</p>
+          <div class="theme-color preset-color">
+            <a href="#!" data-bs-toggle="tooltip" title="Blue" class="active" data-value="preset-1"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Indigo" data-value="preset-2"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Purple" data-value="preset-3"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Pink" data-value="preset-4"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Red" data-value="preset-5"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Orange" data-value="preset-6"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Yellow" data-value="preset-7"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Green" data-value="preset-8"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Teal" data-value="preset-9"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Cyan" data-value="preset-10"><i class="ti ti-checks"></i></a>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Theme layout</h6>
+          <p class="text-muted text-sm">Choose your layout</p>
+          <div class="theme-main-layout d-flex align-center gap-1 w-100">
+            <a href="#!" data-bs-toggle="tooltip" title="Vertical" class="active" data-value="vertical">
+              <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Horizontal" data-value="horizontal">
+              <img src="../assets/images/customizer/horizontal.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Color Header" data-value="color-header">
+              <img src="../assets/images/customizer/color-header.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Compact" data-value="compact">
+              <img src="../assets/images/customizer/compact.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Tab" data-value="tab">
+              <img src="../assets/images/customizer/tab.svg" alt="img" class="img-fluid" />
+            </a>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Sidebar Caption</h6>
+          <p class="text-muted text-sm">Sidebar Caption Hide/Show</p>
+          <div class="row theme-color theme-nav-caption">
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                  class="preset-btn btn-img btn active"
+                  data-value="true"
+                  onclick="layout_caption_change('true');"
+                  data-bs-toggle="tooltip"
+                  title="Caption Show"
+                >
+                  <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
+                </button>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                  class="preset-btn btn-img btn"
+                  data-value="false"
+                  onclick="layout_caption_change('false');"
+                  data-bs-toggle="tooltip"
+                  title="Caption Hide"
+                >
+                  <img src="../assets/images/customizer/caption-off.svg" alt="img" class="img-fluid" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="pc-rtl">
+            <h6 class="mb-1">Theme Layout</h6>
+            <p class="text-muted text-sm">LTR/RTL</p>
+            <div class="row theme-color theme-direction">
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                    class="preset-btn btn-img btn active"
+                    data-value="false"
+                    onclick="layout_rtl_change('false');"
+                    data-bs-toggle="tooltip"
+                    title="LTR"
+                  >
+                    <img src="../assets/images/customizer/ltr.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                    class="preset-btn btn-img btn"
+                    data-value="true"
+                    onclick="layout_rtl_change('true');"
+                    data-bs-toggle="tooltip"
+                    title="RTL"
+                  >
+                    <img src="../assets/images/customizer/rtl.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item pc-box-width">
+          <div class="pc-container-width">
+            <h6 class="mb-1">Layout Width</h6>
+            <p class="text-muted text-sm">Choose Full or Container Layout</p>
+            <div class="row theme-color theme-container">
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                    class="preset-btn btn-img btn active"
+                    data-value="false"
+                    onclick="change_box_container('false')"
+                    data-bs-toggle="tooltip"
+                    title="Full Width"
+                  >
+                    <img src="../assets/images/customizer/full.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                    class="preset-btn btn-img btn"
+                    data-value="true"
+                    onclick="change_box_container('true')"
+                    data-bs-toggle="tooltip"
+                    title="Fixed Width"
+                  >
+                    <img src="../assets/images/customizer/fixed.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="d-grid">
+            <button class="btn btn-light-danger" id="layoutreset">Reset Layout</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+    <style>
+        .legend-color {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          margin-right: 5px;
+          border-radius: 2px;
+        }
+        .chart-legend {
+          padding-top: 30px;
+        }
+      </style>
+
+
+  </body>
+  <!-- [Body] end -->
+</html>
