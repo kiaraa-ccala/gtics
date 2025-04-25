@@ -1,23 +1,26 @@
 package com.example.proyectosanmiguel.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
-
 import java.io.Serializable;
+import java.util.Objects;
 
-@Getter
-@Setter
-@Embeddable
 public class InstanciaServicioId implements Serializable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idInstanciaServicio", nullable = false)
     private Integer idInstanciaServicio;
-    @Column(name = "idServicio", nullable = false)
     private Integer idServicio;
-    @Column(name = "idComplejoDeportivo", nullable = false)
     private Integer idComplejoDeportivo;
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof InstanciaServicioId)) return false;
+        InstanciaServicioId that = (InstanciaServicioId) o;
+        return Objects.equals(idInstanciaServicio, that.idInstanciaServicio) &&
+                Objects.equals(idServicio, that.idServicio) &&
+                Objects.equals(idComplejoDeportivo, that.idComplejoDeportivo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idInstanciaServicio, idServicio, idComplejoDeportivo);
+    }
 }

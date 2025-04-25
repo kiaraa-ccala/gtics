@@ -10,29 +10,51 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
+@IdClass(HorarioId.class)
 @Table(name = "Horario")
 public class Horario {
 
-    @EmbeddedId
-    private HorarioId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idHorario")
+    private Integer idHorario;
 
-    @MapsId("idHorarioSemanal")
+    @Id
+    @Column(name = "idHorarioSemanal")
+    private Integer idHorarioSemanal;
+
+    @Id
+    @Column(name = "idAdministrador")
+    private Integer idAdministrador;
+
+    @Id
+    @Column(name = "idCoordinador")
+    private Integer idCoordinador;
+
+    @Id
+    @Column(name = "idComplejoDeportivo")
+    private Integer idComplejoDeportivo;
+
+    // Relaciones
     @ManyToOne
-    @JoinColumn(name = "idHorarioSemanal")
+    @JoinColumns({
+            @JoinColumn(name = "idHorarioSemanal", referencedColumnName = "idHorarioSemanal", insertable = false, updatable = false),
+            @JoinColumn(name = "idAdministrador", referencedColumnName = "idAdministrador", insertable = false, updatable = false),
+            @JoinColumn(name = "idCoordinador", referencedColumnName = "idCoordinador", insertable = false, updatable = false)
+    })
     private HorarioSemanal horarioSemanal;
 
-    @MapsId("idHorarioSemanal")
     @ManyToOne
-    @JoinColumn(name = "idComplejoDeportivo")
+    @JoinColumn(name = "idComplejoDeportivo", insertable = false, updatable = false)
     private ComplejoDeportivo complejoDeportivo;
 
-    @Column(name = "fecha", nullable = false)
+    // Otros campos
+    @Column(name = "fecha")
     private LocalDate fecha;
 
-    @Column(name = "horaIngreso", nullable = false)
+    @Column(name = "horaIngreso")
     private LocalTime horaIngreso;
 
-    @Column(name = "horaSalida", nullable = false)
+    @Column(name = "horaSalida")
     private LocalTime horaSalida;
-
 }

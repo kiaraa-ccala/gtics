@@ -1,13 +1,11 @@
 package com.example.proyectosanmiguel.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+@Entity
 public class InformacionPago {
 
     @Id

@@ -1,25 +1,30 @@
 package com.example.proyectosanmiguel.entity;
 
-import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 import java.io.Serializable;
+import java.util.Objects;
 
-@Getter
-@Setter
-@Embeddable
 public class HorarioId implements Serializable {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idHorario", nullable = false)
     private Integer idHorario;
-    @Column(name = "idHorarioSemanal", nullable = false)
     private Integer idHorarioSemanal;
-    @Column(name = "idAdministrador", nullable = false)
     private Integer idAdministrador;
-    @Column(name = "idCoordinador", nullable = false)
     private Integer idCoordinador;
-    @Column(name = "idComplejoDeportivo", nullable = false)
     private Integer idComplejoDeportivo;
+
+    // equals() y hashCode() obligatorios para JPA
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof HorarioId)) return false;
+        HorarioId that = (HorarioId) o;
+        return Objects.equals(idHorario, that.idHorario) &&
+                Objects.equals(idHorarioSemanal, that.idHorarioSemanal) &&
+                Objects.equals(idAdministrador, that.idAdministrador) &&
+                Objects.equals(idCoordinador, that.idCoordinador) &&
+                Objects.equals(idComplejoDeportivo, that.idComplejoDeportivo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(idHorario, idHorarioSemanal, idAdministrador, idCoordinador, idComplejoDeportivo);
+    }
 }

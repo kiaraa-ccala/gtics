@@ -7,20 +7,29 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
+@IdClass(InstanciaServicioId.class)
 @Table(name = "InstanciaServicio")
 public class InstanciaServicio {
 
-    @EmbeddedId
-    private InstanciaServicioId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idInstanciaServicio", nullable = false)
+    private Integer idInstanciaServicio;
 
-    @MapsId("idServicio")
+    @Id
+    @Column(name = "idServicio", nullable = false)
+    private Integer idServicio;
+
+    @Id
+    @Column(name = "idComplejoDeportivo", nullable = false)
+    private Integer idComplejoDeportivo;
+
     @ManyToOne
-    @JoinColumn(name = "idServicio")
+    @JoinColumn(name = "idServicio", insertable = false, updatable = false)
     private Servicio servicio;
 
-    @MapsId("idComplejoDeportivo")
     @ManyToOne
-    @JoinColumn(name = "idComplejoDeportivo")
+    @JoinColumn(name = "idComplejoDeportivo", insertable = false, updatable = false)
     private ComplejoDeportivo complejoDeportivo;
 
     @Column(name = "nombre", nullable = false, length = 45)
@@ -31,5 +40,4 @@ public class InstanciaServicio {
 
     @Column(name = "modoAcceso", nullable = false, length = 45)
     private String modoAcceso;
-
 }

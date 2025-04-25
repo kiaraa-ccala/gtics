@@ -28,5 +28,5 @@ public class Evidencia {
     @ManyToOne
     @JoinColumn(name = "idReporte")
     private Reporte reporte;
-    
+
 }

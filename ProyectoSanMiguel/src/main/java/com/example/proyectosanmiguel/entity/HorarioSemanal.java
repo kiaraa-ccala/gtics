@@ -9,20 +9,30 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@IdClass(HorarioSemanalId.class)
 @Table(name = "HorarioSemanal")
 public class HorarioSemanal {
 
-    @EmbeddedId
-    private HorarioSemanalId id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idHorarioSemanal", nullable = false)
+    private Integer idHorarioSemanal;
 
-    @MapsId("idAdministrador")
+    @Id
+    @Column(name = "idAdministrador", nullable = false)
+    private Integer idAdministrador;
+
+    @Id
+    @Column(name = "idCoordinador", nullable = false)
+    private Integer idCoordinador;
+
+    // Relaciones
     @ManyToOne
-    @JoinColumn(name = "idAdministrador")
+    @JoinColumn(name = "idAdministrador", insertable = false, updatable = false)
     private Usuario administrador;
 
-    @MapsId("idCoordinador")
     @ManyToOne
-    @JoinColumn(name = "idCoordinador")
+    @JoinColumn(name = "idCoordinador", insertable = false, updatable = false)
     private Usuario coordinador;
 
     @Column(name = "fechaInicio", nullable = false)

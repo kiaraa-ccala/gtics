@@ -27,7 +27,7 @@ public class Usuario {
     private String distrito;
     @Column(name = "provincia", nullable = false, length = 45)
     private String provincia;
-    @Column(name = "departament", nullable = false, length = 45)
+    @Column(name = "departamento", nullable = false, length = 45)
     private String departamento;
     @ManyToOne
     @JoinColumn(name="idSector")

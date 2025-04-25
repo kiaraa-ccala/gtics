@@ -27,6 +27,12 @@ public class Validacion {
     @Column(name = "resultado", length = 45)
     private String resultado;
     @ManyToOne
-    @JoinColumn(name = "idHorario")
+    @JoinColumns({
+            @JoinColumn(name = "idHorario", referencedColumnName = "idHorario"),
+            @JoinColumn(name = "idHorarioSemanal", referencedColumnName = "idHorarioSemanal"),
+            @JoinColumn(name = "idAdministrador", referencedColumnName = "idAdministrador"),
+            @JoinColumn(name = "idCoordinador", referencedColumnName = "idCoordinador"),
+            @JoinColumn(name = "idComplejoDeportivo", referencedColumnName = "idComplejoDeportivo")
+    })
     private Horario horario;
 }
