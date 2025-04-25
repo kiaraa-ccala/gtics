@@ -93,9 +93,9 @@
                   <tr th:each="reporte, iter : ${listaReportes}">
                     <td th:text="${iter.count}">1</td>
                     <td th:text="${reporte.asunto}">Foco quemado</td>
-                    <td th:text="${reporte.idHorarioSemanal}">Coordinador</td> <!-- Aquí depende de tu relación -->
+                    <td th:text="${reporte.horario.horarioSemanal.coordinador.nombre}">Coordinador</td> <!-- corregido -->
                     <td th:text="${reporte.tipoReporte}">Reclamo</td>
-                    <td th:text="${reporte.idComplejoDeportivo}">Complejo Norte</td> <!-- También ajustar -->
+                    <td th:text="${reporte.horario.complejoDeportivo.nombre}">Complejo Norte</td> <!-- corregido -->
                     <td th:text="${reporte.fechaRecepcion}">2025-04-22</td>
                     <td class="text-center">
                       <span th:text="${reporte.estado}" class="badge bg-light-success">Pendiente</span>
@@ -107,22 +107,13 @@
                     </td>
                   </tr>
                 </tbody>
+
               </table>
 
             </div>
           </div>
         </div>
-        
-        
-
-
-
-        
-        <!-- [ breadcrumb ] end -->
-
-
-        <!-- [ Main Content ] start -->
-        
+sa
         <!-- [ Main Content ] end -->
       </div>
     </section>
