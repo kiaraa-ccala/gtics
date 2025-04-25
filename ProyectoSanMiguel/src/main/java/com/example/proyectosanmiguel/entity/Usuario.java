@@ -35,4 +35,8 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "idTercerizado")
     private Tercerizado tercerizado;
+    @ManyToOne
+    @JoinColumn(name = "idRol")
+    private Rol rol;
+
 }
