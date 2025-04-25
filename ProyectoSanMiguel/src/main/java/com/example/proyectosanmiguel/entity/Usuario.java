@@ -29,6 +29,8 @@ public class Usuario {
     private String provincia;
     @Column(name = "departamento", nullable = false, length = 45)
     private String departamento;
+    @Column(name = "telefono", nullable = false, length = 9)
+    private String telefono;
     @ManyToOne
     @JoinColumn(name="idSector")
     private Sector sector;

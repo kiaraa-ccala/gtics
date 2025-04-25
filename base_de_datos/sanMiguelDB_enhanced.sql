@@ -98,6 +98,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`usuario` (
   `idTercerizado` INT NULL DEFAULT NULL,
   `idFoto` INT NOT NULL,
   `idRol` INT NOT NULL,
+  `telefono` VARCHAR(9) NULL DEFAULT NULL,
   PRIMARY KEY (`idUsuario`),
   INDEX `fk_usuarios_sector_idx` (`idSector` ASC) VISIBLE,
   INDEX `fk_usuarios_outsourced1_idx` (`idTercerizado` ASC) VISIBLE,
