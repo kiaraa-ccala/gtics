@@ -14,7 +14,6 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idUsuario", nullable = false)
     private Integer idUsuario;
-
     @Column(name = "nombre", nullable = false, length = 45)
     private String nombre;
     @Column(name = "apellido", nullable = false, length = 45)
@@ -40,5 +39,7 @@ public class Usuario {
     @ManyToOne
     @JoinColumn(name = "idRol")
     private Rol rol;
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Credencial credencial;
 
 }

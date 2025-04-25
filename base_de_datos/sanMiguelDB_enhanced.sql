@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`sector` (
   `nombre` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idSector`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`complejodeportivo` (
     FOREIGN KEY (`idSector`)
     REFERENCES `GestionDeportiva`.`sector` (`idSector`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`foto` (
   `urlFoto` VARCHAR(100) NULL DEFAULT NULL,
   PRIMARY KEY (`idFoto`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`tercerizado` (
   `direccionFiscal` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idTercerizado`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`Rol` (
   `nombre` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idRol`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -98,7 +98,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`usuario` (
   `idTercerizado` INT NULL DEFAULT NULL,
   `idFoto` INT NOT NULL,
   `idRol` INT NOT NULL,
-  `telefono` VARCHAR(9) NULL DEFAULT NULL,
+  `telefono` VARCHAR(9) NULL,
   PRIMARY KEY (`idUsuario`),
   INDEX `fk_usuarios_sector_idx` (`idSector` ASC) VISIBLE,
   INDEX `fk_usuarios_outsourced1_idx` (`idTercerizado` ASC) VISIBLE,
@@ -119,7 +119,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`usuario` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`horariosemanal` (
     FOREIGN KEY (`idCoordinador`)
     REFERENCES `GestionDeportiva`.`usuario` (`idUsuario`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`horario` (
     FOREIGN KEY (`idHorarioSemanal` , `idAdministrador` , `idCoordinador`)
     REFERENCES `GestionDeportiva`.`horariosemanal` (`idHorarioSemanal` , `idAdministrador` , `idCoordinador`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -178,7 +178,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`servicio` (
   `nombre` VARCHAR(60) NULL DEFAULT NULL,
   PRIMARY KEY (`idServicio`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -201,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`instanciaservicio` (
     FOREIGN KEY (`idComplejoDeportivo`)
     REFERENCES `GestionDeportiva`.`complejodeportivo` (`idComplejoDeportivo`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -216,7 +216,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`informacionpago` (
   `estado` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idInformacionPago`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -248,7 +248,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`reserva` (
     FOREIGN KEY (`idUsuario`)
     REFERENCES `GestionDeportiva`.`usuario` (`idUsuario`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -278,7 +278,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`reporte` (
     FOREIGN KEY (`idReserva`)
     REFERENCES `GestionDeportiva`.`reserva` (`idReserva`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -295,7 +295,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`comentario` (
     FOREIGN KEY (`idReporte`)
     REFERENCES `GestionDeportiva`.`reporte` (`idReporte`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -307,12 +307,14 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`credencial` (
   `password` VARCHAR(45) NULL DEFAULT NULL,
   `idUsuario` INT NOT NULL,
   PRIMARY KEY (`idCredencial`),
-  INDEX `fk_credentials_usuarios1_idx` (`idUsuario` ASC) VISIBLE,
-  CONSTRAINT `fk_credentials_usuarios1`
+  INDEX `fk_credencial_usuario1_idx` (`idUsuario` ASC) VISIBLE,
+  CONSTRAINT `fk_credencial_usuario1`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `GestionDeportiva`.`usuario` (`idUsuario`))
+    REFERENCES `GestionDeportiva`.`usuario` (`idUsuario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -332,7 +334,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`descuento` (
     FOREIGN KEY (`idServicio`)
     REFERENCES `GestionDeportiva`.`servicio` (`idServicio`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -350,7 +352,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`evidencia` (
     FOREIGN KEY (`idReporte`)
     REFERENCES `GestionDeportiva`.`reporte` (`idReporte`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -369,7 +371,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`mantenimiento` (
     FOREIGN KEY (`idServicio`)
     REFERENCES `GestionDeportiva`.`servicio` (`idServicio`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -389,7 +391,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`tarifa` (
     FOREIGN KEY (`idServicio`)
     REFERENCES `GestionDeportiva`.`servicio` (`idServicio`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -409,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `GestionDeportiva`.`validacion` (
     FOREIGN KEY (`idHorario`)
     REFERENCES `GestionDeportiva`.`horario` (`idHorario`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
