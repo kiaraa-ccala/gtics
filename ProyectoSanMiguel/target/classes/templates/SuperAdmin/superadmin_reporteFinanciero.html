@@ -1,27 +1,23 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
-  <!-- [Head] start -->
-
 
   <head th:replace="fragments/head_superadmin :: head('Reporte Financiero')"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
-    <!-- [ Pre-loader ] start -->
-  <div class="loader-bg">
-  <div class="loader-track">
-    <div class="loader-fill"></div>
-  </div>
-</div>
-<!-- [ Pre-loader ] End -->
- <!-- [ Sidebar Menu ] start -->
+
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+
     <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
-<!-- [ Sidebar Menu ] end -->
- <!-- [ Header Topbar ] start -->
+
     <header class="pc-header">
       <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
         <div class="me-auto pc-mob-drp">
           <ul class="list-unstyled">
-            <!-- ======= Menu collapse Icon ===== -->
+
             <li class="pc-h-item pc-sidebar-collapse">
               <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
                 <i class="ti ti-menu-2"></i>
@@ -44,15 +40,15 @@
             </li>
           </ul>
         </div>
-        <!-- [Mobile Media Block end] -->
+
         <div class="ms-auto">
           <ul class="list-unstyled">
 
             <li class="d-flex justify-content-center align-items-center">
 
-      <span class="badge bg-light-success rounded-pill ms-2 theme-version">
-        gestor-DTI
-      </span>
+          <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+            gestor-DTI
+          </span>
             </li>
             <li class="dropdown pc-h-item">
               <a
@@ -144,7 +140,7 @@
                       data-bs-auto-close="outside"
                       aria-expanded="false"
               >
-                <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+                <img th:src="@{/assets/images/user/avatar-2.jpg}" alt="user-image" class="user-avtar" />
               </a>
               <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                 <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -229,15 +225,11 @@
             </div>
           </div>
         </div>
-        <!-- [ breadcrumb ] end -->
 
-
-        <!-- [ Main Content ] start -->
         <div class="row">
-
         </div>
         <div class="row">
-          <!-- HTML5 Export Buttons table start -->
+
           <div class="col-sm-12">
             <div class="card">
 
@@ -424,7 +416,6 @@
           </div>
 
         </div>
-        <!-- [ Main Content ] end -->
 
       </div>
     </section>
@@ -432,7 +423,6 @@
     <div th:replace="fragments/footer_superadmin :: footer"></div>
 
 
-    <!-- Required Js -->
     <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
     <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
     <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
@@ -471,9 +461,6 @@
 </script>
 
 
-
-    <!-- [Page Specific JS] start -->
-    <!-- datatable Js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <script th:src="@{/assets/js/plugins/dataTables.min.js}"></script>

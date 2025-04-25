@@ -2,166 +2,24 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
   <!-- [Head] start -->
 
-  <head>
-    <title>Listado plantilla</title>
-    <!-- [Meta] -->
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta
-      name="description"
-      content="Able Pro is trending dashboard template made using Bootstrap 5 design framework. Able Pro is available in Bootstrap, React, CodeIgniter, Angular,  and .net Technologies."
-    />
-    <meta
-      name="keywords"
-      content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard"
-    />
-    <meta name="author" content="Phoenixcoded" />
-    <!-- [Favicon] icon -->
-    <link rel="icon" th:href="@{/assets/images/logo-circular.png}" type="image/x-icon" />
-    <link rel="stylesheet" th:href="@{/assets/css/plugins/style.css}" />
-    <!-- [Font] Family -->
-    <link rel="stylesheet" th:href="@{/assets/fonts/inter/inter.css}" id="main-font-link" />
-    <!-- [phosphor Icons] https://phosphoricons.com/ -->
-    <link rel="stylesheet" th:href="@{/assets/fonts/phosphor/duotone/style.css}" />
-    <!-- [Tabler Icons] https://tablericons.com -->
-    <link rel="stylesheet" th:href="@{/assets/fonts/tabler-icons.min.css}" />
-    <!-- [Feather Icons] https://feathericons.com -->
-    <link rel="stylesheet" th:href="@{/assets/fonts/feather.css}" />
-    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
-    <link rel="stylesheet" th:href="@{/assets/fonts/fontawesome.css}" />
-    <!-- [Material Icons] https://fonts.google.com/icons -->
-    <link rel="stylesheet" th:href="@{/assets/fonts/material.css}" />
-    <!-- [Template CSS Files] -->
-    <link rel="stylesheet" th:href="@{/assets/css/style.css}" id="main-style-link" />
-    <script th:src="@{/assets/js/tech-stack.js}"></script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
-    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
-    <script type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
-    <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
-    <link rel="stylesheet" href="../../static/assets/css/style-preset.css" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-  </head>
+  <head th:replace="fragments/head_superadmin :: head('Lista Usuarios')"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
     <!-- [ Pre-loader ] start -->
-<div class="loader-bg">
-  <div class="loader-track">
-    <div class="loader-fill"></div>
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
   </div>
-</div>
-<!-- [ Pre-loader ] End -->
- <!-- [ Sidebar Menu ] start -->
-    <nav class="pc-sidebar" style="background-color: #1a3570;">
-      <div class="navbar-wrapper text-white" >
-        <div class="m-header" style="background-color: #fffffb;">
 
-          <a  class="b-brand text-primary">
-            <img th:src="@{/assets/images/logo-sanM.png}" class="img-fluid" style="height: 40px;" alt="logoSM" />
 
-            <span class="badge bg-light-success rounded-pill ms-2 theme-version">gestor-DTI</span>
-          </a>
-        </div>
-        <div class="navbar-content" >
+    <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
 
-          <ul class="pc-navbar">
 
-            <li class="pc-item">
-              <a href="superadmin_estadisticasPersonal.html" class="pc-link">
-              <span class="pc-micon">
-                <i class="bi bi-house-door-fill"></i>
-              </span>
-                <span class="pc-mtext" data-i18n="Inicio">Inicio</span>
-              </a>
-            </li>
-            <li class="pc-item pc-caption">
-              <label data-i18n="Estadisticas">Estadisticas</label>
-            </li>
-
-            <li class="pc-item">
-              <a href="superadmin_estadisticasFinancieras.html" class="pc-link">
-          <span class="pc-micon">
-            <svg class="pc-icon"><use xlink:href="#custom-status-up"></use></svg>
-          </span>
-                <span class="pc-mtext" data-i18n="Financieros">Financieros</span>
-              </a>
-            </li>
-
-            <li class="pc-item pc-caption">
-              <label data-i18n="Gestión y reportes">Administrador Panel</label>
-              <svg class="pc-icon">
-                <use xlink:href="#custom-layer"></use>
-              </svg>
-            </li>
-            <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link">
-        <span class="pc-micon">
-          <svg class="pc-icon">
-            <use xlink:href="#custom-layer"></use>
-          </svg>
-        </span>
-                <span class="pc-mtext" data-i18n="Reportes">Reportes</span>
-                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-              </a>
-              <ul class="pc-submenu">
-                <li class="pc-item pc-hasmenu">
-                  <a class="pc-link" href="superadmin_reporteServicios.html">
-                    <span data-i18n="Servicios"></span>
-                    <span class="pc-arrow"></i></span
-                    ></a>
-
-                </li>
-
-                <li class="pc-item pc-hasmenu">
-                  <a class="pc-link" href="superadmin_reporteFinanciero.html">
-                    <span data-i18n="Financiero"></span>
-                    <span class="pc-arrow"></i></span
-                    ></a>
-                </li>
-
-              </ul>
-            </li>
-            <li class="pc-item pc-hasmenu">
-              <a href="#!" class="pc-link">
-                <span class="pc-micon">
-                  <svg class="pc-icon">
-                    <use xlink:href="#custom-user"></use>
-                  </svg>
-                </span>
-                <span class="pc-mtext" data-i18n="Miembros">Miembros</span>
-                <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-              </a>
-              <ul class="pc-submenu">
-                <li class="pc-item"><a class="pc-link" href="superadmin_listaUsuarios.html" data-i18n="Listado plantilla">Lista</a></li>
-                <li class="pc-item"><a class="pc-link" href="superadmin_agregarUsuarios.html" data-i18n="Añadir">Añadir</a></li>
-              </ul>
-            </li>
-            <li class="pc-item pc-caption">
-              <label data-i18n="Asistencia">Asistencia</label>
-              <svg class="pc-icon">
-                <use xlink:href="#custom-shopping-bag"></use>
-              </svg>
-            </li>
-            <li class="pc-item">
-              <a href="superadmin_asistencia.html" class="pc-link">
-        <span class="pc-micon">
-          <svg class="pc-icon">
-            <use xlink:href="#custom-calendar-1"></use>
-          </svg>
-        </span>
-                <span class="pc-mtext" data-i18n="Registro">Registro</span></a
-              >
-            </li>
-
-          </ul>
-        </div>
-      </div>
-    </nav>
- <!-- [ Header Topbar ] start -->
     <header class="pc-header">
-      <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+      <div class="header-wrapper" style="background: #FFFFFF">
         <div class="me-auto pc-mob-drp">
           <ul class="list-unstyled">
             <!-- ======= Menu collapse Icon ===== -->
@@ -856,27 +714,13 @@
             </div>
           </div>
         </div>
-        <!-- [ Main Content ] end -->
+
       </div>
     </div>
-    <!-- [ Main Content ] end -->
-    <footer class="pc-footer" style="background: #e0f6ff">
-      <div class="footer-wrapper container-fluid">
-        <div class="row">
-          <div class="col my-1">
-            <p class="m-0">
-              © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
-          </div>
-          <div class="col-auto my-1">
-            <ul class="list-inline footer-link mb-0">
-              <li class="list-inline-item"><a href="../index.html">Home</a></li>
-              <li class="list-inline-item"><a href="https://phoenixcoded.gitbook.io/able-pro/" target="_blank">Documentation</a></li>
-              <li class="list-inline-item"><a href="https://phoenixcoded.authordesk.app/" target="_blank">Support</a></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </footer>
+
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+
  <!-- Required Js -->
 <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
 <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
