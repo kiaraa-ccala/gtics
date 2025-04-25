@@ -9,7 +9,6 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@IdClass(HorarioSemanalId.class)
 @Table(name = "HorarioSemanal")
 public class HorarioSemanal {
 
@@ -18,11 +17,11 @@ public class HorarioSemanal {
     @Column(name = "idHorarioSemanal", nullable = false)
     private Integer idHorarioSemanal;
 
-    @Id
+
     @Column(name = "idAdministrador", nullable = false)
     private Integer idAdministrador;
 
-    @Id
+
     @Column(name = "idCoordinador", nullable = false)
     private Integer idCoordinador;
 

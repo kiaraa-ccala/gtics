@@ -29,7 +29,7 @@ public class AdminController {
     @GetMapping("/reportes")
     public String listarReportes(Model model) {
         model.addAttribute("listaReportes", reporteRepository.findAll());
-        return "admin/reportes/lista";
+        return "Admin/admin_reporte_incidencia";
     }
 
     @GetMapping("/reportes/detalle/{id}")

@@ -10,7 +10,6 @@ import java.time.LocalTime;
 @Entity
 @Getter
 @Setter
-@IdClass(HorarioId.class)
 @Table(name = "Horario")
 public class Horario {
 
@@ -19,29 +18,15 @@ public class Horario {
     @Column(name = "idHorario")
     private Integer idHorario;
 
-    @Id
     @Column(name = "idHorarioSemanal")
     private Integer idHorarioSemanal;
 
-    @Id
-    @Column(name = "idAdministrador")
-    private Integer idAdministrador;
-
-    @Id
-    @Column(name = "idCoordinador")
-    private Integer idCoordinador;
-
-    @Id
     @Column(name = "idComplejoDeportivo")
     private Integer idComplejoDeportivo;
 
     // Relaciones
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "idHorarioSemanal", referencedColumnName = "idHorarioSemanal", insertable = false, updatable = false),
-            @JoinColumn(name = "idAdministrador", referencedColumnName = "idAdministrador", insertable = false, updatable = false),
-            @JoinColumn(name = "idCoordinador", referencedColumnName = "idCoordinador", insertable = false, updatable = false)
-    })
+    @JoinColumn(name = "idHorarioSemanal", referencedColumnName = "idHorarioSemanal", insertable = false, updatable = false)
     private HorarioSemanal horarioSemanal;
 
     @ManyToOne

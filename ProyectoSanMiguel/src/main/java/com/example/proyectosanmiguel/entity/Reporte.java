@@ -39,13 +39,7 @@ public class Reporte {
     private Reserva reserva;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "idHorario"),
-            @JoinColumn(name = "idHorarioSemanal"),
-            @JoinColumn(name = "Horario_idAdministrador"),
-            @JoinColumn(name = "idCoordinador"),
-            @JoinColumn(name = "idComplejoDeportivo")
-    })
+    @JoinColumn(name = "idHorario")
     private Horario horario;
 
 }
