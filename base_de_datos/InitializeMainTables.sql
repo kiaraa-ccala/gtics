@@ -16,7 +16,7 @@ INSERT INTO mydb.Tercerizado (idTercerizado, ruc, direccionFiscal) VALUES
 (1, '12345678901', 'Av. Proveedores 321');
 
 select * from Tercerizado;
-
+validacionusuariousuariousuariotercerizado
 
 INSERT INTO Foto (idFoto, nombreFoto, urlFoto) VALUES
 (1, 'ana.jpg', 'http://fotos.com/ana.jpg'),
