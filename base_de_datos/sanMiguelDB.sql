@@ -379,9 +379,8 @@ CREATE TABLE IF NOT EXISTS `mydb`.`Validacion` (
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
-
-
 -- -----------------------------------------------------
+
 -- Table `mydb`.`Reporte`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `mydb`.`Reporte` (
