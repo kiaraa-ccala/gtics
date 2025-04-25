@@ -1,0 +1,1205 @@
+<!doctype html>
+<html lang="es">
+  <!-- [Head] start -->
+
+  <head th:replace="fragments/head_superadmin :: head('Monitorear Servicio')"></head>
+
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+<nav class="pc-sidebar" style="background-color: #1a3570;">
+  <div class="navbar-wrapper text-white" >
+    <div class="m-header" style="background-color: #fffffb;">
+
+      <a  class="b-brand text-primary">
+        <img src="../assets/images/logo-sanM.png" class="img-fluid" style="height: 40px;" alt="logoSM" />
+
+        <span class="badge bg-light-success rounded-pill ms-2 theme-version">admin</span>
+      </a>
+    </div>
+    <div class="navbar-content" >
+
+      <ul class="pc-navbar">
+
+        <li class="pc-item pc-caption">
+          <label data-i18n="Inicio">Inicio</label>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+        <span class="pc-micon">
+           <i class="bi bi-house-door-fill"></i>
+        </span>
+            <span class="pc-mtext" data-i18n="Página inicio">Página inicio</span>
+          </a>
+          
+        </li>
+        <li class="pc-item pc-caption">
+          <label data-i18n="Servicios">Servicios</label>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+        <span class="pc-micon">
+           <i class="bi bi-columns-gap"></i>
+        </span>
+
+
+            <span class="pc-mtext" data-i18n="Agregar Servicios">Agregar Servicio</span>
+
+          </a>
+          
+        </li>
+        
+
+        <li class="pc-item pc-caption">
+          <label data-i18n="Gestión Horarios">Gestion Horario</label>
+          <svg class="pc-icon">
+            <use xlink:href="#custom-layer"></use>
+          </svg>
+        </li>
+        <li class="pc-item pc-hasmenu">
+          <a href="#!" class="pc-link">
+        <span class="pc-micon">
+          <svg class="pc-icon">
+            <use xlink:href="#custom-layer"></use>
+          </svg>
+        </span>
+            <span class="pc-mtext" data-i18n="Horarios">Horarios</span>
+            <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
+          </a>
+          <ul class="pc-submenu">
+            <li class="pc-item pc-hasmenu">
+              <a class="pc-link" href="#!">
+                <span data-i18n="Agregar Horario">Agregar</span>
+                <span class="pc-arrow"></i></span
+                ></a>
+
+            </li>
+
+            <li class="pc-item pc-hasmenu">
+              <a class="pc-link" href="#!">
+                <span data-i18n="Ver Horario">Ver</span>
+                <span class="pc-arrow"></i></span
+                ></a>
+            </li>
+
+          </ul>
+        </li>
+        
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+ <header class="pc-header">
+  <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+    <div class="me-auto pc-mob-drp">
+      <ul class="list-unstyled">
+        <!-- ======= Menu collapse Icon ===== -->
+        <li class="pc-h-item pc-sidebar-collapse">
+          <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+        <li class="pc-h-item pc-sidebar-popup">
+          <a href="#" class="pc-head-link ms-0" id="mobile-collapse">
+            <i class="ti ti-menu-2"></i>
+          </a>
+        </li>
+        <li class="pc-h-item d-none d-md-inline-flex">
+          <form class="form-search">
+            <i class="search-icon">
+              <svg class="pc-icon">
+                <use xlink:href="#custom-search-normal-1"></use>
+              </svg>
+            </i>
+            <input type="search" class="form-control" placeholder="Buscar" />
+          </form>
+        </li>
+      </ul>
+    </div>
+    <!-- [Mobile Media Block end] -->
+    <div class="ms-auto">
+      <ul class="list-unstyled">
+
+        <li class="d-flex justify-content-center align-items-center">
+
+  <span class="badge bg-light-success rounded-pill ms-2 theme-version">
+    admin
+  </span>
+        </li>
+
+
+
+
+
+
+        <li class="dropdown pc-h-item">
+          <a
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  aria-expanded="false"
+          >
+            <svg class="pc-icon">
+              <use xlink:href="#custom-notification"></use>
+            </svg>
+            <span class="badge bg-success pc-h-badge">3</span>
+          </a>
+          <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
+            <div class="dropdown-header d-flex align-items-center justify-content-between">
+              <h5 class="m-0">Notificaciones</h5>
+              <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
+            </div>
+            <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
+              <p class="text-span">Hoy</p>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-layer"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 2 min</span>
+                      <h5 class="text-body mb-2">Se te ha asignado la zona sur</h5>
+                      <p class="mb-0"
+                      >Buenas tardes administrador Tony, este mensaje es para...</p
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-sms"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 1 hora</span>
+                      <h5 class="text-body mb-2">Mensaje</h5>
+                      <p class="mb-0">Cierre de plataforma: proximas actualizaciones y recursos en proceso. </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <p class="text-span">Ayer</p>
+              <div class="card mb-2">
+                <div class="card-body">
+                  <div class="d-flex">
+                    <div class="flex-shrink-0">
+                      <svg class="pc-icon text-primary">
+                        <use xlink:href="#custom-document-text"></use>
+                      </svg>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                      <span class="float-end text-sm text-muted">hace 2 horas</span>
+                      <h5 class="text-body mb-2">Complejos disponibles</h5>
+                      <p class="mb-0"
+                      >Actualización de los complejos que estrán operativos durante la semana.</p
+                      >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="text-center py-2">
+              <a href="#!" class="link-danger">Vaciar bandeja</a>
+            </div>
+          </div>
+        </li>
+        <li class="dropdown pc-h-item header-user-profile">
+          <a
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  data-bs-auto-close="outside"
+                  aria-expanded="false"
+          >
+            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+          </a>
+          <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
+            <div class="dropdown-header d-flex align-items-center justify-content-between">
+              <h5 class="m-0">Mi perfil</h5>
+            </div>
+            <div class="dropdown-body">
+              <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
+                <div class="d-flex mb-1">
+                  <div class="flex-shrink-0">
+                    <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <h6 class="mb-1"> Administrador </h6>
+                    <span>tony.flores@sanmi.gob.pe</span>
+                  </div>
+                </div>
+                <hr class="border-secondary border-opacity-50" />
+                <div class="card">
+                  <div class="card-body py-3">
+                    <div class="d-flex align-items-center justify-content-between">
+                      <h5 class="mb-0 d-inline-flex align-items-center"
+                      ><svg class="pc-icon text-muted me-2">
+                        <use xlink:href="#custom-notification-outline"></use></svg>
+                      >Notificaciones</h5>
+                      
+                      <div class="form-check form-switch form-check-reverse m-0">
+                        <input class="form-check-input f-18" type="checkbox" role="switch" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                </a>
+                <div class="d-grid mb-3">
+                  <button class="btn btn-primary">
+                    <svg class="pc-icon me-2">
+                      <use xlink:href="#custom-logout-1-outline"></use></svg>
+                    >Salir
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Monitoreo de Servicios</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <div class="col-md-6 col-xxl-3">
+                <div class="card">
+                    <div class="card-body">
+                      <div class="d-flex align-items-center">
+                        <div class="flex-grow-1 me-3">
+                          <input type="date" class="form-control mb-2" id="fecha" onchange="actualizarFecha()" />
+                          <br>
+                          <p class="mb-0 text-sm"><strong>Estás viendo:</strong> <span id="mes-actual">Abril 2025</span></p>
+                        </div>
+                        <div class="flex-shrink-0">
+                          <div class="avtar avtar-l bg-light-primary rounded-circle">
+                            <i class="ph-duotone ph-calendar f-28"></i>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="col-md-6 col-xxl-3">
+            <div class="card" style="background-color: #D2FFD7 ;">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 me-3">
+                    <h4 class="mb-1">10</h4>
+                    <p class="mb-1 fw-medium text-muted">Ambientes con disponibilidad</p>
+                    <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="avtar avtar-l bg-light-primary rounded-circle">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card" style="background-color: #ebebeb  ;">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 me-3">
+                    <h4 class="mb-1">5</h4>
+                    <p class="mb-1 fw-medium text-muted">Completamente Reservados</p>
+                    <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="avtar avtar-l bg-light-primary rounded-circle">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-xxl-3">
+            <div class="card" style="background-color: #FFBEBE   ;">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 me-3">
+                    <h4 class="mb-1">6</h4>
+                    <p class="mb-1 fw-medium text-muted">En mantenimiento/reparación</p>
+                    <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                  </div>
+                  <div class="flex-shrink-0">
+                    <div class="avtar avtar-l bg-light-primary rounded-circle">
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Nueva card para selector de fecha -->
+  
+        </div>
+         
+          
+        
+
+          <div class="row">
+        
+            <div class="col-xl-4 col-md-6">
+              <div class="card">
+                <div class="card-body pb-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h5 class="mb-0">Uso de Servicios</h5>
+                    <div class="dropdown">
+                      <a
+                        class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
+                        href="#"
+                        data-bs-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                      >
+                        <i class="ti ti-dots-vertical f-18"></i>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="#">Zona Sur</a>
+                        <a class="dropdown-item" href="#">Zona Norte</a>
+                        <a class="dropdown-item" href="#">Zona Este</a>
+                        <a class="dropdown-item" href="#">Zona Oeste</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-body">
+                  <div id="total-income-graph2"></div>
+                  <div class="mb-2 mt-3 d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-warning f-12"></i> Gimnasio</h6>
+                    <p class="mb-0 text-muted">65% <i class="ti ti-arrow-narrow-up" style="color: green;"></i></p>
+                  </div>
+                  <div class="mb-2 d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-success f-12"></i> Lozas Deportivas</h6>
+                    <p class="mb-0 text-muted">53% <i class="ti ti-arrow-narrow-up" style="color: green;"></i></p>
+                  </div>
+                  <div class="mb-2 d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-primary f-12"></i> Piscinas</h6>
+                    <p class="mb-0 text-muted">22% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
+                  </div>
+                  <div class="d-flex align-items-center justify-content-between">
+                    <h6 class="mb-0 d-flex align-items-center gap-2"
+                      ><i class="fas fa-circle text-primary text-opacity-25 f-12"></i> Pista de atletismo</h6
+                    >
+                    <p class="mb-0 text-muted">20% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
+                  </div>
+                  <div class="d-grid mt-3">
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                      ><i class="ti ti-external-link"></i> Ver todos los complejos</button
+                    >
+                  </div>
+                  <div class="d-grid mt-3">
+                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#nuevoComplejoModal">
+                      <i class="ti ti-plus"></i> Añadir nuevo complejo
+                    </button>
+                  </div>
+                  <div class="d-grid mt-3">
+                    <div class="d-grid mt-3">
+                      <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalProgramarMantenimiento" data-bs-whatever="@getbootstrap"
+
+                        ><i class="ti ti-external-link"></i> Programar mantenimiento</button
+                      >
+                    </div>
+                  </div>
+                  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Programación de Mantenimiento</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form>
+                            <div class="mb-3">
+                              <label for="recipient-name" class="col-form-label pt-0">Recipient:</label>
+                              <input type="text" class="form-control" id="recipient-name">
+                            </div>
+                            <div>
+                              <label for="message-text" class="col-form-label">Message:</label>
+                              <textarea class="form-control" id="message-text"></textarea>
+                            </div>
+                          </form>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-primary">Send message</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+
+                </div>
+              </div>
+            </div>
+            <div class="col-xl-8 col-md-6">
+                <div class="card">
+    
+                  <div class="card-body">
+                    <div class="dt-responsive table-responsive">
+                      <table id="basic-btn" class="table table-striped table-bordered nowrap">
+                        <thead>
+                          <tr>
+                            <th>Complejo</th>
+                            <th>Servicio</th>
+                            <th>Sector</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Complejo Deportivo El Mirador</td>
+                            <td>Piscina</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Centro Atlético NovaFit</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Parque Deportivo Horizonte</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>Zona Max Training Club</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>EcoArena Multideportes</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Estadio y Centro Deportivo Altavista</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Piscina</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Complejo Deportivo El Mirador</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Centro Atlético NovaFit</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Parque Deportivo Horizonte</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Zona Max Training Club</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>EcoArena Multideportes</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>Estadio y Centro Deportivo Altavista</td>
+                            <td>Piscina</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Este</td>
+                          </tr>
+                          <tr>
+                            <td>Complejo Deportivo El Mirador</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                          <tr>
+                            <td>Centro Atlético NovaFit</td>
+                            <td>Pista de atletismo</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Parque Deportivo Horizonte</td>
+                            <td>Cancha de fútbol (Grass sintético)</td>
+                            <td>Zona Oeste</td>
+                          </tr>
+                          <tr>
+                            <td>Zona Max Training Club</td>
+                            <td>Piscina</td>
+                            <td>Zona Sur</td>
+                          </tr>
+                          <tr>
+                            <td>EcoArena Multideportes</td>
+                            <td>Gimnasio</td>
+                            <td>Zona Norte</td>
+                          </tr>
+                        </tbody>
+    
+                      </table>
+                      <br>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        
+          </div>
+          <!-- Contenedor donde se mostrarán las alertas -->
+          <!-- ALERTA GLOBAL : esta sera para que me salga ujana alerta estilizada que sera recibida dentro de un scriotpt mas abajo-->
+          <div id="alertaGlobalFixed" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+          z-index: 9999; min-width: 300px; max-width: 600px; display: none;"></div>
+
+
+          <!-- Definición del ícono Bootstrap (puede ir una vez en el HTML) -->
+          <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 
+                      1.767.98 1.767h13.71c.889 0 1.438-.99.98-1.767L8.982 
+                      1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 
+                      1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 
+                      6a1 1 0 1 1-2.002 0 1 1 0 0 1 2.002 0z"/>
+            </symbol>
+          </svg>
+
+          <!-- Modal Programar Mantenimiento -->
+          <div class="modal fade" id="modalProgramarMantenimiento" tabindex="-1" aria-labelledby="programarMantenimientoLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-xl">
+              <div class="modal-content rounded-4 shadow">
+                <div class="modal-header">
+                  <h4 class="modal-title fw-bold" id="programarMantenimientoLabel">Mantenimiento Programado</h4>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="row">
+                    <!-- Calendario -->
+                    <div class="col-lg-6 mb-3 d-none d-lg-block">
+                      <div id="calendarMantenimiento" class="border rounded-3 p-2 d-none d-lg-block" style="min-height: 400px;"></div>
+                    </div>
+                
+                    <!-- Formulario -->
+                    <div class="col-lg-6">
+                      <form id="formMantenimiento">
+                        <div class="mb-3 form-check form-switch">
+                          <input class="form-check-input" type="checkbox" id="mantenimientoUnDia" checked>
+                          <label class="form-check-label" for="mantenimientoUnDia">El mantenimiento solo tarda un día</label>
+                        </div>
+                
+                        <div class="row g-3 mb-3">
+                          <div class="col-md-6">
+                            <label for="fechaInicio" class="form-label">Fecha Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio" required onkeydown="return false;">
+
+                          </div>
+                          <div class="col-md-6">
+                            <label for="fechaFin" class="form-label">Fecha Fin</label>
+                            <input type="date" class="form-control" id="fechaFin" required onkeydown="return false;">
+                          </div>
+                        </div>
+                
+                        <div class="row g-3 mb-3">
+                          <div class="col-md-6">
+                            <label for="horaInicio" class="form-label">Hora Inicio</label>
+                            <input type="time" class="form-control" id="horaInicio" required onkeydown="return false;">
+                          </div>
+                          <div class="col-md-6">
+                            <label for="horaFin" class="form-label">Hora Fin</label>
+                            <input type="time" class="form-control" id="horaFin" required onkeydown="return false;">
+                          </div>
+                        </div>
+                
+                        <div class="mb-3">
+                          <label for="descripcion" class="form-label">Mantenimiento a Realizar</label>
+                          <textarea class="form-control" id="descripcion" rows="3" required></textarea>
+                        </div>
+                
+                        <div class="text-end">
+                          <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+
+     
+        
+    
+  
+        </div>
+
+    
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+     <!-- Required Js -->
+    <script src="../assets/js/plugins/popper.min.js"></script>
+    <script src="../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="../assets/js/plugins/i18next.min.js"></script>
+    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+    <script src="../assets/js/icon/custom-font.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/multi-lang.js"></script>
+    <script src="../assets/js/plugins/feather.min.js"></script>
+
+
+
+    <!-- FullCalendar JS -->
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <!--  esta es para lAS ALASTERAS-->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const fechaInicio = document.getElementById("fechaInicio");
+    const fechaFin = document.getElementById("fechaFin");
+    const horaInicio = document.getElementById("horaInicio");
+    const horaFin = document.getElementById("horaFin");
+    const today = new Date().toISOString().split("T")[0];
+
+    // Bloquear fechas pasadas
+    fechaInicio.setAttribute("min", today);
+    fechaFin.setAttribute("min", today);
+
+    // Validar que fecha fin no sea anterior a fecha inicio
+    fechaInicio.addEventListener("change", function () {
+      if (fechaInicio.value) {
+        fechaFin.setAttribute("min", fechaInicio.value);
+        if (fechaFin.value && fechaFin.value < fechaInicio.value) {
+          mostrarAlertaGlobal("La fecha fin no puede ser anterior a la fecha inicio.");
+          fechaFin.value = "";
+        }
+      } else {
+        fechaFin.setAttribute("min", today);
+      }
+    });
+
+    fechaFin.addEventListener("change", function () {
+      if (fechaInicio.value && fechaFin.value < fechaInicio.value) {
+        mostrarAlertaGlobal("La fecha fin no puede ser anterior a la fecha inicio.");
+        fechaFin.value = "";
+      }
+    });
+
+    // Validación de horas
+    horaInicio.addEventListener("change", function () {
+      if (horaInicio.value && horaFin.value && horaFin.value <= horaInicio.value) {
+        mostrarAlertaGlobal("La hora fin no puede ser menor o igual que la hora inicio.");
+        horaFin.value = "";
+      }
+    });
+
+    horaFin.addEventListener("change", function () {
+      if (horaInicio.value && horaFin.value && horaFin.value <= horaInicio.value) {
+        mostrarAlertaGlobal("La hora fin no puede ser menor o igual que la hora inicio.");
+        horaFin.value = "";
+      }
+    });
+  });
+</script>
+
+<!-- LO ANTERIOR FUE LA VALIDACION, ACA ES DIRECTAMENTE MOSTRA LA ALERTA-->
+<script>
+  function mostrarAlertaGlobal(mensaje, tipo = 'warning') {
+    const contenedor = document.getElementById('alertaGlobalFixed');
+    contenedor.innerHTML = `
+      <div class="alert alert-${tipo} d-flex align-items-center alert-dismissible fade show shadow-lg" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+          <use xlink:href="#exclamation-triangle-fill"/>
+        </svg>
+        <div>${mensaje}</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    `;
+    contenedor.style.display = 'block';
+  
+    // Ocultar luego de 6 segundos
+    setTimeout(() => {
+      contenedor.style.display = 'none';
+      contenedor.innerHTML = '';
+    }, 6000);
+  }
+  </script>
+  
+
+
+
+
+<!-- Para deshabilitar y limpiar de mantenimiento un dia-->
+<script>
+document.getElementById("mantenimientoUnDia").addEventListener("change", function () {
+  const isChecked = this.checked;
+  const fechaFinInput = document.getElementById("fechaFin");
+
+  fechaFinInput.disabled = isChecked;
+  if (isChecked) {
+    fechaFinInput.value = ""; 
+  }
+});
+
+
+
+
+
+
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const calendarEl = document.getElementById('calendarMantenimiento');
+    const fechaInicioInput = document.getElementById('fechaInicio');
+    const fechaFinInput = document.getElementById('fechaFin');
+    const mantenimientoUnDiaSwitch = document.getElementById('mantenimientoUnDia');
+
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    let fechaInicioSeleccionada = null;
+    let fechaFinSeleccionada = null;
+
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      locale: 'es',
+      initialView: 'dayGridMonth',
+      contentHeight: 600,       // Establece alto fijo
+      aspectRatio: 1.5, 
+      selectable: true,
+      buttonText: {
+        today: 'Hoy',        // Cambia 'Today' por 'Hoy'
+        
+      },
+      selectAllow: function (selectInfo) {
+        return selectInfo.start >= today;
+      },
+      select: function (info) {
+        const start = info.start;
+        const end = info.end;
+
+        fechaInicioSeleccionada = start.toISOString().split('T')[0];
+
+        if (mantenimientoUnDiaSwitch.checked) {
+          fechaFinSeleccionada = null;
+          fechaFinInput.value = '';
+        } else {
+          const fechaFinReal = new Date(end);
+          fechaFinReal.setDate(fechaFinReal.getDate() - 1); // incluir día final
+          fechaFinSeleccionada = fechaFinReal.toISOString().split('T')[0];
+          fechaFinInput.value = fechaFinSeleccionada;
+        }
+
+        fechaInicioInput.value = fechaInicioSeleccionada;
+
+        calendar.removeAllEvents();
+        calendar.addEvent({
+          start: fechaInicioSeleccionada,
+          end: mantenimientoUnDiaSwitch.checked
+            ? fechaInicioSeleccionada
+            : addOneDay(fechaFinSeleccionada),
+          display: 'background',
+          color: '#cce5ff'
+        });
+      },
+      validRange: {
+        start: today.toISOString().split('T')[0]
+      }
+    });
+
+    calendar.render();
+
+    mantenimientoUnDiaSwitch.addEventListener('change', () => {
+      if (mantenimientoUnDiaSwitch.checked) {
+        fechaFinInput.disabled = true;
+        fechaFinInput.value = '';
+        if (fechaInicioSeleccionada) {
+          calendar.removeAllEvents();
+          calendar.addEvent({
+            start: fechaInicioSeleccionada,
+            end: fechaInicioSeleccionada,
+            display: 'background',
+            color: '#cce5ff'
+          });
+        }
+      } else {
+        fechaFinInput.disabled = false;
+        if (fechaInicioSeleccionada && fechaFinSeleccionada) {
+          calendar.removeAllEvents();
+          calendar.addEvent({
+            start: fechaInicioSeleccionada,
+            end: addOneDay(fechaFinSeleccionada),
+            display: 'background',
+            color: '#cce5ff'
+          });
+          fechaFinInput.value = fechaFinSeleccionada;
+        }
+      }
+    });
+
+    fechaInicioInput.addEventListener('change', () => {
+      const value = fechaInicioInput.value;
+      if (value) {
+        fechaInicioSeleccionada = value;
+        calendar.removeAllEvents();
+        calendar.addEvent({
+          start: value,
+          end: mantenimientoUnDiaSwitch.checked ? value : addOneDay(fechaFinInput.value),
+          display: 'background',
+          color: '#cce5ff'
+        });
+      }
+    });
+
+    fechaFinInput.addEventListener('change', () => {
+      if (!mantenimientoUnDiaSwitch.checked && fechaInicioInput.value && fechaFinInput.value) {
+        fechaFinSeleccionada = fechaFinInput.value;
+        calendar.removeAllEvents();
+        calendar.addEvent({
+          start: fechaInicioInput.value,
+          end: addOneDay(fechaFinInput.value),
+          display: 'background',
+          color: '#cce5ff'
+        });
+      }
+    });
+
+    // 🔧 FUNCION UTILITARIA: sumar un día a una fecha ISO (string)
+    function addOneDay(dateStr) {
+      const date = new Date(dateStr);
+      date.setDate(date.getDate() + 1);
+      return date.toISOString().split('T')[0];
+    }
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+  const inputsFechaHora = document.querySelectorAll('input[type="date"], input[type="time"]');
+
+  inputsFechaHora.forEach(input => {
+    input.addEventListener("click", function () {
+      this.showPicker && this.showPicker(); // Solo funciona en navegadores modernos (Chrome, Edge, Opera)
+    });
+  });
+});
+</script>
+  
+
+  
+
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+    <!-- [Page Specific JS] start -->
+    <!-- bootstrap-datepicker -->
+    <script src="../assets/js/plugins/datepicker-full.min.js"></script>
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="../assets/js/plugins/peity-vanilla.min.js"></script>
+    <!-- custom widgets js -->
+    <script src="../assets/js/widgets/revenue-analytics-chart.js"></script>
+    <script src="../assets/js/widgets/membership-state-chart.js"></script>
+    <script src="../assets/js/widgets/membership-activity-line-chart.js"></script>
+    <script src="../assets/js/widgets/invoice-chart.js"></script>
+    <script src="../assets/js/widgets/total-income-graph2.js"></script>
+    <!-- jQuery y DataTables JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.bootstrap5.min.js"></script>
+    <script src="../assets/js/plugins/dataTables.buttons.min.js"></script>
+    <script src="../assets/js/plugins/buttons.bootstrap5.min.js"></script>
+    <script src="../assets/js/plugins/jszip.min.js"></script>
+    <script src="../assets/js/plugins/pdfmake.min.js"></script>
+    <script src="../assets/js/plugins/vfs_fonts.js"></script>
+    <script src="../assets/js/plugins/buttons.html5.min.js"></script>
+    <script src="../assets/js/plugins/buttons.print.min.js"></script>
+    <!-- Bootstrap JS (Popper incluido) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- [Page Specific JS] end -->
+
+    <!-- Script para actualizar fecha -->
+  <script>
+    function actualizarFecha() {
+      const inputFecha = document.getElementById("fecha").value;
+      if (inputFecha) {
+        const fecha = new Date(inputFecha);
+        const opciones = { month: 'long', year: 'numeric' };
+        const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+        document.getElementById("mes-actual").innerText = capitalizarPrimeraLetra(fechaFormateada);
+      }
+    }
+
+    function capitalizarPrimeraLetra(texto) {
+      return texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+  </script>
+
+  <script>
+    // [ HTML5 Export Buttons ]
+    $('#basic-btn').DataTable({
+      dom: 'Bfrtip',
+      buttons: ['copy', 'csv', 'excel', 'print']
+    });
+
+    // [ Column Selectors ]
+    $('#cbtn-selectors').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'copyHtml5',
+          exportOptions: {
+            columns: [0, ':visible']
+          }
+        },
+        {
+          extend: 'excelHtml5',
+          exportOptions: {
+            columns: ':visible'
+          }
+        },
+        {
+          extend: 'pdfHtml5',
+          exportOptions: {
+            columns: [0, 1, 2, 5]
+          }
+        },
+        'colvis'
+      ]
+    });
+
+    // [ Excel - Cell Background ]
+    $('#excel-bg').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          extend: 'excelHtml5',
+          customize: function (xlsx) {
+            var sheet = xlsx.xl.worksheets['sheet1.xml'];
+            $('row c[r^="F"]', sheet).each(function () {
+              if ($('is t', this).text().replace(/[^\d]/g, '') * 1 >= 500000) {
+                $(this).attr('s', '20');
+              }
+            });
+          }
+        }
+      ]
+    });
+
+    // [ Custom File (JSON) ]
+    $('#pdf-json').DataTable({
+      dom: 'Bfrtip',
+      buttons: [
+        {
+          text: 'JSON',
+          action: function (e, dt, button, config) {
+            var data = dt.buttons.exportData();
+            $.fn.dataTable.fileSave(new Blob([JSON.stringify(data)]), 'Export.json');
+          }
+        }
+      ]
+    });
+  </script>
+  
+
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+
+    <!-- Modal tipo popup -->
+<div class="modal fade" id="nuevoComplejoModal" tabindex="-1" aria-labelledby="nuevoComplejoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-4 shadow-lg">
+      <div class="modal-header">
+        <h5 class="modal-title fw-bold" id="nuevoComplejoModalLabel">Añadir Nuevo Complejo</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formNuevoComplejo">
+          <div class="mb-3">
+            <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+            <input type="text" class="form-control" id="nombreComplejo" required>
+          </div>
+        
+          <div class="mb-3">
+            <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
+            <select class="form-select" id="tipoServicio" multiple required>
+              <option value="Gimnasio">Gimnasio</option>
+              <option value="Cancha de losa">Cancha de losa</option>
+              <option value="Cancha de grass">Cancha de grass</option>
+              <option value="Piscina">Piscina</option>
+              <option value="Pista de atletismo">Pista de atletismo</option>
+            </select>
+            <div class="form-text">Mantén presionada Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples</div>
+          </div>
+        
+          <!-- Aquí se generarán los inputs adicionales -->
+          <div id="inputsServiciosExtras"></div>
+        
+          <div class="mb-3">
+            <label for="direccionComplejo" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccionComplejo" required>
+          </div>
+        
+          <div class="mb-3">
+            <label for="numSoporte" class="form-label">Número de soporte</label>
+            <input type="text" class="form-control" id="numSoporte" required>
+          </div>
+        
+          <div class="text-end">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+  const tipoServicioSelect = document.getElementById("tipoServicio");
+  const inputsServiciosExtras = document.getElementById("inputsServiciosExtras");
+
+  tipoServicioSelect.addEventListener("change", () => {
+    const seleccionados = Array.from(tipoServicioSelect.selectedOptions).map(opt => opt.value);
+    inputsServiciosExtras.innerHTML = ""; // Limpiar inputs previos
+
+    if (seleccionados.includes("Cancha de losa")) {
+      inputsServiciosExtras.innerHTML += `
+        <div class="mb-3">
+          <label for="cantidadLosa" class="form-label">Cantidad de canchas de losa</label>
+          <input type="number" class="form-control" id="cantidadLosa" name="cantidadLosa" min="1" required>
+        </div>
+      `;
+    }
+
+    if (seleccionados.includes("Cancha de grass")) {
+      inputsServiciosExtras.innerHTML += `
+        <div class="mb-3">
+          <label for="cantidadGrass" class="form-label">Cantidad de canchas de grass</label>
+          <input type="number" class="form-control" id="cantidadGrass" name="cantidadGrass" min="1" required>
+        </div>
+      `;
+    }
+
+    if (seleccionados.includes("Piscina")) {
+      inputsServiciosExtras.innerHTML += `
+        <div class="mb-3">
+          <label for="cantidadCarriles" class="form-label">Cantidad de carriles de la piscina</label>
+          <input type="number" class="form-control" id="cantidadCarriles" name="cantidadCarriles" min="1" required>
+        </div>
+      `;
+    }
+  });
+</script>
+  </body>
+  <!-- [Body] end -->
+</html>
