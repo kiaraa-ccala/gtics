@@ -234,7 +234,7 @@ INSERT INTO informacionpago (idInformacionPago, fecha, hora, tipo, total, estado
 (19, '2025-01-23', '10:30:00', 'Tarjeta', 15, 'En espera'),
 (20, '2025-01-24', '17:10:00', 'Transferencia', 40, 'Pagado');
 
-
+select * from InstanciaServicio; 
 
 INSERT INTO reserva (idReserva, idUsuario, idInformacionPago, fecha, horaInicio, horaFin, estado, fechaHoraRegistro, idServicio, idComplejoDeportivo, idInstanciaServicio) VALUES
 (1, 5, 1, '2025-02-05', '08:00:00', '10:00:00', 1, '2025-02-04 10:00:00', 1, 1, 1),
