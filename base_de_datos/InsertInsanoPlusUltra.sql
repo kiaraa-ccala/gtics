@@ -1143,4 +1143,3 @@ SET telefono = '987654321'
 WHERE idRol NOT IN (1, 2);
 
 
-insert into comentario

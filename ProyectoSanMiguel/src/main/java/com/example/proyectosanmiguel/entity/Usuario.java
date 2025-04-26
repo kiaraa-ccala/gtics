@@ -20,13 +20,13 @@ public class Usuario {
     private String apellido;
     @Column(name = "dni", nullable = false, length = 8)
     private String dni;
-    @Column(name = "direccion", nullable = false, length = 45)
+    @Column(name = "direccion", length = 45)
     private String direccion;
-    @Column(name = "distrito", nullable = false, length = 45)
+    @Column(name = "distrito", length = 45)
     private String distrito;
-    @Column(name = "provincia", nullable = false, length = 45)
+    @Column(name = "provincia", length = 45)
     private String provincia;
-    @Column(name = "departamento", nullable = false, length = 45)
+    @Column(name = "departamento", length = 45)
     private String departamento;
     @Column(name = "telefono", nullable = false, length = 9)
     private String telefono;

@@ -249,9 +249,7 @@
                         <th>Telefono</th>
                         <th>Zona</th>
                         <th>Correo</th>
-                        <th>Estado</th>
                         <th>Rol</th>
-                        <th>Fecha de ingreso</th>
                         <th>Acciones</th>
                       </tr>
                     </thead>
@@ -269,11 +267,13 @@
                         </td>
                         <td th:text="${usuario.getTelefono()}">Telefono</td>
 
+                        <td th:text="${usuario.getSector().getNombre()}">Zona</td>
 
-                        <td class="text-success"><i class="fas fa-circle f-10 m-r-10"></i> Activo</td>
-                        <td th:text="${usuario.getRol().getNombre()}"><span class="badge bg-light-warning">Rol</span></td>
+                        <td th:text="${usuario.getCredencial().getCorreo()}">Correo</td>
 
-                        <td>2023/09/12</td>
+                        <td> <span th:text="${usuario.getRol().getNombre()}" class="badge bg-light-warning">Rol</span></td>
+
+
                         <td>
                           <a href="#" class="avtar avtar-xs btn-link-secondary">
                             <i class="ti ti-eye f-20"></i>

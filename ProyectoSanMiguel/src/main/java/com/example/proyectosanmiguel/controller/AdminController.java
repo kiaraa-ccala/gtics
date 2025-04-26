@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import com.example.proyectosanmiguel.entity.InstanciaServicio;
+import java.util.List;
 
 import java.time.LocalDateTime;
 
@@ -22,9 +24,6 @@ public class AdminController {
     @Autowired
     private InstanciaServicioRepository instanciaServicioRepository;
 
-    @Autowired
-    private ComentarioRepository comentarioRepository;
-
     // ========== Incidencias ==========
     @GetMapping("/reportes")
     public String listarReportes(Model model) {
@@ -37,6 +36,16 @@ public class AdminController {
         model.addAttribute("reporte", reporteRepository.findById(id).orElseThrow());
         return "admin/reportes/detalle";
     }
+
+    // ========== Monitoreo ==========
+
+    @GetMapping("/servicios/monitoreo")
+    public String monitoreoServicios(Model model) {
+        List<InstanciaServicio> lista = instanciaServicioRepository.findAll();
+        model.addAttribute("instancias", lista);
+        return "Admin/admin_mantenimiento_modal";
+    }
+
 
 
 }
