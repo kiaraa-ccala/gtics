@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!-- [Head] start -->
+
+<head th:replace="fragments/head_admin :: head('Bienvenido a tus comentarios')"></head>
+
+<!-- [Head] end -->
+<!-- [Body] Start -->
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+    <div class="loader-track">
+        <div class="loader-fill"></div>
+    </div>
+</div>
+<!-- [ Pre-loader ] End -->
+<!-- [ Sidebar Menu ] start -->
+<div th:replace="fragments/Sidebar_admin :: sidebar"></div>
+<!-- [ Sidebar Menu ] end -->
+<!-- [ Header Topbar ] start -->
+<div th:replace="fragments/navbar :: header"></div>
+<!-- [ Main Content ] start -->
+<div class="pc-container" style="background: #e0f6ff">
+    <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+            <div class="page-block">
+                <div class="row align-items-center">
+                    <div class="col-md-12">
+
+                    </div>
+                    <div class="col-md-12">
+                        <div class="page-header-title">
+                            <h2 class="mb-0">Monitoreo de Servicios</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+            <div class="col-md-6 col-xxl-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 me-3">
+                                <input type="date" class="form-control mb-2" id="fecha" onchange="actualizarFecha()" />
+                                <br>
+                                <p class="mb-0 text-sm"><strong>Estás viendo:</strong> <span id="mes-actual">Abril 2025</span></p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="avtar avtar-l bg-light-primary rounded-circle">
+                                    <i class="ph-duotone ph-calendar f-28"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xxl-3">
+                <div class="card" style="background-color: #D2FFD7 ;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 me-3">
+                                <h4 class="mb-1">10</h4>
+                                <p class="mb-1 fw-medium text-muted">Ambientes con disponibilidad</p>
+                                <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="avtar avtar-l bg-light-primary rounded-circle">
+                                    <i class="ti ti-checks"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 col-xxl-3">
+                <div class="card" style="background-color: #ebebeb  ;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 me-3">
+                                <h4 class="mb-1">5</h4>
+                                <p class="mb-1 fw-medium text-muted">Completamente Reservados</p>
+                                <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="avtar avtar-l bg-light-primary rounded-circle">
+                                    <i class="ti ti-reserved-line"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-xxl-3">
+                <div class="card" style="background-color: #FFBEBE   ;">
+                    <div class="card-body">
+                        <div class="d-flex align-items-center">
+                            <div class="flex-grow-1 me-3">
+                                <h4 class="mb-1">6</h4>
+                                <p class="mb-1 fw-medium text-muted">En mantenimiento/reparación</p>
+                                <p class="mb-0 text-sm">Actualizado hace 2 min</p>
+                            </div>
+                            <div class="flex-shrink-0">
+                                <div class="avtar avtar-l bg-light-primary rounded-circle">
+                                    <i class="ti ti-alert-circle"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Nueva card para selector de fecha -->
+
+        </div>
+
+
+
+
+        <div class="row">
+
+            <div class="col-xl-4 col-md-6">
+                <div class="card h-100">
+                    <div class="card-body pb-0">
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h5 class="mb-0">Uso de Servicios</h5>
+                            <div class="dropdown">
+                                <a
+                                        class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
+                                        href="#"
+                                        data-bs-toggle="dropdown"
+                                        aria-haspopup="true"
+                                        aria-expanded="false"
+                                >
+                                    <i class="ti ti-dots-vertical f-18"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item" href="#">Zona Sur</a>
+                                    <a class="dropdown-item" href="#">Zona Norte</a>
+                                    <a class="dropdown-item" href="#">Zona Este</a>
+                                    <a class="dropdown-item" href="#">Zona Oeste</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="total-income-graph2"></div>
+                        <div class="mb-2 mt-3 d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-warning f-12"></i> Gimnasio</h6>
+                            <p class="mb-0 text-muted">65% <i class="ti ti-arrow-narrow-up" style="color: green;"></i></p>
+                        </div>
+                        <div class="mb-2 d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-success f-12"></i> Lozas Deportivas</h6>
+                            <p class="mb-0 text-muted">53% <i class="ti ti-arrow-narrow-up" style="color: green;"></i></p>
+                        </div>
+                        <div class="mb-2 d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-primary f-12"></i> Piscinas</h6>
+                            <p class="mb-0 text-muted">22% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"
+                            ><i class="fas fa-circle text-primary text-opacity-25 f-12"></i> Pista de atletismo</h6
+                            >
+                            <p class="mb-0 text-muted">20% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
+                        </div>
+                        <div class="d-grid mt-3">
+                            <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                            ><i class="ti ti-external-link"></i> Ver todos los complejos</button
+                            >
+                        </div>
+                        <div class="d-grid mt-3">
+                            <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#nuevoComplejoModal">
+                                <i class="ti ti-plus"></i> Añadir nuevo complejo
+                            </button>
+                        </div>
+                        <div class="d-grid mt-3">
+                            <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
+                            ><i class="ti ti-external-link"></i> Programar mantenimiento</button
+                            >
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-8 col-md-6">
+                <div class="card h-100">
+
+                    <div class="card-body">
+                        <div class="dt-responsive table-responsive">
+                            <table id="basic-btn" class="table table-striped table-bordered nowrap">
+                                <thead>
+                                <tr>
+                                    <th>Complejo</th>
+                                    <th>Servicio</th>
+                                    <th>Sector</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Arena Vital Sports Center</td>
+                                    <td>Cancha de fútbol (Losa)</td>
+                                    <td>Zona Norte</td>
+                                </tr>
+                                <tr>
+                                    <td>Complejo Deportivo El Mirador</td>
+                                    <td>Piscina</td>
+                                    <td>Zona Sur</td>
+                                </tr>
+                                <tr>
+                                    <td>Centro Atlético NovaFit</td>
+                                    <td>Pista de atletismo</td>
+                                    <td>Zona Norte</td>
+                                </tr>
+                                <tr>
+                                    <td>Parque Deportivo Horizonte</td>
+                                    <td>Cancha de fútbol (Grass sintético)</td>
+                                    <td>Zona Este</td>
+                                </tr>
+                                <tr>
+                                    <td>Zona Max Training Club</td>
+                                    <td>Gimnasio</td>
+                                    <td>Zona Oeste</td>
+                                </tr>
+                                <tr>
+                                    <td>EcoArena Multideportes</td>
+                                    <td>Cancha de fútbol (Losa)</td>
+                                    <td>Zona Norte</td>
+                                </tr>
+                                <tr>
+                                    <td>Estadio y Centro Deportivo Altavista</td>
+                                    <td>Pista de atletismo</td>
+                                    <td>Zona Este</td>
+                                </tr>
+                                <tr>
+                                    <td>Arena Vital Sports Center</td>
+                                    <td>Piscina</td>
+                                    <td>Zona Sur</td>
+                                </tr>
+                                <tr>
+                                    <td>Complejo Deportivo El Mirador</td>
+                                    <td>Gimnasio</td>
+                                    <td>Zona Oeste</td>
+                                </tr>
+                                <tr>
+                                    <td>Centro Atlético NovaFit</td>
+                                    <td>Cancha de fútbol (Grass sintético)</td>
+                                    <td>Zona Oeste</td>
+                                </tr>
+                                <tr>
+                                    <td>Parque Deportivo Horizonte</td>
+                                    <td>Cancha de fútbol (Losa)</td>
+                                    <td>Zona Sur</td>
+                                </tr>
+                                <tr>
+                                    <td>Zona Max Training Club</td>
+                                    <td>Pista de atletismo</td>
+                                    <td>Zona Este</td>
+                                </tr>
+                                <tr>
+                                    <td>EcoArena Multideportes</td>
+                                    <td>Gimnasio</td>
+                                    <td>Zona Sur</td>
+                                </tr>
+                                <tr>
+                                    <td>Estadio y Centro Deportivo Altavista</td>
+                                    <td>Piscina</td>
+                                    <td>Zona Norte</td>
+                                </tr>
+                                <tr>
+                                    <td>Arena Vital Sports Center</td>
+                                    <td>Cancha de fútbol (Grass sintético)</td>
+                                    <td>Zona Este</td>
+                                </tr>
+                                <tr>
+                                    <td>Complejo Deportivo El Mirador</td>
+                                    <td>Cancha de fútbol (Losa)</td>
+                                    <td>Zona Norte</td>
+                                </tr>
+                                <tr>
+                                    <td>Centro Atlético NovaFit</td>
+                                    <td>Pista de atletismo</td>
+                                    <td>Zona Oeste</td>
+                                </tr>
+                                <tr>
+                                    <td>Parque Deportivo Horizonte</td>
+                                    <td>Cancha de fútbol (Grass sintético)</td>
+                                    <td>Zona Oeste</td>
+                                </tr>
+                                <tr>
+                                    <td>Zona Max Training Club</td>
+                                    <td>Piscina</td>
+                                    <td>Zona Sur</td>
+                                </tr>
+                                <tr>
+                                    <td>EcoArena Multideportes</td>
+                                    <td>Gimnasio</td>
+                                    <td>Zona Norte</td>
+                                </tr>
+                                </tbody>
+
+                            </table>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+    <!-- [ Main Content ] end -->
+</div>
+</div>
+<!-- [ Main Content ] end -->
+<div th:replace="fragments/footer_superadmin :: footer"></div>
+<!-- Required Js -->
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+<script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+<script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+<script th:src="@{/assets/js/icon/custom-font.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+<script th:src="@{/assets/js/theme.js}"></script>
+<script th:src="@{/assets/js/multi-lang.js}"></script>
+<script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+
+
+<script>
+    layout_change('light');
+</script>
+
+<script>
+    change_box_container('false');
+</script>
+
+<script>
+    layout_caption_change('true');
+</script>
+
+<script>
+    layout_rtl_change('false');
+</script>
+
+<script>
+    preset_change('preset-1');
+</script>
+
+<script>
+    main_layout_change('vertical');
+</script>
+
+
+<!-- [Page Specific JS] start -->
+<!-- bootstrap-datepicker -->
+<script th:src="@{/assets/js/plugins/datepicker-full.min.js}"></script>
+<script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+<script th:src="@{/assets/js/plugins/peity-vanilla.min.js}"></script>
+
+<!-- custom widgets js -->
+<script th:src="@{/assets/js/widgets/revenue-analytics-chart.js}"></script>
+<script th:src="@{/assets/js/widgets/membership-state-chart.js}"></script>
+<script th:src="@{/assets/js/widgets/membership-activity-line-chart.js}"></script>
+<script th:src="@{/assets/js/widgets/invoice-chart.js}"></script>
+<script th:src="@{/assets/js/widgets/total-income-graph2.js}"></script>
+
+<!-- jQuery y DataTables JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script th:src="@{/assets/js/plugins/dataTables.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/dataTables.buttons.min.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.bootstrap5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/jszip.min.js}"></script>
+<script th:src="@{/assets/js/plugins/pdfmake.min.js}"></script>
+<script th:src="@{/assets/js/plugins/vfs_fonts.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.html5.min.js}"></script>
+<script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
+
+<!-- Bootstrap JS (Popper incluido) desde CDN -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- [Page Specific JS] end -->
+
+<!-- Script para actualizar fecha -->
+<script>
+    function actualizarFecha() {
+        const inputFecha = document.getElementById("fecha").value;
+        if (inputFecha) {
+            const fecha = new Date(inputFecha);
+            const opciones = { month: 'long', year: 'numeric' };
+            const fechaFormateada = fecha.toLocaleDateString('es-ES', opciones);
+            document.getElementById("mes-actual").innerText = capitalizarPrimeraLetra(fechaFormateada);
+        }
+    }
+
+    function capitalizarPrimeraLetra(texto) {
+        return texto.charAt(0).toUpperCase() + texto.slice(1);
+    }
+</script>
+
+<script>
+    // [ HTML5 Export Buttons ]
+    $('#basic-btn').DataTable({
+        dom: 'Bfrtip',
+        buttons: ['copy', 'csv', 'excel', 'print'],
+        language: {
+            "search": "Buscar:",
+            "lengthMenu": "Mostrar _MENU_ registros por página",
+            "zeroRecords": "No se encontraron resultados",
+            "info": "",
+            "infoEmpty": "No hay registros disponibles",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
+        }
+    });
+
+    // [ Column Selectors ]
+    $('#cbtn-selectors').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                exportOptions: {
+                    columns: [0, ':visible']
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                exportOptions: {
+                    columns: [0, 1, 2, 5]
+                }
+            },
+            'colvis'
+        ]
+    });
+
+    // [ Excel - Cell Background ]
+    $('#excel-bg').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                extend: 'excelHtml5',
+                customize: function (xlsx) {
+                    var sheet = xlsx.xl.worksheets['sheet1.xml'];
+                    $('row c[r^="F"]', sheet).each(function () {
+                        if ($('is t', this).text().replace(/[^\d]/g, '') * 1 >= 500000) {
+                            $(this).attr('s', '20');
+                        }
+                    });
+                }
+            }
+        ]
+    });
+
+    // [ Custom File (JSON) ]
+    $('#pdf-json').DataTable({
+        dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'JSON',
+                action: function (e, dt, button, config) {
+                    var data = dt.buttons.exportData();
+                    $.fn.dataTable.fileSave(new Blob([JSON.stringify(data)]), 'Export.json');
+                }
+            }
+        ]
+    });
+</script>
+
+
+<style>
+    /* Ítems del menú: blanco */
+    .pc-sidebar .pc-link,
+    .pc-sidebar .pc-mtext,
+    .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+    }
+
+    /* Títulos de secciones del menú */
+    .pc-sidebar .menu-caption,
+    .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+    }
+    /* Hover: cambia el texto a celeste claro */
+    .pc-sidebar .pc-link:hover,
+    .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+    }
+</style>
+
+<!-- Modal tipo popup -->
+<div class="modal fade" id="nuevoComplejoModal" tabindex="-1" aria-labelledby="nuevoComplejoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content rounded-4 shadow-lg">
+            <div class="modal-header">
+                <h5 class="modal-title fw-bold" id="nuevoComplejoModalLabel">Añadir Nuevo Complejo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formNuevoComplejo">
+                    <div class="mb-3">
+                        <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+                        <input type="text" class="form-control" id="nombreComplejo" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
+                        <select class="form-select" id="tipoServicio" multiple required>
+                            <option value="Gimnasio">Gimnasio</option>
+                            <option value="Cancha de losa">Cancha de losa</option>
+                            <option value="Cancha de grass">Cancha de grass</option>
+                            <option value="Piscina">Piscina</option>
+                            <option value="Pista de atletismo">Pista de atletismo</option>
+                        </select>
+                        <div class="form-text">Mantén presionada Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples</div>
+                    </div>
+
+                    <!-- Aquí se generarán los inputs adicionales -->
+                    <div id="inputsServiciosExtras"></div>
+
+                    <div class="mb-3">
+                        <label for="direccionComplejo" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" id="direccionComplejo" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="numSoporte" class="form-label">Número de soporte</label>
+                        <input type="text" class="form-control" id="numSoporte" required>
+                    </div>
+
+                    <div class="text-end">
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    const tipoServicioSelect = document.getElementById("tipoServicio");
+    const inputsServiciosExtras = document.getElementById("inputsServiciosExtras");
+
+    tipoServicioSelect.addEventListener("change", () => {
+        const seleccionados = Array.from(tipoServicioSelect.selectedOptions).map(opt => opt.value);
+        inputsServiciosExtras.innerHTML = ""; // Limpiar inputs previos
+
+        if (seleccionados.includes("Cancha de losa")) {
+            inputsServiciosExtras.innerHTML += `
+         <div class="mb-3">
+           <label for="cantidadLosa" class="form-label">Cantidad de canchas de losa</label>
+           <input type="number" class="form-control" id="cantidadLosa" name="cantidadLosa" min="1" required>
+         </div>
+       `;
+        }
+
+        if (seleccionados.includes("Cancha de grass")) {
+            inputsServiciosExtras.innerHTML += `
+         <div class="mb-3">
+           <label for="cantidadGrass" class="form-label">Cantidad de canchas de grass</label>
+           <input type="number" class="form-control" id="cantidadGrass" name="cantidadGrass" min="1" required>
+         </div>
+       `;
+        }
+
+        if (seleccionados.includes("Piscina")) {
+            inputsServiciosExtras.innerHTML += `
+         <div class="mb-3">
+           <label for="cantidadCarriles" class="form-label">Cantidad de carriles de la piscina</label>
+           <input type="number" class="form-control" id="cantidadCarriles" name="cantidadCarriles" min="1" required>
+         </div>
+       `;
+        }
+    });
+</script>
+</body>
+<!-- [Body] end -->
+</html>
