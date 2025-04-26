@@ -174,7 +174,7 @@
                   </div>
                   <div class="d-grid mt-3">
                     <div class="d-grid mt-3">
-                      <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" type="button" data-bs-toggle="modal" data-bs-target="#modalProgramarMantenimiento" data-bs-whatever="@getbootstrap">
+                      <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalProgramarMantenimiento" data-bs-whatever="@getbootstrap"
 
                         ><i class="ti ti-external-link"></i> Programar mantenimiento</button
                       >
@@ -229,8 +229,13 @@
                             <td th:text="${instancia.complejoDeportivo.nombre}">Nombre Complejo</td>
                             <td th:text="${instancia.servicio.nombre}">Nombre Servicio</td>
                             <td th:text="${instancia.complejoDeportivo.sector.nombre}">Nombre Sector</td>
+                          <tr>
+                            <td>Arena Vital Sports Center</td>
+                            <td>Cancha de fútbol (Losa)</td>
+                            <td>Zona Norte</td>
                           </tr>
                         </tbody>
+
 
 
                       </table>
