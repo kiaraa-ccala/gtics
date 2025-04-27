@@ -7,7 +7,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@IdClass(InstanciaServicioId.class)
 @Table(name = "InstanciaServicio")
 public class InstanciaServicio {
 
@@ -16,20 +15,12 @@ public class InstanciaServicio {
     @Column(name = "idInstanciaServicio", nullable = false)
     private Integer idInstanciaServicio;
 
-    @Id
-    @Column(name = "idServicio", nullable = false)
-    private Integer idServicio;
-
-    @Id
-    @Column(name = "idComplejoDeportivo", nullable = false)
-    private Integer idComplejoDeportivo;
-
     @ManyToOne
-    @JoinColumn(name = "idServicio", insertable = false, updatable = false)
+    @JoinColumn(name = "idServicio", nullable = false)
     private Servicio servicio;
 
     @ManyToOne
-    @JoinColumn(name = "idComplejoDeportivo", insertable = false, updatable = false)
+    @JoinColumn(name = "idComplejoDeportivo", nullable = false)
     private ComplejoDeportivo complejoDeportivo;
 
     @Column(name = "nombre", nullable = false, length = 45)
