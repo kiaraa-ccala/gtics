@@ -1,6 +1,5 @@
 package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.entity.ComplejoDeportivo;
-import com.example.proyectosanmiguel.entity.Sector;
 import com.example.proyectosanmiguel.repository.ComplejoRepository;
 import com.example.proyectosanmiguel.repository.SectorRepository;
 import org.springframework.stereotype.Controller;

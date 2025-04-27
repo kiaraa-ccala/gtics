@@ -30,7 +30,7 @@ public class SuperAdminController {
 
     //Lista de Usuarios
 
-    @GetMapping({"/SuperAdmin", "/SuperAdmin/", "/SuperAdmin/ListarUsuario"})
+    @GetMapping({"/superadmin", "/superadmin/", "/superadmin/listarusuario"})
     public String mostrarListaUsuarios(Model model) {
 
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -41,7 +41,7 @@ public class SuperAdminController {
 
     //Formulario de creacion de Usuarios
 
-    @GetMapping({"/SuperAdmin/CrearUsuario"})
+    @GetMapping({"/superadmin/crearusuario"})
     public String formularioCreacionUsuario(Model model) {
 
         List<Sector> sectores = sectorRepository.findAll();
@@ -54,13 +54,8 @@ public class SuperAdminController {
     }
 
     //Guardar los datos en el formulario
-    @PostMapping("/SuperAdmin/GuardarUsuario")
+    @PostMapping("/superadmin/guardarusuario")
     public String guardarUsuario(@ModelAttribute Usuario usuario, @RequestParam("correo") String email, @RequestParam("password") String password, @RequestParam("sector") Integer idSector) {
-
-        System.out.println("Received usuario: " + usuario);
-        System.out.println("Nombre: " + usuario.getNombre());
-        System.out.println("Apellido: " + usuario.getApellido());
-        System.out.println("DNI: " + usuario.getDni());
 
         Sector sector = new Sector();
         sector.setIdSector(idSector);
@@ -73,12 +68,12 @@ public class SuperAdminController {
         usuario.setCredencial(credencial);
 
         usuarioRepository.save(usuario);
-        return "redirect:/SuperAdmin/ListarUsuario";
+        return "redirect:/superadmin/listarusuario";
     }
 
     //Borrar un usuario
 
-    @GetMapping("/SuperAdmin/eliminar")
+    @GetMapping("/superadmin/eliminar")
     public String eliminarAuto(@RequestParam("idUsuario") int idUsuario) {
 
         Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
@@ -87,7 +82,7 @@ public class SuperAdminController {
             usuarioRepository.deleteById(idUsuario);
         }
 
-        return "redirect:/autos/listar";
+        return "redirect:/superadmin/listarusuario";
     }
 
 }
