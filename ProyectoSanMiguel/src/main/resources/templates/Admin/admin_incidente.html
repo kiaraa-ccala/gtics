@@ -30,7 +30,7 @@
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
-                  <h2 class="mb-0">INCIDENCIA #34</h2>
+                  <h2 class="mb-0">INCIDENCIA #<span th:text="${reporte.idReporte}"></span></h2>
                 </div>
               </div>
             </div>
@@ -45,14 +45,14 @@
             <div class="col-lg-5">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                  <h5><strong>ASUNTO:</strong> Corte de luz</h5>
-                  <span class="badge bg-danger">Cerrado</span>
+                  <h5><strong>ASUNTO:</strong> <span th:text="${reporte.asunto}">Corte de luz</span></h5>
+                  <span th:classappend="${reporte.estado == 'Cerrado'} ? 'badge bg-danger' : (${reporte.estado == 'En Proceso'} ? 'badge bg-success' : 'badge bg-warning')">
+                  <span th:text="${reporte.estado}">Estado</span>
+                  </span>
                 </div>
                 <div class="card-body">
                   <p><strong>DESCRIPCIÓN:</strong></p>
-                  <p>
-                    Se ha identificado una fuga de agua en la cancha de fútbol ubicada en [nombre o dirección del lugar], la cual es alquilada por la municipalidad para eventos deportivos y recreativos...
-                  </p>
+                  <p th:text="${reporte.descripcion}"></p>
                   <div class="text-center mt-3">
                     <img src="https://media.telemetro.com/p/1cb140baafe438aa30a06f1af8a20b79/adjuntos/311/imagenes/018/319/0018319409/1200x675/smart/imagepng.png" 
                          alt="Evidencia de incidencia"
@@ -68,7 +68,7 @@
             <div class="col-lg-7">
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                  <h5><strong>Detalles de la Incidencia #34</strong></h5>
+                  <h5><strong>Detalles de la Incidencia #<span th:text="${reporte.idReporte}"></span></strong></h5>
                 </div>
                 <div class="card-body">
                   <div class="row align-items-start">
@@ -76,9 +76,15 @@
                     <div class="col-md-9">
                       <div class="card bg-light p-3 rounded">
                         <p><strong>Fecha:</strong> 04/04/2025 - 10:32 AM - Cancha 2 - Parque Chicama</p>
-                        <p><strong>Ubicación:</strong> Manco II, San Miguel 15087</p>
-                        <p><strong>Coordinador:</strong> Adrian Bala</p>
-                        <p><strong>Zona:</strong> Pando</p>
+                        <p><strong>Ubicación:</strong>
+                          <span th:text="${reporte.horario.complejoDeportivo.direccion}">Ubicación no disponible</span>
+                        </p>
+                        <p><strong>Coordinador:</strong>
+                          <span th:text="${reporte.horario.horarioSemanal.coordinador.nombre + ' ' + reporte.horario.horarioSemanal.coordinador.apellido}">Coordinador no disponible</span>
+                        </p>
+                        <p><strong>Zona:</strong>
+                          <span th:text="${reporte.horario.complejoDeportivo.sector.nombre}">Zona no disponible</span>
+                        </p>
                       </div>
                     </div>
                   
@@ -109,14 +115,13 @@
                   
                   <div class="mb-3">
                     <iframe
-                      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3901.619040821633!2d-77.094658!3d-12.078195!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105ce296e0d799f%3A0xbb9d44c18f873e8a!2sManco%20II%2C%20San%20Miguel%2015087!5e0!3m2!1ses-419!2spe!4v1681940331726!5m2!1ses-419!2spe"
-                      width="100%"
-                      height="200"
-                      style="border:0; border-radius: 8px;"
-                      allowfullscreen=""
-                      loading="lazy"
-                      referrerpolicy="no-referrer-when-downgrade"
-                    ></iframe>
+                            th:src="'https://maps.google.com/maps?q=' + ${#strings.replace(reporte.horario.complejoDeportivo.direccion, ' ', '+')} + '&z=17&output=embed'"
+                            width="100%"
+                            height="300"
+                            style="border:0; border-radius: 8px;"
+                            allowfullscreen=""
+                            loading="lazy">
+                    </iframe>
                   </div>
                   
                   <div class="mt-4">
