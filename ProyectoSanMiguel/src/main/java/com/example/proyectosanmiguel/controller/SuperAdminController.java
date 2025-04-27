@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,7 +31,7 @@ public class SuperAdminController {
 
     //Lista de Usuarios
 
-    @GetMapping({"/superadmin", "/superadmin/", "/superadmin/listarusuario"})
+    @GetMapping({"/superadmin", "/superadmin/", "/superadmin/usuarios/lista"})
     public String mostrarListaUsuarios(Model model) {
 
         List<Usuario> usuarios = usuarioRepository.findAll();
@@ -41,20 +42,28 @@ public class SuperAdminController {
 
     //Formulario de creacion de Usuarios
 
-    @GetMapping({"/superadmin/crearusuario"})
+    @GetMapping({"/superadmin/usuarios/agregar"})
     public String formularioCreacionUsuario(Model model) {
 
         List<Sector> sectores = sectorRepository.findAll();
         List<Rol> roles = rolRepository.findAll();
 
+        List<Rol> rolesFiltrados = new ArrayList<>();
+
+        for (Rol rol : roles) {
+            if (!rol.getNombre().equalsIgnoreCase("Superadministrador")) {
+                rolesFiltrados.add(rol);
+            }
+        }
+
         model.addAttribute("sectores", sectores);
-        model.addAttribute("roles", roles);
+        model.addAttribute("roles", rolesFiltrados);
 
         return "SuperAdmin/superadmin_agregarUsuarios";
     }
 
     //Guardar los datos en el formulario
-    @PostMapping("/superadmin/guardarusuario")
+    @PostMapping("/superadmin/usuarios/guardar")
     public String guardarUsuario(@ModelAttribute Usuario usuario, @RequestParam("correo") String email, @RequestParam("password") String password, @RequestParam("sector") Integer idSector) {
 
         Sector sector = new Sector();
@@ -68,7 +77,7 @@ public class SuperAdminController {
         usuario.setCredencial(credencial);
 
         usuarioRepository.save(usuario);
-        return "redirect:/superadmin/listarusuario";
+        return "redirect:/superadmin/usuarios/lista";
     }
 
     //Borrar un usuario
@@ -82,7 +91,47 @@ public class SuperAdminController {
             usuarioRepository.deleteById(idUsuario);
         }
 
-        return "redirect:/superadmin/listarusuario";
+        return "redirect:/superadmin/usuarios/lista";
+    }
+
+    // "/superadmin/estadisticas/personal"
+
+    @GetMapping("/superadmin/estadisticas/personal")
+    public String estadisticasPersonal() {
+
+        return "SuperAdmin/superadmin_estadisticasPersonal";
+    }
+
+    // "/superadmin/estadisticas/financieras"
+
+    @GetMapping("/superadmin/estadisticas/financieras")
+    public String estadisticasFinancieras() {
+
+        return "SuperAdmin/superadmin_estadisticasFinancieras";
+    }
+
+    // "/superadmin/reportes/servicios"
+
+    @GetMapping("/superadmin/reportes/servicios")
+    public String reportesServicios() {
+
+        return "SuperAdmin/superadmin_reporteServicios";
+    }
+
+    // "/superadmin/reportes/financiero"
+
+    @GetMapping("/superadmin/reportes/financiero")
+    public String reportesFinanciero() {
+
+        return "SuperAdmin/superadmin_reporteFinanciero";
+    }
+
+    // "/superadmin/asistencia"
+
+    @GetMapping("/superadmin/asistencia")
+    public String superadminAsistencia() {
+
+        return "SuperAdmin/superadmin_asistencia";
     }
 
 }
