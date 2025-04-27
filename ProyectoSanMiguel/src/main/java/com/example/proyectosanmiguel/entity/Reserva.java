@@ -43,13 +43,8 @@ public class Reserva {
     private LocalDateTime fechaHoraRegistro;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "idServicio"),
-            @JoinColumn(name = "idComplejoDeportivo"),
-            @JoinColumn(name = "idInstanciaServicio")
-    })
+    @JoinColumn(name = "idInstanciaServicio", referencedColumnName = "idInstanciaServicio")
     private InstanciaServicio instanciaServicio;
-
 
 
 }

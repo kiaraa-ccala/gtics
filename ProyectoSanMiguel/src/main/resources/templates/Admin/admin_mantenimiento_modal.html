@@ -563,32 +563,22 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
   });
 });
 </script>
-  
-
-  
-
-
 
 <script>
   layout_change('light');
 </script>
-  
 <script>
   change_box_container('false');
 </script>
- 
 <script>
   layout_caption_change('true');
 </script>
- 
 <script>
   layout_rtl_change('false');
 </script>
- 
 <script>
   preset_change('preset-1');
 </script>
- 
 <script>
   main_layout_change('vertical');
 </script>
@@ -597,14 +587,12 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
     <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
     <script th:src="@{/assets/js/plugins/peity-vanilla.min.js}"></script>
 
-    <!-- custom widgets js -->
     <script th:src="@{/assets/js/widgets/revenue-analytics-chart.js}"></script>
     <script th:src="@{/assets/js/widgets/membership-state-chart.js}"></script>
     <script th:src="@{/assets/js/widgets/membership-activity-line-chart.js}"></script>
     <script th:src="@{/assets/js/widgets/invoice-chart.js}"></script>
     <script th:src="@{/assets/js/widgets/total-income-graph2.js}"></script>
 
-    <!-- jQuery y DataTables JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script th:src="@{/assets/js/plugins/dataTables.min.js}"></script>
     <script th:src="@{/assets/js/plugins/dataTables.bootstrap5.min.js}"></script>
@@ -617,8 +605,6 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
     <script th:src="@{/assets/js/plugins/buttons.print.min.js}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-
 
   <script>
     function actualizarFecha() {
@@ -742,7 +728,12 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
             <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
             <input type="text" class="form-control" id="nombreComplejo" required>
           </div>
-        
+
+          <!-- En el formulario de "Nuevo Complejo" -->
+          <input type="hidden" id="latitud" name="latitud" value="0">
+          <input type="hidden" id="longitud" name="longitud" value="0">
+
+
           <div class="mb-3">
             <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
             <select class="form-select" id="tipoServicio" multiple required>
@@ -777,9 +768,67 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
   </div>
 </div>
 
+    <script>
+      document.getElementById('formNuevoComplejo').addEventListener('submit', function(event) {
+        event.preventDefault(); // No recargar la página
+
+        const nombreComplejo = document.getElementById('nombreComplejo').value;
+        const direccionComplejo = document.getElementById('direccionComplejo').value;
+        const numSoporte = document.getElementById('numSoporte').value;
+        const latitud = document.getElementById('latitud').value || "0";
+        const longitud = document.getElementById('longitud').value || "0";
 
 
-<script>
+        const serviciosSeleccionados = Array.from(document.getElementById('tipoServicio').selectedOptions)
+                .map(opt => opt.value);
+
+        const formData = new FormData();
+        formData.append('nombreComplejo', nombreComplejo);
+        formData.append('direccionComplejo', direccionComplejo);
+        formData.append('numSoporte', numSoporte);
+        formData.append('serviciosSeleccionados', JSON.stringify(serviciosSeleccionados));
+        formData.append('latitud', latitud);
+        formData.append('longitud', longitud);
+        // Solo agregar si existen los inputs
+        const cantidadLosaInput = document.getElementById('cantidadLosa');
+        if (cantidadLosaInput && cantidadLosaInput.value !== '') {
+          formData.append('cantidadLosa', cantidadLosaInput.value);
+        }
+
+        const cantidadGrassInput = document.getElementById('cantidadGrass');
+        if (cantidadGrassInput && cantidadGrassInput.value !== '') {
+          formData.append('cantidadGrass', cantidadGrassInput.value);
+        }
+
+        const cantidadCarrilesInput = document.getElementById('cantidadCarriles');
+        if (cantidadCarrilesInput && cantidadCarrilesInput.value !== '') {
+          formData.append('cantidadCarriles', cantidadCarrilesInput.value);
+        }
+
+        fetch('/admin/servicios/guardarComplejo', {
+          method: 'POST',
+          body: formData
+        })
+                .then(response => {
+                  if (response.ok) {
+                    alert('¡Complejo creado correctamente!');
+                    location.reload(); // Para actualizar la tabla
+                  } else {
+                    alert('Error al guardar el complejo.');
+                  }
+                })
+                .catch(error => {
+                  console.error('Error:', error);
+                  alert('Error en la solicitud.');
+                });
+      });
+    </script>
+
+
+
+
+
+    <script>
   const tipoServicioSelect = document.getElementById("tipoServicio");
   const inputsServiciosExtras = document.getElementById("inputsServiciosExtras");
 
