@@ -235,173 +235,22 @@
                       <tr>
                         <th>Complejo</th>
                         <th>Servicio</th>
+                        <th>Capacidad máxima</th>
+                        <th>Modo de acceso</th>
                         <th>Reservas totales</th>
-                        <th>Promedio ocupación</th>
-                        <th>Variación mensual</th>
-                        <th>Tráfico hora punta</th>
+                        <th>Porcentaje de reservas</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>130</td>
-                        <td>61%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
+                      <tr th:each="reporte : ${reportes}">
+                        <td th:text="${reporte.getNombreComplejoDeportivo()}"> Nombre Complejo Deportivo</td>
+                        <td th:text="${reporte.getNombreServicio()}">Nombre Servicio Deportivo</td>
+                        <td th:text="${reporte.getCapacidad()}">Capacidad Maxima</td>
+                        <td th:text="${reporte.getModoAcceso()}">Modo de Acceso</td>
+                        <td th:text="${reporte.getReservasTotales()}">Reservas Totales</td>
+                        <td th:text="${reporte.getPorcentajeReservas() != null} ? ${reporte.getPorcentajeReservas()} + '%': 'No hay reservas en el complejo'">Porcentaje de Reservas</td>
                       </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Piscina</td>
-                        <td>100</td>
-                        <td>63%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Pista de atletismo</td>
-                        <td>142</td>
-                        <td>66%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>120</td>
-                        <td>42%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Gimnasio</td>
-                        <td>25</td>
-                        <td>33%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>95</td>
-                        <td>61%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Pista de atletismo</td>
-                        <td>100</td>
-                        <td>59%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Piscina</td>
-                        <td>120</td>
-                        <td>55%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Gimnasio</td>
-                        <td>20</td>
-                        <td>39%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>54</td>
-                        <td>53%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>135</td>
-                        <td>60%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Pista de atletismo</td>
-                        <td>124</td>
-                        <td>82%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
-                        <td>Gimnasio</td>
-                        <td>30</td>
-                        <td>36%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>Piscina</td>
-                        <td>90</td>
-                        <td>43%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Arena Vital Sports Center</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>65</td>
-                        <td>19%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>35</td>
-                        <td>66%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>Pista de atletismo</td>
-                        <td>68</td>
-                        <td>64%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
-                      <tr>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>34</td>
-                        <td>59%</td>
-                        <td>+5%</td>
-                        <td>4pm - 8pm</td>
-                      </tr>
-                      <tr>
-                        <td>Zona Max Training Club</td>
-                        <td>Piscina</td>
-                        <td>120</td>
-                        <td>41%</td>
-                        <td>+5%</td>
-                        <td>6pm - 10pm</td>
-                      </tr>
-                      <tr>
-                        <td>EcoArena Multideportes</td>
-                        <td>Gimnasio</td>
-                        <td>136</td>
-                        <td>70%</td>
-                        <td>+5%</td>
-                        <td>5pm - 9pm</td>
-                      </tr>
+
                     </tbody>
 
                   </table>

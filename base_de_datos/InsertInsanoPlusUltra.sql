@@ -274,9 +274,8 @@ INSERT INTO informacionpago (idInformacionPago, fecha, hora, tipo, total, estado
 (17, '2025-01-21', '16:50:00', 'Tarjeta', 35, 'Cancelado'),
 (18, '2025-01-22', '11:25:00', 'Transferencia', 22, 'Pagado'),
 (19, '2025-01-23', '10:30:00', 'Tarjeta', 15, 'En espera'),
-(20, '2025-01-24', '17:10:00', 'Transferencia', 40, 'Pagado');
-
-
+(20, '2025-01-24', '17:10:00', 'Transferencia', 40, 'Pagado'),
+(21, '2025-01-25', '17:12:00', 'Transferencia', 40, 'Pagado');
 
 INSERT INTO reserva (idReserva, idUsuario, idInformacionPago, fecha, horaInicio, horaFin, estado, fechaHoraRegistro, idInstanciaServicio) VALUES
 (1, 5, 1, '2025-02-05', '08:00:00', '10:00:00', 1, '2025-02-04 10:00:00', 1),
@@ -298,7 +297,8 @@ INSERT INTO reserva (idReserva, idUsuario, idInformacionPago, fecha, horaInicio,
 (17, 21, 17, '2025-02-21', '08:00:00', '10:00:00', 1, '2025-02-20 16:00:00', 14),
 (18, 22, 18, '2025-02-22', '14:00:00', '16:00:00', 1, '2025-02-21 09:00:00', 16),
 (19, 23, 19, '2025-02-23', '08:00:00', '10:00:00', 1, '2025-02-22 11:00:00', 18),
-(20, 24, 20, '2025-02-24', '14:00:00', '16:00:00', 1, '2025-02-23 13:00:00', 20);
+(20, 24, 20, '2025-02-24', '14:00:00', '16:00:00', 1, '2025-02-23 13:00:00', 20),
+(21, 5, 21, '2025-02-07', '08:00:00', '10:00:00', 1, '2025-02-05 10:00:00', 1);
 
 -- inserts de hoario -- marzo abril 2025
 INSERT INTO horariosemanal (idHorarioSemanal, idAdministrador, idCoordinador, fechaInicio, fechaFin, fechaCreacion) VALUES
@@ -1125,10 +1125,68 @@ INSERT INTO reporte (idReporte, tipoReporte, fechaRecepcion, estado, asunto, des
 (14, 'Alerta', '2025-03-29', 'Abierto', 'Vidrio roto', 'Vidrio de gimnasio roto, causa desconocida.', NULL, NULL, 247),
 (15, 'Solicitud de reparación', '2025-03-11', 'Cerrado', 'Problemas de sonido', 'Altavoces no emiten sonido en cancha.', NULL, NULL, 251);
 
-
 UPDATE usuario
 SET telefono = '987654321'
 WHERE idRol NOT IN (1, 2);
 
-SELECT * from Usuario; 
-SELECT * from credencial; 
+# ----------------------------------- Queries ------------------------------
+
+	SELECT 
+		cd.nombre AS nombreComplejoDeportivo,
+		s.nombre AS nombreServicio,
+		isv.capacidadMaxima AS capacidad,
+		isv.modoAcceso AS modoAcceso,
+		COUNT(r.idReserva) AS reservasTotales,
+		ROUND(
+			COUNT(r.idReserva) / 
+			SUM(COUNT(r.idReserva)) OVER (PARTITION BY cd.idComplejoDeportivo) * 100, 
+			2
+		) AS porcentajeReservas
+	FROM 
+		InstanciaServicio isv
+	INNER JOIN 
+		Servicio s ON isv.idServicio = s.idServicio
+	INNER JOIN 
+		ComplejoDeportivo cd ON isv.idComplejoDeportivo = cd.idComplejoDeportivo
+	LEFT JOIN 
+		Reserva r ON isv.idInstanciaServicio = r.idInstanciaServicio
+	GROUP BY 
+		isv.idInstanciaServicio, 
+		cd.idComplejoDeportivo, 
+		cd.nombre, 
+		s.nombre, 
+		isv.capacidadMaxima, 
+		isv.modoAcceso;
+
+	# --------------------
+
+	SELECT 
+		cd.nombre AS nombreComplejoDeportivo,
+		s.nombre AS nombreServicio,
+		COALESCE(SUM(CASE WHEN ip.estado = 'Pagado' THEN ip.total ELSE 0 END), 0) AS ingresoTotal,
+		COALESCE(SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Tarjeta' THEN ip.total ELSE 0 END), 0) AS ingresoTarjeta,
+		COALESCE(SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Transferencia' THEN ip.total ELSE 0 END), 0) AS ingresoTransferencia,
+		ROUND(
+			CASE 
+				WHEN SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Transferencia' THEN ip.total ELSE 0 END) > 0 THEN
+					SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Tarjeta' THEN ip.total ELSE 0 END)
+					/ SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Transferencia' THEN ip.total ELSE 0 END) * 100
+				ELSE 0
+			END,
+		2) AS porcentajeIngresoTarjetaSobreTransferencia
+	FROM 
+		InstanciaServicio isv
+	INNER JOIN 
+		Servicio s ON isv.idServicio = s.idServicio
+	INNER JOIN 
+		ComplejoDeportivo cd ON isv.idComplejoDeportivo = cd.idComplejoDeportivo
+	LEFT JOIN 
+		Reserva r ON isv.idInstanciaServicio = r.idInstanciaServicio
+	LEFT JOIN 
+		InformacionPago ip ON r.idInformacionPago = ip.idInformacionPago
+	GROUP BY 
+		cd.idComplejoDeportivo, cd.nombre, 
+		s.idServicio, s.nombre, 
+		isv.idInstanciaServicio
+	ORDER BY 
+		cd.nombre ASC, s.nombre ASC;
