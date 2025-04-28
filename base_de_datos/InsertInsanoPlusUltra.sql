@@ -78,46 +78,88 @@ INSERT INTO foto (idFoto, nombreFoto, urlFoto) VALUES
 (4, 'Foto Perfil Usuario 4', 'https://tse4.mm.bing.net/th/id/OIP.cgNMVEvuDEun1YTljSQU-QAAAA?rs=1&pid=ImgDetMain'),
 (5, 'Foto Perfil Usuario 5', 'https://tse4.mm.bing.net/th/id/OIP.cgNMVEvuDEun1YTljSQU-QAAAA?rs=1&pid=ImgDetMain');
 
-
 -- Usuarios Principales por asi decirlo--
 INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto, idRol) VALUES
-(1, 'Tony', 'Flores', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1, 1),
-(2, 'Kiara', 'Ccala', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 2, 2),
-(3, 'Daniel', 'Vargas', '74211799', 'Parque San Martin 241', 'Pueblo Libre', 'Lima', 'Lima', NULL, 3, 3, 3),
-(4, 'Mathias', 'Tirado', '44332211', 'Calle La Paz 101', 'San Miguel', 'Lima', 'Lima', NULL, NULL, 4, 4);
+(1, 'Tony', 'Flores', NULL, NULL, NULL, NULL, NULL, 3, NULL, 1, 1),
+(2, 'Kiara', 'Ccala', NULL, NULL, NULL, NULL, NULL, 5, NULL, 2, 2),
+(3, 'Daniel', 'Vargas', '74211799', 'Parque San Martin 241', 'Pueblo Libre', 'Lima', 'Lima', 2, 3, 3, 3),
+(4, 'Mathias', 'Tirado', '44332211', 'Calle La Paz 101', 'San Miguel', 'Lima', 'Lima', 1, NULL, 4, 4);
 
 -- insert vecinos adicionales para mas data--
 INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto, idRol) VALUES
-(5, 'Luciana', 'Salazar', '40000005', 'Av. Los Próceres 456', 'Pueblo Libre', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(6, 'Jorge', 'Ramírez', '40000006', 'Jr. Amazonas 850', 'Jesús María', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(7, 'Paula', 'Pérez', '40000007', 'Calle Bolívar 120', 'Magdalena del Mar', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(8, 'Santiago', 'Cáceres', '40000008', 'Av. Sucre 1400', 'Pueblo Libre', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(9, 'Valeria', 'Lopez', '40000009', 'Av. Salaverry 320', 'Jesús María', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(10, 'Adrián', 'Quispe', '40000010', 'Jr. Tarapacá 760', 'Breña', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(11, 'Mariana', 'Guzmán', '40000011', 'Av. Venezuela 500', 'Breña', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(12, 'Diego', 'Ortega', '40000012', 'Av. Brasil 2200', 'Jesús María', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(13, 'Natalia', 'Fernández', '40000013', 'Av. Cuba 350', 'Jesús María', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(14, 'Sebastián', 'Morales', '40000014', 'Calle Ayacucho 200', 'Magdalena del Mar', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(15, 'Gabriela', 'Campos', '40000015', 'Av. Brasil 1400', 'Breña', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(16, 'Mateo', 'Valverde', '40000016', 'Jr. Coronel Zegarra 300', 'Lince', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(17, 'Camila', 'Chávez', '40000017', 'Av. República de Panamá 560', 'La Victoria', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(18, 'Andrés', 'Delgado', '40000018', 'Av. Canadá 1340', 'La Victoria', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(19, 'Isabella', 'Mendoza', '40000019', 'Calle Los Halcones 520', 'Magdalena del Mar', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(20, 'Samuel', 'Vásquez', '40000020', 'Av. Parque de las Leyendas 234', 'San Miguel', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(21, 'Ana', 'López', '40000021', 'Av. Húsares de Junín 410', 'Pueblo Libre', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(22, 'Marcos', 'Torres', '40000022', 'Jr. Junín 790', 'Breña', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(23, 'Daniela', 'Sánchez', '40000023', 'Calle Conde de la Vega 120', 'Lince', 'Lima', 'Lima', NULL, NULL, 5, 4),
-(24, 'Ricardo', 'Paredes', '40000024', 'Av. Javier Prado Oeste 1300', 'San Isidro', 'Lima', 'Lima', NULL, NULL, 5, 4);
-
+(5, 'Luciana', 'Salazar', '40000005', 'Av. Los Próceres 456', 'Pueblo Libre', 'Lima', 'Lima', 4, NULL, 5, 4),
+(6, 'Jorge', 'Ramírez', '40000006', 'Jr. Amazonas 850', 'Jesús María', 'Lima', 'Lima', 2, NULL, 5, 4),
+(7, 'Paula', 'Pérez', '40000007', 'Calle Bolívar 120', 'Magdalena del Mar', 'Lima', 'Lima', 5, NULL, 5, 4),
+(8, 'Santiago', 'Cáceres', '40000008', 'Av. Sucre 1400', 'Pueblo Libre', 'Lima', 'Lima', 3, NULL, 5, 4),
+(9, 'Valeria', 'Lopez', '40000009', 'Av. Salaverry 320', 'Jesús María', 'Lima', 'Lima', 1, NULL, 5, 4),
+(10, 'Adrián', 'Quispe', '40000010', 'Jr. Tarapacá 760', 'Breña', 'Lima', 'Lima', 2, NULL, 5, 4),
+(11, 'Mariana', 'Guzmán', '40000011', 'Av. Venezuela 500', 'Breña', 'Lima', 'Lima', 5, NULL, 5, 4),
+(12, 'Diego', 'Ortega', '40000012', 'Av. Brasil 2200', 'Jesús María', 'Lima', 'Lima', 1, NULL, 5, 4),
+(13, 'Natalia', 'Fernández', '40000013', 'Av. Cuba 350', 'Jesús María', 'Lima', 'Lima', 3, NULL, 5, 4),
+(14, 'Sebastián', 'Morales', '40000014', 'Calle Ayacucho 200', 'Magdalena del Mar', 'Lima', 'Lima', 5, NULL, 5, 4),
+(15, 'Gabriela', 'Campos', '40000015', 'Av. Brasil 1400', 'Breña', 'Lima', 'Lima', 1, NULL, 5, 4),
+(16, 'Mateo', 'Valverde', '40000016', 'Jr. Coronel Zegarra 300', 'Lince', 'Lima', 'Lima', 4, NULL, 5, 4),
+(17, 'Camila', 'Chávez', '40000017', 'Av. República de Panamá 560', 'La Victoria', 'Lima', 'Lima', 2, NULL, 5, 4),
+(18, 'Andrés', 'Delgado', '40000018', 'Av. Canadá 1340', 'La Victoria', 'Lima', 'Lima', 1, NULL, 5, 4),
+(19, 'Isabella', 'Mendoza', '40000019', 'Calle Los Halcones 520', 'Magdalena del Mar', 'Lima', 'Lima', 4, NULL, 5, 4),
+(20, 'Samuel', 'Vásquez', '40000020', 'Av. Parque de las Leyendas 234', 'San Miguel', 'Lima', 'Lima', 5, NULL, 5, 4),
+(21, 'Ana', 'López', '40000021', 'Av. Húsares de Junín 410', 'Pueblo Libre', 'Lima', 'Lima', 3, NULL, 5, 4),
+(22, 'Marcos', 'Torres', '40000022', 'Jr. Junín 790', 'Breña', 'Lima', 'Lima', 2, NULL, 5, 4),
+(23, 'Daniela', 'Sánchez', '40000023', 'Calle Conde de la Vega 120', 'Lince', 'Lima', 'Lima', 5, NULL, 5, 4),
+(24, 'Ricardo', 'Paredes', '40000024', 'Av. Javier Prado Oeste 1300', 'San Isidro', 'Lima', 'Lima', 4, NULL, 5, 4);
 
 
 -- Por si Faltan coordinadores--
 INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto, idRol)
-VALUES (25, 'Julieta', 'Ramos', '40000025', 'Av. Riva Agüero 800', 'Pueblo Libre', 'Lima', 'Lima', NULL, 1, 5, 3);
+VALUES (25, 'Julieta', 'Ramos', '40000025', 'Av. Riva Agüero 800', 'Pueblo Libre', 'Lima', 'Lima', 2, 1, 5, 3);
 
 INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto, idRol)
-VALUES (26, 'Cristian', 'Mejía', '40000026', 'Jr. Trujillo 240', 'Breña', 'Lima', 'Lima', NULL, 2, 5, 3);
+VALUES (26, 'Cristian', 'Mejía', '40000026', 'Jr. Trujillo 240', 'Breña', 'Lima', 'Lima', 4, 2, 5, 3);
 
+INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto, idRol) VALUES
+(27, 'Valeria', 'Gómez', '40000027', 'Av. Los Álamos 450', 'San Miguel', 'Lima', 'Lima', 1, 1, 5, 3),
+(28, 'Sebastián', 'Torres', '40000028', 'Jr. Arequipa 123', 'Pueblo Libre', 'Lima', 'Lima', 2, 1, 5, 3),
+(29, 'Luciana', 'Medina', '40000029', 'Av. Brasil 890', 'Jesús María', 'Lima', 'Lima', 3, 1, 5, 3),
+(30, 'Jorge', 'Salazar', '40000030', 'Calle Libertad 320', 'Magdalena del Mar', 'Lima', 'Lima', 4, 1, 5, 3),
+(31, 'Camila', 'Rojas', '40000031', 'Av. Faucett 720', 'San Miguel', 'Lima', 'Lima', 5, 1, 5, 3),
+(32, 'Alejandro', 'Vargas', '40000032', 'Jr. Amazonas 400', 'Breña', 'Lima', 'Lima', 2, 1, 5, 3),
+(33, 'Daniela', 'Castillo', '40000033', 'Av. La Marina 2300', 'San Miguel', 'Lima', 'Lima', 1, 1, 5, 3);
+
+
+INSERT INTO credencial (correo, password, idUsuario) VALUES
+('tony.flores@gmail.com', '123456', 1),
+('kiara.ccala@gmail.com', '123456', 2),
+('daniel.vargas@gmail.com', '123456', 3),
+('mathias.tirado@gmail.com', '123456', 4),
+('luciana.salazar@gmail.com', '123456', 5),
+('jorge.ramirez@gmail.com', '123456', 6),
+('paula.perez@gmail.com', '123456', 7),
+('santiago.caceres@gmail.com', '123456', 8),
+('valeria.lopez@gmail.com', '123456', 9),
+('adrian.quispe@gmail.com', '123456', 10),
+('mariana.guzman@gmail.com', '123456', 11),
+('diego.ortega@gmail.com', '123456', 12),
+('natalia.fernandez@gmail.com', '123456', 13),
+('sebastian.morales@gmail.com', '123456', 14),
+('gabriela.campos@gmail.com', '123456', 15),
+('mateo.valverde@gmail.com', '123456', 16),
+('camila.chavez@gmail.com', '123456', 17),
+('andres.delgado@gmail.com', '123456', 18),
+('isabella.mendoza@gmail.com', '123456', 19),
+('samuel.vasquez@gmail.com', '123456', 20),
+('ana.lopez@gmail.com', '123456', 21),
+('marcos.torres@gmail.com', '123456', 22),
+('daniela.sanchez@gmail.com', '123456', 23),
+('ricardo.paredes@gmail.com', '123456', 24),
+('julieta.ramos@gmail.com', '123456', 25),
+('cristian.mejia@gmail.com', '123456', 26),
+('valeria.gomez@gmail.com', '123456', 27),
+('sebastian.torres@gmail.com', '123456', 28),
+('luciana.medina@gmail.com', '123456', 29),
+('jorge.salazar@gmail.com', '123456', 30),
+('camila.rojas@gmail.com', '123456', 31),
+('alejandro.vargas@gmail.com', '123456', 32),
+('daniela.castillo@gmail.com', '123456', 33);
 
 -- Cancha de Grass (idServicio = 1)
 INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
@@ -257,18 +299,6 @@ INSERT INTO reserva (idReserva, idUsuario, idInformacionPago, fecha, horaInicio,
 (18, 22, 18, '2025-02-22', '14:00:00', '16:00:00', 1, '2025-02-21 09:00:00', 16),
 (19, 23, 19, '2025-02-23', '08:00:00', '10:00:00', 1, '2025-02-22 11:00:00', 18),
 (20, 24, 20, '2025-02-24', '14:00:00', '16:00:00', 1, '2025-02-23 13:00:00', 20);
-
--- creo qyue van a faltar coordinadores :ccc
--- nuevos coordinadores agregados oopsi
-INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, provincia, departamento, idSector, idTercerizado, idFoto, idRol) VALUES
-(27, 'Valeria', 'Gómez', '40000027', 'Av. Los Álamos 450', 'San Miguel', 'Lima', 'Lima', NULL, 1, 5, 3),
-(28, 'Sebastián', 'Torres', '40000028', 'Jr. Arequipa 123', 'Pueblo Libre', 'Lima', 'Lima', NULL, 1, 5, 3),
-(29, 'Luciana', 'Medina', '40000029', 'Av. Brasil 890', 'Jesús María', 'Lima', 'Lima', NULL, 1, 5, 3),
-(30, 'Jorge', 'Salazar', '40000030', 'Calle Libertad 320', 'Magdalena del Mar', 'Lima', 'Lima', NULL, 1, 5, 3),
-(31, 'Camila', 'Rojas', '40000031', 'Av. Faucett 720', 'San Miguel', 'Lima', 'Lima', NULL, 1, 5, 3),
-(32, 'Alejandro', 'Vargas', '40000032', 'Jr. Amazonas 400', 'Breña', 'Lima', 'Lima', NULL, 1, 5, 3),
-(33, 'Daniela', 'Castillo', '40000033', 'Av. La Marina 2300', 'San Miguel', 'Lima', 'Lima', NULL, 1, 5, 3);
-
 
 -- inserts de hoario -- marzo abril 2025
 INSERT INTO horariosemanal (idHorarioSemanal, idAdministrador, idCoordinador, fechaInicio, fechaFin, fechaCreacion) VALUES
@@ -1096,50 +1126,9 @@ INSERT INTO reporte (idReporte, tipoReporte, fechaRecepcion, estado, asunto, des
 (15, 'Solicitud de reparación', '2025-03-11', 'Cerrado', 'Problemas de sonido', 'Altavoces no emiten sonido en cancha.', NULL, NULL, 251);
 
 
-
-
-
-
-INSERT INTO credencial (correo, password, idUsuario) VALUES
-('tony.flores@gmail.com', '123456', 1),
-('kiara.ccala@gmail.com', '123456', 2),
-('daniel.vargas@gmail.com', '123456', 3),
-('mathias.tirado@gmail.com', '123456', 4),
-('luciana.salazar@gmail.com', '123456', 5),
-('jorge.ramirez@gmail.com', '123456', 6),
-('paula.perez@gmail.com', '123456', 7),
-('santiago.caceres@gmail.com', '123456', 8),
-('valeria.lopez@gmail.com', '123456', 9),
-('adrian.quispe@gmail.com', '123456', 10),
-('mariana.guzman@gmail.com', '123456', 11),
-('diego.ortega@gmail.com', '123456', 12),
-('natalia.fernandez@gmail.com', '123456', 13),
-('sebastian.morales@gmail.com', '123456', 14),
-('gabriela.campos@gmail.com', '123456', 15),
-('mateo.valverde@gmail.com', '123456', 16),
-('camila.chavez@gmail.com', '123456', 17),
-('andres.delgado@gmail.com', '123456', 18),
-('isabella.mendoza@gmail.com', '123456', 19),
-('samuel.vasquez@gmail.com', '123456', 20),
-('ana.lopez@gmail.com', '123456', 21),
-('marcos.torres@gmail.com', '123456', 22),
-('daniela.sanchez@gmail.com', '123456', 23),
-('ricardo.paredes@gmail.com', '123456', 24),
-('valeria.gomez@gmail.com', '123456', 27),
-('sebastian.torres@gmail.com', '123456', 28),
-('luciana.medina@gmail.com', '123456', 29),
-('jorge.salazar@gmail.com', '123456', 30),
-('camila.rojas@gmail.com', '123456', 31),
-('alejandro.vargas@gmail.com', '123456', 32),
-('daniela.castillo@gmail.com', '123456', 33);
-
-
-select * from credencial;
-select * from usuario;
-
-
 UPDATE usuario
 SET telefono = '987654321'
 WHERE idRol NOT IN (1, 2);
 
-
+SELECT * from Usuario; 
+SELECT * from credencial; 

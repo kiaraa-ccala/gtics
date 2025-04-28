@@ -1,21 +1,21 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <!-- [Head] start -->
+<!-- [Head] start -->
 
-  <head th:replace="fragments/head_superadmin :: head('Agregar Usuario')"></head>
+<head th:replace="fragments/head_superadmin :: head('Editar Usuario')"></head>
 
-  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
-    <!-- [ Pre-loader ] start -->
-    <div class="loader-bg">
-      <div class="loader-track">
-        <div class="loader-fill"></div>
-      </div>
-    </div>
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
 
-    <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
+<div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
 
-    <header class="pc-header">
-      <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
+<header class="pc-header">
+  <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
     <div class="me-auto pc-mob-drp">
       <ul class="list-unstyled">
         <!-- ======= Menu collapse Icon ===== -->
@@ -56,13 +56,13 @@
 
         <li class="dropdown pc-h-item header-user-profile">
           <a
-            class="pc-head-link dropdown-toggle arrow-none me-0"
-            data-bs-toggle="dropdown"
-            href="#"
-            role="button"
-            aria-haspopup="false"
-            data-bs-auto-close="outside"
-            aria-expanded="false"
+                  class="pc-head-link dropdown-toggle arrow-none me-0"
+                  data-bs-toggle="dropdown"
+                  href="#"
+                  role="button"
+                  aria-haspopup="false"
+                  data-bs-auto-close="outside"
+                  aria-expanded="false"
           >
             <img th:src="@{/assets/images/user/avatar-2.jpg}" alt="user-image" class="user-avtar" />
           </a>
@@ -86,9 +86,9 @@
                   <div class="card-body py-3">
                     <div class="d-flex align-items-center justify-content-between">
                       <h5 class="mb-0 d-inline-flex align-items-center"
-                        ><svg class="pc-icon text-muted me-2">
-                          <use xlink:href="#custom-notification-outline"></use></svg
-                        >Notificaciones</h5>
+                      ><svg class="pc-icon text-muted me-2">
+                        <use xlink:href="#custom-notification-outline"></use></svg
+                      >Notificaciones</h5>
                       <div class="form-check form-switch form-check-reverse m-0">
                         <input class="form-check-input f-18" type="checkbox" role="switch" />
                       </div>
@@ -129,190 +129,198 @@
         </li>
       </ul>
     </div>
-     </div>
-    </header>
+  </div>
+</header>
 
-    <div class="pc-container" style="background: #e0f6ff">
-      <div class="pc-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-          <div class="page-block">
-            <div class="row align-items-center">
-              <div class="col-md-12">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Gestión y reportes</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Añadir usuario</li>
-                </ul>
-              </div>
-              <div class="col-md-12">
-                <div class="page-header-title">
-                  <h2 class="mb-0">Añadir usuario</h2>
-                </div>
-              </div>
-            </div>
+<div class="pc-container" style="background: #e0f6ff">
+  <div class="pc-content">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <ul class="breadcrumb">
+              <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+              <li class="breadcrumb-item"><a href="javascript: void(0)">Gestión y reportes</a></li>
+              <li class="breadcrumb-item" aria-current="page">Editar usuario</li>
+            </ul>
           </div>
-        </div>
-        <!-- [ breadcrumb ] end -->
-
-
-        <!-- [ Main Content ] start -->
-        <div class="row">
-          <div class="col-12">
-            <div class="card">
-              <div class="card-header">
-                <h5 class="mb-0">Información básica</h5>
-              </div>
-
-              <form th:action="@{/superadmin/usuarios/guardar}" method="post">
-
-              <div class="card-body">
-                <div class="row">
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="nombre" class="form-label">Nombre</label>
-                      <input name="nombre" id="nombre" type="text" class="form-control" placeholder="Ingrese el nombre" required />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="apellido" class="form-label">Apellido</label>
-                      <input name="apellido" id="apellido" type="text" class="form-control" placeholder="Ingrese los apellidos" required  />
-                    </div>
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="dni" class="form-label">DNI</label>
-                      <input
-                        id="dni"
-                        name="dni"
-                        type="text"
-                        class="form-control" 
-                        placeholder="Ingrese el DNI"
-                        min="0" 
-                        max="99999999" 
-                        oninput="this.value = this.value.slice(0, 8)" 
-                        required />
-                    </div>
-                    
-                  </div>
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="direccion" class="form-label">Dirección</label>
-                      <input name="direccion" id="direccion" type="text" class="form-control" placeholder="Ingrese la dirección" required  />
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="sector" class="form-label">Sector</label>
-                      <select name="sector" id="sector" class="form-select" required>
-                        <!-- Placeholder has NO `value` attribute (will be skipped in submission) -->
-                        <option disabled selected>Seleccione un sector</option>
-                        <option th:each="sector : ${sectores}"
-                                th:value="${sector.idSector}"
-                                th:text="${sector.nombre}"></option>
-                      </select>
-                    </div>
-                  </div>
-
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="rol" class="form-label">Rol</label>
-                      <select name="rol" id="rol" class="form-select" required>
-                        <!-- Placeholder has NO `value` attribute (will be skipped in submission) -->
-                        <option disabled selected>Seleccione un rol</option>
-                        <option th:each="rol : ${roles}"
-                                th:value="${rol.getIdRol()}"
-                                th:text="${rol.getNombre()}"></option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="correo" class="form-label">Correo electrónico</label>
-                      <input type="email" name="correo" id="correo" class="form-control" placeholder="Ingrese el correo electrónico" required />
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Contraseña</label>
-                      <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese la contraseña" required />
-                    </div>
-                  </div>
-
-                  <div class="col-md-6">
-                    <div class="mb-3">
-                      <label for="telefono" class="form-label">Número telefónico</label>
-                      <input
-                        name="telefono"
-                        id="telefono"
-                        type="text"
-                        class="form-control" 
-                        placeholder="Ingrese el número"
-                        min="900000000" 
-                        max="999999999"
-                        oninput="this.value = this.value.slice(0, 9)"
-                        required />
-                    </div>
-                  </div>
-                  <div class="col-md-12 text-end">
-                    <button type="submit" class="btn btn-primary">Añadir</button>
-                  </div>
-
-
-                </div>
-            </div>
-
-              </form>
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h2 class="mb-0">Editar usuario</h2>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <!-- [ breadcrumb ] end -->
 
 
-    <div th:replace="fragments/footer_superadmin :: footer"></div>
+    <!-- [ Main Content ] start -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">Información básica</h5>
+          </div>
+
+          <form th:action="@{/superadmin/usuarios/guardar}" method="post">
+
+            <div class="card-body">
+              <div class="row">
+
+                <!-- Se incluye este input oculto para almacenar la id del registro que esta siendo editado -->
+                <input th:value="${usuario.getIdUsuario()}" name="idUsuario" type="hidden" required />
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="nombre" class="form-label">Nombre</label>
+                    <input th:value="${usuario.getNombre()}" name="nombre" id="nombre" type="text" class="form-control" placeholder="Ingrese el nombre" required />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="apellido" class="form-label">Apellido</label>
+                    <input th:value="${usuario.getApellido()}" name="apellido" id="apellido" type="text" class="form-control" placeholder="Ingrese los apellidos" required  />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="dni" class="form-label">DNI</label>
+                    <input
+                            th:value="${usuario.getDni()}"
+                            id="dni"
+                            name="dni"
+                            type="text"
+                            class="form-control"
+                            placeholder="Ingrese el DNI"
+                            min="0"
+                            max="99999999"
+                            oninput="this.value = this.value.slice(0, 8)"
+                            required />
+                  </div>
+
+                </div>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="direccion" class="form-label">Dirección</label>
+                    <input th:value="${usuario.getDireccion()}" name="direccion" id="direccion" type="text" class="form-control" placeholder="Ingrese la dirección" required  />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="sector" class="form-label">Sector</label>
+                    <select name="sector" id="sector" class="form-select" required>
+                      <!-- Placeholder has NO `value` attribute (will be skipped in submission) -->
+                      <option disabled selected>Seleccione un sector</option>
+                      <option th:each="sector : ${sectores}"
+                              th:value="${sector.idSector}"
+                              th:text="${sector.nombre}"
+                              th:selected="${sector.getIdSector() ==  usuario.getSector().getIdSector()}"></option>
+                    </select>
+                  </div>
+                </div>
 
 
-    <!-- Required JS -->
-    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
-    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
-    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="rol" class="form-label">Rol</label>
+                    <select name="rol" id="rol" class="form-select" required>
+                      <!-- Placeholder has NO `value` attribute (will be skipped in submission) -->
+                      <option disabled selected>Seleccione un rol</option>
+                      <option th:each="rol : ${roles}"
+                              th:value="${rol.getIdRol()}"
+                              th:text="${rol.getNombre()}"
+                              th:selected="${rol.getIdRol() ==  usuario.getRol.getIdRol()}"></option>
+                    </select>
+                  </div>
+                </div>
 
-    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
-    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="correo" class="form-label">Correo electrónico</label>
+                    <input th:value="${usuario.getCredencial().getCorreo()}" type="email" name="correo" id="correo" class="form-control" placeholder="Ingrese el correo electrónico" required />
+                  </div>
+                </div>
 
-    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
-    <script th:src="@{/assets/js/script.js}"></script>
-    <script th:src="@{/assets/js/theme.js}"></script>
-    <script th:src="@{/assets/js/multi-lang.js}"></script>
-    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="password" class="form-label">Contraseña</label>
+                    <input type="password" name="password" id="password" class="form-control" placeholder="Ingrese la contraseña" required />
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="telefono" class="form-label">Número telefónico</label>
+                    <input
+                            th:value="${usuario.getTelefono()}"
+                            name="telefono"
+                            id="telefono"
+                            type="text"
+                            class="form-control"
+                            placeholder="Ingrese el número"
+                            min="900000000"
+                            max="999999999"
+                            oninput="this.value = this.value.slice(0, 9)"
+                            required />
+                  </div>
+                </div>
+                <div class="col-md-12 text-end">
+                  <button type="submit" class="btn btn-primary">Actualizar</button>
+                </div>
+
+
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div th:replace="fragments/footer_superadmin :: footer"></div>
+
+
+<!-- Required JS -->
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+<script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+<script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+<script th:src="@{/assets/js/icon/custom-font.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+<script th:src="@{/assets/js/theme.js}"></script>
+<script th:src="@{/assets/js/multi-lang.js}"></script>
+<script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 
 
 <script>
   layout_change('light');
 </script>
-  
+
 <script>
   change_box_container('false');
 </script>
- 
+
 <script>
   layout_caption_change('true');
 </script>
- 
+
 <script>
   layout_rtl_change('false');
 </script>
- 
+
 <script>
   preset_change('preset-1');
 </script>
- 
+
 <script>
   main_layout_change('vertical');
 </script>
@@ -322,7 +330,7 @@
   <div class="offcanvas-header">
     <h5 class="offcanvas-title">Settings</h5>
     <button type="button" class="btn btn-icon btn-link-danger ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"
-      ><i class="ti ti-x"></i
+    ><i class="ti ti-x"></i
     ></button>
   </div>
   <div class="pct-body customizer-body">
@@ -336,11 +344,11 @@
               <div class="col-4">
                 <div class="d-grid">
                   <button
-                    class="preset-btn btn active"
-                    data-value="true"
-                    onclick="layout_change('light');"
-                    data-bs-toggle="tooltip"
-                    title="Light"
+                          class="preset-btn btn active"
+                          data-value="true"
+                          onclick="layout_change('light');"
+                          data-bs-toggle="tooltip"
+                          title="Light"
                   >
                     <svg class="pc-icon text-warning">
                       <use xlink:href="#custom-sun-1"></use>
@@ -360,11 +368,11 @@
               <div class="col-4">
                 <div class="d-grid">
                   <button
-                    class="preset-btn btn"
-                    data-value="default"
-                    onclick="layout_change_default();"
-                    data-bs-toggle="tooltip"
-                    title="Automatically sets the theme based on user's operating system's color scheme."
+                          class="preset-btn btn"
+                          data-value="default"
+                          onclick="layout_change_default();"
+                          data-bs-toggle="tooltip"
+                          title="Automatically sets the theme based on user's operating system's color scheme."
                   >
                     <span class="pc-lay-icon d-flex align-items-center justify-content-center">
                       <i class="ph-duotone ph-cpu"></i>
@@ -382,11 +390,11 @@
             <div class="col-6">
               <div class="d-grid">
                 <button
-                  class="preset-btn btn"
-                  data-value="true"
-                  onclick="layout_theme_contrast_change('true');"
-                  data-bs-toggle="tooltip"
-                  title="True"
+                        class="preset-btn btn"
+                        data-value="true"
+                        onclick="layout_theme_contrast_change('true');"
+                        data-bs-toggle="tooltip"
+                        title="True"
                 >
                   <svg class="pc-icon">
                     <use xlink:href="#custom-mask"></use>
@@ -397,11 +405,11 @@
             <div class="col-6">
               <div class="d-grid">
                 <button
-                  class="preset-btn btn active"
-                  data-value="false"
-                  onclick="layout_theme_contrast_change('false');"
-                  data-bs-toggle="tooltip"
-                  title="False"
+                        class="preset-btn btn active"
+                        data-value="false"
+                        onclick="layout_theme_contrast_change('false');"
+                        data-bs-toggle="tooltip"
+                        title="False"
                 >
                   <svg class="pc-icon">
                     <use xlink:href="#custom-mask-1-outline"></use>
@@ -430,7 +438,7 @@
         <li class="list-group-item">
           <h6 class="mb-1">Theme layout</h6>
           <p class="text-muted text-sm">Choose your layout</p>
-            <div class="theme-main-layout d-flex align-center gap-1 w-100">
+          <div class="theme-main-layout d-flex align-center gap-1 w-100">
             <a href="#!" data-bs-toggle="tooltip" title="Vertical" class="active" data-value="vertical">
               <img th:src="@{/assets/images/customizer/caption-on.svg}" alt="img" class="img-fluid" />
             </a>
@@ -455,11 +463,11 @@
             <div class="col-6">
               <div class="d-grid">
                 <button
-                  class="preset-btn btn-img btn active"
-                  data-value="true"
-                  onclick="layout_caption_change('true');"
-                  data-bs-toggle="tooltip"
-                  title="Caption Show"
+                        class="preset-btn btn-img btn active"
+                        data-value="true"
+                        onclick="layout_caption_change('true');"
+                        data-bs-toggle="tooltip"
+                        title="Caption Show"
                 >
                   <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
                 </button>
@@ -468,11 +476,11 @@
             <div class="col-6">
               <div class="d-grid">
                 <button
-                  class="preset-btn btn-img btn"
-                  data-value="false"
-                  onclick="layout_caption_change('false');"
-                  data-bs-toggle="tooltip"
-                  title="Caption Hide"
+                        class="preset-btn btn-img btn"
+                        data-value="false"
+                        onclick="layout_caption_change('false');"
+                        data-bs-toggle="tooltip"
+                        title="Caption Hide"
                 >
                   <img src="../assets/images/customizer/caption-off.svg" alt="img" class="img-fluid" />
                 </button>
@@ -488,11 +496,11 @@
               <div class="col-6">
                 <div class="d-grid">
                   <button
-                    class="preset-btn btn-img btn active"
-                    data-value="false"
-                    onclick="layout_rtl_change('false');"
-                    data-bs-toggle="tooltip"
-                    title="LTR"
+                          class="preset-btn btn-img btn active"
+                          data-value="false"
+                          onclick="layout_rtl_change('false');"
+                          data-bs-toggle="tooltip"
+                          title="LTR"
                   >
                     <img src="../assets/images/customizer/ltr.svg" alt="img" class="img-fluid" />
                   </button>
@@ -501,11 +509,11 @@
               <div class="col-6">
                 <div class="d-grid">
                   <button
-                    class="preset-btn btn-img btn"
-                    data-value="true"
-                    onclick="layout_rtl_change('true');"
-                    data-bs-toggle="tooltip"
-                    title="RTL"
+                          class="preset-btn btn-img btn"
+                          data-value="true"
+                          onclick="layout_rtl_change('true');"
+                          data-bs-toggle="tooltip"
+                          title="RTL"
                   >
                     <img src="../assets/images/customizer/rtl.svg" alt="img" class="img-fluid" />
                   </button>
@@ -522,11 +530,11 @@
               <div class="col-6">
                 <div class="d-grid">
                   <button
-                    class="preset-btn btn-img btn active"
-                    data-value="false"
-                    onclick="change_box_container('false')"
-                    data-bs-toggle="tooltip"
-                    title="Full Width"
+                          class="preset-btn btn-img btn active"
+                          data-value="false"
+                          onclick="change_box_container('false')"
+                          data-bs-toggle="tooltip"
+                          title="Full Width"
                   >
                     <img src="../assets/images/customizer/full.svg" alt="img" class="img-fluid" />
                   </button>
@@ -535,11 +543,11 @@
               <div class="col-6">
                 <div class="d-grid">
                   <button
-                    class="preset-btn btn-img btn"
-                    data-value="true"
-                    onclick="change_box_container('true')"
-                    data-bs-toggle="tooltip"
-                    title="Fixed Width"
+                          class="preset-btn btn-img btn"
+                          data-value="true"
+                          onclick="change_box_container('true')"
+                          data-bs-toggle="tooltip"
+                          title="Fixed Width"
                   >
                     <img src="../assets/images/customizer/fixed.svg" alt="img" class="img-fluid" />
                   </button>
@@ -558,33 +566,33 @@
   </div>
 </div>
 
-    <style>
-      /* Ítems del menú: blanco */
-      .pc-sidebar .pc-link,
-      .pc-sidebar .pc-mtext,
-      .pc-sidebar .pc-micon {
-        color: #ffffff !important;
-        opacity: 1 !important;
-      }
+<style>
+  /* Ítems del menú: blanco */
+  .pc-sidebar .pc-link,
+  .pc-sidebar .pc-mtext,
+  .pc-sidebar .pc-micon {
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
 
-      /* Títulos de secciones del menú */
-      .pc-sidebar .menu-caption,
-      .pc-sidebar .pc-caption {
-        color: rgba(255, 255, 255, 0.6) !important;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 12px;
-      }
-      /* Hover: cambia el texto a celeste claro */
-      .pc-sidebar .pc-link:hover,
-      .pc-sidebar .pc-link:focus {
-        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
-        transition: all 0.2s ease-in-out;
-      }
-    </style>
+  /* Títulos de secciones del menú */
+  .pc-sidebar .menu-caption,
+  .pc-sidebar .pc-caption {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  /* Hover: cambia el texto a celeste claro */
+  .pc-sidebar .pc-link:hover,
+  .pc-sidebar .pc-link:focus {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+    transition: all 0.2s ease-in-out;
+  }
+</style>
 
 
 
-  </body>
-  <!-- [Body] end -->
+</body>
+<!-- [Body] end -->
 </html>

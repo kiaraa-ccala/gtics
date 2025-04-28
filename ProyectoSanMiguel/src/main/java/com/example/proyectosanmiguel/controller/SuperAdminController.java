@@ -35,7 +35,16 @@ public class SuperAdminController {
     public String mostrarListaUsuarios(Model model) {
 
         List<Usuario> usuarios = usuarioRepository.findAll();
-        model.addAttribute("listaUsuarios", usuarios);
+        List<Usuario> usuariosFiltrados = new ArrayList<>();
+
+        for(Usuario usuario : usuarios){
+            if(!usuario.getRol().getNombre().equalsIgnoreCase("Superadministrador")){
+                usuariosFiltrados.add(usuario);
+            }
+        }
+
+
+        model.addAttribute("listaUsuarios", usuariosFiltrados);
 
         return "SuperAdmin/superadmin_listaUsuarios";
     }
@@ -62,27 +71,60 @@ public class SuperAdminController {
         return "SuperAdmin/superadmin_agregarUsuarios";
     }
 
-    //Guardar los datos en el formulario
+    //Guardar los datos del formulario de crear
     @PostMapping("/superadmin/usuarios/guardar")
-    public String guardarUsuario(@ModelAttribute Usuario usuario, @RequestParam("correo") String email, @RequestParam("password") String password, @RequestParam("sector") Integer idSector) {
+    public String guardarUsuario(@ModelAttribute Usuario usuario, @RequestParam("correo") String email, @RequestParam("password") String password) {
 
-        Sector sector = new Sector();
-        sector.setIdSector(idSector);
-        usuario.setSector(sector);
+        Usuario usuarioExistente = null;
 
-        Credencial credencial = new Credencial();
-        credencial.setCorreo(email);
-        credencial.setPassword(password);
-        credencial.setUsuario(usuario);
-        usuario.setCredencial(credencial);
+        if (usuario.getIdUsuario() != null) {
+            usuarioExistente = usuarioRepository.findById(usuario.getIdUsuario()).orElse(null);
+        }
 
-        usuarioRepository.save(usuario);
+        if (usuarioExistente != null) {
+            // Actualizar
+            usuarioExistente.setNombre(usuario.getNombre());
+            usuarioExistente.setApellido(usuario.getApellido());
+            usuarioExistente.setDni(usuario.getDni());
+            usuarioExistente.setDireccion(usuario.getDireccion());
+            usuarioExistente.setDistrito(usuario.getDistrito());
+            usuarioExistente.setProvincia(usuario.getProvincia());
+            usuarioExistente.setDepartamento(usuario.getDepartamento());
+            usuarioExistente.setTelefono(usuario.getTelefono());
+            usuarioExistente.setSector(usuario.getSector());
+            usuarioExistente.setRol(usuario.getRol());
+            usuarioExistente.setTercerizado(usuario.getTercerizado());
+
+            if (usuarioExistente.getCredencial() != null) {
+                usuarioExistente.getCredencial().setCorreo(email);
+                usuarioExistente.getCredencial().setPassword(password);
+            } else {
+                Credencial credencial = new Credencial();
+                credencial.setCorreo(email);
+                credencial.setPassword(password);
+                credencial.setUsuario(usuarioExistente);
+                usuarioExistente.setCredencial(credencial);
+            }
+
+            usuarioRepository.save(usuarioExistente);
+
+        } else {
+            // Crear nuevo
+            Credencial credencial = new Credencial();
+            credencial.setCorreo(email);
+            credencial.setPassword(password);
+            credencial.setUsuario(usuario);
+            usuario.setCredencial(credencial);
+
+            usuarioRepository.save(usuario);
+        }
+
         return "redirect:/superadmin/usuarios/lista";
     }
 
     //Borrar un usuario
 
-    @GetMapping("/superadmin/eliminar")
+    @GetMapping("/superadmin/usuarios/eliminar")
     public String eliminarAuto(@RequestParam("idUsuario") int idUsuario) {
 
         Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
@@ -92,6 +134,38 @@ public class SuperAdminController {
         }
 
         return "redirect:/superadmin/usuarios/lista";
+    }
+
+    //Editar un usuario
+
+    @GetMapping("/superadmin/usuarios/editar")
+    public String editarUsuario(@RequestParam("idUsuario") int idUsuario, Model model) {
+
+        Optional<Usuario> auxUsuario = usuarioRepository.findById(idUsuario);
+
+        if(auxUsuario.isPresent()) {
+            Usuario usuario = auxUsuario.get();
+            model.addAttribute("usuario", usuario);
+
+            List<Sector> sectores = sectorRepository.findAll();
+            List<Rol> roles = rolRepository.findAll();
+
+            List<Rol> rolesFiltrados = new ArrayList<>();
+
+            for (Rol rol : roles) {
+                if (!rol.getNombre().equalsIgnoreCase("Superadministrador")) {
+                    rolesFiltrados.add(rol);
+                }
+            }
+
+            model.addAttribute("sectores", sectores);
+            model.addAttribute("roles", rolesFiltrados);
+
+            return "SuperAdmin/superadmin_editarUsuarios";
+        }
+        else{
+            return "redirect:/superadmin/usuarios/lista";
+        }
     }
 
     // "/superadmin/estadisticas/personal"

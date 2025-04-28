@@ -56,86 +56,8 @@
       </span>
             </li>
 
-            <li class="dropdown pc-h-item">
-              <a
-                      class="pc-head-link dropdown-toggle arrow-none me-0"
-                      data-bs-toggle="dropdown"
-                      href="#"
-                      role="button"
-                      aria-haspopup="false"
-                      aria-expanded="false"
-              >
-                <svg class="pc-icon">
-                  <use xlink:href="#custom-notification"></use>
-                </svg>
-                <span class="badge bg-success pc-h-badge">3</span>
-              </a>
-              <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
-                <div class="dropdown-header d-flex align-items-center justify-content-between">
-                  <h5 class="m-0">Notificaciones</h5>
-                  <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
-                </div>
-                <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
-                  <p class="text-span">Hoy</p>
-                  <div class="card mb-2">
-                    <div class="card-body">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0">
-                          <svg class="pc-icon text-primary">
-                            <use xlink:href="#custom-layer"></use>
-                          </svg>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <span class="float-end text-sm text-muted">hace 2 min</span>
-                          <h5 class="text-body mb-2">Asignación administrador: zona sur</h5>
-                          <p class="mb-0"
-                          >Se mando correo a administador Juan Mathias Machado para la zona.</p
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="card mb-2">
-                    <div class="card-body">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0">
-                          <svg class="pc-icon text-primary">
-                            <use xlink:href="#custom-sms"></use>
-                          </svg>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <span class="float-end text-sm text-muted">hace 1 hora</span>
-                          <h5 class="text-body mb-2">Mensaje</h5>
-                          <p class="mb-0">Cierre de plataforma: proximas actualizaciones y recursos en proceso. </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="text-span">Ayer</p>
-                  <div class="card mb-2">
-                    <div class="card-body">
-                      <div class="d-flex">
-                        <div class="flex-shrink-0">
-                          <svg class="pc-icon text-primary">
-                            <use xlink:href="#custom-document-text"></use>
-                          </svg>
-                        </div>
-                        <div class="flex-grow-1 ms-3">
-                          <span class="float-end text-sm text-muted">hace 2 horas</span>
-                          <h5 class="text-body mb-2">Registro semanal</h5>
-                          <p class="mb-0"
-                          >Actualización de estadisticas semanales: 4 personales activos nuevos en zona norte.</p
-                          >
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="text-center py-2">
-                  <a href="#!" class="link-danger">Vaciar bandeja</a>
-                </div>
-              </div>
-            </li>
+            <li th:replace="fragments/notificaciones_superadmin :: notificaciones_superadmin"></li>
+
             <li class="dropdown pc-h-item header-user-profile">
               <a
                       class="pc-head-link dropdown-toggle arrow-none me-0"
@@ -275,15 +197,16 @@
 
 
                         <td>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
-                            <i class="ti ti-eye f-20"></i>
-                          </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
+
+                          <a th:href="@{'/superadmin/usuarios/editar?idUsuario=' + ${usuario.getIdUsuario()}}" class="avtar avtar-xs btn-link-secondary">
                             <i class="ti ti-edit f-20"></i>
                           </a>
-                          <a href="#" class="avtar avtar-xs btn-link-secondary">
+
+                          <a th:href="@{'/superadmin/usuarios/eliminar?idUsuario=' + ${usuario.getIdUsuario()}}" class="avtar avtar-xs btn-link-secondary"
+                             onclick="return confirm('¿Seguro?')">
                             <i class="ti ti-trash f-20"></i>
                           </a>
+
                         </td>
                       </tr>
 
