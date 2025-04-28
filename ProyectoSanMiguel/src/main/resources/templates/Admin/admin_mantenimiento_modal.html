@@ -713,58 +713,107 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
     </style>
 
     <!-- Modal tipo popup -->
-<div class="modal fade" id="nuevoComplejoModal" tabindex="-1" aria-labelledby="nuevoComplejoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded-4 shadow-lg">
-      <div class="modal-header">
-        <h5 class="modal-title fw-bold" id="nuevoComplejoModalLabel">Añadir Nuevo Complejo</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-      </div>
-      <div class="modal-body">
-        <form id="formNuevoComplejo">
-          <div class="mb-3">
-            <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
-            <input type="text" class="form-control" id="nombreComplejo" required>
+    <div class="modal fade" id="nuevoComplejoModal" tabindex="-1" aria-labelledby="nuevoComplejoModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content rounded-4 shadow-lg">
+          <div class="modal-header">
+            <h5 class="modal-title fw-bold" id="nuevoComplejoModalLabel">Añadir Nuevo Complejo</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
+          <div class="modal-body">
+            <form id="formNuevoComplejo">
+              <div class="row g-4"> <!-- 2 columnas -->
 
-          <!-- En el formulario de "Nuevo Complejo" -->
-          <input type="hidden" id="latitud" name="latitud" value="0">
-          <input type="hidden" id="longitud" name="longitud" value="0">
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
+                    <input type="text" class="form-control" id="nombreComplejo" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="direccionComplejo" class="form-label">Dirección</label>
+                    <input type="text" class="form-control" id="direccionComplejo" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="latitudInput" class="form-label">Latitud</label>
+                    <input type="text" class="form-control" id="latitudInput" name="latitudInput" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="sector" class="form-label">Sector</label>
+                    <select class="form-select" id="sector" name="sector" required>
+                      <option value="" disabled selected>Selecciona un sector</option>
+                      <option value="Norte">Norte</option>
+                      <option value="Sur">Sur</option>
+                      <option value="Este">Este</option>
+                      <option value="Oeste">Oeste</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="modoAcceso" class="form-label">Modo de Acceso</label>
+                    <select class="form-select" id="modoAcceso" name="modoAcceso" required>
+                      <option value="" disabled selected>Selecciona el modo de acceso</option>
+                      <option value="Libre">Libre</option>
+                      <option value="Documento de identidad">Con documento de identidad</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <div id="inputsServiciosExtrasCol1"></div>
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="mb-3">
+                    <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
+                    <select class="form-select" id="tipoServicio" multiple required>
+                      <option value="Gimnasio">Gimnasio</option>
+                      <option value="Cancha de losa">Cancha de losa</option>
+                      <option value="Cancha de grass">Cancha de grass</option>
+                      <option value="Piscina">Piscina</option>
+                      <option value="Pista de atletismo">Pista de atletismo</option>
+                    </select>
+                    <div class="form-text">Mantén presionada Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples</div>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="numSoporte" class="form-label">Número de soporte</label>
+                    <input type="text" class="form-control" id="numSoporte" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="longitudInput" class="form-label">Longitud</label>
+                    <input type="text" class="form-control" id="longitudInput" name="longitudInput" required>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="capacidadMaxima" class="form-label">Capacidad Máxima</label>
+                    <input type="number" class="form-control" id="capacidadMaxima" name="capacidadMaxima" required min="1">
+                  </div>
+
+                  <div class="mb-3">
+                    <div id="inputsServiciosExtrasCol2"></div>
+                  </div>
 
 
-          <div class="mb-3">
-            <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
-            <select class="form-select" id="tipoServicio" multiple required>
-              <option value="Gimnasio">Gimnasio</option>
-              <option value="Cancha de losa">Cancha de losa</option>
-              <option value="Cancha de grass">Cancha de grass</option>
-              <option value="Piscina">Piscina</option>
-              <option value="Pista de atletismo">Pista de atletismo</option>
-            </select>
-            <div class="form-text">Mantén presionada Ctrl (Windows) o Cmd (Mac) para seleccionar múltiples</div>
+              </div>
+
+              <div class="text-end mt-4">
+                <button type="submit" class="btn btn-primary">Guardar</button>
+              </div>
+
+              <!-- Hidden fields -->
+              <input type="hidden" id="latitud" name="latitud" value="0">
+              <input type="hidden" id="longitud" name="longitud" value="0">
+
+            </form>
           </div>
-        
-          <!-- Aquí se generarán los inputs adicionales -->
-          <div id="inputsServiciosExtras"></div>
-        
-          <div class="mb-3">
-            <label for="direccionComplejo" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="direccionComplejo" required>
-          </div>
-        
-          <div class="mb-3">
-            <label for="numSoporte" class="form-label">Número de soporte</label>
-            <input type="text" class="form-control" id="numSoporte" required>
-          </div>
-        
-          <div class="text-end">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+
 
     <script>
       document.getElementById('formNuevoComplejo').addEventListener('submit', function(event) {
@@ -822,46 +871,115 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
       });
     </script>
 
-
-
-
-
     <script>
-  const tipoServicioSelect = document.getElementById("tipoServicio");
-  const inputsServiciosExtras = document.getElementById("inputsServiciosExtras");
+      const tipoServicioSelect = document.getElementById("tipoServicio");
+      const inputsServiciosExtrasCol1 = document.getElementById("inputsServiciosExtrasCol1");
+      const inputsServiciosExtrasCol2 = document.getElementById("inputsServiciosExtrasCol2");
 
-  tipoServicioSelect.addEventListener("change", () => {
-    const seleccionados = Array.from(tipoServicioSelect.selectedOptions).map(opt => opt.value);
-    inputsServiciosExtras.innerHTML = ""; // Limpiar inputs previos
+      tipoServicioSelect.addEventListener("change", () => {
+        const seleccionados = Array.from(tipoServicioSelect.selectedOptions).map(opt => opt.value);
 
-    if (seleccionados.includes("Cancha de losa")) {
-      inputsServiciosExtras.innerHTML += `
+        // Limpiar inputs previos
+        inputsServiciosExtrasCol1.innerHTML = "";
+        inputsServiciosExtrasCol2.innerHTML = "";
+
+        let agregarEnColumna1 = true; // Alternador de columna
+
+        seleccionados.forEach(servicio => {
+          let inputHTML = "";
+
+          // CANCHA DE LOSA
+          if (servicio === "Cancha de losa") {
+            inputHTML += `
         <div class="mb-3">
           <label for="cantidadLosa" class="form-label">Cantidad de canchas de losa</label>
-          <input type="number" class="form-control" id="cantidadLosa" name="cantidadLosa" min="1" required>
+          <input type="number" class="form-control" id="cantidadLosa" name="cantidadLosa" min="1" max="5" required onchange="generarInputsNombres('Losa', this.value)">
         </div>
+        <div id="nombresCanchasLosa"></div>
       `;
-    }
+          }
 
-    if (seleccionados.includes("Cancha de grass")) {
-      inputsServiciosExtras.innerHTML += `
+          // CANCHA DE GRASS
+          if (servicio === "Cancha de grass") {
+            inputHTML += `
         <div class="mb-3">
           <label for="cantidadGrass" class="form-label">Cantidad de canchas de grass</label>
-          <input type="number" class="form-control" id="cantidadGrass" name="cantidadGrass" min="1" required>
+          <input type="number" class="form-control" id="cantidadGrass" name="cantidadGrass" min="1" max="5" required onchange="generarInputsNombres('Grass', this.value)">
         </div>
+        <div id="nombresCanchasGrass"></div>
       `;
-    }
+          }
 
-    if (seleccionados.includes("Piscina")) {
-      inputsServiciosExtras.innerHTML += `
+          // PISCINA
+          if (servicio === "Piscina") {
+            inputHTML += `
         <div class="mb-3">
           <label for="cantidadCarriles" class="form-label">Cantidad de carriles de la piscina</label>
           <input type="number" class="form-control" id="cantidadCarriles" name="cantidadCarriles" min="1" required>
         </div>
+        <div class="mb-3">
+          <label for="nombrePiscina" class="form-label">Nombre de la piscina</label>
+          <input type="text" class="form-control" id="nombrePiscina" name="nombrePiscina" required>
+        </div>
       `;
-    }
-  });
-</script>
+          }
+
+          // GIMNASIO
+          if (servicio === "Gimnasio") {
+            inputHTML += `
+        <div class="mb-3">
+          <label for="nombreGimnasio" class="form-label">Nombre del gimnasio</label>
+          <input type="text" class="form-control" id="nombreGimnasio" name="nombreGimnasio" required>
+        </div>
+      `;
+          }
+
+          // PISTA DE ATLETISMO
+          if (servicio === "Pista de atletismo") {
+            inputHTML += `
+        <div class="mb-3">
+          <label for="nombrePista" class="form-label">Nombre de la pista de atletismo</label>
+          <input type="text" class="form-control" id="nombrePista" name="nombrePista" required>
+        </div>
+      `;
+          }
+
+          if (inputHTML !== "") {
+            if (agregarEnColumna1) {
+              inputsServiciosExtrasCol1.innerHTML += inputHTML;
+            } else {
+              inputsServiciosExtrasCol2.innerHTML += inputHTML;
+            }
+            agregarEnColumna1 = !agregarEnColumna1; // Alternar columnas
+          }
+        });
+      });
+
+      // Función que genera inputs de nombres de canchas
+      function generarInputsNombres(tipo, cantidad) {
+        let contenedorId = tipo === "Losa" ? "nombresCanchasLosa" : "nombresCanchasGrass";
+        const contenedor = document.getElementById(contenedorId);
+        contenedor.innerHTML = ""; // limpiar antes de agregar nuevos
+
+        cantidad = Math.min(cantidad, 5); // Limitar a 5 máximo
+
+        for (let i = 1; i <= cantidad; i++) {
+          contenedor.innerHTML += `
+      <div class="mb-3">
+        <label for="nombre${tipo}${i}" class="form-label">Nombre de la ${tipo.toLowerCase()} ${i}</label>
+        <input type="text" class="form-control" id="nombre${tipo}${i}" name="nombre${tipo}[]" required>
+      </div>
+    `;
+        }
+      }
+    </script>
+
+
+
+
+
+
+
   </body>
   <!-- [Body] end -->
 </html>
