@@ -10,10 +10,18 @@
 
   var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
     locale: 'es',
+    firstDay: 1,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    buttonText: {
+      today: 'Hoy',
+      month: 'Mes',
+      week: 'Semana',
+      day: 'Día',
+      list: 'Lista'
     },
     themeSystem: 'bootstrap',
     initialDate: new Date(y, m, 16),
@@ -21,7 +29,7 @@
     navLinks: true,
     height: 'auto',
     droppable: true,
-    selectable: true,
+    selectable: false,
     selectMirror: true,
     editable: false,
     dayMaxEvents: true,
@@ -57,127 +65,60 @@
       document.querySelector('.pc-event-description').innerHTML = e_desc;
       document.querySelector('.pc-event-date').innerHTML = e_date_start + e_date_end;
       document.querySelector('.pc-event-venue').innerHTML = e_venue;
+      document.querySelector('#pc_event_remove').setAttribute('data-id', clickedevent.id);
 
       calendarmodal.show();
     },
-    events: [
-      {
-        title: 'All Day Event',
-        start: new Date(y, m, 1),
-        allDay: true,
-        description:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-        venue: 'City Town',
-        className: 'event-warning'
-      },
-      {
-        title: 'Long Event',
-        start: new Date(y, m, 7),
-        end: new Date(y, m, 10),
-        allDay: true,
-        description:
-          'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-        venue: 'City Town',
-        className: 'event-primary'
-      },
-      {
-        groupId: 999,
-        title: 'Repeating Event',
-        start: new Date(y, m, 9, 16, 0),
-        allDay: false,
-        description:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-        venue: 'City Town',
-        className: 'event-danger'
-      },
-      {
-        groupId: 999,
-        title: 'Repeating Event',
-        start: new Date(y, m, 16, 16, 0),
-        allDay: false,
-        description:
-          'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-        venue: 'City Town',
-        className: 'event-danger'
-      },
-      {
-        title: 'Conference',
-        start: new Date(y, m, 11),
-        end: new Date(y, m, 13),
-        allDay: true,
-        description:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-        venue: 'City Town',
-        className: 'event-info'
-      },
-      {
-        title: 'Meeting',
-        start: new Date(y, m, 12, 10, 30),
-        end: new Date(y, m, 12, 12, 30),
-        allDay: false,
-        description:
-          'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-        venue: 'City Town',
-        className: 'event-danger'
-      },
-      {
-        title: 'Lunch',
-        start: new Date(y, m, 12, 12, 30),
-        allDay: false,
-        description:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-        venue: 'City Town',
-        className: 'event-success'
-      },
-      {
-        title: 'Meeting',
-        start: new Date(y, m, 14, 14, 30),
-        allDay: false,
-        description:
-          'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-        venue: 'City Town',
-        className: 'event-warning'
-      },
-      {
-        title: 'Happy Hour',
-        start: new Date(y, m, 14, 17, 30),
-        allDay: false,
-        description:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-        venue: 'City Town',
-        className: 'event-info'
-      },
-      {
-        title: 'Dinner',
-        start: new Date(y, m, 15, 20, 0),
-        allDay: false,
-        description:
-          'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-        venue: 'City Town',
-        className: 'event-primary'
-      },
-      {
-        title: 'Birthday Party',
-        start: new Date(y, m, 13, 0, 0),
-        allDay: false,
-        description:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-        venue: 'City Town',
-        className: 'event-success'
-      },
-      {
-        title: 'Click for Google',
-        url: 'http://google.com/',
-        allDay: true,
-        description:
-          'It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.',
-        venue: 'City Town',
-        start: new Date(y, m, 28)
+    events: function(fetchInfo, successCallback, failureCallback) {
+      const filterType = document.getElementById('filterType').value;
+      const idComplejo = document.getElementById('selectComplejo').value;
+      const idCoordinador = document.getElementById('selectCoordinador').value;
+
+      let url = '/admin/horarios?';
+
+      if (filterType === 'complejo') {
+        url += `idComplejo=${idComplejo}`;
+      } else if (filterType === 'coordinador') {
+        url += `idCoordinador=${idCoordinador}`;
       }
-    ]
+
+      fetch(url)
+          .then(response => response.json())
+          .then(data => {
+            const eventos = data.map(horario => ({
+              id: horario.idHorario,
+              title: horario.nombreCoordinador,
+              start: `${horario.fecha}T${horario.horaIngreso}`,
+              end: `${horario.fecha}T${horario.horaSalida}`,
+              extendedProps: {
+                description: `Horario de ${horario.nombreCoordinador}`,
+                venue: horario.nombreComplejo
+              },
+              className: 'event-primary'
+            }));
+            successCallback(eventos);
+          })
+          .catch(err => {
+            console.error('Error al cargar eventos:', err);
+            failureCallback(err);
+          });
+    }
+
   });
 
   calendar.render();
+  document.getElementById('selectComplejo').addEventListener('change', function() {
+    calendar.refetchEvents();
+  });
+
+  document.getElementById('selectCoordinador').addEventListener('change', function() {
+    calendar.refetchEvents();
+  });
+  document.getElementById('filterType').addEventListener('change', function() {
+    calendar.refetchEvents();
+  });
+
+
   document.addEventListener('DOMContentLoaded', function () {
     var calbtn = document.querySelectorAll('.fc-toolbar-chunk');
     for (var t = 0; t < calbtn.length; t++) {
@@ -188,36 +129,62 @@
   });
 
   var pc_event_remove = document.querySelector('#pc_event_remove');
+  var pc_event_remove = document.querySelector('#pc_event_remove');
   if (pc_event_remove) {
     pc_event_remove.addEventListener('click', function () {
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
           confirmButton: 'btn btn-light-success',
-          cancelButton: 'btn btn-light-danger'
+          cancelButton: 'btn btn-light-danger',
+          popup: 'swal2-popup', // Añadimos la clase personalizada para el popup
+        },
+        buttonsStyling: false,
+        // Asegúrate de agregar el z-index para asegurarte de que esté encima
+        didOpen: () => {
+          // Cambiar el z-index del popup de Swal
+          document.querySelector('.swal2-popup').style.zIndex = '7000'; // Establecer un z-index mayor que el modal
         },
         buttonsStyling: false
       });
+
+      // Confirmación antes de eliminar
       swalWithBootstrapButtons
-        .fire({
-          title: 'Are you sure?',
-          text: 'you want to delete this event?',
-          icon: 'warning',
-          showCancelButton: true,
-          confirmButtonText: 'Yes, delete it!',
-          cancelButtonText: 'No, cancel!',
-          reverseButtons: true
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            calendevent.remove();
-            calendarmodal.hide();
-            swalWithBootstrapButtons.fire('Deleted!', 'Your Event has been deleted.', 'success');
-          } else if (result.dismiss === Swal.DismissReason.cancel) {
-            swalWithBootstrapButtons.fire('Cancelled', 'Your Event data is safe.', 'error');
-          }
-        });
+          .fire({
+            title: 'Estas seguro?',
+            text: '¿Deseas borrar este evento?',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Si, eliminar',
+            cancelButtonText: 'No, cancelar',
+            reverseButtons: true
+          })
+          .then((result) => {
+            if (result.isConfirmed) {
+              const eventId = calendevent.id;  // Recupera el ID del evento a eliminar
+
+              // Enviar solicitud DELETE al backend
+              fetch(`/admin/agenda/eliminarHorario/${eventId}`, {
+                method: 'DELETE',
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                    if (data === "Horario eliminado correctamente") {
+                      calendevent.remove(); // Elimina el evento de FullCalendar
+                      calendarmodal.hide(); // Cierra el modal
+                      swalWithBootstrapButtons.fire('Eliminado', 'El horario fue borrado.', 'success');
+                    }
+                  })
+                  .catch(err => {
+                    console.error('Error al eliminar el evento:', err);
+                    swalWithBootstrapButtons.fire('Error', 'Hubo un error al eliminar este evento.', 'error');
+                  });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+              swalWithBootstrapButtons.fire('Cancelado', 'La información de este evento esta segura.', 'error');
+            }
+          });
     });
   }
+
 
   var pc_event_add = document.querySelector('#pc_event_add');
   if (pc_event_add) {
