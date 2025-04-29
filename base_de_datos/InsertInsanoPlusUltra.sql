@@ -1105,6 +1105,29 @@ INSERT INTO horario (idHorario, idHorarioSemanal, idComplejoDeportivo, fecha, ho
 (699, 100, 10, '2025-05-10', '08:00:00', '16:00:00'),
 (700, 100, 10, '2025-05-11', '08:00:00', '16:00:00');
 
+INSERT INTO validacion (idValidacion, timeStampValidacion, latitudCoordinador, longitudCoordinador, distanciaError, resultado, idHorario) VALUES
+-- Horario 1: 2025-03-03
+(1, '2025-03-03 07:30:00', 19.432600, -99.133200, 4.50, 'Fallido', 1),
+(2, '2025-03-03 07:40:00', 19.432590, -99.133210, 6.80, 'Interrumpido', 1),
+(3, '2025-03-03 07:50:00', 19.432608, -99.133209, 1.00, 'Exitoso', 1), -- Último y exitoso
+
+-- Horario 2: 2025-03-04
+(4, '2025-03-04 07:55:00', 34.052240, -118.243680, 5.00, 'Fallido', 2),
+(5, '2025-03-04 08:20:00', 34.052235, -118.243683, 0.90, 'Exitoso', 2), -- Tarde pero exitoso
+
+-- Horario 3: 2025-03-05
+(6, '2025-03-05 07:45:00', 40.712770, -74.005970, 4.50, 'Fallido', 3),
+(7, '2025-03-05 07:55:00', 40.712776, -74.005974, 1.20, 'Exitoso', 3),
+
+-- Horario 4: 2025-03-06
+(8, '2025-03-06 07:30:00', 51.507350, -0.127750, 5.60, 'Fallido', 4),
+(9, '2025-03-06 07:50:00', 51.507355, -0.127755, 8.10, 'Interrumpido', 4),
+(10, '2025-03-06 08:40:00', 51.507351, -0.127758, 1.10, 'Exitoso', 4), -- Tarde pero exitoso
+
+-- Horario 5: 2025-03-07
+(11, '2025-03-07 07:20:00', 48.856610, 2.352220, 6.20, 'Fallido', 5),
+(12, '2025-03-07 07:40:00', 48.856613, 2.352222, 0.80, 'Exitoso', 5);  -- Último y exitoso
+
 
 select * from reporte;
 
@@ -1190,3 +1213,30 @@ WHERE idRol NOT IN (1, 2);
 		isv.idInstanciaServicio
 	ORDER BY 
 		cd.nombre ASC, s.nombre ASC;
+        
+	# --------------------
+
+	SELECT 
+		CONCAT(u.nombre, ' ', u.apellido) AS nombreCoordinador,
+		cd.nombre AS nombreComplejo,
+		h.fecha AS fecha,
+		CASE
+			-- Si no hay intentos exitosos, se marca como "No registrado"
+			WHEN SUM(CASE WHEN v.resultado = 'Exitoso' THEN 1 ELSE 0 END) = 0 THEN 'No registrado'
+			-- Si el primer intento exitoso es antes de la hora de ingreso, se marca como "A tiempo"
+			WHEN MIN(CASE WHEN v.resultado = 'Exitoso' AND TIME(v.timeStampValidacion) < h.horaIngreso THEN v.timeStampValidacion ELSE NULL END) IS NOT NULL THEN 'A tiempo'
+			-- Si hubo un intento exitoso pero después de la hora de ingreso, se marca como "Tardanza"
+			ELSE 'Tardanza'
+		END AS estadoFinal
+	FROM 
+		Horario h
+	JOIN 
+		HorarioSemanal hs ON h.idHorarioSemanal = hs.idHorarioSemanal
+	JOIN 
+		ComplejoDeportivo cd ON h.idComplejoDeportivo = cd.idComplejoDeportivo
+	JOIN 
+		Usuario u ON hs.idCoordinador = u.idUsuario
+	LEFT JOIN 
+		Validacion v ON v.idHorario = h.idHorario
+	GROUP BY 
+		h.idHorario;

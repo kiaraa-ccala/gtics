@@ -188,7 +188,7 @@ public class SuperAdminController {
         return "SuperAdmin/superadmin_estadisticasFinancieras";
     }
 
-    // "/superadmin/reportes/servicios"
+    // Reporte de servicios deportivos para el rol de SuperAdmin
 
     @GetMapping("/superadmin/reportes/servicios")
     public String reportesServicios(Model model) {
@@ -198,10 +198,12 @@ public class SuperAdminController {
         return "SuperAdmin/superadmin_reporteServicios";
     }
 
-    // "/superadmin/reportes/financiero"
+    // Reporte de datos financieros sobre los servicios deportivos para SuperAdmin
 
     @GetMapping("/superadmin/reportes/financiero")
-    public String reportesFinanciero() {
+    public String reportesFinanciero(Model model) {
+
+        model.addAttribute("reportes", complejoRepository.getReporteServiciosFinancierosSuperAdmin());
 
         return "SuperAdmin/superadmin_reporteFinanciero";
     }
@@ -209,7 +211,9 @@ public class SuperAdminController {
     // "/superadmin/asistencia"
 
     @GetMapping("/superadmin/asistencia")
-    public String superadminAsistencia() {
+    public String superadminAsistencia(Model model) {
+
+        model.addAttribute("reportes", complejoRepository.getReporteHorarios());
 
         return "SuperAdmin/superadmin_asistencia";
     }

@@ -272,131 +272,17 @@
                     <thead>
                       <tr>
                         <th>Nombre</th>
-                        <th>Servicio</th>
                         <th>Complejo</th>
-                        <th>Asistencia</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <td>Valentina Rodríguez Pérez</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>Arena Vital Sports Center</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Mateo Ramírez Gómez</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>T</td>
-                      </tr>
-                      <tr>
-                        <td>Camila Fernández Ruiz</td>
-                        <td>Pista de atletismo</td>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>F</td>
-                      </tr>
-                      <tr>
-                        <td>Nicolás Ortega Salinas</td>
-                        <td>Gimnasio</td>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Isabella Vargas León</td>
-                        <td>Piscina</td>
-                        <td>Zona Max Training Club</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Santiago Morales Díaz</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>EcoArena Multideportes</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Sofía Herrera Campos</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>T</td>
-                      </tr>
-                      <tr>
-                        <td>Diego Méndez Ríos</td>
-                        <td>Pista de atletismo</td>
-                        <td>Arena Vital Sports Center</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Martina Castillo Navarro</td>
-                        <td>Gimnasio</td>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Lucas Peña Aguilar</td>
-                        <td>Piscina</td>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>F</td>
-                      </tr>
-                      <tr>
-                        <td>Antonella Soto Cárdenas</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>F</td>
-                      </tr>
-                      <tr>
-                        <td>Tomás Rojas Varela</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>Zona Max Training Club</td>
-                        <td>T</td>
-                      </tr>
-                      <tr>
-                        <td>Emilia Cabrera Montes</td>
-                        <td>Piscina</td>
-                        <td>EcoArena Multideportes</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Alejandro Fuentes Pardo</td>
-                        <td>Cancha de fútbol (Losa)</td>
-                        <td>Estadio y Centro Deportivo Altavista</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Renata Lozano Cruz</td>
-                        <td>Gimnasio</td>
-                        <td>Arena Vital Sports Center</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Julián Reyes Barrera</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>Complejo Deportivo El Mirador</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Luna Delgado Espinoza</td>
-                        <td>Piscina</td>
-                        <td>Centro Atlético NovaFit</td>
-                        <td>-</td>
-                      </tr>
-                      <tr>
-                        <td>Gael Navarro Molina</td>
-                        <td>Pista de atletismo</td>
-                        <td>Parque Deportivo Horizonte</td>
-                        <td>T</td>
-                      </tr>
-                      <tr>
-                        <td>Catalina Jiménez Arce</td>
-                        <td>Cancha de fútbol (Grass sintético)</td>
-                        <td>Zona Max Training Club</td>
-                        <td>P</td>
-                      </tr>
-                      <tr>
-                        <td>Bruno Torres Valdés</td>
-                        <td>Gimnasio</td>
-                        <td>EcoArena Multideportes</td>
-                        <td>P</td>
+                      <tr th:each="reporte : ${reportes}">
+                        <td th:text="${reporte.getNombreCoordinador()}">Nombre Coordinador</td>
+                        <td th:text="${reporte.getNombreComplejo()}">Complejo Deportivo</td>
+                        <td th:text="${reporte.getFecha()}">Fecha</td>
+                        <td th:text="${reporte.getEstadoFinal()}">Estado</td>
                       </tr>
                     </tbody>
 
