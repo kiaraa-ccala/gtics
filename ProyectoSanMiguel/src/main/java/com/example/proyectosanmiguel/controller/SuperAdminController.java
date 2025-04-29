@@ -1,9 +1,11 @@
 package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.entity.*;
+import com.example.proyectosanmiguel.repository.ComplejoRepository;
 import com.example.proyectosanmiguel.repository.RolRepository;
 import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +21,17 @@ import java.util.Optional;
 public class SuperAdminController {
 
 
-    final UsuarioRepository usuarioRepository;
-    final RolRepository rolRepository;
-    final SectorRepository sectorRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
-    public SuperAdminController(UsuarioRepository usuarioRepository, RolRepository rolRepository, SectorRepository sectorRepository) {
-        this.usuarioRepository = usuarioRepository;
-        this.rolRepository = rolRepository;
-        this.sectorRepository = sectorRepository;
-    }
+    @Autowired
+    private RolRepository rolRepository;
+
+    @Autowired
+    private SectorRepository sectorRepository;
+
+    @Autowired
+    private ComplejoRepository complejoRepository;
 
     //Lista de Usuarios
 
@@ -184,18 +188,22 @@ public class SuperAdminController {
         return "SuperAdmin/superadmin_estadisticasFinancieras";
     }
 
-    // "/superadmin/reportes/servicios"
+    // Reporte de servicios deportivos para el rol de SuperAdmin
 
     @GetMapping("/superadmin/reportes/servicios")
-    public String reportesServicios() {
+    public String reportesServicios(Model model) {
+
+        model.addAttribute("reportes", complejoRepository.getReporteServiciosSuperAdmin());
 
         return "SuperAdmin/superadmin_reporteServicios";
     }
 
-    // "/superadmin/reportes/financiero"
+    // Reporte de datos financieros sobre los servicios deportivos para SuperAdmin
 
     @GetMapping("/superadmin/reportes/financiero")
-    public String reportesFinanciero() {
+    public String reportesFinanciero(Model model) {
+
+        model.addAttribute("reportes", complejoRepository.getReporteServiciosFinancierosSuperAdmin());
 
         return "SuperAdmin/superadmin_reporteFinanciero";
     }
@@ -203,7 +211,9 @@ public class SuperAdminController {
     // "/superadmin/asistencia"
 
     @GetMapping("/superadmin/asistencia")
-    public String superadminAsistencia() {
+    public String superadminAsistencia(Model model) {
+
+        model.addAttribute("reportes", complejoRepository.getReporteHorarios());
 
         return "SuperAdmin/superadmin_asistencia";
     }

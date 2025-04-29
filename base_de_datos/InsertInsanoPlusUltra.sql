@@ -274,9 +274,8 @@ INSERT INTO informacionpago (idInformacionPago, fecha, hora, tipo, total, estado
 (17, '2025-01-21', '16:50:00', 'Tarjeta', 35, 'Cancelado'),
 (18, '2025-01-22', '11:25:00', 'Transferencia', 22, 'Pagado'),
 (19, '2025-01-23', '10:30:00', 'Tarjeta', 15, 'En espera'),
-(20, '2025-01-24', '17:10:00', 'Transferencia', 40, 'Pagado');
-
-
+(20, '2025-01-24', '17:10:00', 'Transferencia', 40, 'Pagado'),
+(21, '2025-01-25', '17:12:00', 'Transferencia', 40, 'Pagado');
 
 INSERT INTO reserva (idReserva, idUsuario, idInformacionPago, fecha, horaInicio, horaFin, estado, fechaHoraRegistro, idInstanciaServicio) VALUES
 (1, 5, 1, '2025-02-05', '08:00:00', '10:00:00', 1, '2025-02-04 10:00:00', 1),
@@ -298,7 +297,8 @@ INSERT INTO reserva (idReserva, idUsuario, idInformacionPago, fecha, horaInicio,
 (17, 21, 17, '2025-02-21', '08:00:00', '10:00:00', 1, '2025-02-20 16:00:00', 14),
 (18, 22, 18, '2025-02-22', '14:00:00', '16:00:00', 1, '2025-02-21 09:00:00', 16),
 (19, 23, 19, '2025-02-23', '08:00:00', '10:00:00', 1, '2025-02-22 11:00:00', 18),
-(20, 24, 20, '2025-02-24', '14:00:00', '16:00:00', 1, '2025-02-23 13:00:00', 20);
+(20, 24, 20, '2025-02-24', '14:00:00', '16:00:00', 1, '2025-02-23 13:00:00', 20),
+(21, 5, 21, '2025-02-07', '08:00:00', '10:00:00', 1, '2025-02-05 10:00:00', 1);
 
 -- inserts de hoario -- marzo abril 2025
 INSERT INTO horariosemanal (idHorarioSemanal, idAdministrador, idCoordinador, fechaInicio, fechaFin, fechaCreacion) VALUES
@@ -1105,6 +1105,29 @@ INSERT INTO horario (idHorario, idHorarioSemanal, idComplejoDeportivo, fecha, ho
 (699, 100, 10, '2025-05-10', '08:00:00', '16:00:00'),
 (700, 100, 10, '2025-05-11', '08:00:00', '16:00:00');
 
+INSERT INTO validacion (idValidacion, timeStampValidacion, latitudCoordinador, longitudCoordinador, distanciaError, resultado, idHorario) VALUES
+-- Horario 1: 2025-03-03
+(1, '2025-03-03 07:30:00', 19.432600, -99.133200, 4.50, 'Fallido', 1),
+(2, '2025-03-03 07:40:00', 19.432590, -99.133210, 6.80, 'Interrumpido', 1),
+(3, '2025-03-03 07:50:00', 19.432608, -99.133209, 1.00, 'Exitoso', 1), -- Último y exitoso
+
+-- Horario 2: 2025-03-04
+(4, '2025-03-04 07:55:00', 34.052240, -118.243680, 5.00, 'Fallido', 2),
+(5, '2025-03-04 08:20:00', 34.052235, -118.243683, 0.90, 'Exitoso', 2), -- Tarde pero exitoso
+
+-- Horario 3: 2025-03-05
+(6, '2025-03-05 07:45:00', 40.712770, -74.005970, 4.50, 'Fallido', 3),
+(7, '2025-03-05 07:55:00', 40.712776, -74.005974, 1.20, 'Exitoso', 3),
+
+-- Horario 4: 2025-03-06
+(8, '2025-03-06 07:30:00', 51.507350, -0.127750, 5.60, 'Fallido', 4),
+(9, '2025-03-06 07:50:00', 51.507355, -0.127755, 8.10, 'Interrumpido', 4),
+(10, '2025-03-06 08:40:00', 51.507351, -0.127758, 1.10, 'Exitoso', 4), -- Tarde pero exitoso
+
+-- Horario 5: 2025-03-07
+(11, '2025-03-07 07:20:00', 48.856610, 2.352220, 6.20, 'Fallido', 5),
+(12, '2025-03-07 07:40:00', 48.856613, 2.352222, 0.80, 'Exitoso', 5);  -- Último y exitoso
+
 
 select * from reporte;
 
@@ -1125,10 +1148,95 @@ INSERT INTO reporte (idReporte, tipoReporte, fechaRecepcion, estado, asunto, des
 (14, 'Alerta', '2025-03-29', 'Abierto', 'Vidrio roto', 'Vidrio de gimnasio roto, causa desconocida.', NULL, NULL, 247),
 (15, 'Solicitud de reparación', '2025-03-11', 'Cerrado', 'Problemas de sonido', 'Altavoces no emiten sonido en cancha.', NULL, NULL, 251);
 
-
 UPDATE usuario
 SET telefono = '987654321'
 WHERE idRol NOT IN (1, 2);
 
-SELECT * from Usuario; 
-SELECT * from credencial; 
+# ----------------------------------- Queries ------------------------------
+
+	SELECT 
+		cd.nombre AS nombreComplejoDeportivo,
+		s.nombre AS nombreServicio,
+		isv.capacidadMaxima AS capacidad,
+		isv.modoAcceso AS modoAcceso,
+		COUNT(r.idReserva) AS reservasTotales,
+		ROUND(
+			COUNT(r.idReserva) / 
+			SUM(COUNT(r.idReserva)) OVER (PARTITION BY cd.idComplejoDeportivo) * 100, 
+			2
+		) AS porcentajeReservas
+	FROM 
+		InstanciaServicio isv
+	INNER JOIN 
+		Servicio s ON isv.idServicio = s.idServicio
+	INNER JOIN 
+		ComplejoDeportivo cd ON isv.idComplejoDeportivo = cd.idComplejoDeportivo
+	LEFT JOIN 
+		Reserva r ON isv.idInstanciaServicio = r.idInstanciaServicio
+	GROUP BY 
+		isv.idInstanciaServicio, 
+		cd.idComplejoDeportivo, 
+		cd.nombre, 
+		s.nombre, 
+		isv.capacidadMaxima, 
+		isv.modoAcceso;
+
+	# --------------------
+
+	SELECT 
+		cd.nombre AS nombreComplejoDeportivo,
+		s.nombre AS nombreServicio,
+		COALESCE(SUM(CASE WHEN ip.estado = 'Pagado' THEN ip.total ELSE 0 END), 0) AS ingresoTotal,
+		COALESCE(SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Tarjeta' THEN ip.total ELSE 0 END), 0) AS ingresoTarjeta,
+		COALESCE(SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Transferencia' THEN ip.total ELSE 0 END), 0) AS ingresoTransferencia,
+		ROUND(
+			CASE 
+				WHEN SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Transferencia' THEN ip.total ELSE 0 END) > 0 THEN
+					SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Tarjeta' THEN ip.total ELSE 0 END)
+					/ SUM(CASE WHEN ip.estado = 'Pagado' AND ip.tipo = 'Transferencia' THEN ip.total ELSE 0 END) * 100
+				ELSE 0
+			END,
+		2) AS porcentajeIngresoTarjetaSobreTransferencia
+	FROM 
+		InstanciaServicio isv
+	INNER JOIN 
+		Servicio s ON isv.idServicio = s.idServicio
+	INNER JOIN 
+		ComplejoDeportivo cd ON isv.idComplejoDeportivo = cd.idComplejoDeportivo
+	LEFT JOIN 
+		Reserva r ON isv.idInstanciaServicio = r.idInstanciaServicio
+	LEFT JOIN 
+		InformacionPago ip ON r.idInformacionPago = ip.idInformacionPago
+	GROUP BY 
+		cd.idComplejoDeportivo, cd.nombre, 
+		s.idServicio, s.nombre, 
+		isv.idInstanciaServicio
+	ORDER BY 
+		cd.nombre ASC, s.nombre ASC;
+        
+	# --------------------
+
+	SELECT 
+		CONCAT(u.nombre, ' ', u.apellido) AS nombreCoordinador,
+		cd.nombre AS nombreComplejo,
+		h.fecha AS fecha,
+		CASE
+			-- Si no hay intentos exitosos, se marca como "No registrado"
+			WHEN SUM(CASE WHEN v.resultado = 'Exitoso' THEN 1 ELSE 0 END) = 0 THEN 'No registrado'
+			-- Si el primer intento exitoso es antes de la hora de ingreso, se marca como "A tiempo"
+			WHEN MIN(CASE WHEN v.resultado = 'Exitoso' AND TIME(v.timeStampValidacion) < h.horaIngreso THEN v.timeStampValidacion ELSE NULL END) IS NOT NULL THEN 'A tiempo'
+			-- Si hubo un intento exitoso pero después de la hora de ingreso, se marca como "Tardanza"
+			ELSE 'Tardanza'
+		END AS estadoFinal
+	FROM 
+		Horario h
+	JOIN 
+		HorarioSemanal hs ON h.idHorarioSemanal = hs.idHorarioSemanal
+	JOIN 
+		ComplejoDeportivo cd ON h.idComplejoDeportivo = cd.idComplejoDeportivo
+	JOIN 
+		Usuario u ON hs.idCoordinador = u.idUsuario
+	LEFT JOIN 
+		Validacion v ON v.idHorario = h.idHorario
+	GROUP BY 
+		h.idHorario;
