@@ -26,7 +26,7 @@
           <div class="page-block">
             <div class="row align-items-center">
               <div class="col-md-12">
-                
+
               </div>
               <div class="col-md-12">
                 <div class="page-header-title">
@@ -54,7 +54,7 @@
                   <p><strong>DESCRIPCIÓN:</strong></p>
                   <p th:text="${reporte.descripcion}"></p>
                   <div class="text-center mt-3">
-                    <img src="https://media.telemetro.com/p/1cb140baafe438aa30a06f1af8a20b79/adjuntos/311/imagenes/018/319/0018319409/1200x675/smart/imagepng.png" 
+                    <img src="https://media.telemetro.com/p/1cb140baafe438aa30a06f1af8a20b79/adjuntos/311/imagenes/018/319/0018319409/1200x675/smart/imagepng.png"
                          alt="Evidencia de incidencia"
                          class="img-fluid rounded shadow"
                          style="max-width: 90%; height: auto;" />
@@ -63,7 +63,7 @@
                 </div>
               </div>
             </div>
-          
+
             <!-- Columna derecha: Detalles específicos y comentarios -->
             <div class="col-lg-7">
               <div class="card">
@@ -87,14 +87,14 @@
                         </p>
                       </div>
                     </div>
-                  
+
                     <!-- Columna derecha: acciones -->
                     <div class="col-md-3 d-flex flex-column align-items-center">
                       <!-- Botón Procesar -->
                       <button class="btn btn-outline-primary mb-3 w-100" data-bs-toggle="modal" data-bs-target="#modalCambiarEstado">
                         <i class="fas fa-cogs me-2"></i> PROCESAR
                       </button>
-                  
+
                       <!-- Exportar datos -->
                       <div class="bg-light rounded p-3 w-100 text-center">
                         <p class="mb-2"><strong>Exportar datos:</strong></p>
@@ -112,7 +112,7 @@
                       </div>
                     </div>
                   </div>
-                  
+
                   <div class="mb-3">
                     <iframe
                             th:src="'https://maps.google.com/maps?q=' + ${#strings.replace(reporte.horario.complejoDeportivo.direccion, ' ', '+')} + '&z=17&output=embed'"
@@ -123,46 +123,27 @@
                             loading="lazy">
                     </iframe>
                   </div>
-                  
+
                   <div class="mt-4">
                     <h5 class="mb-2"><strong>Acciones Realizadas:</strong></h5>
                     <button class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalNuevaAccion">
                       <i class="ti ti-plus me-2"></i>Agregar nueva acción
                     </button>
 
-                    <div class="card shadow-sm mb-3" style="border-left: 4px solid #7267EF; border-radius: 0.5rem;">
+                    <div th:each="comentario : ${comentarios}" class="card shadow-sm mb-3" style="border-left: 4px solid #7267EF; border-radius: 0.5rem;">
                       <div class="card-body">
                         <div class="d-flex">
-                          
+
                           <div class="flex-grow-1">
                             <div class="d-flex justify-content-between align-items-center">
                               <h6 class="mb-1">
                                 Juan Pérez <span class="badge bg-light-secondary text-muted fw-normal ms-1">Administrador</span>
                               </h6>
-                              <small class="text-muted">18 abril 2025, 10:30 a.m.</small>
+                              <small class="text-muted" th:text="${#strings.replace(comentario.fechaHora.toString(), 'T', ' ')}">Fecha y hora</small>
                             </div>
                             <div class="bg-light px-3 py-2 rounded mt-2">
-                              <p class="mb-0">Se realizó inspección en terreno. Se identificó rotura en tubería subterránea cerca del área norte de la cancha. Se procederá a cortar el suministro y reemplazar el tramo afectado.
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalDetalleAccion">Ver más</a>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="card shadow-sm mb-3" style="border-left: 4px solid #7267EF; border-radius: 0.5rem;">
-                      <div class="card-body">
-                        <div class="d-flex">
-                          
-                          <div class="flex-grow-1">
-                            <div class="d-flex justify-content-between align-items-center">
-                              <h6 class="mb-1">
-                                Juan Pérez <span class="badge bg-light-secondary text-muted fw-normal ms-1">Administrador</span>
-                              </h6>
-                              <small class="text-muted">20 abril 2025, 10:30 a.m.</small>
-                            </div>
-                            <div class="bg-light px-3 py-2 rounded mt-2">
-                              <p class="mb-0">Se realizo la reparacion de la rotura, en las proximas 5 horas se estara habilitando nuevamente el servicio. (Evidenciar)
+                              <p class="mb-0">
+                                <span th:text="${comentario.contenido}">Contenido comentario</span>
                                 <a href="#" data-bs-toggle="modal" data-bs-target="#modalDetalleAccion">Ver más</a>
                               </p>
                             </div>
@@ -192,28 +173,28 @@
                 </div>
                 <div class="modal-body py-4">
                   <div class="d-flex flex-column gap-3 px-3">
-                    
+
                     <!-- Estado: Abierto -->
                     <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
                             style="background-color: #fff3cd; border-radius: 12px;">
                       <span><i class="bi bi-unlock me-2 text-warning"></i><strong>ABIERTO</strong></span>
                       <i class="bi bi-chevron-right text-muted"></i>
                     </button>
-                    
+
                     <!-- Estado: En Proceso -->
                     <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
                             style="background-color: #d4edda; border-radius: 12px;">
                       <span><i class="bi bi-hourglass-split me-2 text-success"></i><strong>EN PROCESO</strong></span>
                       <i class="bi bi-chevron-right text-muted"></i>
                     </button>
-                    
+
                     <!-- Estado: Cerrado -->
                     <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
                             style="background-color: #f8d7da; border-radius: 12px;">
                       <span><i class="bi bi-check2-circle me-2 text-danger"></i><strong>CERRADO</strong></span>
                       <i class="bi bi-chevron-right text-muted"></i>
                     </button>
-                    
+
                   </div>
                 </div>
                 <div class="modal-footer border-0">
@@ -222,10 +203,10 @@
               </div>
             </div>
           </div>
-          
+
 
           <!-- Modal -->
-          <div class="modal fade" id="modalDetalleAccion" tabindex="-1" aria-labelledby="modalAccionResponsiveLabel" aria-hidden="true">
+          <div class="modal fade" id="modalDetalleAccion" tabindex="-1" aria-labelledby="modalAccionResponsiveLabel" aria-hidden="true" th:each="comentario : ${comentarios}">
             <div class="modal-dialog modal-dialog-centered modal-lg">
               <div class="modal-content">
                 <div class="modal-header bg-light">
@@ -236,8 +217,8 @@
                   <div class="row g-4">
                     <!-- Columna izquierda: texto -->
                     <div class="col-md-6">
-                      <p><strong>Hora:</strong> 18 abril 2025, 11:45 a.m.</p>
-                      <p><strong>Descripción:</strong> Se realizó la reparación de la rotura. En las próximas 5 horas se estará habilitando nuevamente el servicio.</p>
+                      <p><strong>Fecha y Hora:</strong></p><p th:text="${#strings.replace(comentario.fechaHora.toString(), 'T', ' ')}"></p>
+                      <p><strong>Descripción:</strong></p><p th:text="${comentario.contenido}"></p>
 
                       <p class="mt-4">
                         <strong>Certificado de conformidad:</strong>
@@ -276,7 +257,7 @@
                     <div class="row g-4">
                       <!-- Columna izquierda: Descripción + Color -->
                       <div class="col-md-6">
-                        
+
                         <label class=" form-label">Descripción de la acción</label>
                         <textarea class="form-control" name="descripcion" rows="6" placeholder="Escribe aquí..." required></textarea>
                         <label class=" mt-3 form-label">Adjuntar documentos</label>
@@ -292,7 +273,7 @@
                           <!-- Vista de archivos -->
                           <ul id="fileList" class="list-group mt-3 small"></ul>
                         </div>
-          
+
                         <!-- Input de imagen oculto -->
                         <input type="file" accept="image/*" class="d-none" id="inputImagenEvidencia" name="imagen">
 
@@ -313,7 +294,7 @@
                       </div>
                     </div>
                   </div>
-          
+
                   <div class="modal-footer">
                     <button type="submit" class="btn btn-success">Guardar acción</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -322,12 +303,12 @@
               </div>
             </div>
           </div>
-          
+
           <script>
             document.getElementById('inputImagenEvidencia').addEventListener('change', function (e) {
               const file = e.target.files[0];
               const preview = document.getElementById('previewImagen');
-          
+
               if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = function (e) {
@@ -344,7 +325,7 @@
           <script>
           document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('category-donut-chart');
-            
+
             new Chart(ctx, {
               type: 'doughnut',
               data: {
@@ -419,14 +400,14 @@
       const preview = document.getElementById('previewImagen');
       const botonImagen = document.getElementById('botonImagen');
       const botonEliminar = document.getElementById('botonEliminarImagen');
-    
+
       // Cuando el botón "Subir/Cambiar imagen" se presiona, abrimos el input
       botonImagen.addEventListener('click', () => inputImagen.click());
-    
+
       // Cuando el input cambia (se selecciona imagen)
       inputImagen.addEventListener('change', function (e) {
         const file = e.target.files[0];
-    
+
         if (file && file.type.startsWith('image/')) {
           const reader = new FileReader();
           reader.onload = function (e) {
@@ -442,7 +423,7 @@
           botonEliminar.classList.add('d-none');
         }
       });
-    
+
       // Cuando se presiona "Eliminar imagen"
       botonEliminar.addEventListener('click', () => {
         inputImagen.value = '';
@@ -451,99 +432,99 @@
         botonEliminar.classList.add('d-none');
       });
     </script>
-    
-    
-    
+
+
+
     <script>
       const dropArea = document.getElementById('customDropArea');
       const fileInput = document.getElementById('fileInput');
       const fileList = document.getElementById('fileList');
       let archivosSeleccionados = [];
-    
+
       dropArea.addEventListener('click', () => fileInput.click());
-    
+
       dropArea.addEventListener('dragover', (e) => {
         e.preventDefault();
         dropArea.classList.add('border-primary');
         dropArea.style.backgroundColor = '#e6f4ff';
       });
-    
+
       dropArea.addEventListener('dragleave', () => {
         dropArea.classList.remove('border-primary');
         dropArea.style.backgroundColor = '#f8f9fa';
       });
-    
+
       dropArea.addEventListener('drop', (e) => {
         e.preventDefault();
         dropArea.classList.remove('border-primary');
         dropArea.style.backgroundColor = '#f8f9fa';
         manejarArchivos(e.dataTransfer.files);
       });
-    
+
       fileInput.addEventListener('change', () => {
         manejarArchivos(fileInput.files);
       });
-    
+
       function manejarArchivos(files) {
         for (let file of files) {
           archivosSeleccionados.push(file);
         }
         renderizarLista();
       }
-    
+
       function eliminarArchivo(index) {
         archivosSeleccionados.splice(index, 1);
         renderizarLista();
       }
-    
+
       function renderizarLista() {
         fileList.innerHTML = '';
         archivosSeleccionados.forEach((file, index) => {
           const contenedor = document.createElement('div');
           contenedor.className = 'archivo-item';
-    
+
           const link = document.createElement('a');
           link.href = URL.createObjectURL(file);
           link.download = file.name;
           link.className = 'archivo-link';
           link.textContent = `${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)`;
-    
+
           const eliminarBtn = document.createElement('button');
           eliminarBtn.className = 'btn-eliminar';
           eliminarBtn.innerHTML = '<i class="bi bi-x-lg"></i>';
           eliminarBtn.onclick = () => eliminarArchivo(index);
-    
+
           contenedor.appendChild(link);
           contenedor.appendChild(eliminarBtn);
           fileList.appendChild(contenedor);
         });
       }
     </script>
-    
-    
+
+
 
 
 
 <script>
   layout_change('light');
 </script>
-  
+
 <script>
   change_box_container('false');
 </script>
- 
+
 <script>
   layout_caption_change('true');
 </script>
- 
+
 <script>
   layout_rtl_change('false');
 </script>
- 
+
 <script>
   preset_change('preset-1');
 </script>
- 
+
 <script>
   main_layout_change('vertical');
 </script>

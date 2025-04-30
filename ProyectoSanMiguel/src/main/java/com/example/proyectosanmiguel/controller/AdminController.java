@@ -14,6 +14,8 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
+    @Autowired
+    private ComentarioRepository comentarioRepository;
 
     @Autowired
     private ReporteRepository reporteRepository;
@@ -40,6 +42,8 @@ public class AdminController {
     @GetMapping("/reportes/detalle/{id}")
     public String detalleReporte(@PathVariable Integer id, Model model) {
         model.addAttribute("reporte", reporteRepository.findById(id).orElseThrow());
+        List<Comentario> comentarios = comentarioRepository.findByReporteIdReporteOrderByFechaHoraAsc(id);
+        model.addAttribute("comentarios", comentarios);
         return "Admin/admin_incidente";
     }
 
@@ -50,6 +54,7 @@ public class AdminController {
         model.addAttribute("instancias", lista);
         return "Admin/admin_mantenimiento_modal";
     }
+
 
     // ========== Guardar Nuevo Complejo ==========
     @PostMapping("/servicios/guardarComplejo")
