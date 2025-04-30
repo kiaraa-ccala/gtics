@@ -1,10 +1,12 @@
 package com.example.proyectosanmiguel.controller;
 
+import com.example.proyectosanmiguel.dto.EventoHorarioDto;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +34,22 @@ public class AdminController {
     @Autowired
     private ServicioRepository servicioRepository;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private HorarioRepository horarioRepository;
+
+    @ResponseBody
+    @GetMapping("/horarios")
+    public List<EventoHorarioDto> listarHorarios(
+            @RequestParam(required = false) Integer idComplejo,
+            @RequestParam(required = false) Integer idCoordinador) {
+
+        return horarioRepository.listarHorariosPorFiltro(idComplejo, idCoordinador);
+    }
+
+
     // ========== Incidencias ==========
     @GetMapping("/reportes")
     public String listarReportes(Model model) {
@@ -53,6 +71,44 @@ public class AdminController {
         List<InstanciaServicio> lista = instanciaServicioRepository.findAll();
         model.addAttribute("instancias", lista);
         return "Admin/admin_mantenimiento_modal";
+
+    }
+
+    // ========== TESTEO ==========
+    @GetMapping("/testing")
+    public String testing() {
+        return "Admin/admin_agregrar_horarios";
+
+    }
+    @GetMapping("/agenda")
+    public String vistaAgenda(Model model) {
+        List<Usuario> coordinadores = usuarioRepository.findAllCoordinadores();
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+
+        model.addAttribute("coordinadores", coordinadores);
+        model.addAttribute("complejos", complejos);
+
+        return "Admin/admin_agenda";
+    }
+    @DeleteMapping("/agenda/eliminarHorario/{id}")
+    public ResponseEntity<String> eliminarHorario(@PathVariable Integer id) {
+        if (horarioRepository.existsById(id)) {  // verifica exist
+            horarioRepository.deleteById(id);  // eloknina el horario
+            return ResponseEntity.ok("Horario eliminado correctamente");
+        } else {
+            return ResponseEntity.status(404).body("Horario no encontrado");
+        }
+    }
+
+    @GetMapping("/agregarHorarios")
+    public String vistaAgregarHorarios(Model model) {
+        List<Usuario> coordinadores = usuarioRepository.findAllCoordinadores();
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+
+        model.addAttribute("coordinadores", coordinadores);
+        model.addAttribute("complejos", complejos);
+
+        return "Admin/admin_agregrar_horarios";
     }
 
 
