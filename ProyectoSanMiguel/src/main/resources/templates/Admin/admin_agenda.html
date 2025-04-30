@@ -57,10 +57,15 @@
                         </th:block>
                     </select>
                 </div>
-                <div class="col-md-4 d-flex align-items-end">
-                    <button type="button" class="btn btn-info" data-bs-toggle="modal" data-bs-target="#modalInfoSeleccionado">
+                <div class="col-md-2 d-flex align-items-end">
+                    <button type="button" class="btn btn-info w-100" data-bs-toggle="modal" data-bs-target="#modalInfoSeleccionado">
                         Ver Datos
                     </button>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <a href="#" class="btn btn-outline-success w-100" th:href="@{/admin/agregarHorarios}">
+                        Añadir Horarios
+                    </a>
                 </div>
 
             </div>
