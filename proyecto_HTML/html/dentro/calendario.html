@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Agenda de Turnos</title>
+  <!-- Estilos de Able Pro -->
+  <link rel="stylesheet" href="path/to/able-pro.css">
+  <!-- FullCalendar -->
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css" rel="stylesheet">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.min.js"></script>
+  <!-- FullCalendar -->
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js"></script>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+  <!-- Sidebar y Navbar de Able Pro -->
+  <!-- Incluye aquí tu sidebar y navbar según la estructura de admin_incidente.html -->
+
+  <div class="container-fluid mt-4">
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <select class="form-select" id="filtroCoordinador">
+          <option value="">Todos los coordinadores</option>
+          <option value="1">Juan Pérez</option>
+          <option value="2">Lucía Gómez</option>
+          <!-- Agrega más coordinadores según sea necesario -->
+        </select>
+      </div>
+      <div class="col-md-4">
+        <select class="form-select" id="filtroInstalacion">
+          <option value="">Todas las instalaciones</option>
+          <option value="parque_santa_rosa">Parque Santa Rosa</option>
+          <option value="polideportivo">Polideportivo Central</option>
+          <!-- Agrega más instalaciones según sea necesario -->
+        </select>
+      </div>
+      <div class="col-md-4 text-end">
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTurno">Agregar Turno</button>
+      </div>
+    </div>
+
+    <div id="calendar"></div>
+  </div>
+
+  <!-- Modal para agregar turno -->
+  <div class="modal fade" id="modalTurno" tabindex="-1" aria-labelledby="modalTurnoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <form id="formTurno">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="modalTurnoLabel">Nuevo Turno</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="coordinador" class="form-label">Coordinador</label>
+              <select class="form-select" id="coordinador" required>
+                <option value="1">Juan Pérez</option>
+                <option value="2">Lucía Gómez</option>
+                <!-- Agrega más coordinadores según sea necesario -->
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="instalacion" class="form-label">Instalación</label>
+              <select class="form-select" id="instalacion" required>
+                <option value="parque_santa_rosa">Parque Santa Rosa</option>
+                <option value="polideportivo">Polideportivo Central</option>
+                <!-- Agrega más instalaciones según sea necesario -->
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="fecha" class="form-label">Fecha</label>
+              <input type="date" class="form-control" id="fecha" required>
+            </div>
+            <div class="mb-3">
+              <label for="horaInicio" class="form-label">Hora de Inicio</label>
+              <input type="time" class="form-control" id="horaInicio" required>
+            </div>
+            <div class="mb-3">
+              <label for="horaFin" class="form-label">Hora de Fin</label>
+              <input type="time" class="form-control" id="horaFin" required>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Guardar</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var calendarEl = document.getElementById('calendar');
+      var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        locale: 'es',
+        headerToolbar: {
+          left: 'prev,next today',
+          center: 'title',
+          right: 'timeGridDay,timeGridWeek,dayGridMonth'
+        },
+        events: [], // Aquí se cargarán los eventos
+        eventDidMount: function(info) {
+          // Puedes personalizar la apariencia de los eventos aquí
+        }
+      });
+      calendar.render();
+
+      // Manejo del formulario para agregar un nuevo turno
+      $('#formTurno').on('submit', function(e) {
+        e.preventDefault();
+        var coordinador = $('#coordinador option:selected').text();
+        var instalacion = $('#instalacion').val();
+        var fecha = $('#fecha').val();
+        var horaInicio = $('#horaInicio').val();
+        var horaFin = $('#horaFin').val();
+
+        var evento = {
+          title: coordinador + ' - ' + instalacion,
+          start: fecha + 'T' + horaInicio,
+          end: fecha + 'T' + horaFin,
+          extendedProps: {
+            coordinador: $('#coordinador').val(),
+            instalacion: instalacion
+          }
+        };
+
+        calendar.addEvent(evento);
+        $('#modalTurno').modal('hide');
+        $('#formTurno')[0].reset();
+      });
+
+      // Filtros
+      $('#filtroCoordinador, #filtroInstalacion').on('change', function() {
+        var filtroCoordinador = $('#filtroCoordinador').val();
+        var filtroInstalacion = $('#filtroInstalacion').val();
+
+        var eventos = calendar.getEvents();
+        eventos.forEach(function(evento) {
+          var mostrar = true;
+          if (filtroCoordinador && evento.extendedProps.coordinador !== filtroCoordinador) {
+            mostrar = false;
+          }
+          if (filtroInstalacion && evento.extendedProps.instalacion !== filtroInstalacion) {
+            mostrar = false;
+          }
+          if (mostrar) {
+            evento.setProp('display', 'auto');
+          } else {
+            evento.setProp('display', 'none');
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
