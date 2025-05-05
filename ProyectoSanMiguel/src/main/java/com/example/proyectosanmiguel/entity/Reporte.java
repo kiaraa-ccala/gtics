@@ -34,6 +34,10 @@ public class Reporte {
     @Column(name = "respuesta", nullable = false, length = 500)
     private String respuesta;
 
+    @OneToOne()
+    @JoinColumn(name ="idFoto")
+    private Foto foto;
+
     @ManyToOne
     @JoinColumn(name = "idReserva")
     private Reserva reserva;

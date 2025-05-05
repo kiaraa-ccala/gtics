@@ -26,7 +26,7 @@ public class Evidencia {
     private byte[] archivo;
 
     @ManyToOne
-    @JoinColumn(name = "idReporte")
-    private Reporte reporte;
+    @JoinColumn(name = "idComentario")
+    private  Comentario comentario;
 
 }
