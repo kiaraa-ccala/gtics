@@ -166,7 +166,7 @@
               fetch(`/admin/agenda/eliminarHorario/${eventId}`, {
                 method: 'DELETE',
               })
-                  .then(response => response.json())
+                  .then(response => response.text())
                   .then(data => {
                     if (data === "Horario eliminado correctamente") {
                       calendevent.remove(); // Elimina el evento de FullCalendar
