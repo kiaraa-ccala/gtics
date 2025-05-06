@@ -1240,3 +1240,5 @@ WHERE idRol NOT IN (1, 2);
 		Validacion v ON v.idHorario = h.idHorario
 	GROUP BY 
 		h.idHorario;
+        
+        

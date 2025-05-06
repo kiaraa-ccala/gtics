@@ -34,7 +34,7 @@ public class Reporte {
     @Column(name = "respuesta", nullable = false, length = 500)
     private String respuesta;
 
-    @OneToOne()
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name ="idFoto")
     private Foto foto;
 
