@@ -10,8 +10,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
@@ -40,6 +45,12 @@ public class AdminController {
     @Autowired
     private HorarioRepository horarioRepository;
 
+    @Autowired
+    private EvidenciaRepository evidenciaRepository;
+
+    @Autowired
+    private FotoRepository fotoRepository;
+
     @ResponseBody
     @GetMapping("/horarios")
     public List<EventoHorarioDto> listarHorarios(
@@ -64,6 +75,70 @@ public class AdminController {
         model.addAttribute("comentarios", comentarios);
         return "Admin/admin_incidente";
     }
+
+    @PostMapping("/admin/guardarAccion")
+    public String guardarAccion(@RequestParam("idReporte") Integer idReporte,
+                                @RequestParam("contenido") String contenido,
+                                @RequestParam("archivos") List<MultipartFile> archivos,
+                                @RequestParam("foto") MultipartFile foto,
+                                RedirectAttributes attr) {
+        Optional<Reporte> optReporte = reporteRepository.findById(idReporte);
+
+        if (optReporte.isPresent()) {
+            Reporte reporte = optReporte.get();
+
+            // Guardar comentario
+            Comentario comentario = new Comentario();
+            comentario.setFechaHora(LocalDateTime.now());
+            comentario.setContenido(contenido);
+            comentario.setReporte(reporte);
+            comentarioRepository.save(comentario);
+
+            // Guardar evidencias
+            for (MultipartFile archivo : archivos) {
+                if (!archivo.isEmpty()) {
+                    try {
+                        Evidencia evidencia = new Evidencia();
+                        evidencia.setNombreArchivo(archivo.getOriginalFilename());
+                        evidencia.setArchivo(archivo.getBytes());
+                        evidencia.setUrlArchivo("/uploads/" + archivo.getOriginalFilename()); // opcional
+                        evidencia.setComentario(comentario);
+                        evidenciaRepository.save(evidencia);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            // Guardar foto obligatoria
+            if (!foto.isEmpty()) {
+                try {
+                    Foto nuevaFoto = new Foto();
+                    nuevaFoto.setNombreFoto(foto.getOriginalFilename());
+                    nuevaFoto.setFoto(foto.getBytes());
+                    nuevaFoto.setUrlFoto("/uploads/" + foto.getOriginalFilename()); // opcional
+                    fotoRepository.save(nuevaFoto);
+
+                    // Asociar la foto al reporte
+                    reporte.setFoto(nuevaFoto);
+                    reporteRepository.save(reporte);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                attr.addFlashAttribute("error", "Debe subir una foto.");
+                return "Admin/admin_incidente";
+            }
+
+            attr.addFlashAttribute("msg", "Acción registrada correctamente.");
+        } else {
+            attr.addFlashAttribute("error", "Reporte no encontrado.");
+        }
+
+        return "Admin/admin_incidente";
+    }
+
+
 
     // ========== Monitoreo ==========
     @GetMapping("/servicios/monitoreo")
