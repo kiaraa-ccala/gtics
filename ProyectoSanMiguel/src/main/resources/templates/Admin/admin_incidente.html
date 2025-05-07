@@ -123,7 +123,6 @@
                             loading="lazy">
                     </iframe>
                   </div>
-
                   <div class="mt-4">
                     <h5 class="mb-2"><strong>Acciones Realizadas:</strong></h5>
                     <button class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalNuevaAccion">
@@ -144,7 +143,8 @@
                             <div class="bg-light px-3 py-2 rounded mt-2">
                               <p class="mb-0">
                                 <span th:text="${comentario.contenido}">Contenido comentario</span>
-                                <a href="#" data-bs-toggle="modal" data-bs-target="#modalDetalleAccion">Ver más</a>
+                                <a href="#" th:attr="data-bs-target='#modalDetalleAccion_' + ${comentario.idComentario}" data-bs-toggle="modal">Ver más</a>
+
                               </p>
                             </div>
                           </div>
@@ -205,8 +205,13 @@
           </div>
 
 
-          <!-- Modal -->
-          <div class="modal fade" id="modalDetalleAccion" tabindex="-1" aria-labelledby="modalAccionResponsiveLabel" aria-hidden="true" th:each="comentario : ${comentarios}">
+          <!-- MODAL POR CADA COMENTARIO -->
+          <div class="modal fade"
+               th:each="comentario : ${comentarios}"
+               th:id="'modalDetalleAccion_' + ${comentario.idComentario}"
+               tabindex="-1"
+               aria-labelledby="modalAccionResponsiveLabel"
+               aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg">
               <div class="modal-content">
                 <div class="modal-header bg-light">
@@ -215,26 +220,34 @@
                 </div>
                 <div class="modal-body">
                   <div class="row g-4">
-                    <!-- Columna izquierda: texto -->
+                    <!-- Columna izquierda: texto y archivos -->
                     <div class="col-md-6">
-                      <p><strong>Fecha y Hora:</strong></p><p th:text="${#strings.replace(comentario.fechaHora.toString(), 'T', ' ')}"></p>
-                      <p><strong>Descripción:</strong></p><p th:text="${comentario.contenido}"></p>
+                      <p><strong>Fecha y Hora:</strong></p>
+                      <p th:text="${#strings.replace(comentario.fechaHora.toString(), 'T', ' ')}"></p>
 
-                      <p class="mt-4">
-                        <strong>Certificado de conformidad:</strong>
-                        <i class="bi bi-file-earmark-word"></i>
-                        <a href="#"> Firma_conformidad.doc</a>
-                      </p>
-                      <p>
-                        <strong>Informe técnico:</strong>
-                        <i class="bi bi-file-earmark-pdf text-danger"></i>
-                        <a href="#"> Reviciones_servicios_SanMi.pdf</a>
-                      </p>
+                      <p><strong>Descripción:</strong></p>
+                      <p th:text="${comentario.contenido}"></p>
+
+                      <p class="mt-4"><strong>Archivos:</strong></p>
+                      <ul th:if="${evidenciasPorComentario.containsKey(comentario.idComentario)}">
+                        <li th:each="evidencia : ${evidenciasPorComentario[comentario.idComentario]}"
+                            th:if="${!#strings.endsWith(evidencia.nombreArchivo.toLowerCase(), '.jpg')
+                          and !#strings.endsWith(evidencia.nombreArchivo.toLowerCase(), '.jpeg')
+                          and !#strings.endsWith(evidencia.nombreArchivo.toLowerCase(), '.png')
+                          and !#strings.endsWith(evidencia.nombreArchivo.toLowerCase(), '.gif')}">
+                          <i class="bi bi-file-earmark-text"></i>
+                          <a th:href="@{'/admin/descargar-evidencia/' + ${evidencia.idEvidencia}}"
+                             th:text="${evidencia.nombreArchivo}">Descargar</a>
+                        </li>
+                      </ul>
                     </div>
 
-                    <!-- Columna derecha: imagen -->
+                    <!-- Columna derecha: imagen única -->
                     <div class="col-md-6 text-center">
-                      <img src="https://media.lv12.com.ar/p/0cfa4265608d6b79cd55c3e305ed6933/adjuntos/261/imagenes/001/064/0001064295/o.png" alt="Foto de inspección" class="img-fluid rounded shadow-sm">
+                      <div th:each="evidencia : ${evidenciasPorComentario[comentario.idComentario]}">
+                        <img th:src="@{'/admin/ver-evidencia/' + ${evidencia.idEvidencia}}"
+                             class="img-fluid rounded shadow-sm"/>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -244,6 +257,7 @@
               </div>
             </div>
           </div>
+
 
           <div class="modal fade" id="modalNuevaAccion" tabindex="-1" aria-labelledby="modalNuevaAccionLabel" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">

@@ -6,6 +6,7 @@ import com.example.proyectosanmiguel.repository.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,8 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -70,9 +70,21 @@ public class AdminController {
 
     @GetMapping("/reportes/detalle/{id}")
     public String detalleReporte(@PathVariable Integer id, Model model) {
-        model.addAttribute("reporte", reporteRepository.findById(id).orElseThrow());
+        Reporte reporte = reporteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Reporte no encontrado"));
+
         List<Comentario> comentarios = comentarioRepository.findByReporteIdReporteOrderByFechaHoraAsc(id);
+        Map<Integer, List<Evidencia>> evidenciasPorComentario = new HashMap<>();
+
+        for (Comentario c : comentarios) {
+            List<Evidencia> evidencias = evidenciaRepository.findByComentarioIdComentario(c.getIdComentario());
+            evidenciasPorComentario.put(c.getIdComentario(), evidencias);
+        }
+
+        model.addAttribute("reporte", reporte);
         model.addAttribute("comentarios", comentarios);
+        model.addAttribute("evidenciasPorComentario", evidenciasPorComentario);
+
         return "Admin/admin_incidente";
     }
 
@@ -139,7 +151,45 @@ public class AdminController {
         return "redirect:/admin/reportes";
     }
 
+    @GetMapping("/ver-evidencia/{id}")
+    public ResponseEntity<byte[]> verEvidencia(@PathVariable Integer id) {
+        try {
+            Optional<Evidencia> opt = evidenciaRepository.findById(id);
+            if (opt.isPresent()) {
+                Evidencia evidencia = opt.get();
 
+                String nombre = evidencia.getNombreArchivo().toLowerCase();
+                String extension = nombre.substring(nombre.lastIndexOf('.') + 1);
+                String contentType = switch (extension) {
+                    case "png" -> "image/png";
+                    case "jpg", "jpeg" -> "image/jpeg";
+                    case "gif" -> "image/gif";
+                    default -> "application/octet-stream";
+                };
+
+
+                return ResponseEntity.ok()
+                        .header("Content-Type", contentType)
+                        .body(evidencia.getArchivo());
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error al servir evidencia ID: " + id);
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping("/descargar-evidencia/{id}")
+    public ResponseEntity<byte[]> descargarEvidencia(@PathVariable Integer id) {
+        return evidenciaRepository.findById(id)
+                .map(e -> ResponseEntity.ok()
+                        .header("Content-Disposition", "attachment; filename=\"" + e.getNombreArchivo() + "\"")
+                        .body(e.getArchivo()))
+                .orElse(ResponseEntity.notFound().build());
+    }
 
     // ========== Monitoreo ==========
     @GetMapping("/servicios/monitoreo")
