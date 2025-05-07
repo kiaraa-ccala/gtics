@@ -1,6 +1,7 @@
 package com.example.proyectosanmiguel.repository;
 
 import com.example.proyectosanmiguel.dto.EventoHorarioDto;
+import com.example.proyectosanmiguel.dto.HorarioTurnoDto;
 import com.example.proyectosanmiguel.entity.Horario;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -58,6 +59,19 @@ public interface HorarioRepository extends JpaRepository<Horario, Integer> {
             @Param("idComplejo") Integer idComplejo,
             @Param("idCoordinador") Integer idCoordinador
     );
+
+    @Query("""
+SELECT 
+    FUNCTION('DAYNAME', h.fecha) as diaSemana,
+    h.horaIngreso as horaInicio,
+    h.horaSalida as horaFin,
+    c.nombre as nombreComplejo
+FROM Horario h
+JOIN h.complejoDeportivo c
+WHERE h.idHorarioSemanal = :idHorarioSemanal
+""")
+    List<HorarioTurnoDto> obtenerTurnosPorHorarioSemanal(@Param("idHorarioSemanal") Integer idHorarioSemanal);
+
 
 
 

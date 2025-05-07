@@ -45,285 +45,353 @@
           </div>
 
           <!-- Semana Selection -->
-          <div class="col-md-6">
+          <div class="col-md-6" id="semanaContainer">
             <label for="semana">Seleccionar Semana</label>
-            <input type="text" class="form-control" id="semana" name="semana" placeholder="Ejemplo: 28 Abril - 3 Mayo" required>
+            <input type="week" id="semana" class="form-control" name="semana">
           </div>
         </div>
       </div>
     </div>
+    <div id="seccionTurnosCalendario" class="d-none">
+      <!-- Wizard Navigation -->
+      <ul class="nav nav-pills mb-4" id="wizard-tabs1">
+        <li class="nav-item">
+          <a class="nav-link active" id="turnos-tab" data-bs-toggle="pill" href="#turnos">Turnos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="calendario-tab" data-bs-toggle="pill" href="#calendario">Vista Calendario</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="wizard-content1">
+        <!-- Turnos Tab -->
+        <div class="tab-pane fade show active" id="turnos">
+          <h3 class="mb-4">Configuración de Turnos</h3>
+          <form>
 
-    <!-- Wizard Navigation -->
-    <ul class="nav nav-pills mb-4" id="wizard-tabs1">
-      <li class="nav-item">
-        <a class="nav-link active" id="turnos-tab" data-bs-toggle="pill" href="#turnos">Turnos</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" id="calendario-tab" data-bs-toggle="pill" href="#calendario">Vista Calendario</a>
-      </li>
-    </ul>
-    <div class="tab-content" id="wizard-content1">
-      <!-- Turnos Tab -->
-      <div class="tab-pane fade show active" id="turnos">
-        <h3 class="mb-4">Configuración de Turnos</h3>
-        <form>
+            <!-- Wizard Navigation for the Days of the Week -->
+            <ul class="nav nav-pills mb-4" id="wizard-tabs2">
+              <li class="nav-item">
+                <a class="nav-link active" id="lunes-tab" data-bs-toggle="pill" href="#lunes">Lunes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="martes-tab" data-bs-toggle="pill" href="#martes">Martes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="miercoles-tab" data-bs-toggle="pill" href="#miercoles">Miércoles</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="jueves-tab" data-bs-toggle="pill" href="#jueves">Jueves</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="viernes-tab" data-bs-toggle="pill" href="#viernes">Viernes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="sabado-tab" data-bs-toggle="pill" href="#sabado">Sábado</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="domingo-tab" data-bs-toggle="pill" href="#domingo">Domingo</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="wizard-content2">
+              <!-- Lunes -->
+              <div class="tab-pane fade show active" id="lunes">
+                <div class="mb-3">
+                  <label for="selectComplejo" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejo" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioLunes" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioLunes">
+                  </div>
 
-          <!-- Wizard Navigation for the Days of the Week -->
-          <ul class="nav nav-pills mb-4" id="wizard-tabs2">
-            <li class="nav-item">
-              <a class="nav-link active" id="lunes-tab" data-bs-toggle="pill" href="#lunes">Lunes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="martes-tab" data-bs-toggle="pill" href="#martes">Martes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="miercoles-tab" data-bs-toggle="pill" href="#miercoles">Miércoles</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="jueves-tab" data-bs-toggle="pill" href="#jueves">Jueves</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="viernes-tab" data-bs-toggle="pill" href="#viernes">Viernes</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="sabado-tab" data-bs-toggle="pill" href="#sabado">Sábado</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" id="domingo-tab" data-bs-toggle="pill" href="#domingo">Domingo</a>
-            </li>
-          </ul>
-          <div class="tab-content" id="wizard-content2">
-            <!-- Lunes -->
-            <div class="tab-pane fade show active" id="lunes">
-              <div class="mb-3">
-                <label for="selectComplejo" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejo" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioLunes" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioLunes">
+                  <div class="col-md-5">
+                    <label for="horaFinLunes" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinLunes">
+                  </div>
+
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Espacio</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle me-2"></i> Agregar
+                    </button>
+                  </div>
                 </div>
-                <div class="col-md-5">
-                  <label for="horaFinLunes" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinLunes">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    <i class="fas fa-plus"></i>
-                    Añadir
-                  </button>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Lunes:</strong></p>
+                    <ul id="listaTurnosLunes" class="list-group mb-4"></ul>
+                  </div>
                 </div>
               </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Lunes:</strong></p>
+
+              <!-- Martes -->
+              <div class="tab-pane fade" id="martes">
+                <div class="mb-3">
+                  <label for="selectComplejoMartes" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoMartes" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioMartes" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioMartes">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinMartes" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinMartes">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Espacio</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle me-2"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Martes:</strong></p>
+                    <ul id="listaTurnosMartes" class="list-group mb-4 ms-1"></ul>
+                  </div>
+                </div>
+
               </div>
+
+              <!-- Miércoles -->
+              <div class="tab-pane fade" id="miercoles">
+                <div class="mb-3">
+                  <label for="selectComplejoMiercoles" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoMiercoles" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioMiercoles" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioMiercoles">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinMiercoles" class="form-label">Hora de Fin</label>
+                    <input type="time" step="3600" class="form-control" id="horaFinMiercoles">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Espacio</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle me-2"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Martes:</strong></p>
+                    <ul id="listaTurnosMiercoles" class="list-group mb-4 ms-1"></ul>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Jueves -->
+              <div class="tab-pane fade" id="jueves">
+                <div class="mb-3">
+                  <label for="selectComplejoJueves" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoJueves" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioJueves" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioJueves">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinJueves" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinJueves">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Jueves:</strong></p>
+                    <ul id="listaTurnosJueves" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Viernes -->
+              <div class="tab-pane fade" id="viernes">
+                <div class="mb-3">
+                  <label for="selectComplejoViernes" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoViernes" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioViernes" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioViernes">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinViernes" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinViernes">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Viernes:</strong></p>
+                    <ul id="listaTurnosViernes" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Sábado -->
+              <div class="tab-pane fade" id="sabado">
+                <div class="mb-3">
+                  <label for="selectComplejoSabado" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoSabado" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioSabado" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioSabado">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinSabado" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinSabado">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Sábado:</strong></p>
+                    <ul id="listaTurnosSabado" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Domingo -->
+              <div class="tab-pane fade" id="domingo">
+                <div class="mb-3">
+                  <label for="selectComplejoDomingo" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoDomingo" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioDomingo" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioDomingo">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinDomingo" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinDomingo">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Domingo:</strong></p>
+                    <ul id="listaTurnosDomingo" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+
             </div>
 
-            <!-- Martes -->
-            <div class="tab-pane fade" id="martes">
-              <div class="mb-3">
-                <label for="selectComplejoMartes" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejoMartes" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioMartes" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioMartes">
-                </div>
-                <div class="col-md-5">
-                  <label for="horaFinMartes" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinMartes">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    Añadir
-                  </button>
-                </div>
-              </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Martes:</strong></p>
-              </div>
-            </div>
-
-            <!-- Miércoles -->
-            <div class="tab-pane fade" id="miercoles">
-              <div class="mb-3">
-                <label for="selectComplejoMiercoles" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejoMiercoles" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioMiercoles" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioMiercoles">
-                </div>
-                <div class="col-md-5">
-                  <label for="horaFinMiercoles" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinMiercoles">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    Añadir
-                  </button>
-                </div>
-              </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Miércoles:</strong></p>
-              </div>
-            </div>
-
-            <!-- Jueves -->
-            <div class="tab-pane fade" id="jueves">
-              <div class="mb-3">
-                <label for="selectComplejoJueves" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejoJueves" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioJueves" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioJueves">
-                </div>
-                <div class="col-md-5">
-                  <label for="horaFinJueves" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinJueves">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    Añadir
-                  </button>
-                </div>
-              </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Jueves:</strong></p>
-              </div>
-            </div>
-
-            <!-- Viernes -->
-            <div class="tab-pane fade" id="viernes">
-              <div class="mb-3">
-                <label for="selectComplejoViernes" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejoViernes" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioViernes" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioViernes">
-                </div>
-                <div class="col-md-5">
-                  <label for="horaFinViernes" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinViernes">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    Añadir
-                  </button>
-                </div>
-              </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Viernes:</strong></p>
-              </div>
-            </div>
-
-            <!-- Sábado -->
-            <div class="tab-pane fade" id="sabado">
-              <div class="mb-3">
-                <label for="selectComplejoSabado" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejoSabado" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioSabado" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioSabado">
-                </div>
-                <div class="col-md-5">
-                  <label for="horaFinSabado" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinSabado">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    Añadir
-                  </button>
-                </div>
-              </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Sábado:</strong></p>
-              </div>
-            </div>
-
-            <!-- Domingo -->
-            <div class="tab-pane fade" id="domingo">
-              <div class="mb-3">
-                <label for="selectComplejoDomingo" class="form-label">Complejo</label>
-                <select name="complejo" id="selectComplejoDomingo" class="form-select">
-                  <th:block th:each="cmp : ${complejos}">
-                    <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
-                  </th:block>
-                </select>
-              </div>
-              <div class="row mb-3">
-                <div class="col-md-5">
-                  <label for="horaInicioDomingo" class="form-label">Hora de Inicio</label>
-                  <input type="time" class="form-control" id="horaInicioDomingo">
-                </div>
-                <div class="col-md-5">
-                  <label for="horaFinDomingo" class="form-label">Hora de Fin</label>
-                  <input type="time" class="form-control" id="horaFinDomingo">
-                </div>
-                <div class="col-md-2 d-flex align-items-center">
-                  <button type="button" class="btn btn-info w-100">
-                    Añadir
-                  </button>
-                </div>
-              </div>
-              <div class="row mb-4">
-                <p><strong>Turnos Día Domingo:</strong></p>
-              </div>
-            </div>
 
 
+
+          </form>
+        </div>
+
+        <!-- Calendario Tab -->
+        <div class="tab-pane fade" id="calendario">
+          <h3 class="mb-4">Vista Calendario</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle" id="tablaCalendario">
+              <thead class="table-light">
+              <tr>
+                <th>Hora</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+              </tr>
+              </thead>
+              <tbody id="bodyCalendario">
+              <!-- Las filas se llenarán dinámicamente -->
+              </tbody>
+            </table>
           </div>
 
-
-
-
-        </form>
+        </div>
       </div>
 
-      <!-- Calendario Tab -->
-      <div class="tab-pane fade" id="calendario">
-        <h3 class="mb-4">Vista Calendario</h3>
-        <div id="calendar"></div>
+      <!-- Save Button -->
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary">Guardar</button>
       </div>
+
     </div>
 
-    <!-- Save Button -->
-    <div class="text-center">
-      <button type="submit" class="btn btn-primary">Guardar</button>
-    </div>
+
   </div>
 
   <!-- [ sample-page ] start -->
@@ -331,7 +399,6 @@
     <!-- [ sample-page ] end -->
   </div>
   <!-- [ Main Content ] end -->
-</div>
 
 
 <div class="modal fade" id="modalInfoSeleccionado" tabindex="-1" aria-labelledby="modalInfoLabel" aria-hidden="true">
@@ -506,6 +573,130 @@
     </div>
   </div>
 </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectCoordinador = document.getElementById("coordinador");
+    const inputSemana = document.getElementById("semana");
+    const seccionTurnos = document.getElementById("seccionTurnosCalendario");
+
+    function validarMostrarTurnos() {
+      const coordinadorSeleccionado = selectCoordinador.value !== "";
+      const semanaSeleccionada = inputSemana.value !== "";
+
+      if (coordinadorSeleccionado && semanaSeleccionada) {
+        seccionTurnos.classList.remove("d-none");
+      } else {
+        seccionTurnos.classList.add("d-none");
+      }
+    }
+
+    // Ejecutar validación al cambiar los campos
+    selectCoordinador.addEventListener("change", validarMostrarTurnos);
+    inputSemana.addEventListener("change", validarMostrarTurnos);
+
+    // Por si ya estaban seleccionados al cargar
+    validarMostrarTurnos();
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+
+    dias.forEach(function (dia) {
+      const btn = document.querySelector(`#${dia.toLowerCase()} button`);
+      if (!btn) return;
+
+      btn.addEventListener("click", function () {
+        const inicio = document.getElementById(`horaInicio${dia}`).value;
+        const fin = document.getElementById(`horaFin${dia}`).value;
+        const complejoSelect = document.getElementById(`selectComplejo${dia === "Lunes" ? "" : dia}`);
+        const complejo = complejoSelect?.selectedOptions[0]?.text || "";
+
+        if (!inicio || !fin || !complejo) {
+          alert("Completa todos los campos.");
+          return;
+        }
+
+        const lista = document.getElementById(`listaTurnos${dia}`);
+        const item = document.createElement("li");
+        item.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
+        item.innerHTML = `
+          <span style="font-size: 0.9rem;">${inicio} - ${fin} | ${complejo}</span>
+          <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-remove-turno" title="Eliminar" style="font-size: 1.2rem;">×</button>
+        `;
+
+        lista.appendChild(item);
+
+        // Agregar al calendario
+        agregarTurnoACalendario(dia, inicio, fin, complejo);
+
+        // Limpiar campos
+        document.getElementById(`horaInicio${dia}`).value = "";
+        document.getElementById(`horaFin${dia}`).value = "";
+
+        // Eliminar de la lista y del calendario
+        item.querySelector(".btn-remove-turno").addEventListener("click", () => {
+          item.remove();
+          eliminarTurnoDeCalendario(dia, inicio, fin);
+        });
+      });
+    });
+  });
+
+  function agregarTurnoACalendario(dia, horaInicio, horaFin, complejo) {
+    const cuerpo = document.getElementById('bodyCalendario');
+    const diaIndex = {
+      "Lunes": 1,
+      "Martes": 2,
+      "Miercoles": 3,
+      "Jueves": 4,
+      "Viernes": 5,
+      "Sabado": 6,
+      "Domingo": 7
+    };
+
+    const rango = `${horaInicio} - ${horaFin}`;
+    let fila = Array.from(cuerpo.rows).find(row => row.cells[0].textContent === rango);
+
+    if (!fila) {
+      fila = cuerpo.insertRow();
+      fila.insertCell().textContent = rango;
+      for (let i = 1; i <= 7; i++) fila.insertCell();
+    }
+
+    const celda = fila.cells[diaIndex[dia]];
+    celda.textContent = complejo;
+    celda.classList.add("bg-light", "fw-semibold");
+  }
+
+  function eliminarTurnoDeCalendario(dia, horaInicio, horaFin) {
+    const cuerpo = document.getElementById('bodyCalendario');
+    const diaIndex = {
+      "Lunes": 1,
+      "Martes": 2,
+      "Miercoles": 3,
+      "Jueves": 4,
+      "Viernes": 5,
+      "Sabado": 6,
+      "Domingo": 7
+    };
+
+    const rango = `${horaInicio} - ${horaFin}`;
+    const fila = Array.from(cuerpo.rows).find(row => row.cells[0].textContent === rango);
+
+    if (fila) {
+      fila.cells[diaIndex[dia]].textContent = "";
+      fila.cells[diaIndex[dia]].classList.remove("bg-light", "fw-semibold");
+
+      // Si todas las celdas (excepto hora) están vacías, eliminar la fila
+      const vacias = Array.from(fila.cells).slice(1).every(cell => cell.textContent.trim() === "");
+      if (vacias) fila.remove();
+    }
+  }
+</script>
+
+
 
 <script>
   document.addEventListener('DOMContentLoaded', function () {
@@ -524,6 +715,29 @@
     });
   });
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'week');
+    const isSupported = (input.type === 'week');
+
+    if (!isSupported) {
+      const warning = document.createElement('div');
+      warning.innerText = '⚠ Tu navegador no soporta la selección de semana. Usa Chrome, Edge o una versión moderna.';
+      warning.style.color = 'red';
+      warning.style.fontWeight = 'bold';
+      warning.style.marginTop = '10px';
+
+      const container = document.getElementById('semanaContainer'); // Asegúrate de tener un div con este id
+      if (container) container.appendChild(warning);
+    }
+  });
+</script>
+
+
+<div id="alertaCompatibilidad" class="alert alert-warning d-none">
+  Tu navegador no soporta el selector de semana. Intenta usar Chrome, Edge o Firefox.
+</div>
 
 <!-- 1. Librerías base necesarias (Bootstrap, FullCalendar) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

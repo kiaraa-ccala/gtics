@@ -1,6 +1,7 @@
 package com.example.proyectosanmiguel.controller;
 
 import com.example.proyectosanmiguel.dto.EventoHorarioDto;
+import com.example.proyectosanmiguel.dto.HorarioTurnoDto;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import com.google.gson.Gson;
@@ -15,7 +16,13 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.WeekFields;
 import java.util.*;
 
 @Controller
@@ -49,6 +56,10 @@ public class AdminController {
     private EvidenciaRepository evidenciaRepository;
 
     @Autowired
+    private HorarioSemanalRepository horarioSemanalRepository;
+
+
+    @Autowired
     private FotoRepository fotoRepository;
 
     @ResponseBody
@@ -58,6 +69,69 @@ public class AdminController {
             @RequestParam(required = false) Integer idCoordinador) {
 
         return horarioRepository.listarHorariosPorFiltro(idComplejo, idCoordinador);
+    }
+    // ========== Agreagar Horarios ==========
+    @GetMapping("/test/horarios/buscar")
+    @ResponseBody
+    public List<HorarioTurnoDto> buscarHorarios(
+            @RequestParam Integer coordinadorId,
+            @RequestParam String semana // ejemplo: 2025-W21
+    ) {
+        try {
+            // Parseo manual del año y semana desde el texto
+            String[] partes = semana.split("-W");
+            int anio = Integer.parseInt(partes[0]);
+            int semanaNum = Integer.parseInt(partes[1]);
+
+            // Calcular el lunes de esa semana ISO
+            LocalDate fechaInicio = LocalDate.of(anio, 1, 4)
+                    .with(WeekFields.ISO.weekOfWeekBasedYear(), semanaNum)
+                    .with(WeekFields.ISO.getFirstDayOfWeek()); // lunes
+
+            System.out.println("Fecha inicio: " + fechaInicio);
+
+            LocalDate fechaFin = fechaInicio.plusDays(6); // domingo
+            System.out.println("Fecha fin: " + fechaFin);
+
+            //lo que se hizo fue sacar los dias fecha de inicio fecha fin lun -dom
+
+            //se usa optional, ya que se espera solo una semana, no varias semanas
+
+            //La logica del HTML es que cuando seleccione la semana, verifique con AJAx SI
+            //existe un horario semanal para esa semana, si existe, se cargan los turnos
+            //si no existe, muestra vacio, pero en el front puedo cargar horarios y crear una semana nueva :D
+            //asi esta vista me sirve para inclusive editar turnos y borrar turnos
+
+            // Buscar si ya existe HorarioSemanal
+            Optional<HorarioSemanal> existente = horarioSemanalRepository
+                    .findByCoordinadorIdUsuarioAndFechaInicioAndFechaFin(coordinadorId, fechaInicio, fechaFin);
+
+            if (existente.isEmpty()) {
+                return List.of(); // No hay turnos para esa semana
+            }
+
+            //Observamos que si envia correctamente :,vvvvv probablemente el error sea el metodo (lo era) xD
+            System.out.println("HorarioSemanal ID: " + existente.get().getIdHorarioSemanal());
+            return horarioRepository.obtenerTurnosPorHorarioSemanal(existente.get().getIdHorarioSemanal());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+
+    // Metodo para obtener dia de la semana (no es controlador)
+    private String obtenerDiaNombre(DayOfWeek day) {
+        return switch (day) {
+            case MONDAY -> "Lunes";
+            case TUESDAY -> "Martes";
+            case WEDNESDAY -> "Miercoles";
+            case THURSDAY -> "Jueves";
+            case FRIDAY -> "Viernes";
+            case SATURDAY -> "Sabado";
+            case SUNDAY -> "Domingo";
+        };
     }
 
 
