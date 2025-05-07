@@ -1,0 +1,782 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head_vecino :: head('Agregar Usuario')"></head>
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+
+    <div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+
+    <div th:replace="fragments/navbar_vecino :: header"></div>
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content container">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h1 class="mb-0">Servicios Deportivos</h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <!-- [ sample-page ] start -->
+          <div class="col-sm-12">
+            <div class="ecom-wrapper">
+              <div class="ecom-content">
+                <div class="card">
+                  <div class="card-body p-3">
+                    <div class="d-sm-flex align-items-center">
+                      <ul class="list-inline me-auto my-1">
+                        <li class="list-inline-item">
+                          <div class="form-search">
+                            <i class="ti ti-search"></i>
+                            <input type="search" class="form-control" placeholder="Buscar productos" />
+                          </div>
+                        </li>
+                      </ul>
+                      <ul class="list-inline ms-auto my-1">
+                        <li class="list-inline-item">
+                          <select class="form-select">
+                            <option selected value=""> </option>
+                            <option>Cancha de futsal (Losa)</option>
+                            <option>Cancha de futsal (Grass)</option>
+                            <option>Piscina</option>
+                            <option>Pista de atletismo</option>
+                            <option>Gimnasio</option>
+                          </select>
+                        </li>
+                        
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-3 g-4" id="productCards">
+                  <!-- Ejemplo para 1 card (repetir patrón para las demás) -->
+                  <div class="col product-card ">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo1.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input" checked />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Arena Vital Sports Center</h5>
+                        <p class="card-text text-muted small mb-0">Canchas de futsal (Losa)</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col product-card ">
+                    <div class="card product-card h-100">
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo2.png" alt="El Mirador" class="img-fluid">
+                        
+                        <!-- Badge de descuento (si aplica) -->
+                        <div class="position-absolute top-0 start-0 m-2">
+                          <span class="badge bg-success">-10%</span>
+                        </div>
+                        
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input" />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Complejo Deportivo El Mirador</h5>
+                        <p class="card-text text-muted small mb-0">Canchas de grass sintético</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo3.png" alt="El Mirador" class="img-fluid">
+                        
+                        <!-- Badge de descuento (si aplica) -->
+                        <div class="position-absolute top-0 start-0 m-2">
+                          <span class="badge bg-success">-20%</span>
+                        </div>
+                        
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input" />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Parque Deportivo Horizonte</h5>
+                        <p class="card-text text-muted small mb-0">Canchas de futsal (Losa)</p>
+                      </div>
+                    </div>
+                  </div>  
+                  
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo4.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input" checked />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Centro Atlético Nova Fit</h5>
+                        <p class="card-text text-muted small mb-0">Canchas de grass sintético</p>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo4.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input"  />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">EcoArena Multideportes</h5>
+                        <p class="card-text text-muted small mb-0">Gimnasio al aire libre</p>
+                      </div>
+                    </div>
+                  </div>  
+                  
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo6.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input"  />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Estadio y Centro Deportivo Altavista</h5>
+                        <p class="card-text text-muted small mb-0">Pistas de atletismo</p>
+                      </div>
+                    </div>
+                  </div>  
+                  
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo7.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input"  />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Zona Max Training Club</h5>
+                        <p class="card-text text-muted small mb-0">Piscina Olímpica</p>
+                      </div>
+                    </div>
+                  </div>  
+                  
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo4.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input"  />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Polideportivo Ribera Norte</h5>
+                        <p class="card-text text-muted small mb-0">Gimnasio Completo</p>
+                      </div>
+                    </div>
+                  </div> 
+                  
+                  <div class="col product-card">
+                    <div class="card product-card h-100">
+                      <!-- Contenedor de imagen con altura fija -->
+                      <div class="card-img-container position-relative">
+                        <img src="../assets/images/complejos/complejo1.png" alt="Arena Vital" class="img-fluid">
+                        
+                        <!-- Badge de descuento (si aplica) -->
+                        <div class="position-absolute top-0 start-0 m-2">
+                          <span class="badge bg-success">-15%</span>
+                        </div>
+
+                        <!-- Botón de favorito (manteniendo tu estructura original) -->
+                        <div class="card-body position-absolute end-0 top-0 p-1">
+                          <div class="form-check prod-likes m-0">
+                            <input type="checkbox" class="form-check-input"  />
+                            <i data-feather="heart" class="prod-likes-icon text-white"></i>
+                          </div>
+                        </div>
+                        
+                        <!-- Botón de check (manteniendo tu estructura original) -->
+                        <div class="btn-prod-cart card-body position-absolute end-0 bottom-0 p-1">
+                          <div class="btn btn-warning btn-sm">
+                            <svg class="pc-icon" viewBox="0 0 24 24" width="18" height="18">
+                              <path fill="currentColor" d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+                            </svg>
+                          </div>
+                        </div>
+                      </div>
+                      
+                      <!-- Cuerpo de la card -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title mb-1">Arena Vital Sports Center</h5>
+                        <p class="card-text text-muted small mb-0">Piscina Completa</p>
+                      </div>
+                    </div>
+                  </div>  
+                  
+                </div>
+                <!-- [Paginación] start -->
+                <div class="d-flex justify-content-center mt-4">
+                  <ul class="pagination mb-0"></ul>
+                </div>
+                <!-- [Paginación] end -->
+                
+              </div>
+            </div>
+          </div>
+          <!-- [ sample-page ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+    <!-- Required Js -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+    <!-- [Page Specific JS] start -->
+    <script>
+      // scroll-block
+      var tc = document.querySelectorAll('.scroll-block');
+      for (var t = 0; t < tc.length; t++) {
+        new SimpleBar(tc[t]);
+      }
+    </script>
+
+    <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+      .ecom-wrapper {
+        display: flex;
+        justify-content: center; /* 💡 centra horizontalmente */
+      }
+
+      .ecom-content {
+        max-width: 1200px; /* o el ancho que quieras */
+        width: 100%;
+        padding: 1rem;
+      }
+    </style>
+    <!-- Modal Ancho con Dos Columnas -->
+    <div class="modal fade" id="servicioModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-xl"> <!-- modal-xl para más ancho -->
+        <div class="modal-content">
+          <!-- Header -->
+          <div class="modal-header bg-light">
+            <h2 class="modal-title fw-bold fs-4">Detalles del Complejo</h2>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          
+          <!-- Cuerpo con dos columnas -->
+          <div class="modal-body">
+            <div class="row">
+              <!-- Columna Izquierda (60%) -->
+              <div class="col-md-7">
+                <!-- Imagen principal -->
+                <div class="ratio ratio-16x9 mb-4 bg-light rounded-3 overflow-hidden">
+                  <img id="modalServicioImagen" src="" alt="Complejo" class="img-fluid object-fit-cover">
+                </div>
+                
+                <!-- Descripción -->
+                <div class="mb-4">
+                  <h3 id="modalServicioNombre" class="fw-bold fs-5 text-primary mb-3"></h3>
+                  <p class="text-muted mb-0">Instalaciones profesionales para deportes de alto rendimiento y recreación familiar.</p>
+                </div>
+                
+                <!-- Servicios -->
+                <div class="card border-0 shadow-sm mb-4">
+                  <div class="card-body">
+                    <h4 class="fw-bold fs-6 d-flex align-items-center gap-2 mb-3">
+                      <i class="bi bi-check2-circle text-success"></i> Servicios Incluidos
+                    </h4>
+                    <div id="modalServiciosAdicionales" class="row g-2">
+                      <!-- Ejemplo dinámico -->
+                      <div class="col-6">
+                        <div class="d-flex align-items-center p-2 bg-light rounded">
+                          <i class="bi bi-check-circle-fill text-success me-2"></i>
+                          <span>Vestuarios</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Columna Derecha (40%) -->
+              <div class="col-md-5">
+                <!-- Tarjeta de Información -->
+                <div class="card border-0 shadow-sm mb-4">
+                  <div class="card-body">
+                    <h4 class="fw-bold fs-6 d-flex align-items-center gap-2 mb-3">
+                      <i class="bi bi-info-circle text-primary"></i> Información
+                    </h4>
+                    <ul class="list-unstyled">
+                      <li class="mb-2 d-flex">
+                        <span class="text-muted flex-shrink-0" style="width: 100px;">Dirección:</span>
+                        <span id="modalServicioDireccion" class="fw-medium">Av. La Marina 1450</span>
+                      </li>
+                      <li class="mb-2 d-flex">
+                        <span class="text-muted flex-shrink-0" style="width: 100px;">Dimensiones:</span>
+                        <span id="modalServicioDimensiones">28m × 15m</span>
+                      </li>
+                      <li class="mb-2 d-flex">
+                        <span class="text-muted flex-shrink-0" style="width: 100px;">Capacidad:</span>
+                        <span id="modalServicioCapacidad">40 personas</span>
+                      </li>
+                      <li class="d-flex">
+                        <span class="text-muted flex-shrink-0" style="width: 100px;">Superficie:</span>
+                        <span id="modalServicioSuperficie">Losa profesional</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                
+                <!-- Tarjeta de Horarios -->
+                <div class="card border-0 shadow-sm mb-4">
+                  <div class="card-body">
+                    <h4 class="fw-bold fs-6 d-flex align-items-center gap-2 mb-3">
+                      <i class="bi bi-clock text-warning"></i> Horario
+                    </h4>
+                    <div id="modalServicioHorario">
+                      <div class="mb-2">
+                        <span class="badge bg-primary bg-opacity-10 text-primary me-2">Lun-Vie</span>
+                        <span>6:00 AM - 10:00 PM</span>
+                      </div>
+                      <div>
+                        <span class="badge bg-primary bg-opacity-10 text-primary me-2">Sáb-Dom</span>
+                        <span>7:00 AM - 8:00 PM</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Mapa Miniatura -->
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body">
+                    <h4 class="fw-bold fs-6 d-flex align-items-center gap-2 mb-3">
+                      <i class="bi bi-geo-alt text-danger"></i> Ubicación
+                    </h4>
+                    <div class="ratio ratio-16x9 bg-light rounded mb-2">
+                      <!-- Espacio para mapa -->
+                      <div class="d-flex align-items-center justify-content-center text-muted">
+                        <i class="bi bi-map fs-3"></i>
+                      </div>
+                    </div>
+                    <button class="btn btn-sm btn-link ps-0">
+                      <i class="bi bi-arrow-up-right-square me-1"></i> Ver mapa completo
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Footer con botones -->
+          <div class="modal-footer bg-white border-top">
+            <div class="d-flex w-100 gap-3">
+              <button type="button" class="btn btn-lg btn-outline-secondary flex-grow-1" data-bs-dismiss="modal">
+                <i class="bi bi-x-lg me-2"></i> Cerrar
+              </button>
+              <button type="button" class="btn btn-lg btn-outline-primary flex-grow-1">
+                <i class="bi bi-calendar3 me-2"></i> Disponibilidad
+              </button>
+              <button type="button" class="btn btn-lg btn-primary flex-grow-1">
+                <i class="bi bi-credit-card me-2"></i> Reservar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <style>
+      /* Solo este pequeño ajuste CSS es necesario para el contenedor de imágenes */
+      .card-img-container {
+        height: 180px;
+        overflow: hidden;
+      }
+      .card-img-container img {
+        object-fit: cover;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.3s ease;
+      }
+      .product-card:hover .card-img-container img {
+        transform: scale(1.03);
+      }
+    </style>
+    <script>
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.addEventListener('click', function() {
+          // Datos de ejemplo (deberían venir de tu API)
+          const complejoData = {
+            nombre: "Arena Vital Sports Center",
+            imagen: this.querySelector('img').src,
+            direccion: "Av. La Marina 1450, San Miguel",
+            dimensiones: "28m × 15m",
+            capacidad: "40 personas",
+            superficie: "Losa profesional",
+            servicios: ["Vestuarios", "Iluminación LED", "Cafetería", "WiFi", "Estacionamiento"],
+            horarios: {
+              semana: "6:00 AM - 10:00 PM",
+              finSemana: "7:00 AM - 8:00 PM"
+            }
+          };
+      
+          // Actualizar modal
+          const modal = document.getElementById('servicioModal');
+          modal.querySelector('#modalServicioImagen').src = complejoData.imagen;
+          modal.querySelector('#modalServicioNombre').textContent = complejoData.nombre;
+          modal.querySelector('#modalServicioDireccion').textContent = complejoData.direccion;
+          modal.querySelector('#modalServicioDimensiones').textContent = complejoData.dimensiones;
+          modal.querySelector('#modalServicioCapacidad').textContent = complejoData.capacidad;
+          modal.querySelector('#modalServicioSuperficie').textContent = complejoData.superficie;
+          
+          // Actualizar horarios
+          modal.querySelector('#modalServicioHorario').innerHTML = `
+            <div class="mb-2">
+              <span class="badge bg-primary bg-opacity-10 text-primary me-2">Lun-Vie</span>
+              <span>${complejoData.horarios.semana}</span>
+            </div>
+            <div>
+              <span class="badge bg-primary bg-opacity-10 text-primary me-2">Sáb-Dom</span>
+              <span>${complejoData.horarios.finSemana}</span>
+            </div>
+          `;
+          
+          // Generar servicios
+          modal.querySelector('#modalServiciosAdicionales').innerHTML = 
+            complejoData.servicios.map(servicio => `
+              <div class="col-6">
+                <div class="d-flex align-items-center p-2 bg-light rounded">
+                  <i class="bi bi-check-circle-fill text-success me-2"></i>
+                  <span>${servicio}</span>
+                </div>
+              </div>
+            `).join('');
+      
+          // Mostrar modal
+          new bootstrap.Modal(modal).show();
+        });
+      });
+      </script>
+
+<!-- Actualiza el JavaScript de paginación -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const cardsPerPage = 6;
+    const cards = document.querySelectorAll(".product-card");
+    const paginationContainer = document.querySelector(".pagination");
+    const totalPages = Math.ceil(cards.length / cardsPerPage);
+    let currentPage = 1;
+
+    function showPage(page) {
+      currentPage = page;
+      const start = (page - 1) * cardsPerPage;
+      const end = start + cardsPerPage;
+
+      cards.forEach((card, index) => {
+        if (index >= start && index < end) {
+          card.classList.add("active");
+        } else {
+          card.classList.remove("active");
+        }
+      });
+
+      const pageItems = paginationContainer.querySelectorAll(".page-item");
+      pageItems.forEach(item => item.classList.remove("active"));
+      const currentBtn = paginationContainer.querySelector(`[data-page='${page}']`);
+      if (currentBtn) currentBtn.classList.add("active");
+    }
+
+    function setupPagination() {
+      paginationContainer.innerHTML = "";
+
+      const prevItem = document.createElement("li");
+      prevItem.className = "page-item";
+      prevItem.innerHTML = `<a class="page-link" href="#">Anterior</a>`;
+      prevItem.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (currentPage > 1) showPage(currentPage - 1);
+      });
+      paginationContainer.appendChild(prevItem);
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageItem = document.createElement("li");
+        pageItem.className = `page-item${i === 1 ? " active" : ""}`;
+        pageItem.dataset.page = i;
+        pageItem.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+        pageItem.addEventListener("click", (e) => {
+          e.preventDefault();
+          showPage(i);
+        });
+        paginationContainer.appendChild(pageItem);
+      }
+
+      const nextItem = document.createElement("li");
+      nextItem.className = "page-item";
+      nextItem.innerHTML = `<a class="page-link" href="#">Siguiente</a>`;
+      nextItem.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (currentPage < totalPages) showPage(currentPage + 1);
+      });
+      paginationContainer.appendChild(nextItem);
+    }
+
+    setupPagination();
+    showPage(1);
+
+    // 🔧 FIX: al cerrar modal eliminar el backdrop
+    const servicioModal = document.getElementById("servicioModal");
+    servicioModal.addEventListener('hidden.bs.modal', function () {
+      document.body.classList.remove("modal-open");
+      const backdrops = document.querySelectorAll(".modal-backdrop");
+      backdrops.forEach(el => el.remove());
+    });
+  });
+</script>
+
+<style>
+  
+
+  /* Paginación fija en la parte inferior */
+  .pagination-footer {
+    position: sticky;
+    bottom: 20px;
+    z-index: 10;
+    background: rgba(224, 246, 255, 0.9);
+    padding: 15px 0;
+    margin-top: 30px;
+    border-radius: 8px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+  }
+
+  /* Estilos para las cards */
+  .product-card {
+    visibility: hidden;
+    position: absolute;
+    height: 0;
+    overflow: hidden;
+  }
+
+  .product-card.active {
+    visibility: visible;
+    position: static;
+    height: auto;
+  }
+
+  
+</style>
+
+  </body>
+  <!-- [Body] end -->
+</html>
