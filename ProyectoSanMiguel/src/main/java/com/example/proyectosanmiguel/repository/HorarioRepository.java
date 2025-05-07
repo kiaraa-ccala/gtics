@@ -63,6 +63,8 @@ public interface HorarioRepository extends JpaRepository<Horario, Integer> {
     @Query("""
 SELECT 
     FUNCTION('DAYNAME', h.fecha) as diaSemana,
+    h.idHorario AS id,
+    h.idHorarioSemanal as idHorarioSemanal,
     h.horaIngreso as horaInicio,
     h.horaSalida as horaFin,
     c.nombre as nombreComplejo
