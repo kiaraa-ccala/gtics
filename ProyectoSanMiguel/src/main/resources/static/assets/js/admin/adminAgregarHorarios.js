@@ -34,3 +34,26 @@ function mostrarTurnosEnFormulario(turnos) {
         }
     });
 }
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const selectCoordinador = document.getElementById("coordinador");
+    const inputSemana = document.getElementById("semana");
+
+    function cargarTurnos() {
+        const idCoord = selectCoordinador.value;
+        const semana = inputSemana.value;
+
+        if (!idCoord || !semana) return;
+
+        fetch(`/admin/test/horarios/buscar?coordinadorId=${idCoord}&semana=${semana}`)
+            .then(response => response.json())
+            .then(data => {
+                mostrarTurnosEnFormulario(data); // Llama tu función
+            })
+            .catch(err => console.error("Error al obtener turnos:", err));
+    }
+
+    selectCoordinador.addEventListener("change", cargarTurnos);
+    inputSemana.addEventListener("change", cargarTurnos);
+});
