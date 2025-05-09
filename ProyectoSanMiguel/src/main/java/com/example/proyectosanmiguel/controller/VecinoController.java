@@ -60,4 +60,18 @@ public class VecinoController {
 
         return "Vecino/vecino_misReservas";  // Verifica que esta vista exista
     }
+
+
+    //html testing for dev proposes
+    @GetMapping("/test")
+    public String mostrarVista() {
+        return "/Vecino/vecino_servicios";  // Verifica que esta vista exista
+    }
+
+    @GetMapping("/listarComplejos")
+    public String listarComplejos(Model model) {
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();  // Obtener todos los complejos
+        model.addAttribute("complejos", complejos);  // Pasar la lista de complejos a la vista
+        return "Vecino/vecino_servicios";  // Asegúrate de que esta sea la vista correcta
+    }
 }
