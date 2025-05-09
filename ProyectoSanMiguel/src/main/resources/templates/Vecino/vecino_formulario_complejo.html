@@ -221,130 +221,135 @@
               </div>
               <!-- [ breadcrumb ] end -->
       
-      
+
               <!-- [ Main Content ] start -->
-              <div class="container-fluid">
-                <div class="row g-3">
-                
-                  <div class="col-12 col-lg-8">
-                    <div class="card h-100">
+
+              <form th:action="@{/vecino/guardarReserva}" method="post" th:object="${reserva}">
+
+                <div class="container-fluid">
+                  <div class="row g-3">
+
+                    <div class="col-12 col-lg-8">
+                      <div class="card h-100">
+                          <div class="card-header">
+                            <h4 class="mb-0">Datos personales</h4>
+                          </div>
+                          <div class="card-body">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="mb-3">
+                                  <label id="nombre" class="form-label">Nombres</label>
+                                  <input type="text" class="form-control" placeholder="Ingrese el nombre" th:field="*{usuario.getNombre()}" />
+                                  <br>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Apellidos</label>
+                                  <input type="text" class="form-control" placeholder="Ingrese los apellidos" th:field="*{usuario.getApellido()}" />
+                                  <br>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Correo electrónico</label>
+                                  <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" th:field="*{usuario.getCredencial().getCorreo()}" />
+                                  <br>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="mb-3">
+                                  <label class="form-label">DNI</label>
+                                  <input type="text" class="form-control" placeholder="Ingrese el DNI" th:field="*{usuario.getDni()}" />
+                                  <br>
+                                </div>
+                              </div>
+
+                              <div class="col-md-6">
+                                <div class="mb-3">
+                                  <label class="form-label">Telefono</label>
+                                  <input type="tel" class="form-control" placeholder="Ingrese su teléfono" th:field="*{usuario.getTelefono()}" />
+                                  <br>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="mb-3" hidden>
+                                  <label class="form-label">Tipo de persona</label>
+                                  <select class="form-select">
+                                    <option value="1">Persona Natural</option>
+                                    <option value="2">Persona Jurídica</option>
+                                  </select>
+                                  <br>
+                                </div>
+                              </div>
+
+                              <div class="col-md-12">
+                                <div class="mb-3">
+                                  <label class="form-label">Dirección</label>
+                                  <input type="text" class="form-control" value="" placeholder="Ingrese su dirección" th:field="*{usuario.getDireccion()}"/>
+                                </div>
+                              </div>
+
+
+                            </div>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="col-12 col-lg-4">
+                      <div class="card h-100">
                         <div class="card-header">
-                          <h4 class="mb-0">Datos personales</h4>
+                          <h4 class="mb-0">Información del campo</h4>
                         </div>
                         <div class="card-body">
                           <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                               <div class="mb-3">
-                                <label class="form-label">Nombres</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el nombre" value="" />
-                                <br>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Apellidos</label>
-                                <input type="text" class="form-control" placeholder="Ingrese los apellidos" value="" />
-                                <br>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Correo electrónico</label>
-                                <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" value="" />
-                                <br>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">DNI</label>
-                                <input type="text" class="form-control" placeholder="Ingrese el DNI" value="" />
-                                <br>
-                              </div>
-                            </div>
-                            
-                            <div class="col-md-6">
-                              <div class="mb-3">
-                                <label class="form-label">Telefono</label>
-                                <input type="tel" class="form-control" placeholder="Ingrese su teléfono" value="" />
-                                <br>
-                              </div>
-                            </div>
-                            <div class="col-md-6">
-                              <div class="mb-3" hidden>
-                                <label class="form-label">Tipo de persona</label>
+                                <label class="form-label">Selecciona el campo</label>
                                 <select class="form-select">
-                                  <option value="1">Persona Natural</option>
-                                  <option value="2">Persona Jurídica</option>
+                                  <option value="1">Cancha #01 (Grass sintético)</option>
+                                  <option value="2">Cancha #02 (Losa)</option>
                                 </select>
                                 <br>
                               </div>
                             </div>
-          
+                            <br>
                             <div class="col-md-12">
                               <div class="mb-3">
-                                <label class="form-label">Dirección</label>
-                                <input type="text" class="form-control" value="" placeholder="Ingrese su dirección" />
+                                <label class="form-label">Seleccione fecha</label>
+                                <input type="date" class="form-control" value=""  />
                               </div>
                             </div>
-          
-                          
-                          </div>
-                        </div>
-                    </div>
-                  </div>
-                  <div class="col-12 col-lg-4">
-                    <div class="card h-100">
-                      <div class="card-header">
-                        <h4 class="mb-0">Información del campo</h4>
-                      </div>
-                      <div class="card-body">
-                        <div class="row">
-                          <div class="col-md-12">
-                            <div class="mb-3">
-                              <label class="form-label">Selecciona el campo</label>
-                              <select class="form-select">
-                                <option value="1">Cancha #01 (Grass sintético)</option>
-                                <option value="2">Cancha #02 (Losa)</option>
-                              </select>
-                              <br>
+                            <br>
+                            <div class="col-md-12">
+                              <div class="mb-3">
+                                <label class="form-label">Hora inicio</label>
+                                <input type="time" class="form-control" value=""/>
+                              </div>
                             </div>
-                          </div>
-                          <br>
-                          <div class="col-md-12">
-                            <div class="mb-3">
-                              <label class="form-label">Seleccione fecha</label>
-                              <input type="date" class="form-control" value=""  />
+                            <br>
+                            <div class="col-md-12">
+                              <div class="mb-3">
+                                <label class="form-label">Hora fin</label>
+                                <input type="time" class="form-control" value=""/>
+                              </div>
                             </div>
+
+
                           </div>
-                          <br>
-                          <div class="col-md-12">
-                            <div class="mb-3">
-                              <label class="form-label">Hora inicio</label>
-                              <input type="time" class="form-control" value=""/>
-                            </div>
-                          </div>
-                          <br>
-                          <div class="col-md-12">
-                            <div class="mb-3">
-                              <label class="form-label">Hora fin</label>
-                              <input type="time" class="form-control" value=""/>
-                            </div>
-                          </div>
-        
-                        
                         </div>
                       </div>
                     </div>
+                    <div class="text-center">
+                      <button type="button" class="btn btn-lg btn-primary" style="width: 200px;" data-bs-toggle="modal" data-bs-target="#cartModal">
+                          <i class="bi bi-credit-card me-2"></i> Reservar
+                      </button>
+                    </div>
+
                   </div>
-                  <div class="text-center">
-                    <button type="button" class="btn btn-lg btn-primary" style="width: 200px;" data-bs-toggle="modal" data-bs-target="#cartModal">
-                        <i class="bi bi-credit-card me-2"></i> Reservar
-                    </button>
-                  </div>
-                
                 </div>
-              </div>
-              
+
+              </form>
+
               <!-- [ Main Content ] end -->
             </div>
         </div>
