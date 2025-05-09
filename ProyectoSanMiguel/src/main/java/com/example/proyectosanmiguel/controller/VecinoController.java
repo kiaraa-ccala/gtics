@@ -16,7 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+import java.time.format.TextStyle;
+import java.util.Locale;
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -53,13 +54,41 @@ public class VecinoController {
 
     @GetMapping("/misReservas")
     public String mostrarReservasVecino(Model model) {
-        int idUsuario = 8;
+        int idUsuario = 8; // O el ID que uses para pruebas
 
         List<Reserva> reservas = reservaRepository.findByUsuario_IdUsuario(idUsuario);
-        model.addAttribute("listaReservas", reservas);
+        List<ReservaCostoDto> reservasConCosto = new ArrayList<>();
 
-        return "Vecino/vecino_misReservas";  // Verifica que esta vista exista
+        for (Reserva r : reservas) {
+            String diaSemana = r.getFecha().getDayOfWeek()
+                    .getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+            diaSemana = diaSemana.substring(0, 1).toUpperCase() + diaSemana.substring(1); // Ej: "Viernes"
+
+            Optional<Tarifa> tarifa = tarifaRepository.findTarifaAplicable(
+                    r.getInstanciaServicio().getServicio().getIdServicio(),
+                    diaSemana,
+                    r.getHoraInicio(),
+                    r.getHoraFin()
+            );
+
+            double costo = tarifa.map(Tarifa::getMonto).orElse(0.0);
+            reservasConCosto.add(new ReservaCostoDto(r, costo));
+        }
+
+        model.addAttribute("listaReservas", reservasConCosto);
+        return "Vecino/vecino_misReservas";
     }
 
+    @GetMapping("/reserva/eliminar/{id}")
+    public String eliminarReserva(@PathVariable("id") Integer id, RedirectAttributes attr) {
+        Optional<Reserva> opt = reservaRepository.findById(id);
+        if (opt.isPresent()) {
+            reservaRepository.deleteById(id);
+            attr.addFlashAttribute("msg", "Reserva cancelada correctamente.");
+        } else {
+            attr.addFlashAttribute("error", "No se encontró la reserva.");
+        }
+        return "redirect:/vecino/misReservas";
+    }
 
 }
