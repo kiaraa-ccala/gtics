@@ -60,6 +60,4 @@ public class VecinoController {
 
         return "Vecino/vecino_misReservas";  // Verifica que esta vista exista
     }
-
-
 }
