@@ -30,6 +30,8 @@ public class Usuario {
     private String departamento;
     @Column(name = "telefono", nullable = false, length = 9)
     private String telefono;
+    @Column(name = "activo")
+    private int activo;
     @ManyToOne
     @JoinColumn(name="idSector")
     private Sector sector;
