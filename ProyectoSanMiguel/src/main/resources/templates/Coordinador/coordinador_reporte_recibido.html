@@ -2,7 +2,7 @@
 <html lang="en">
   <!-- [Head] start -->
 
-  <head th:replace="fragments/head_coordinador :: head('Reporte recibido')"></head>
+  <head th:replace="fragments/head_coordinador :: head('Detalle de reporte')"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
 
@@ -27,46 +27,76 @@
 
 
         <!-- [ Main Content ] start -->
-        <div class="container-fluid">
-            <div class="row g-3">     
-              <div class="d-flex justify-content-start mb-3">
-                <a href="coordinador_ver_reportes.html"><button class="btn btn-primary">
-                  <i class="ti ti-arrow-back-up"></i> Volver a reportes
-                </button></a>
-                
-              </div>
-              <!-- Sección de reportes (derecha) - SOLO CAMBIÉ EL ESPACIADO -->
-              <div class="col-12 col-lg-12">
-                <div class="card h-100">
-                  <div class="card-header">
-                    <h1 class="mb-0">Falta de iluminación en el complejo</h1>
+          <div class="container-fluid">
+              <div class="row g-3">
+                  <div class="d-flex justify-content-start mb-3">
+                      <a th:href="@{/coord/reportes/ver}">
+                          <button class="btn btn-primary">
+                              <i class="ti ti-arrow-back-up"></i> Volver a reportes
+                          </button>
+                      </a>
                   </div>
-                  <div class="card-body d-flex flex-column pb-1">
-                    <div class="d-grid gap-3" style="margin-bottom: 1px;"> <!-- Ajusté este gap -->
-                      
-                        <div class="d-flex align-items-center">
-                            <div class="flex-grow-1 text-start">
-                                <div class="flex-grow-1 text-center">
-                                    <br>
-                                    <img src="../assets/images/complejoOscuro.png" alt="img" class="img-bordered mx-auto" style="width: 30%;border:5px solid black;border-radius:4px">
-                                </div>
-                                <div class="flex-grow-1 text-center">
-                                    <br>
-                                    <h2 style="color: green;">COMENTARIO RECIBIDO</h2>
-                                </div>
-                                <br>
-                                <h3 class="mb-0"><b>Descripción</b></h3>
-                                <br>
-                                <p>Queremos informar que la iluminación en [nombre del complejo] es insuficiente, lo que dificulta el uso de las canchas en horarios nocturnos y puede representar un riesgo para los deportistas. Agradecemos su pronta solución.</p>
-                            </div>
-                        </div>
-                      
-                    </div>
-                    
+
+                  <div class="col-12 col-lg-12">
+                      <div class="card h-100">
+                          <div class="card-header text-center">
+                              <h1 class="mb-0" th:text="${reporte.asunto}">Asunto del Reporte</h1>
+                          </div>
+                          <div class="card-body">
+                              <div class="row justify-content-center">
+                                  <!--<div class="col-md-6 text-center">
+                                      <div th:if="${reporte.foto != null and reporte.foto.foto != null}">
+                                          <img th:src="'data:image/png;base64,' + ${T(java.util.Base64).getEncoder().encodeToString(reporte.foto.foto)}"
+                                               class="img-thumbnail"
+                                               style="max-width: 100%; border: 3px solid #000; border-radius: 5px;">
+                                      </div>
+                                      <div th:if="${reporte.foto == null or reporte.foto.foto == null}">
+                                          <p class="text-muted">Este reporte no contiene imagen.</p>
+                                      </div>
+                                  </div>-->
+                              </div>
+
+                              <hr class="my-4">
+
+                              <div class="row text-center">
+                                  <div class="col-md-6 mb-3">
+                                      <h5 class="text-muted">Tipo de Reporte</h5>
+                                      <p class="fs-5" th:text="${reporte.tipoReporte}">Tipo</p>
+                                  </div>
+                                  <div class="col-md-6 mb-3">
+                                      <h5 class="text-muted">Fecha y Hora</h5>
+                                      <p class="fs-5" th:text="${reporte.fechaRecepcion} + ' - 00:00'">Fecha</p>
+                                  </div>
+                              </div>
+
+                              <div class="row text-center">
+                                  <div class="col-md-12 mb-3">
+                                      <h5 class="text-muted">Estado</h5>
+                                      <p class="fs-4 fw-bold"
+                                         th:text="${reporte.estado}"
+                                         th:style="'color:' + (${reporte.estado} == 'Cerrado' ? 'green' :
+                                      (${reporte.estado} == 'En proceso' ? 'orange' :
+                                      (${reporte.estado} == 'Abierto' ? 'red' : 'black')))">
+                                          Estado
+                                      </p>
+                                  </div>
+                              </div>
+
+                              <hr class="my-4">
+
+                              <div class="row">
+                                  <div class="col">
+                                      <h4><strong>Descripción</strong></h4>
+                                      <p class="fs-5" th:text="${reporte.descripcion}">
+                                          Texto de la descripción del reporte.
+                                      </p>
+                                  </div>
+                              </div>
+
+                          </div>
+                      </div>
                   </div>
-                </div>
               </div>
-            </div>
           </div>
           
         <!-- [ Main Content ] end -->
@@ -85,26 +115,26 @@
       </div>
     </footer>
     <!-- [Page Specific JS] start -->
-    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
     <!-- custom widgets js -->
-    <script src="../assets/js/widgets/total-line-1-chart.js"></script>
-    <script src="../assets/js/widgets/total-line-2-chart.js"></script>
-    <script src="../assets/js/widgets/total-line-3-chart.js"></script>
-    <script src="../assets/js/widgets/cashflow-bar-chart.js"></script>
+    <script th:src="@{/assets/js/widgets/total-line-1-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-line-2-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-line-3-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/cashflow-bar-chart.js}"></script>
     <!-- Required Js -->
-    <script src="../assets/js/plugins/popper.min.js"></script>
-    <script src="../assets/js/plugins/simplebar.min.js"></script>
-    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
 
-    <script src="../assets/js/plugins/i18next.min.js"></script>
-    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
 
-    <script src="../assets/js/icon/custom-font.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/theme.js"></script>
-    <script src="../assets/js/multi-lang.js"></script>
-    <script src="../assets/js/plugins/feather.min.js"></script>
-    <script src="../assets/js/widgets/category-donut-chart.js"></script>
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+    <script th:src="@{/assets/js/widgets/category-donut-chart.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -203,17 +233,6 @@
         }
       </style>
 
-
-
-
-<script>
-  // Cierra el popup de confirmación si haces clic fuera del contenido
-  popupConfirmacion.addEventListener('click', function (e) {
-    if (e.target === popupConfirmacion) {
-      popupConfirmacion.style.display = 'none';
-    }
-  });
-</script>
 <style>
   .popup-overlay {
     position: fixed;

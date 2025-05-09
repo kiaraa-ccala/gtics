@@ -331,7 +331,7 @@
               <div class="card-body">
                 <div class="d-grid gap-2" style="margin-top: 7%;">
 
-                    <a th:each="reporte : ${ultimosReportes}" href="#" class="btn btn-link-secondary py-2">
+                    <a th:each="reporte : ${ultimosReportes}" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2">
                       <div class="d-flex align-items-center">
                         <div class="flex-shrink-0" style="margin-bottom: 9%">
                             <span class="p-1 d-block rounded-circle"
