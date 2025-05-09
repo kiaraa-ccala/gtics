@@ -61,6 +61,6 @@ public interface ComplejoRepository extends JpaRepository<ComplejoDeportivo, Int
             "GROUP BY h.idHorario",
             nativeQuery = true)
     List<ReporteHorarioDto> getReporteHorarios();
-
+    ComplejoDeportivo findFirstBySector(Sector sector);
 
 }

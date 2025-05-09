@@ -41,5 +41,7 @@ public class Usuario {
     private Rol rol;
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Credencial credencial;
-
+    @OneToOne
+    @JoinColumn(name = "idFoto")
+    private Foto foto;
 }

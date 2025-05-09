@@ -35,7 +35,7 @@
                 <div class="row">
                   <div class="col-sm-8">
                     <div class="p-3">
-                      <h2 class="text-white">¡Bienvenido Coordinador Cristhian!</h2>
+                      <h2 class="text-white" th:text="'¡Bienvenido coordinador '+${usuario.nombre}+'!'"></h2>
                     </div>
                   </div>
                   
@@ -88,8 +88,11 @@
                   
                     <!-- Texto -->
                     <div class="col-6">
-                      <h5 class="mb-1">22 sent</h5>
-                      <p class="text-primary mb-0"><i class="ti ti-check"></i> 16</p>
+                      <h5 class="mb-1" th:text="${cantidadReportes} + ' enviados'">0 sent</h5>
+                      <p class="text-primary mb-0">
+                        <i class="ti ti-check"></i>
+                        <span th:text="${cantidadCerrados}+' recibidos'">0</span>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -221,8 +224,10 @@
                   
                     <!-- Texto -->
                     <div class="col-6">
-                      <h5 class="mb-1">Manuel Peredo</h5>
-                      <p class="text-success mb-0"><i class="ti ti-map-pin"></i> La Marina 123 </p>                    
+                      <strong class="mb-1" th:text="${complejo.nombre}">Nombre del complejo</strong>
+                      <p class="text-success mb-0 small">
+                        <i class="ti ti-map-pin"></i> <span th:text="${complejo.direccion}">Dirección</span>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -278,10 +283,10 @@
           <div class="col-lg-4">
             <div class="card h-100">
               <div class="card-header">
-                <h5 class="mb-0">Registra tu entrada</h5>
+                <h4 class="mb-0">Registra tu entrada</h4>
               </div>
               <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-center"> <!-- Cambiado a justify-content-center -->
+                <div class="d-flex justify-content-center" style="margin-top: 15%"> <!-- Cambiado a justify-content-center -->
                   <style>
                     .circle-button {
                       width: 40vw;
@@ -296,134 +301,59 @@
                       cursor: pointer;
                       padding: 0;
                       transition: background-color 0.3s ease;
-                      margin-bottom: 15px;
+                      margin-bottom: 4%;
                     }
                     .circle-button:hover {
                       background-color: #c85858;
                     }
                   </style>
+
                   <button class="circle-button" id="geoButton">
                     <!-- Icono SVG estilo reloj + marcador -->
-                    <img src="../assets/images/reloj_gps.png" alt="geo" style="width: 70%;">
+                    <img src="../assets/images/reloj_gps.png" alt="geo" style="width: 60%">
                   </button>
                 </div>
                 <div class="overlay" id="overlay"></div>
                 <br>
-                <h5 class=""><b>NOTA:</b></h5>
-                <p class="">Al presionar el botón se activará la geolocalización, asegurese de estar dentro del complejo</p>
+                <div style="margin-top: 5%">
+                  <h5 class="" style="font-size: 110%; margin-top: 5%"><b>NOTA:</b></h5>
+                  <p class="" style="font-size: 110%">Al presionar el botón se activará la geolocalización, asegurese de estar dentro del complejo</p>
+                </div>
+
               </div>
             </div>
           </div>
           <div class="col-lg-4">
             <div class="card h-100">
               <div class="card-header">
-                <h5 class="mb-0">Tus reportes</h5>
+                <h4 class="mb-0">Tus reportes</h4>
               </div>
               <div class="card-body">
-                <div class="d-grid gap-2">
-                  <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary">
-                    <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0">
-                        <span class="p-1 d-block bg-success rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
+                <div class="d-grid gap-2" style="margin-top: 7%;">
+
+                    <a th:each="reporte : ${ultimosReportes}" href="#" class="btn btn-link-secondary py-2">
+                      <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0" style="margin-bottom: 9%">
+                            <span class="p-1 d-block rounded-circle"
+                                  th:classappend=" ${reporte.estado == 'Cerrado'} ? 'bg-success' :
+                                                (${reporte.estado == 'En proceso'} ? 'bg-warning' :
+                                                (${reporte.estado == 'Abierto'} ? 'bg-danger' : 'bg-secondary'))">
+                            <span class="visually-hidden">Estado</span>
+                          </span>
+                        </div>
+                        <div class="flex-grow-1 mx-2">
+                          <p class="mb-0" th:text="${reporte.asunto}">
+                            <span class="visually-hidden">Titulo</span>
+                          </p>
+                        </div>
+                        <br>
                       </div>
-                      <div class="flex-grow-1 mx-2">
-                        <p class="mb-0 d-grid text-start">
-                          <span class="text-truncate w-100">Accidentes en el complejo</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                  <br>
-                  <br>
-                  <br>
-                  <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary">
-                    <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0">
-                        <span class="p-1 d-block bg-success rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1 mx-2">
-                        <p class="mb-0 d-grid text-start">
-                          <span class="text-truncate w-100">Uso indebido de instalaciones</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                  <br>
-                  <br>
-                  <br>
-                  <a href="coordinador_reporte_no_recibido.html" class="btn btn-link-secondary">
-                    <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0">
-                        <span class="p-1 d-block bg-danger rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1 mx-2">
-                        <p class="mb-0 d-grid text-start">
-                          <span class="text-truncate w-100">Limpieza de la piscin incompleta</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                  <br>
-                  <br>
-                  <br>
-                  <a href="coordinador_reporte_no_recibido.html" class="btn btn-link-secondary">
-                    <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0">
-                        <span class="p-1 d-block bg-danger rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1 mx-2">
-                        <p class="mb-0 d-grid text-start">
-                          <span class="text-truncate w-100">Canchas en mal estado</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                  <br>
-                  <br>
-                  <br>
-                  <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary">
-                    <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0">
-                        <span class="p-1 d-block bg-success rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1 mx-2">
-                        <p class="mb-0 d-grid text-start">
-                          <span class="text-truncate w-100">Falta de iluminación</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
-                  <br>
-                  <br>
-                  <br>
-                  <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary">
-                    <div class="d-flex align-items-center">
-                      <div class="flex-shrink-0">
-                        <span class="p-1 d-block bg-success rounded-circle">
-                          <span class="visually-hidden">New alerts</span>
-                        </span>
-                      </div>
-                      <div class="flex-grow-1 mx-2">
-                        <p class="mb-0 d-grid text-start">
-                          <span class="text-truncate w-100">Perdida de implementos</span>
-                        </p>
-                      </div>
-                    </div>
-                  </a>
+                    </a>
+
                 </div>
                 <br>
                 <div class="d-grid mt-3">
-                  <a href="coordinador_seccion_reporte.html" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                  <a th:href="@{/coord/reportes/mostrar}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
                     <i class="ti ti-external-link"></i> Ir a reportes
                   </a>
                   
@@ -434,15 +364,16 @@
           <div class="col-lg-4">
             <div class="card h-100">
               <div class="card-header">
-                <h5 class="mb-0">Ingresa a tu perfil</h5>
+                <h4 class="mb-0">Ingresa a tu perfil</h4>
               </div>
               <div class="card-body ">
                 <div class="text-center d-grid gap-3">
                   <!-- Imagen centrada con borde -->
-                  <img src="../assets/images/cris.png" alt="img" class="img-bordered mx-auto" style="width: 60%;border:3px solid black;border-radius:4px;">
+                  <img th:src="@{${usuario.foto.urlFoto}}" alt="img" class="img-bordered mx-auto"
+                       style="width: 80%; border:3px solid black; border-radius:4px;margin-top: 20%;margin-bottom: 21%">
                   <br>
                   <!-- Botón centrado -->
-                  <a href="coordinador_perfil.html" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                  <a th:href="@{/coord/perfil}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
                     <i class="ti ti-user-circle"></i> Ve a tu perfil
                   </a>
                   

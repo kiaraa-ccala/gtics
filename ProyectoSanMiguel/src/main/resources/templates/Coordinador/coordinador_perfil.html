@@ -54,24 +54,31 @@
                       <div class="text-center d-grid gap-3">
                           <br>
                           <!-- Imagen centrada con borde -->
-                          <img src="../assets/images/cris.png" alt="img" class="img-bordered mx-auto" style="width: 60%;border:3px solid black;border-radius:4px">
+                        <img th:src="@{${usuario.foto.urlFoto}}" alt="img" class="img-bordered mx-auto"
+                             style="width: 60%; border:3px solid black; border-radius:4px">
                           <br>
                           <hr>
                           
                       </div>
                     <div class="col-md-12">
                       <div class="mb-3">
-                        <label class="form-label"><i class="ti ti-mail-check"></i> cristian.flores@sanmi.gob.pe</label>
+                        <label class="form-label">
+                          <i class="ti ti-mail-check"></i> <span th:text="${usuario.credencial.correo}">correo</span>
+                        </label>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-3">
-                        <label class="form-label"><i class="ti ti-brand-whatsapp"></i> 999888777</label>
+                        <label class="form-label">
+                          <i class="ti ti-brand-whatsapp"></i> <span th:text="${usuario.telefono}">teléfono</span>
+                        </label>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="mb-0">
-                        <label class="form-label"><i class="ti ti-home-check"></i> Av. La Marina 555</label>
+                        <label class="form-label">
+                          <i class="ti ti-home-check"></i> <span th:text="${usuario.direccion}">dirección</span>
+                        </label>
                       </div>
                     </div>
                   </div>
@@ -88,63 +95,52 @@
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label">Nombres</label>
-                        <input type="text" class="form-control" placeholder="Ingrese el nombre" value="Cristian Flores" readonly/>
+                        <input type="text" class="form-control" th:value="${usuario.nombre}" readonly />
                         <br>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label">Apellidos</label>
-                        <input type="text" class="form-control" placeholder="Ingrese los apellidos" value="Flores Soto" readonly/>
+                        <input type="text" class="form-control" th:value="${usuario.apellido}" readonly />
                         <br>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Correo electrónico</label>
-                        <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" value="cristian.flores@sanmi.gob.pe" readonly/>
-                        <br>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label class="form-label">Fecha de registro</label>
-                        <input type="date" class="form-control" value="2023-11-12" readonly/>
-                        <br>
-                      </div>
-                    </div>
-                    
-                    <div class="col-md-6">
-                      <div class="mb-3">
-                        <label class="form-label">DNI</label>
-                        <input type="number" class="form-control" placeholder="Ingrese su DNI" value="77755522" readonly/>
+                        <label class="form-label">Sector</label>
+                        <input type="text" class="form-control" th:value="${usuario.sector.nombre}" readonly />
                         <br>
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Género</label>
-                        <select class="form-select" readonly onfocus="this.blur()">
-                          <option value="1">Hombre</option>
-                          <option value="2">Mujer</option>
-                        </select>
+                        <label class="form-label">DNI</label>
+                        <input type="number" class="form-control" th:value="${usuario.dni}" readonly />
                         <br>
                       </div>
                     </div>
+
   
                     <div class="col-md-6">
                       <div class="mb-3">
                         <label class="form-label">Número celular</label>
-                        <input type="tel" class="form-control" value="99988877" readonly />
+                        <input type="tel" class="form-control" th:value="${usuario.telefono}" readonly />
                       </div>
                     </div>
                     <div class="col-md-6">
                       <div class="mb-3">
-                        <label class="form-label">Fecha de Nacimiento</label>
-                        <input type="date" class="form-control" value="2000-12-03" readonly/>
+                        <label class="form-label">Distrito</label>
+                        <input type="text" class="form-control" th:value="${usuario.distrito}" readonly />
                       </div>
                     </div>
-  
+                    <div class="col-md-12">
+                      <div class="mb-3">
+                        <label class="form-label">Correo electrónico</label>
+                        <input type="email" class="form-control" th:value="${usuario.credencial.correo}" readonly />
+                        <br>
+                      </div>
+                    </div>
                   
                   </div>
                 </div>

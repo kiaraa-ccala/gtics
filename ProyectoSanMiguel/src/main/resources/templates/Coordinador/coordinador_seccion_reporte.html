@@ -82,76 +82,28 @@
                   </div>
                   <div class="card-body d-flex flex-column">
                     <div class="d-grid gap-3" style="margin-bottom: 1rem;"> <!-- Ajusté este gap -->
-                      <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary py-2">
+                      <a th:each="reporte : ${ultimosReportes}" href="#" class="btn btn-link-secondary py-2">
                         <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-success rounded-circle"></span>
+                          <div class="flex-shrink-0 me-3">
+                            <span class="p-1 d-block rounded-circle"
+                                  th:classappend=" ${reporte.estado == 'Cerrado'} ? 'bg-success' :
+                                                (${reporte.estado == 'En proceso'} ? 'bg-warning' :
+                                                (${reporte.estado == 'Abierto'} ? 'bg-danger' : 'bg-secondary'))">
+                            <span class="visually-hidden">Estado</span>
+                          </span>
                           </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Accidentes en el complejo</p>
+                          <div class="flex-grow-1 text-start">
+                            <h6 class="mb-0" th:text="${reporte.asunto}">
+                              <span class="visually-hidden">Titulo</span>
+                            </h6>
+                            <hr>
+                            <p class="mb-0" th:text="${reporte.descripcion}">
+                              <span class="visually-hidden">Descripción</span>
+                            </p>
                           </div>
                         </div>
                       </a>
-                      <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary py-2">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-success rounded-circle"></span>
-                          </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Uso indebido de instalaciones</p>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="coordinador_reporte_no_recibido.html" class="btn btn-link-secondary py-2">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-danger rounded-circle"></span>
-                          </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Canchas en mal estado</p>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary py-2">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-success rounded-circle"></span>
-                          </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Falta de iluminación</p>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary py-2">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-success rounded-circle"></span>
-                          </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Perdida de implementos</p>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="coordinador_reporte_no_recibido.html" class="btn btn-link-secondary py-2">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-danger rounded-circle"></span>
-                          </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Mal uso de las instalaciones</p>
-                          </div>
-                        </div>
-                      </a>
-                      <a href="coordinador_reporte_recibido.html" class="btn btn-link-secondary py-2">
-                        <div class="d-flex align-items-center">
-                          <div class="flex-shrink-0">
-                            <span class="p-1 d-block bg-success rounded-circle"></span>
-                          </div>
-                          <div class="flex-grow-1 mx-2">
-                            <p class="mb-0">Limpieza de la piscina pendiente</p>
-                          </div>
-                        </div>
-                      </a>
+
                     </div>
                     
                     <div class="d-grid mt-auto"> <!-- Mantengo el botón abajo -->

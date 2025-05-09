@@ -12,7 +12,7 @@
         <a  class="b-brand text-primary">
           <img th:src="@{/assets/images/logo-sanM.png}" class="img-fluid" style="height: 40px;" alt="logoSM" />
 
-          <span class="badge bg-light-success rounded-pill ms-2 theme-version">Coordinador</span>
+          <span class="badge bg-light-warning rounded-pill ms-2 theme-version">Coordinador</span>
         </a>
       </div>
       <div class="navbar-content" >
@@ -22,7 +22,7 @@
             <label data-i18n="Inicio">Inicio</label>
           </li>
           <li class="pc-item pc-hasmenu">
-            <a href="coordinador_inicio.html" class="pc-link">
+            <a th:href="@{/coord/inicio}" class="pc-link">
               <span class="pc-micon">
                 <svg class="pc-icon">
                   <use xlink:href="#custom-element-plus"></use>
@@ -37,7 +37,7 @@
           </li>
 
           <li class="pc-item pc-hasmenu">
-            <a href="coordinador_perfil.html" class="pc-link">
+            <a th:href="@{/coord/perfil}" class="pc-link">
               <span class="pc-micon">
                 <svg class="pc-icon">
                   <use xlink:href="#custom-user-square"></use>
@@ -62,7 +62,7 @@
             </svg>
           </li>
           <li class="pc-item">
-            <a th:href="@{/coord/reportes/mostrar}" class="pc-link">
+            <a th:href="@{/coord/reportes/ver}" class="pc-link">
               <span class="pc-micon">
                 <svg class="pc-icon">
                   <use xlink:href="#custom-message-2"></use>

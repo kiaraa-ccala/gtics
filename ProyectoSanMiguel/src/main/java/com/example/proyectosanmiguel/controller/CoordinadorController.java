@@ -1,10 +1,9 @@
 package com.example.proyectosanmiguel.controller;
 
-import com.example.proyectosanmiguel.entity.Foto;
-import com.example.proyectosanmiguel.entity.Horario;
-import com.example.proyectosanmiguel.entity.Reporte;
-import com.example.proyectosanmiguel.entity.Reserva;
+import com.example.proyectosanmiguel.entity.*;
+import com.example.proyectosanmiguel.repository.ComplejoRepository;
 import com.example.proyectosanmiguel.repository.ReporteRepository;
+import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +23,12 @@ public class CoordinadorController {
 
     @Autowired
     private ReporteRepository reporteRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private ComplejoRepository complejoDeportivoRepository;
 
     @GetMapping("/reportes/ver")
     public String verReportes(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -47,7 +52,9 @@ public class CoordinadorController {
     }
 
     @GetMapping("/reportes/mostrar")
-    public String mostrarFormulario() {
+    public String mostrarFormulario(Model model) {
+        List<Reporte> ultimosReportes = reporteRepository.findTop4ByOrderByFechaRecepcionDesc();
+        model.addAttribute("ultimosReportes", ultimosReportes);
         return "Coordinador/coordinador_seccion_reporte";
     }
 
@@ -78,5 +85,39 @@ public class CoordinadorController {
         reporteRepository.save(nuevoReporte);
 
         return "redirect:/coord/reportes/mostrar";
+    }
+
+    @GetMapping("/inicio")
+    public String vistaInicio(Model model) {
+        // 1. Los 7 reportes más recientes
+        List<Reporte> ultimosReportes = reporteRepository.findTop7ByOrderByFechaRecepcionDesc();
+
+        // 2. Total de reportes
+        long cantidadReportes = reporteRepository.count();
+
+        // 3. Reportes cerrados
+        long cantidadCerrados = reporteRepository.countByEstado("Cerrado");
+
+        //4. Foto de perfil
+        Usuario coordinador = usuarioRepository.findFirstByRol_IdRol(3);
+
+        //5. Complejo asignado
+        ComplejoDeportivo complejo = complejoDeportivoRepository.findFirstBySector(coordinador.getSector());
+
+        // Agregar al modelo
+        model.addAttribute("ultimosReportes", ultimosReportes);
+        model.addAttribute("cantidadReportes", cantidadReportes);
+        model.addAttribute("cantidadCerrados", cantidadCerrados);
+        model.addAttribute("usuario", coordinador);
+        model.addAttribute("complejo", complejo);
+
+        return "Coordinador/coordinador_inicio";
+    }
+
+    @GetMapping("/perfil")
+    public String mostrarPerfil(Model model) {
+        Usuario coordinador = usuarioRepository.findFirstByRol_IdRol(3);
+        model.addAttribute("usuario", coordinador);
+        return "Coordinador/coordinador_perfil";
     }
 }

@@ -5,12 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u FROM Usuario u WHERE u.rol.nombre = 'COORDINADOR'")
     List<Usuario> findAllCoordinadores();
-
+    Usuario findFirstByRol_IdRol(int idRol);
 
 
 

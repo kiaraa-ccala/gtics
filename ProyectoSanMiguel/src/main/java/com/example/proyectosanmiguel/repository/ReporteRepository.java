@@ -11,4 +11,7 @@ import java.util.List;
 @Repository
 public interface ReporteRepository extends JpaRepository<Reporte, Integer> {
     Page<Reporte> findAll(Pageable pageable);
+    List<Reporte> findTop7ByOrderByFechaRecepcionDesc();
+    List<Reporte> findTop4ByOrderByFechaRecepcionDesc();
+    long countByEstado(String estado);
 }
