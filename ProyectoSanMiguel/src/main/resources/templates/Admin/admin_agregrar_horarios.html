@@ -96,8 +96,8 @@
               <!-- Lunes -->
               <div class="tab-pane fade show active" id="lunes">
                 <div class="mb-3">
-                  <label for="selectComplejo" class="form-label">Complejo</label>
-                  <select name="complejo" id="selectComplejo" class="form-select">
+                  <label for="selectComplejoLunes" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoLunes" class="form-select">
                     <th:block th:each="cmp : ${complejos}">
                       <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
                     </th:block>
@@ -385,8 +385,8 @@
       </div>
 
       <!-- Save Button -->
-      <div class="text-center">
-        <button type="submit" class="btn btn-primary">Guardar</button>
+      <div class="text-center mb-4">
+        <button id="btnGuardarCambios" class="btn btn-primary">Guardar</button>
       </div>
 
     </div>
@@ -612,20 +612,24 @@
       btn.addEventListener("click", function () {
         const inicio = document.getElementById(`horaInicio${dia}`).value;
         const fin = document.getElementById(`horaFin${dia}`).value;
-        const complejoSelect = document.getElementById(`selectComplejo${dia === "Lunes" ? "" : dia}`);
+        const complejoSelect = document.getElementById(`selectComplejo${dia}`);
         const complejo = complejoSelect?.selectedOptions[0]?.text || "";
-
         if (!inicio || !fin || !complejo) {
-          alert("Completa todos los campos.");
+          alert("Por favor, completa todos los campos.");
           return;
         }
-
         const lista = document.getElementById(`listaTurnos${dia}`);
         const item = document.createElement("li");
         item.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
+        item.dataset.estado = "porAgregar";
+        item.dataset.diaSemana = dia;
+        item.dataset.horaInicio = inicio;
+        item.dataset.horaFin = fin;
+        item.dataset.idComplejoDeportivo= complejoSelect.value;
+        item.dataset.complejoNombre = complejo;// Marcamos como por agregar
         item.innerHTML = `
   <span style="font-size: 0.9rem;" class="d-flex align-items-center gap-2">
-    ${inicio} - ${fin} | ${complejo}
+    ${inicio} - ${fin} | ${complejo} | ${complejoSelect.value}
     <span class="badge bg-info text-white">Por agregar</span>
   </span>
   <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-remove-turno" title="Eliminar" style="font-size: 1.2rem;">×</button>
@@ -701,107 +705,167 @@
   }
 </script>
 <script>
-  const mapDias = {
-    "Monday": "Lunes",
-    "Tuesday": "Martes",
-    "Wednesday": "Miercoles",
-    "Thursday": "Jueves",
-    "Friday": "Viernes",
-    "Saturday": "Sabado",
-    "Sunday": "Domingo"
-  };
-
-  function limpiarListasTurnos() {
-    Object.values(mapDias).forEach(dia => {
-      const lista = document.getElementById(`listaTurnos${dia}`);
-      if (lista) lista.innerHTML = "";
-    });
-  }
-
-  function mostrarTurnosEnFormulario(turnos) {
-    limpiarListasTurnos();
-
-    turnos.forEach(turno => {
-      const diaEsp = mapDias[turno.diaSemana];
-      const lista = document.getElementById(`listaTurnos${diaEsp}`);
-
-      if (lista) {
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
-        li.dataset.id = turno.id;
-        li.innerHTML = `
-        <span style="font-size: 0.9rem;" class="d-flex align-items-center gap-2 turno-contenido">
-          ${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}
-        </span>
-        <div class="acciones-turno">
-          <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
-        </div>
-      `;
-        lista.appendChild(li);
-      }
-    });
-  }
-  function mostrarTurnosEnFormulario(turnos) {
-    limpiarListasTurnos();
-
-    turnos.forEach(turno => {
-      const diaEsp = mapDias[turno.diaSemana];
-      const lista = document.getElementById(`listaTurnos${diaEsp}`);
-
-      if (lista) {
-        const li = document.createElement("li");
-        li.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
-        li.dataset.id = turno.id;
-        li.dataset.estado = "cargado"; // por defecto
-
-        li.innerHTML = `
-        <span class="turno-contenido d-flex align-items-center gap-2" style="font-size: 0.9rem;">
-          ${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}
-        </span>
-        <div class="acciones-turno">
-          <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
-        </div>
-      `;
-        lista.appendChild(li);
-
-        // Agrega el evento para marcar como eliminado
-        const btnEliminar = li.querySelector(".btn-marcar-eliminar");
-        btnEliminar.addEventListener("click", function () {
-          const contenido = li.querySelector(".turno-contenido");
-          const acciones = li.querySelector(".acciones-turno");
-
-          // Cambiar estado y marcar visualmente
-          li.dataset.estado = "porEliminar";
-          li.classList.add("bg-secondary", "text-white", "opacity-75");
-
-          // Añadir badge y botón de revertir
-          contenido.innerHTML += `<span class="badge bg-danger">Por eliminar</span>`;
-          acciones.innerHTML = `
-          <button type="button" class="btn btn-link btn-sm text-white p-0 ms-2 btn-revertir" title="Revertir" style="font-size: 1.2rem;">↺</button>
-        `;
-
-          // Evento para revertir
-          acciones.querySelector(".btn-revertir").addEventListener("click", () => {
-            li.dataset.estado = "cargado";
-            li.classList.remove("bg-secondary", "text-white", "opacity-75");
-            contenido.innerHTML = `${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}`;
-            acciones.innerHTML = `
-            <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
-          `;
-            // Volver a asignar evento de eliminar
-            acciones.querySelector(".btn-marcar-eliminar").addEventListener("click", () => btnEliminar.click());
-          });
-        });
-      }
-    });
-  }
-
-
-
   document.addEventListener("DOMContentLoaded", function () {
     const selectCoordinador = document.getElementById("coordinador");
     const inputSemana = document.getElementById("semana");
+    const btnGuardar = document.getElementById("btnGuardarCambios");
 
+    // Mapear días de la semana en inglés a español
+    const mapDias = {
+      "Monday": "Lunes",
+      "Tuesday": "Martes",
+      "Wednesday": "Miércoles",
+      "Thursday": "Jueves",
+      "Friday": "Viernes",
+      "Saturday": "Sábado",
+      "Sunday": "Domingo"
+    };
+
+    // Limpiar listas de turnos
+    function limpiarListasTurnos() {
+      Object.values(mapDias).forEach(dia => {
+        const lista = document.getElementById(`listaTurnos${dia}`);
+        if (lista) lista.innerHTML = "";
+      });
+    }
+
+    // Mostrar los turnos en el formulario
+    function mostrarTurnosEnFormulario(turnos) {
+      limpiarListasTurnos();
+
+      turnos.forEach(turno => {
+        const diaEsp = mapDias[turno.diaSemana];
+        const lista = document.getElementById(`listaTurnos${diaEsp}`);
+
+        if (lista) {
+          const li = document.createElement("li");
+          li.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
+          li.dataset.id = turno.id;
+          li.dataset.estado = "cargado"; // por defecto
+
+          li.innerHTML = `
+          <span class="turno-contenido d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+            ${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}
+          </span>
+          <div class="acciones-turno">
+            <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
+          </div>
+        `;
+          lista.appendChild(li);
+
+          // Agregar el evento para marcar como eliminado
+          const btnEliminar = li.querySelector(".btn-marcar-eliminar");
+          btnEliminar.addEventListener("click", function () {
+            const contenido = li.querySelector(".turno-contenido");
+            const acciones = li.querySelector(".acciones-turno");
+
+            // Cambiar estado y marcar visualmente
+            li.dataset.estado = "porEliminar";
+            li.classList.add("bg-secondary", "text-white", "opacity-75");
+
+            // Añadir badge y botón de revertir
+            contenido.innerHTML += `<span class="badge bg-danger">Por eliminar</span>`;
+            acciones.innerHTML = `
+            <button type="button" class="btn btn-link btn-sm text-white p-0 ms-2 btn-revertir" title="Revertir" style="font-size: 1.2rem;">↺</button>
+          `;
+
+            // Evento para revertir
+            acciones.querySelector(".btn-revertir").addEventListener("click", () => {
+              li.dataset.estado = "cargado";
+              li.classList.remove("bg-secondary", "text-white", "opacity-75");
+              contenido.innerHTML = `${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}`;
+              acciones.innerHTML = `
+              <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
+            `;
+              // Volver a asignar evento de eliminar
+              acciones.querySelector(".btn-marcar-eliminar").addEventListener("click", () => btnEliminar.click());
+            });
+          });
+        }
+      });
+    }
+
+    // Función para recopilar los datos de los turnos a eliminar
+    function obtenerTurnosEliminar() {
+      const turnosEliminar = [];
+      document.querySelectorAll('li[data-estado="porEliminar"]').forEach(item => {
+        turnosEliminar.push({
+          id: parseInt(item.dataset.id)
+        });
+      });
+      return turnosEliminar;
+    }
+
+    // Función para recopilar los datos de los nuevos turnos
+    function obtenerTurnosGuardar() {
+      const turnosGuardar = [];
+      document.querySelectorAll('li[data-estado="porAgregar"]').forEach(item => {
+        turnosGuardar.push({
+          diaSemana: item.dataset.diaSemana,
+          horaInicio: item.dataset.horaInicio,
+          horaFin: item.dataset.horaFin,
+          //resulta que lo habia dejado en idComplejo y falto el añaidir deportivo JSJSJJSJJAJDAKJASDO, me quiero matar
+          idComplejoDeportivo: parseInt(item.dataset.idComplejoDeportivo), //me habia olvidado de este dato, creo xd si era este me voy a matar
+          nombreComplejo: item.dataset.complejoNombre
+        });
+      });
+      return turnosGuardar;
+    }
+
+    // Función para enviar el formulario
+    btnGuardar.addEventListener("click", function () {
+      const coordinadorId = selectCoordinador.value;
+      const semana = inputSemana.value;
+
+      if (!coordinadorId || !semana) {
+        alert("Selecciona un coordinador y una semana primero.");
+        return;
+      }
+
+      // Obtener turnos nuevos (por agregar)
+      const turnosNuevos = obtenerTurnosGuardar();
+      console.log("Turnos nuevos a guardar:", turnosNuevos);  // Imprimir turnos nuevos en consola
+
+      // Obtener turnos a eliminar (por eliminar)
+      const turnosEliminar = obtenerTurnosEliminar();
+      console.log("Turnos a eliminar:", turnosEliminar);  // Imprimir turnos a eliminar en consola
+
+      // Crear el payload para enviar al backend
+      const payload = {
+        coordinadorId: parseInt(coordinadorId),
+        semana: semana,
+        horariosGuardar: turnosNuevos,
+        horariosEliminar: turnosEliminar
+      };
+
+      // Imprimir el payload completo en la consola antes de enviarlo
+      console.log("Payload a enviar al backend:", payload);
+
+      // Enviar al backend con fetch
+      fetch('/admin/agenda/guardarHorarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+              .then(response => response.json())
+              .then(data => {
+                console.log("Respuesta del servidor:", data);  // Imprimir la respuesta del servidor
+                if (data === "Guardado correctamente") {
+                  alert("Horarios guardados correctamente");
+                  // Recargar la vista o realizar cualquier otra acción
+                } else {
+                  alert("Error al guardar los horarios");
+                }
+              })
+              .catch(error => {
+                console.error("Error:", error);  // Imprimir errores en la consola
+                alert("Ocurrió un error al guardar los turnos.");
+              });
+    });
+
+    // Función para cargar los turnos
     function cargarTurnos() {
       const idCoord = selectCoordinador.value;
       const semana = inputSemana.value;
@@ -818,7 +882,16 @@
 
     selectCoordinador.addEventListener("change", cargarTurnos);
     inputSemana.addEventListener("change", cargarTurnos);
+
   });
+
+
+
+
+
+
+
+
 
 </script>
 

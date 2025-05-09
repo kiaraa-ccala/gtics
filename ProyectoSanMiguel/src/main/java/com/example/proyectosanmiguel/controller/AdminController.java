@@ -1,11 +1,14 @@
 package com.example.proyectosanmiguel.controller;
 
 import com.example.proyectosanmiguel.dto.EventoHorarioDto;
+import com.example.proyectosanmiguel.dto.HorarioDiarioTurnoGuardarDto;
+import com.example.proyectosanmiguel.dto.HorarioSemanalGuardarDto;
 import com.example.proyectosanmiguel.dto.HorarioTurnoDto;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,9 +22,7 @@ import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalAccessor;
+import java.time.LocalTime;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -88,10 +89,10 @@ public class AdminController {
                     .with(WeekFields.ISO.weekOfWeekBasedYear(), semanaNum)
                     .with(WeekFields.ISO.getFirstDayOfWeek()); // lunes
 
-            System.out.println("Fecha inicio: " + fechaInicio);
+
 
             LocalDate fechaFin = fechaInicio.plusDays(6); // domingo
-            System.out.println("Fecha fin: " + fechaFin);
+
 
             //lo que se hizo fue sacar los dias fecha de inicio fecha fin lun -dom
 
@@ -111,7 +112,7 @@ public class AdminController {
             }
 
             //Observamos que si envia correctamente :,vvvvv probablemente el error sea el metodo (lo era) xD
-            System.out.println("HorarioSemanal ID: " + existente.get().getIdHorarioSemanal());
+
             return horarioRepository.obtenerTurnosPorHorarioSemanal(existente.get().getIdHorarioSemanal());
 
         } catch (Exception e) {
@@ -120,8 +121,134 @@ public class AdminController {
         }
     }
 
+    @PostMapping("/agenda/guardarHorarios")
+    @ResponseBody
+    @Transactional  // Asegura que las operaciones de la base de datos sean atómicas
+    public ResponseEntity<String> guardarHorarios(@RequestBody HorarioSemanalGuardarDto dto) {
+        try {
+            // 1. Calcular fechaInicio y fechaFin según semana
+            String[] partes = dto.getSemana().split("-W");
+            int anio = Integer.parseInt(partes[0]);
+            int semana = Integer.parseInt(partes[1]);
+            LocalDate fechaInicio = LocalDate.of(anio, 1, 4)
+                    .with(WeekFields.ISO.weekOfWeekBasedYear(), semana)
+                    .with(WeekFields.ISO.getFirstDayOfWeek());
+            LocalDate fechaFin = fechaInicio.plusDays(6);
+            System.out.println("Fecha inicio: " + fechaInicio);
+            // 2. Buscar o crear HorarioSemanal
+            HorarioSemanal semanal = horarioSemanalRepository
+                    .findByCoordinadorIdUsuarioAndFechaInicioAndFechaFin(dto.getCoordinadorId(), fechaInicio, fechaFin)
+                    .orElseGet(() -> {
+                        HorarioSemanal nuevo = new HorarioSemanal();
+                        nuevo.setIdCoordinador(dto.getCoordinadorId());
+                        nuevo.setFechaInicio(fechaInicio);
+                        nuevo.setFechaFin(fechaFin);
+                        nuevo.setFechaCreacion(LocalDate.now());
+                        nuevo.setIdAdministrador(1);  // Este ID puede cambiar según tu lógica
+                        return horarioSemanalRepository.save(nuevo);
+                    });
 
-    // Metodo para obtener dia de la semana (no es controlador)
+
+            System.out.println("Revisar si Horarios Eliminar es null: "+ dto.getHorariosEliminar());
+            System.out.println("HorarioSemanal ID: " + semanal.getIdHorarioSemanal());
+            // 3. Eliminar turnos por ID
+            if (dto.getHorariosEliminar() != null) {
+                for (var item : dto.getHorariosEliminar()) {
+                    System.out.println("test1");
+                    horarioRepository.deleteById(item.getId());
+                    System.out.println("test2");
+                }
+            }
+
+            System.out.println("Revisar si Horarios Guardar es null: "+ dto.getHorariosGuardar());
+            //ya voy 3 horas aca sin poder resolverlo :c, si me retiro de gtics? aun hay tiempo :D
+            //no eres tu profe brenda, soy yo
+
+
+            // 4. Insertar turnos nuevos
+            if (dto.getHorariosGuardar() != null) {
+                for (HorarioDiarioTurnoGuardarDto turno : dto.getHorariosGuardar()) {
+                    Horario nuevo = new Horario();
+                    System.out.println(semanal.getIdHorarioSemanal());
+                    nuevo.setIdHorarioSemanal(semanal.getIdHorarioSemanal());
+                    System.out.println(turno.getIdComplejoDeportivo());
+                    nuevo.setIdComplejoDeportivo(turno.getIdComplejoDeportivo());
+                    System.out.println(turno.getDiaSemana());
+                    nuevo.setFecha(mapearDiaSemanaAFecha(fechaInicio, turno.getDiaSemana()));
+                    System.out.println(turno.getHoraInicio());
+                    nuevo.setHoraIngreso(LocalTime.parse(turno.getHoraInicio()));
+                    System.out.println(turno.getHoraFin());
+                    nuevo.setHoraSalida(LocalTime.parse(turno.getHoraFin()));
+                    horarioRepository.save(nuevo);
+                }
+            }
+
+            return ResponseEntity.ok("Guardado correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar");
+        }
+    }
+
+
+/*
+    @PostMapping("/agenda/guardarHorarios")
+    @ResponseBody
+    @Transactional //Se usara Transactional ya que se realizan varias operaciones, (guardar y eliminar)
+    public ResponseEntity<String> guardarHorarios(@RequestBody HorarioGuardarDto dto) {
+        try {
+            // 1. Calcular fechaInicio y fechaFin según semana
+            String[] partes = dto.getSemana().split("-W");
+            int anio = Integer.parseInt(partes[0]);
+            int semana = Integer.parseInt(partes[1]);
+            LocalDate fechaInicio = LocalDate.of(anio, 1, 4)
+                    .with(WeekFields.ISO.weekOfWeekBasedYear(), semana)
+                    .with(WeekFields.ISO.getFirstDayOfWeek());
+            LocalDate fechaFin = fechaInicio.plusDays(6);
+
+            // 2. Buscar o crear HorarioSemanal
+            HorarioSemanal semanal = horarioSemanalRepository
+                    .findByCoordinadorIdUsuarioAndFechaInicioAndFechaFin(dto.getCoordinadorId(), fechaInicio, fechaFin)
+                    .orElseGet(() -> {
+                        HorarioSemanal nuevo = new HorarioSemanal();
+                        nuevo.setIdCoordinador(dto.getCoordinadorId());
+                        nuevo.setFechaInicio(fechaInicio);
+                        nuevo.setFechaFin(fechaFin);
+                        nuevo.setFechaCreacion(LocalDate.now());
+                        nuevo.setIdAdministrador(1); //no es de tanta importancia si es que tenemos solo un usuario admin
+                        return horarioSemanalRepository.save(nuevo);
+                    });
+
+            // 3. Eliminar turnos por ID
+            if (dto.getHorariosEliminar() != null) {
+                for (var item : dto.getHorariosEliminar()) {
+                    horarioRepository.deleteById(item.getIdHorario());
+                }
+            }
+
+            // 4. Insertar turnos nuevos
+            if (dto.getHorariosGuardar() != null) {
+                for (HorarioTurnoDto turno : dto.getHorariosGuardar()) {
+                    Horario nuevo = new Horario();
+                    nuevo.setIdHorarioSemanal(semanal.getIdHorarioSemanal());
+                    nuevo.setIdComplejoDeportivo(turno.getIdComplejoDeportivo());
+                    nuevo.setFecha(mapearDiaSemanaAFecha(fechaInicio, turno.getDiaSemana()));
+                    nuevo.setHoraIngreso(turno.getHoraInicio());
+                    nuevo.setHoraSalida(turno.getHoraFin());
+                    horarioRepository.save(nuevo);
+                }
+            }
+
+            return ResponseEntity.ok("Guardado correctamente");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar");
+        }
+    }
+
+*/
+
+    // metodo para obtener dia de la semana (no es controlador)
     private String obtenerDiaNombre(DayOfWeek day) {
         return switch (day) {
             case MONDAY -> "Lunes";
@@ -133,6 +260,30 @@ public class AdminController {
             case SUNDAY -> "Domingo";
         };
     }
+    private LocalDate mapearDiaSemanaAFecha(LocalDate fechaInicio, String diaSemana) {
+        // Un mapa de días de la semana a números (lunes=1, martes=2, etc.)
+        Map<String, Integer> diasSemana = Map.of(
+                "Lunes", 0,
+                "Martes", 1,
+                "Miércoles", 2,
+                "Jueves", 3,
+                "Viernes", 4,
+                "Sábado", 5,
+                "Domingo", 6
+        );
+
+        // obtener el número del día de la semana basado en la cadena
+        Integer diaNumero = diasSemana.get(diaSemana);
+
+        // sumar el número de días a la fecha de inicio para obtener la fecha correcta
+        if (diaNumero != null) {
+            return fechaInicio.plusDays(diaNumero);
+        } else {
+            // Si el día no es válido, lanzar un error o manejar el caso
+            throw new IllegalArgumentException("Día de la semana inválido: " + diaSemana);
+        }
+    }
+
 
 
     // ========== Incidencias ==========
