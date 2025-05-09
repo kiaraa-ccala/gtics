@@ -13,8 +13,7 @@
 
 
 <div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
-<!-- [ Sidebar Menu ] end -->
-<!-- [ Header Topbar ] start -->
+
 <div th:replace="fragments/navbar_vecino :: header"></div>
 
 <!-- [ Main Content ] start -->
@@ -38,10 +37,10 @@
             </div>
           </div>
         </div>
-        <!-- [ breadcrumb ] end -->
-        <!-- [ Main Content ] start -->
+      </div>
+
         <div class="row">
-          <!-- [ sample-page ] start -->
+
           <div class="col-sm-12">
             <div class="card table-card">
               <div class="card-body">
@@ -101,63 +100,66 @@
 
                         <!-- Estado -->
                         <td>
-        <span class="badge f-12"
-              th:classappend="${dto.reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
-              th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
-          Estado
-        </span>
+                          <span class="badge f-12"
+                                th:classappend="${dto.reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
+                                th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
+                            Estado
+                          </span>
                         </td>
 
                         <!-- Fecha de registro -->
                         <td th:text="${#temporals.format(dto.reserva.fechaHoraRegistro, 'yyyy-MM-dd HH:mm')}">2025-05-09 13:00</td>
 
                     <!-- Acciones -->
-                    <td class="text-center">
-                      <ul class="list-inline me-auto mb-0">
-                        <!-- Ver -->
-                        <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Ver">
-                          <a href="#" class="avtar avtar-xs btn-link-secondary btn-pc-default"
-                             data-bs-toggle="modal" data-bs-target="#cust-modal">
-                            <i class="ti ti-eye f-18"></i>
-                          </a>
-                        </li>
-
-                            <!-- Editar -->
-                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Editar">
-                              <a th:href="@{'/vecino/reserva/editar/' + ${dto.reserva.idReserva}}" class="avtar avtar-xs btn-link-success btn-pc-default">
-                                <i class="ti ti-edit-circle f-18"></i>
+                        <td class="text-center">
+                          <ul class="list-inline me-auto mb-0">
+                            <!-- Ver -->
+                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Ver">
+                              <a href="#" class="avtar avtar-xs btn-link-secondary btn-pc-default"
+                                 data-bs-toggle="modal" data-bs-target="#cust-modal">
+                                <i class="ti ti-eye f-18"></i>
                               </a>
                             </li>
 
-                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Cancelar">
-                              <a href="#"
-                                 class="avtar avtar-xs btn-link-danger btn-pc-default"
-                                 th:attr="data-id=${dto.reserva.idReserva}"
-                                 th:attrappend="data-bs-target=${dto.puedeCancelar} ? '#modalCancelarReserva' : '#modalNoCancelar'"
-                                 data-bs-toggle="modal"
-                                 data-pc-animate="fade-in-scale">
-                                <i class="ti ti-trash f-18"></i>
-                              </a>
+                                <!-- Editar -->
+                                <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Editar">
+                                  <a th:href="@{'/vecino/reserva/editar/' + ${dto.reserva.idReserva}}" class="avtar avtar-xs btn-link-success btn-pc-default">
+                                    <i class="ti ti-edit-circle f-18"></i>
+                                  </a>
+                                </li>
+
+                                <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Cancelar">
+                                  <a href="#"
+                                     class="avtar avtar-xs btn-link-danger btn-pc-default"
+                                     th:attr="data-id=${dto.reserva.idReserva}"
+                                     th:attrappend="data-bs-target=${dto.puedeCancelar} ? '#modalCancelarReserva' : '#modalNoCancelar'"
+                                     data-bs-toggle="modal"
+                                     data-pc-animate="fade-in-scale">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
 
 
-                            </li>
+                                </li>
 
-                          </ul>
+                              </ul>
                         </td>
                       </tr>
                     </tbody>
                   </table>
-
 
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <!-- [ sample-page ] end -->
       </div>
+    </div>
 
-      </div>
+  </div>
+
+   <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+
 
       <div class="modal fade modal-animate" id="modalNoCancelar" tabindex="-1" aria-hidden="true"  data-pc-animate="fade-in-scale">
         <div class="modal-dialog">
@@ -178,8 +180,6 @@
           </div>
         </div>
       </div>
-
-
 
       <div class="modal fade modal-animate" id="modalCancelarReserva" tabindex="-1" aria-hidden="true"  data-pc-animate="fade-in-scale">
         <div class="modal-dialog">
@@ -207,91 +207,35 @@
         </div>
       </div>
 
-
-
       <div class="modal fade" id="cust-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-        <div class="modal-content">
-          <div class="modal-header border-0 pb-0">
-            <h5 class="mb-0">Product Details</h5>
-            <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
-              <i class="ti ti-x f-20"></i>
-            </a>
-          </div>
-          <div class="modal-body">
-            <div class="row align-items-center">
-              <div class="col-sm-4">
-                <div class="bg-light rounded position-relative">
-                  <div class="text-center">
-                    <div class="chat-avtar d-inline-flex mx-auto">
-                      <img class="img-fluid rounded" src="../assets/images/application/img-prod-4.jpg" alt="User image" />
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+              <h5 class="mb-0">Product Details</h5>
+              <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
+                <i class="ti ti-x f-20"></i>
+              </a>
+            </div>
+            <div class="modal-body">
+              <div class="row align-items-center">
+                <div class="col-sm-4">
+                  <div class="bg-light rounded position-relative">
+                    <div class="text-center">
+                      <div class="chat-avtar d-inline-flex mx-auto">
+                        <img class="img-fluid rounded" src="../assets/images/application/img-prod-4.jpg" alt="User image" />
+                      </div>
                     </div>
-                  </div>
-                  <div class="position-absolute end-0 top-0 p-3">
-                    <span class="badge bg-success">In Stock</span>
+                    <div class="position-absolute end-0 top-0 p-3">
+                      <span class="badge bg-success">In Stock</span>
+                    </div> <!-- cierre de .position-absolute -->
+                  </div> <!-- cierre de .bg-light -->
+                </div> <!-- cierre de .col-sm-4 -->
+              </div> <!-- cierre de .row -->
+            </div> <!-- cierre de .modal-body -->
+          </div> <!-- cierre de .modal-content -->
+        </div> <!-- cierre de .modal-dialog -->
+      </div> <!-- cierre de .modal -->
 
-      <!-- [ Main Content ] end -->
-    </div>
-  </div>
-  <div class="modal fade" id="cust-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header border-0 pb-0">
-          <h5 class="mb-0">Product Details</h5>
-          <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
-            <i class="ti ti-x f-20"></i>
-          </a>
-        </div>
-        <div class="modal-body">
-          <div class="row align-items-center">
-            <div class="col-sm-4">
-              <div class="bg-light rounded position-relative">
-                <div class="text-center">
-                  <div class="chat-avtar d-inline-flex mx-auto">
-                    <img class="img-fluid rounded" src="../assets/images/application/img-prod-4.jpg" alt="User image" />
-
-                  </div>
-                </div>
-                <div class="position-absolute end-0 top-0 p-3">
-                  <span class="badge bg-success">In Stock</span>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-8">
-              <h5>Canon EOS 1500D 24.1 Digital</h5>
-              <p class="text-muted"
-              >Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change In Aspect
-                Ratio: Boldly crop the subject and save it with a composition that has impact.</p
-              >
-              <div class="table-responsive">
-                <table class="table w-auto table-borderless">
-                  <tbody>
-                  <tr>
-                    <td class="text-muted py-1">Categories</td>
-                    <td class="py-1">Electronics, Camera</td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted py-1">Qty</td>
-                    <td class="py-1">21</td>
-                  </tr>
-                  <tr>
-                    <td class="text-muted py-1">Price</td>
-                    <td class="py-1"><h5 class="mb-0">$399</h5></td>
-                  </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- [ Main Content ] end -->
-    </div>
-
-      <div th:replace="fragments/footer_superadmin :: footer"></div>
-
-  <!-- Required Js -->
   <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
   <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
   <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
@@ -346,9 +290,6 @@
           form.setAttribute('action', `/vecino/reserva/eliminar/${idReserva}`);
         });
       </script>
-
-
-
 
       <style>
       #basic-btn_info {
@@ -425,11 +366,10 @@
           }
         });
       });
-
-
     </script>
 
-
-  </body>
+   </div>
+  </div>
+</body>
   <!-- [Body] end -->
 </html>
