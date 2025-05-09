@@ -575,6 +575,8 @@
 </footer>
 
 
+<script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
+
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const selectCoordinador = document.getElementById("coordinador");
@@ -849,19 +851,45 @@
         },
         body: JSON.stringify(payload),
       })
-              .then(response => response.json())
+              .then(response => response.text())
               .then(data => {
                 console.log("Respuesta del servidor:", data);  // Imprimir la respuesta del servidor
                 if (data === "Guardado correctamente") {
-                  alert("Horarios guardados correctamente");
-                  // Recargar la vista o realizar cualquier otra acción
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Horarios guardados correctamente',
+                    customClass: {
+                      confirmButton: 'btn btn-light-success',
+                    },
+                    buttonsStyling: false
+                  });
+                  limpiarListasTurnos();
+                  cargarTurnos();
                 } else {
                   alert("Error al guardar los horarios");
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al guardar los horarios',
+                    customClass: {
+                      confirmButton: 'btn btn-light-danger',
+                    },
+                    buttonsStyling: false
+                  });
                 }
               })
               .catch(error => {
                 console.error("Error:", error);  // Imprimir errores en la consola
-                alert("Ocurrió un error al guardar los turnos.");
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Hubo un error al comunicarse con el servidor',
+                  customClass: {
+                    confirmButton: 'btn btn-light-danger',
+                  },
+                  buttonsStyling: false
+                });
               });
     });
 
