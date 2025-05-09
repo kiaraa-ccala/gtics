@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`usuario` (
   `idTercerizado` INT NULL DEFAULT NULL,
   `idFoto` INT NULL DEFAULT NULL,
   `idRol` INT NOT NULL,
+  `activo` TINYINT NULL,
   PRIMARY KEY (`idUsuario`),
   INDEX `idSector` (`idSector` ASC) VISIBLE,
   INDEX `idTercerizado` (`idTercerizado` ASC) VISIBLE,

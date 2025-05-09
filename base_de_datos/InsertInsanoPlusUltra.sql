@@ -1241,4 +1241,4 @@ WHERE idRol NOT IN (1, 2);
 	GROUP BY 
 		h.idHorario;
         
-        
+UPDATE usuario SET activo = 1 WHERE idRol NOT IN (1);
