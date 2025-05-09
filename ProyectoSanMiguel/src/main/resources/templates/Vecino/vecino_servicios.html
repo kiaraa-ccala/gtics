@@ -46,11 +46,12 @@
                         <li class="list-inline-item">
                           <div class="form-search">
                             <i class="ti ti-search"></i>
-                            <input type="search" class="form-control" placeholder="Buscar productos" />
+                            <input type="search" class="form-control" placeholder="Buscar Complejos" id="searchInput" />
+
                           </div>
                         </li>
                       </ul>
-                      <ul class="list-inline ms-auto my-1">
+                      <ul class="list-inline ms-auto my-1" hidden="hidden">
                         <li class="list-inline-item">
                           <select class="form-select">
                             <option selected value=""> </option>
@@ -118,8 +119,24 @@
 <script>
   layout_change('light');
 </script>
-  
-<script>
+  <script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const searchQuery = this.value.toLowerCase();  // Obtiene el texto de búsqueda y lo convierte a minúsculas
+      const productCards = document.querySelectorAll('.product-card');  // Selecciona todas las tarjetas de productos
+
+      productCards.forEach(card => {
+        const title = card.querySelector('.card-title').textContent.toLowerCase();  // Obtiene el nombre del complejo
+        if (title.includes(searchQuery)) {
+          card.style.display = 'block';  // Muestra las tarjetas que coinciden con la búsqueda
+        } else {
+          card.style.display = 'none';  // Oculta las tarjetas que no coinciden
+        }
+      });
+    });
+  </script>
+
+
+  <script>
   change_box_container('false');
 </script>
  
