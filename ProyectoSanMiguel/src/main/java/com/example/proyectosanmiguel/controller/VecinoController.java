@@ -51,6 +51,9 @@ public class VecinoController {
     @Autowired
     private ReservaRepository reservaRepository;
 
+    @Autowired
+    private InstanciaServicioRepository instanciaServicioRepository;
+
     @GetMapping("/misReservas")
     public String mostrarReservasVecino(Model model) {
         int idUsuario = 8; // O el ID que uses para pruebas
@@ -97,8 +100,12 @@ public class VecinoController {
 
     @GetMapping("/listarComplejos")
     public String listarComplejos(Model model) {
+        List<Servicio> servicios = servicioRepository.findAll();  // Obtener todos los servicios
         List<ComplejoDeportivo> complejos = complejoRepository.findAll();  // Obtener todos los complejos
+        List<InstanciaServicio> instanciaServicios = instanciaServicioRepository.findAll();  // Obtener todas las instancias de servicio
         model.addAttribute("complejos", complejos);  // Pasar la lista de complejos a la vista
+        model.addAttribute("instanciaServicios", instanciaServicios);  // Pasar la lista de instancias de servicio a la vista
+        model.addAttribute("servicios", servicios);  // Pasar la lista de servicios a la vista
         return "Vecino/vecino_servicios";  // Asegúrate de que esta sea la vista correcta
     }
 
