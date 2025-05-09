@@ -1,13 +1,11 @@
 package com.example.proyectosanmiguel.controller;
 
-import com.example.proyectosanmiguel.dto.EventoHorarioDto;
-import com.example.proyectosanmiguel.dto.HorarioDiarioTurnoGuardarDto;
-import com.example.proyectosanmiguel.dto.HorarioSemanalGuardarDto;
-import com.example.proyectosanmiguel.dto.HorarioTurnoDto;
+import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -461,6 +459,30 @@ public class AdminController {
 
         return "Admin/admin_agregrar_horarios";
     }
+
+    //Me servira para cargar los complejos - coordinadores luego de selccionar ver datos en la agenda
+    @GetMapping("/api/complejo/{id}")
+    @ResponseBody
+    public ResponseEntity<ComplejoAgendaAdminDto> getComplejoById(@PathVariable Integer id) {
+        ComplejoAgendaAdminDto dto = complejoRepository.obtenerComplejoDto(id);
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build(); //por si no existe el complejo - manejo el error en JS {no hay complejo xd} aunque tambien podria enviar null. XD
+        } //depende de como se desee manejar u.u
+    }
+
+    @GetMapping("/api/coordinador/{id}")
+    @ResponseBody
+    public ResponseEntity<CoordinadorAgendaAdminDto> getCoordinadorById(@PathVariable Integer id) {
+        CoordinadorAgendaAdminDto dto = usuarioRepository.obtenerCoordinadorDto(id);
+        if (dto != null) {
+            return ResponseEntity.ok(dto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
 
     // ========== Guardar Nuevo Complejo ==========

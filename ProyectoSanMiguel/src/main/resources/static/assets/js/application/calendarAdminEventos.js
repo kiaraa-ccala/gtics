@@ -132,6 +132,7 @@
   var pc_event_remove = document.querySelector('#pc_event_remove');
   if (pc_event_remove) {
     pc_event_remove.addEventListener('click', function () {
+      calendarmodal.hide(); // Oculta temporalmente el modal
       const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
           confirmButton: 'btn btn-light-success',
@@ -142,7 +143,7 @@
         // Asegúrate de agregar el z-index para asegurarte de que esté encima
         didOpen: () => {
           // Cambiar el z-index del popup de Swal
-          document.querySelector('.swal2-popup').style.zIndex = '7000'; // Establecer un z-index mayor que el modal
+          document.querySelector('.swal2-popup').style.zIndex = '9999'; // Establecer un z-index mayor que el modal
         },
         buttonsStyling: false
       });
@@ -179,7 +180,11 @@
                     swalWithBootstrapButtons.fire('Error', 'Hubo un error al eliminar este evento.', 'error');
                   });
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-              swalWithBootstrapButtons.fire('Cancelado', 'La información de este evento esta segura.', 'error');
+              swalWithBootstrapButtons.fire('Cancelado', 'La información de este evento esta segura.', 'error')
+              .then(() => {
+                // Mostrar modal después de que el usuario haga clic en OK
+                calendarmodal.show();
+              });
             }
           });
     });

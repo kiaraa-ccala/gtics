@@ -279,6 +279,71 @@
         });
     });
 </script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const btnVerDatos = document.querySelector('button[data-bs-target="#modalInfoSeleccionado"]');
+
+        btnVerDatos.addEventListener('click', () => {
+            const tipo = document.getElementById('filterType').value;
+            const contenido = document.getElementById('contenidoModalInfo');
+            contenido.innerHTML = '<p>Cargando datos...</p>';
+
+            let id = null;
+            let url = '';
+
+            if (tipo === 'complejo') {
+                id = document.getElementById('selectComplejo').value;
+                url = `/admin/api/complejo/${id}`;
+            } else if (tipo === 'coordinador') {
+                id = document.getElementById('selectCoordinador').value;
+                url = `/admin/api/coordinador/${id}`;
+            }
+
+            fetch(url)
+                .then(response => {
+                    if (!response.ok) throw new Error("No encontrado");
+                    return response.json();
+                })
+                .then(data => {
+                    let html = '';
+
+                    if (tipo === 'complejo') {
+                        html = `
+                        <h5>Complejo Deportivo</h5>
+                        <p><strong>Nombre:</strong> ${data.nombreComplejo}</p>
+                        <p><strong>Dirección:</strong> ${data.direccionComplejo}</p>
+                        <p><strong>Sector:</strong> ${data.nombreSector}</p>
+                        <p><strong>Número de Soporte:</strong> ${data.numeroSoporte}</p>
+                        <iframe
+                                src="https://maps.google.com/maps?q=${encodeURIComponent(data.direccionComplejo)}&z=17&output=embed"
+                                width="100%"
+                                height="170"
+                                style="border:0; border-radius: 8px;"
+                                allowfullscreen=""
+                                loading="lazy">
+                            </iframe>
+                    `;
+                    } else {
+                        html = `
+                        <h5>Coordinador</h5>
+                        <p><strong>Nombre:</strong> ${data.nombreCoordinador} ${data.apellidoCoordinador}</p>
+                        <p><strong>Correo:</strong> ${data.emailCoordinador}</p>
+                        <p><strong>Teléfono:</strong> ${data.telefonoCoordinador}</p>
+                        <p><strong>Dirección:</strong> ${data.direccionCoordinador}, ${data.distritoCoordinador}, ${data.provinciaCoordinador}, ${data.departamentoCoordinador}</p>
+
+                    `;
+                    }
+
+                    contenido.innerHTML = html;
+                })
+                .catch(err => {
+                    contenido.innerHTML = `<p class="text-danger">No se pudo obtener la información.</p>`;
+                    console.error(err);
+                });
+        });
+    });
+</script>
+
 
 <!-- 1. Librerías base necesarias (Bootstrap, FullCalendar) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
