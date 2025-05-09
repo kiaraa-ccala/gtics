@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface ReporteRepository extends JpaRepository<Reporte, Integer> {
@@ -14,4 +15,5 @@ public interface ReporteRepository extends JpaRepository<Reporte, Integer> {
     List<Reporte> findTop7ByOrderByFechaRecepcionDesc();
     List<Reporte> findTop4ByOrderByFechaRecepcionDesc();
     long countByEstado(String estado);
+    Optional<Reporte> findById(Integer id);
 }

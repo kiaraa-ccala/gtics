@@ -13,9 +13,12 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/coord")
@@ -51,6 +54,25 @@ public class CoordinadorController {
         return "Coordinador/coordinador_ver_reportes";
     }
 
+    @GetMapping("/reportes/pagina")
+    public String obtenerPaginaParcial(@RequestParam(defaultValue = "0") int page, Model model) {
+        Pageable pageable = PageRequest.of(page, 4, Sort.by("fechaRecepcion").descending());
+        Page<Reporte> pagina = reporteRepository.findAll(pageable);
+
+        int totalPaginas = pagina.getTotalPages();
+        int startPage = Math.max(0, page - 1);
+        int endPage = Math.min(totalPaginas - 1, page + 1);
+
+        model.addAttribute("reportes", pagina.getContent());
+        model.addAttribute("paginaActual", page);
+        model.addAttribute("totalPaginas", totalPaginas);
+        model.addAttribute("startPage", startPage);
+        model.addAttribute("endPage", endPage);
+
+        return "Coordinador/coordinador_ver_reportes :: contenidoReportes";
+    }
+
+
     @GetMapping("/reportes/mostrar")
     public String mostrarFormulario(Model model) {
         List<Reporte> ultimosReportes = reporteRepository.findTop4ByOrderByFechaRecepcionDesc();
@@ -67,7 +89,7 @@ public class CoordinadorController {
                                @RequestParam("respuesta") String respuesta,
                                @RequestParam(value = "idReserva", required = false) Integer idReserva,
                                @RequestParam("idHorario") Integer idHorario,
-                               @RequestParam(value = "idFoto", required = false) Integer idFoto) {
+                               @RequestParam(value = "imagenSituacion", required = false) MultipartFile imagenSituacion) throws IOException {
 
         Reporte nuevoReporte = new Reporte();
         nuevoReporte.setTipoReporte(tipoReporte);
@@ -76,14 +98,22 @@ public class CoordinadorController {
         nuevoReporte.setAsunto(asunto);
         nuevoReporte.setDescripcion(descripcion);
         nuevoReporte.setRespuesta("esperando respuesta...");
-        nuevoReporte.setReserva(null); // como se pidió
+        nuevoReporte.setReserva(null);
         Horario horario = new Horario();
         horario.setIdHorario(idHorario);
         nuevoReporte.setHorario(horario);
-        nuevoReporte.setFoto(null);
+
+        if (imagenSituacion != null && !imagenSituacion.isEmpty()) {
+            Foto foto = new Foto();
+            foto.setNombreFoto(imagenSituacion.getOriginalFilename());
+            foto.setFoto(imagenSituacion.getBytes());
+            foto.setUrlFoto("/uploads/" + imagenSituacion.getOriginalFilename()); // opcional, puede cambiar
+            nuevoReporte.setFoto(foto);
+        } else {
+            nuevoReporte.setFoto(null);
+        }
 
         reporteRepository.save(nuevoReporte);
-
         return "redirect:/coord/reportes/mostrar";
     }
 
@@ -120,4 +150,18 @@ public class CoordinadorController {
         model.addAttribute("usuario", coordinador);
         return "Coordinador/coordinador_perfil";
     }
+
+    @GetMapping("/reportes/detalle/{id}")
+    public String detalleReporte(@PathVariable("id") Integer id, Model model) {
+        Optional<Reporte> optionalReporte = reporteRepository.findById(id);
+
+        if (optionalReporte.isPresent()) {
+            Reporte reporte = optionalReporte.get();
+            model.addAttribute("reporte", reporte);
+            return "Coordinador/coordinador_reporte_recibido";
+        } else {
+            return "redirect:/coord/reportes/ver"; // fallback si no se encuentra
+        }
+    }
+
 }
