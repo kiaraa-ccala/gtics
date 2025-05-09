@@ -42,11 +42,10 @@ public class SuperAdminController {
         List<Usuario> usuariosFiltrados = new ArrayList<>();
 
         for(Usuario usuario : usuarios){
-            if(!usuario.getRol().getNombre().equalsIgnoreCase("Superadministrador")){
+            if(!usuario.getRol().getNombre().equalsIgnoreCase("Superadministrador") && usuario.getActivo()!=0){
                 usuariosFiltrados.add(usuario);
             }
         }
-
 
         model.addAttribute("listaUsuarios", usuariosFiltrados);
 
@@ -119,6 +118,7 @@ public class SuperAdminController {
             credencial.setPassword(password);
             credencial.setUsuario(usuario);
             usuario.setCredencial(credencial);
+            usuario.setActivo(1);
 
             usuarioRepository.save(usuario);
         }
@@ -134,7 +134,12 @@ public class SuperAdminController {
         Optional<Usuario> usuario = usuarioRepository.findById(idUsuario);
 
         if(usuario.isPresent()) {
-            usuarioRepository.deleteById(idUsuario);
+
+            Usuario usuarioEncontrado = usuario.get();
+
+            usuarioEncontrado.setActivo(0);
+
+            usuarioRepository.save(usuarioEncontrado);
         }
 
         return "redirect:/superadmin/usuarios/lista";

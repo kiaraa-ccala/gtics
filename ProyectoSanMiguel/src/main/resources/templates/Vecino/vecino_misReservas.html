@@ -1,40 +1,39 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-  <!-- [Head] start -->
-  <head th:replace="fragments/head_vecino :: head('Agregar Usuario')"></head>
+<!-- [Head] start -->
+<head th:replace="fragments/head_vecino :: head('Mis Reservas')"></head>
 
-  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
 
-    <div class="loader-bg">
-    <div class="loader-track">
-      <div class="loader-fill"></div>
-    </div>
-    </div>
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
 
 
-    <div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
-    <!-- [ Sidebar Menu ] end -->
-    <!-- [ Header Topbar ] start -->
-    <div th:replace="fragments/navbar_vecino :: header"></div>
+<div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+<!-- [ Sidebar Menu ] end -->
+<!-- [ Header Topbar ] start -->
+<div th:replace="fragments/navbar_vecino :: header"></div>
 
-    <!-- [ Main Content ] start -->
-    <div class="pc-container" style="background: #e0f6ff">
-      <div class="pc-content">
-      <div class="pc-content">
-        <!-- [ breadcrumb ] start -->
-        <div class="page-header">
-          <div class="page-block">
-            <div class="row align-items-center">
-              <div class="col-md-12">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Mis servicios</li>
-                </ul>
-              </div>
-              <div class="col-md-12">
-                <div class="page-header-title">
-                  <h2 class="mb-0">Mis reservas</h2>
-                </div>
+<!-- [ Main Content ] start -->
+<div class="pc-container" style="background: #e0f6ff">
+  <div class="pc-content">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
+                <li class="breadcrumb-item" aria-current="page">Mis servicios</li>
+              </ul>
+            </div>
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h2 class="mb-0">Mis reservas</h2>
               </div>
             </div>
           </div>
@@ -112,16 +111,16 @@
                         <!-- Fecha de registro -->
                         <td th:text="${#temporals.format(dto.reserva.fechaHoraRegistro, 'yyyy-MM-dd HH:mm')}">2025-05-09 13:00</td>
 
-                        <!-- Acciones -->
-                        <td class="text-center">
-                          <ul class="list-inline me-auto mb-0">
-                            <!-- Ver -->
-                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Ver">
-                              <a href="#" class="avtar avtar-xs btn-link-secondary btn-pc-default"
-                                 data-bs-toggle="modal" data-bs-target="#cust-modal">
-                                <i class="ti ti-eye f-18"></i>
-                              </a>
-                            </li>
+                    <!-- Acciones -->
+                    <td class="text-center">
+                      <ul class="list-inline me-auto mb-0">
+                        <!-- Ver -->
+                        <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Ver">
+                          <a href="#" class="avtar avtar-xs btn-link-secondary btn-pc-default"
+                             data-bs-toggle="modal" data-bs-target="#cust-modal">
+                            <i class="ti ti-eye f-18"></i>
+                          </a>
+                        </li>
 
                             <!-- Editar -->
                             <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Editar">
@@ -154,9 +153,8 @@
               </div>
             </div>
           </div>
-          <!-- [ sample-page ] end -->
         </div>
-        <!-- [ Main Content ] end -->
+        <!-- [ sample-page ] end -->
       </div>
 
       </div>
@@ -231,33 +229,57 @@
                   </div>
                   <div class="position-absolute end-0 top-0 p-3">
                     <span class="badge bg-success">In Stock</span>
+
+      <!-- [ Main Content ] end -->
+    </div>
+  </div>
+  <div class="modal fade" id="cust-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="mb-0">Product Details</h5>
+          <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
+            <i class="ti ti-x f-20"></i>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="row align-items-center">
+            <div class="col-sm-4">
+              <div class="bg-light rounded position-relative">
+                <div class="text-center">
+                  <div class="chat-avtar d-inline-flex mx-auto">
+                    <img class="img-fluid rounded" src="../assets/images/application/img-prod-4.jpg" alt="User image" />
+
                   </div>
                 </div>
-              </div>
-              <div class="col-sm-8">
-                <h5>Canon EOS 1500D 24.1 Digital</h5>
-                <p class="text-muted"
-                  >Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change In Aspect
-                  Ratio: Boldly crop the subject and save it with a composition that has impact.</p
-                >
-                <div class="table-responsive">
-                  <table class="table w-auto table-borderless">
-                    <tbody>
-                      <tr>
-                        <td class="text-muted py-1">Categories</td>
-                        <td class="py-1">Electronics, Camera</td>
-                      </tr>
-                      <tr>
-                        <td class="text-muted py-1">Qty</td>
-                        <td class="py-1">21</td>
-                      </tr>
-                      <tr>
-                        <td class="text-muted py-1">Price</td>
-                        <td class="py-1"><h5 class="mb-0">$399</h5></td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="position-absolute end-0 top-0 p-3">
+                  <span class="badge bg-success">In Stock</span>
                 </div>
+              </div>
+            </div>
+            <div class="col-sm-8">
+              <h5>Canon EOS 1500D 24.1 Digital</h5>
+              <p class="text-muted"
+              >Image Enlargement: After shooting, you can enlarge photographs of the objects for clear zoomed view. Change In Aspect
+                Ratio: Boldly crop the subject and save it with a composition that has impact.</p
+              >
+              <div class="table-responsive">
+                <table class="table w-auto table-borderless">
+                  <tbody>
+                  <tr>
+                    <td class="text-muted py-1">Categories</td>
+                    <td class="py-1">Electronics, Camera</td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted py-1">Qty</td>
+                    <td class="py-1">21</td>
+                  </tr>
+                  <tr>
+                    <td class="text-muted py-1">Price</td>
+                    <td class="py-1"><h5 class="mb-0">$399</h5></td>
+                  </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -269,21 +291,21 @@
 
       <div th:replace="fragments/footer_superadmin :: footer"></div>
 
-    <!-- Required Js -->
-    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
-    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
-    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+  <!-- Required Js -->
+  <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
 
-    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
-    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
 
-    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
-    <script th:src="@{/assets/js/script.js}"></script>
-    <script th:src="@{/assets/js/theme.js}"></script>
-    <script th:src="@{/assets/js/multi-lang.js}"></script>
-    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+  <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+  <script th:src="@{/assets/js/script.js}"></script>
+  <script th:src="@{/assets/js/theme.js}"></script>
+  <script th:src="@{/assets/js/multi-lang.js}"></script>
+  <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 
-    <script>
+  <script>
     layout_change('light');
   </script>
 
@@ -307,13 +329,13 @@
     main_layout_change('vertical');
   </script>
 
-    <script src="../assets/js/plugins/simple-datatables.js"></script>
-    <script>
-      const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
-        sortable: false,
-        perPage: 5
-      });
-    </script>
+  <script src="../assets/js/plugins/simple-datatables.js"></script>
+  <script>
+    const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
+      sortable: false,
+      perPage: 5
+    });
+  </script>
 
       <script>
         const modalCancelar = document.getElementById('modalCancelarReserva');
@@ -333,52 +355,52 @@
         display: none !important;
       }
 
-      /* Ítems del menú: blanco */
-      .pc-sidebar .pc-link,
-      .pc-sidebar .pc-mtext,
-      .pc-sidebar .pc-micon {
-        color: #ffffff !important;
-        opacity: 1 !important;
-      }
+    /* Ítems del menú: blanco */
+    .pc-sidebar .pc-link,
+    .pc-sidebar .pc-mtext,
+    .pc-sidebar .pc-micon {
+      color: #ffffff !important;
+      opacity: 1 !important;
+    }
 
-      /* Títulos de secciones del menú */
-      .pc-sidebar .menu-caption,
-      .pc-sidebar .pc-caption {
-        color: rgba(255, 255, 255, 0.6) !important;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 12px;
-      }
-      /* Hover: cambia el texto a celeste claro */
-      .pc-sidebar .pc-link:hover,
-      .pc-sidebar .pc-link:focus {
-        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
-        transition: all 0.2s ease-in-out;
-      }
-    </style>
+    /* Títulos de secciones del menú */
+    .pc-sidebar .menu-caption,
+    .pc-sidebar .pc-caption {
+      color: rgba(255, 255, 255, 0.6) !important;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    /* Hover: cambia el texto a celeste claro */
+    .pc-sidebar .pc-link:hover,
+    .pc-sidebar .pc-link:focus {
+      background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
 
-    <style>
-      /* Fuerza la visibilidad del botón "explora" generado por Uppy */
-      .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"] {
-        display: block !important;
-        width: auto !important;
-        height: auto !important;
-        position: static !important;
-        opacity: 1 !important;
-        pointer-events: auto !important;
-        visibility: visible !important;
-      }
+  <style>
+    /* Fuerza la visibilidad del botón "explora" generado por Uppy */
+    .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"] {
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      position: static !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
 
-      /* Estilo visual del botón como texto subrayado */
-      .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"]::file-selector-button {
-        color: #0d6efd;
-        background: none;
-        border: none;
-        padding: 0;
-        text-decoration: underline;
-        cursor: pointer;
-      }
-    </style>
+    /* Estilo visual del botón como texto subrayado */
+    .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"]::file-selector-button {
+      color: #0d6efd;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
 
       <script>
         const modalCancelar = document.getElementById('modalCancelarReserva');
