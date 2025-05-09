@@ -8,7 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
-
-    // Encuentra reservas por ID del usuario
-    List<Reserva> findByUsuarioId(Integer idUsuario);
+    List<Reserva> findByUsuario_IdUsuario(Integer idUsuario);
 }

@@ -20,6 +20,7 @@
     <!-- [ Main Content ] start -->
     <div class="pc-container" style="background: #e0f6ff">
       <div class="pc-content">
+      <div class="pc-content">
         <!-- [ breadcrumb ] start -->
         <div class="page-header">
           <div class="page-block">
@@ -70,24 +71,13 @@
                         <!-- Nombre del usuario -->
                         <td th:text="${reserva.usuario.nombre}">Nombre Usuario</td>
 
-                        <!-- Servicio: imagen, nombre, descripción -->
+                        <!-- Servicio: nombre -->
                         <td>
-                          <div class="row">
-                            <div class="col-auto pe-0">
-                              <img th:src="@{/assets/images/application/img-prod-1.jpg}" alt="user-image" class="wid-40 rounded" />
-                            </div>
-                            <div class="col">
-                              <h6 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h6>
-                              <p class="text-muted f-12 mb-0" th:text="${reserva.instanciaServicio.servicio.descripcion}">Descripción</p>
-                            </div>
-                          </div>
+                          <h6 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h6>
                         </td>
 
-                        <!-- Zona -->
-                        <td th:text="${reserva.instanciaServicio.servicio.zona}">Zona</td>
-
-                        <!-- Costo -->
-                        <td class="text-end" th:text="'$' + ${reserva.instanciaServicio.servicio.costo}">$0.00</td>
+                        <!-- Complejo deportivo -->
+                        <td th:text="${reserva.instanciaServicio.complejoDeportivo.nombre}">Nombre Complejo</td>
 
                         <!-- Fecha de reserva -->
                         <td th:text="${reserva.fecha}">2025-05-09</td>
@@ -100,11 +90,11 @@
 
                         <!-- Estado -->
                         <td>
-                          <span class="badge f-12"
-                                th:classappend="${reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
-                                th:text="${reserva.estado == 1} ? 'In Stock' : 'Out of Stock'">
-                            Estado
-                          </span>
+    <span class="badge f-12"
+          th:classappend="${reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
+          th:text="${reserva.estado == 1} ? 'Activo' : 'Inactivo'">
+      Estado
+    </span>
                         </td>
 
                         <!-- Fecha de registro -->
@@ -137,6 +127,7 @@
                           </ul>
                         </td>
                       </tr>
+
                     </tbody>
                   </table>
 
@@ -305,6 +296,7 @@
     </style>
 
 
+    </div>
   </body>
   <!-- [Body] end -->
 </html>

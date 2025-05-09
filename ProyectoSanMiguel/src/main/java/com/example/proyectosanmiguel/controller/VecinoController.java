@@ -40,6 +40,9 @@ public class VecinoController {
     private ServicioRepository servicioRepository;
 
     @Autowired
+    private TarifaRepository tarifaRepository;
+
+    @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Autowired
@@ -50,12 +53,13 @@ public class VecinoController {
 
     @GetMapping("/misReservas")
     public String mostrarReservasVecino(Model model) {
-        // Simulamos el ID del vecino (usuario logueado). En producción se obtiene del contexto de seguridad.
-        int idUsuarioSimulado = 1;
+        int idUsuario = 8;
 
-        List<Reserva> reservas = reservaRepository.findByUsuarioId(idUsuarioSimulado);
+        List<Reserva> reservas = reservaRepository.findByUsuario_IdUsuario(idUsuario);
         model.addAttribute("listaReservas", reservas);
 
-        return "Vecino/vecino_misReservas";  // Asegúrate que la vista esté en templates/Vecino/
+        return "Vecino/vecino_misReservas";  // Verifica que esta vista exista
     }
+
+
 }
