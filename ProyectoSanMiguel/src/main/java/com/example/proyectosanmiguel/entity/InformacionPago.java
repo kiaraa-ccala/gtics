@@ -1,11 +1,16 @@
 package com.example.proyectosanmiguel.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Entity
+@Getter
+@Setter
+@Table(name = "informacionpago")
 public class InformacionPago {
 
     @Id
