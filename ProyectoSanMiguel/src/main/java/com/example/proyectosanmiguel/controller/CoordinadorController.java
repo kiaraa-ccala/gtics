@@ -2,6 +2,7 @@ package com.example.proyectosanmiguel.controller;
 
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.ComplejoRepository;
+import com.example.proyectosanmiguel.repository.FotoRepository;
 import com.example.proyectosanmiguel.repository.ReporteRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,6 +37,9 @@ public class CoordinadorController {
 
     @Autowired
     private ComplejoRepository complejoDeportivoRepository;
+
+    @Autowired
+    private FotoRepository fotoRepository;
 
     @GetMapping("/reportes/ver")
     public String verReportes(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -163,5 +171,27 @@ public class CoordinadorController {
             return "redirect:/coord/reportes/ver"; // fallback si no se encuentra
         }
     }
+
+    @GetMapping("/reporte/imagen/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") Integer id) {
+        Optional<Foto> optionalFoto = fotoRepository.findById(id);
+
+        if (optionalFoto.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Foto foto = optionalFoto.get();
+
+        // Validar que sea .png
+        if (foto.getNombreFoto() == null || !foto.getNombreFoto().toLowerCase().endsWith(".png")) {
+            return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(foto.getFoto(), headers, HttpStatus.OK);
+    }
+
 
 }

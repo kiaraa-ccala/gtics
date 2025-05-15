@@ -44,16 +44,20 @@
                           </div>
                           <div class="card-body">
                               <div class="row justify-content-center">
-                                  <!--<div class="col-md-6 text-center">
-                                      <div th:if="${reporte.foto != null and reporte.foto.foto != null}">
-                                          <img th:src="'data:image/png;base64,' + ${T(java.util.Base64).getEncoder().encodeToString(reporte.foto.foto)}"
+                                  <div class="col-md-6 text-center">
+                                      <div th:if="${reporte.foto != null
+                                        and reporte.foto.foto != null
+                                        and #strings.endsWith(reporte.foto.nombreFoto?.toLowerCase(), '.png')}">
+                                          <img th:src="@{/coord/reporte/imagen/{id}(id=${reporte.foto.idFoto})}"
                                                class="img-thumbnail"
-                                               style="max-width: 100%; border: 3px solid #000; border-radius: 5px;">
+                                               style="max-width: 80%; border: 3px solid #000; border-radius: 5px;">
                                       </div>
-                                      <div th:if="${reporte.foto == null or reporte.foto.foto == null}">
-                                          <p class="text-muted">Este reporte no contiene imagen.</p>
+                                      <div th:if="${reporte.foto == null
+                                        or reporte.foto.foto == null
+                                        or !#strings.endsWith(reporte.foto.nombreFoto?.toLowerCase(), '.png')}">
+                                          <p class="text-muted">Este reporte no contiene imagen PNG.</p>
                                       </div>
-                                  </div>-->
+                                  </div>
                               </div>
 
                               <hr class="my-4">
