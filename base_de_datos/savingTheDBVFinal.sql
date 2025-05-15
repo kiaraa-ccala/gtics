@@ -1,246 +1,440 @@
--- FULL REFACTORED SQL SCRIPT: GESTIONDEPORTIVA (Simplified for Spring Boot JPA)
+-- MySQL Workbench Forward Engineering
 
--- Drop schema if exists
-DROP SCHEMA IF EXISTS `GestionDeportiva`;
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
--- Create schema
-CREATE SCHEMA IF NOT EXISTS `GestionDeportiva` DEFAULT CHARACTER SET utf8mb4;
-USE `GestionDeportiva`;
+-- -----------------------------------------------------
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema gestiondeportiva
+-- -----------------------------------------------------
+DROP SCHEMA IF EXISTS `gestiondeportiva` ;
 
--- Sector
-CREATE TABLE `Sector` (
+-- -----------------------------------------------------
+-- Schema gestiondeportiva
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `gestiondeportiva` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+USE `gestiondeportiva` ;
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`sector`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`sector` (
   `idSector` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45),
-  PRIMARY KEY (`idSector`)
-);
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idSector`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- ComplejoDeportivo
-CREATE TABLE `ComplejoDeportivo` (
-  `idComplejoDeportivo` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45),
-  `direccion` VARCHAR(45),
-  `idSector` INT NOT NULL,
-  `numeroSoporte` VARCHAR(45),
-  `latitud` DECIMAL,
-  `longitud` DECIMAL,
-  PRIMARY KEY (`idComplejoDeportivo`),
-  FOREIGN KEY (`idSector`) REFERENCES `Sector`(`idSector`)
-);
 
--- Foto
-CREATE TABLE `Foto` (
-  `idFoto` INT NOT NULL AUTO_INCREMENT,
-  `nombreFoto` VARCHAR(80),
-  `foto` LONGBLOB,
-  `urlFoto` VARCHAR(100),
-  PRIMARY KEY (`idFoto`)
-);
-
--- Tercerizado
-CREATE TABLE `Tercerizado` (
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`tercerizado`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`tercerizado` (
   `idTercerizado` INT NOT NULL AUTO_INCREMENT,
-  `ruc` VARCHAR(11),
-  `direccionFiscal` VARCHAR(45),
-  PRIMARY KEY (`idTercerizado`)
-);
+  `ruc` VARCHAR(11) NULL DEFAULT NULL,
+  `direccionFiscal` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idTercerizado`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Rol
-CREATE TABLE `Rol` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`foto`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`foto` (
+  `idFoto` INT NOT NULL AUTO_INCREMENT,
+  `nombreFoto` VARCHAR(80) NULL DEFAULT NULL,
+  `foto` LONGBLOB NULL DEFAULT NULL,
+  `urlFoto` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`idFoto`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`rol`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`rol` (
   `idRol` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45),
-  PRIMARY KEY (`idRol`)
-);
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idRol`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Usuario
-CREATE TABLE `Usuario` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`usuario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`usuario` (
   `idUsuario` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(45),
-  `apellido` VARCHAR(45),
-  `dni` VARCHAR(45),
-  `direccion` VARCHAR(45),
-  `distrito` VARCHAR(45),
-  `provincia` VARCHAR(45),
-  `departamento` VARCHAR(45),
-  `telefono` VARCHAR(9),
-  `idSector` INT,
-  `idTercerizado` INT NULL,
-  `idFoto` INT NULL,
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  `apellido` VARCHAR(45) NULL DEFAULT NULL,
+  `dni` VARCHAR(45) NULL DEFAULT NULL,
+  `direccion` VARCHAR(45) NULL DEFAULT NULL,
+  `distrito` VARCHAR(45) NULL DEFAULT NULL,
+  `provincia` VARCHAR(45) NULL DEFAULT NULL,
+  `departamento` VARCHAR(45) NULL DEFAULT NULL,
+  `telefono` VARCHAR(9) NULL DEFAULT NULL,
+  `idSector` INT NULL DEFAULT NULL,
+  `idTercerizado` INT NULL DEFAULT NULL,
+  `idFoto` INT NULL DEFAULT NULL,
   `idRol` INT NOT NULL,
+  `activo` TINYINT NULL,
   PRIMARY KEY (`idUsuario`),
-  FOREIGN KEY (`idSector`) REFERENCES `Sector`(`idSector`),
-  FOREIGN KEY (`idTercerizado`) REFERENCES `Tercerizado`(`idTercerizado`),
-  FOREIGN KEY (`idFoto`) REFERENCES `Foto`(`idFoto`),
-  FOREIGN KEY (`idRol`) REFERENCES `Rol`(`idRol`)
-);
+  INDEX `idSector` (`idSector` ASC) VISIBLE,
+  INDEX `idTercerizado` (`idTercerizado` ASC) VISIBLE,
+  INDEX `idFoto` (`idFoto` ASC) VISIBLE,
+  INDEX `idRol` (`idRol` ASC) VISIBLE,
+  CONSTRAINT `usuario_ibfk_1`
+    FOREIGN KEY (`idSector`)
+    REFERENCES `gestiondeportiva`.`sector` (`idSector`),
+  CONSTRAINT `usuario_ibfk_2`
+    FOREIGN KEY (`idTercerizado`)
+    REFERENCES `gestiondeportiva`.`tercerizado` (`idTercerizado`),
+  CONSTRAINT `usuario_ibfk_3`
+    FOREIGN KEY (`idFoto`)
+    REFERENCES `gestiondeportiva`.`foto` (`idFoto`),
+  CONSTRAINT `usuario_ibfk_4`
+    FOREIGN KEY (`idRol`)
+    REFERENCES `gestiondeportiva`.`rol` (`idRol`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- HorarioSemanal
-CREATE TABLE `HorarioSemanal` (
-  `idHorarioSemanal` INT NOT NULL AUTO_INCREMENT,
-  `idAdministrador` INT NOT NULL,
-  `idCoordinador` INT NOT NULL,
-  `fechaInicio` DATE,
-  `fechaFin` DATE,
-  `fechaCreacion` DATE,
-  PRIMARY KEY (`idHorarioSemanal`),
-  FOREIGN KEY (`idAdministrador`) REFERENCES `Usuario`(`idUsuario`),
-  FOREIGN KEY (`idCoordinador`) REFERENCES `Usuario`(`idUsuario`)
-);
 
--- Horario
-CREATE TABLE `Horario` (
-  `idHorario` INT NOT NULL AUTO_INCREMENT,
-  `idHorarioSemanal` INT NOT NULL,
-  `idComplejoDeportivo` INT NOT NULL,
-  `fecha` DATE,
-  `horaIngreso` TIME,
-  `horaSalida` TIME,
-  PRIMARY KEY (`idHorario`),
-  FOREIGN KEY (`idHorarioSemanal`) REFERENCES `HorarioSemanal`(`idHorarioSemanal`),
-  FOREIGN KEY (`idComplejoDeportivo`) REFERENCES `ComplejoDeportivo`(`idComplejoDeportivo`)
-);
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`informacionpago`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`informacionpago` (
+  `idInformacionPago` INT NOT NULL AUTO_INCREMENT,
+  `fecha` DATE NULL DEFAULT NULL,
+  `hora` TIME NULL DEFAULT NULL,
+  `tipo` VARCHAR(45) NULL DEFAULT NULL,
+  `total` DECIMAL(10,2) NULL DEFAULT NULL,
+  `estado` VARCHAR(45) NULL DEFAULT NULL,
+  PRIMARY KEY (`idInformacionPago`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Servicio
-CREATE TABLE `Servicio` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`servicio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`servicio` (
   `idServicio` INT NOT NULL AUTO_INCREMENT,
-  `nombre` VARCHAR(60),
-  PRIMARY KEY (`idServicio`)
-);
+  `nombre` VARCHAR(60) NULL DEFAULT NULL,
+  PRIMARY KEY (`idServicio`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- InstanciaServicio
-CREATE TABLE `InstanciaServicio` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`complejodeportivo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`complejodeportivo` (
+  `idComplejoDeportivo` INT NOT NULL AUTO_INCREMENT,
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  `direccion` VARCHAR(45) NULL DEFAULT NULL,
+  `idSector` INT NOT NULL,
+  `numeroSoporte` VARCHAR(45) NULL DEFAULT NULL,
+  `latitud` DECIMAL(10,0) NULL DEFAULT NULL,
+  `longitud` DECIMAL(10,0) NULL DEFAULT NULL,
+  PRIMARY KEY (`idComplejoDeportivo`),
+  INDEX `idSector` (`idSector` ASC) VISIBLE,
+  CONSTRAINT `complejodeportivo_ibfk_1`
+    FOREIGN KEY (`idSector`)
+    REFERENCES `gestiondeportiva`.`sector` (`idSector`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`instanciaservicio`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`instanciaservicio` (
   `idInstanciaServicio` INT NOT NULL AUTO_INCREMENT,
   `idServicio` INT NOT NULL,
   `idComplejoDeportivo` INT NOT NULL,
-  `nombre` VARCHAR(45),
-  `capacidadMaxima` VARCHAR(45),
-  `modoAcceso` VARCHAR(45),
+  `nombre` VARCHAR(45) NULL DEFAULT NULL,
+  `capacidadMaxima` VARCHAR(45) NULL DEFAULT NULL,
+  `modoAcceso` VARCHAR(45) NULL DEFAULT NULL,
   PRIMARY KEY (`idInstanciaServicio`),
-  FOREIGN KEY (`idServicio`) REFERENCES `Servicio`(`idServicio`),
-  FOREIGN KEY (`idComplejoDeportivo`) REFERENCES `ComplejoDeportivo`(`idComplejoDeportivo`)
-);
+  INDEX `idServicio` (`idServicio` ASC) VISIBLE,
+  INDEX `idComplejoDeportivo` (`idComplejoDeportivo` ASC) VISIBLE,
+  CONSTRAINT `instanciaservicio_ibfk_1`
+    FOREIGN KEY (`idServicio`)
+    REFERENCES `gestiondeportiva`.`servicio` (`idServicio`),
+  CONSTRAINT `instanciaservicio_ibfk_2`
+    FOREIGN KEY (`idComplejoDeportivo`)
+    REFERENCES `gestiondeportiva`.`complejodeportivo` (`idComplejoDeportivo`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- InformacionPago
-CREATE TABLE `InformacionPago` (
-  `idInformacionPago` INT NOT NULL AUTO_INCREMENT,
-  `fecha` DATE,
-  `hora` TIME,
-  `tipo` VARCHAR(45),
-  `total` DECIMAL(10,2),
-  `estado` VARCHAR(45),
-  PRIMARY KEY (`idInformacionPago`)
-);
 
--- Reserva
-CREATE TABLE `Reserva` (
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`reserva`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`reserva` (
   `idReserva` INT NOT NULL AUTO_INCREMENT,
   `idUsuario` INT NOT NULL,
   `idInformacionPago` INT NOT NULL,
-  `fecha` DATE,
-  `horaInicio` TIME,
-  `horaFin` TIME,
-  `estado` TINYINT,
-  `fechaHoraRegistro` DATETIME,
+  `fecha` DATE NULL DEFAULT NULL,
+  `horaInicio` TIME NULL DEFAULT NULL,
+  `horaFin` TIME NULL DEFAULT NULL,
+  `estado` TINYINT NULL DEFAULT NULL,
+  `fechaHoraRegistro` DATETIME NULL DEFAULT NULL,
   `idInstanciaServicio` INT NOT NULL,
   PRIMARY KEY (`idReserva`),
-  FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`idUsuario`),
-  FOREIGN KEY (`idInformacionPago`) REFERENCES `InformacionPago`(`idInformacionPago`),
-  FOREIGN KEY (`idInstanciaServicio`) REFERENCES `InstanciaServicio`(`idInstanciaServicio`)
-);
+  INDEX `idUsuario` (`idUsuario` ASC) VISIBLE,
+  INDEX `idInformacionPago` (`idInformacionPago` ASC) VISIBLE,
+  INDEX `idInstanciaServicio` (`idInstanciaServicio` ASC) VISIBLE,
+  CONSTRAINT `reserva_ibfk_1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `gestiondeportiva`.`usuario` (`idUsuario`),
+  CONSTRAINT `reserva_ibfk_2`
+    FOREIGN KEY (`idInformacionPago`)
+    REFERENCES `gestiondeportiva`.`informacionpago` (`idInformacionPago`),
+  CONSTRAINT `reserva_ibfk_3`
+    FOREIGN KEY (`idInstanciaServicio`)
+    REFERENCES `gestiondeportiva`.`instanciaservicio` (`idInstanciaServicio`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Reporte
-CREATE TABLE `Reporte` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`horariosemanal`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`horariosemanal` (
+  `idHorarioSemanal` INT NOT NULL AUTO_INCREMENT,
+  `idAdministrador` INT NOT NULL,
+  `idCoordinador` INT NOT NULL,
+  `fechaInicio` DATE NULL DEFAULT NULL,
+  `fechaFin` DATE NULL DEFAULT NULL,
+  `fechaCreacion` DATE NULL DEFAULT NULL,
+  PRIMARY KEY (`idHorarioSemanal`),
+  INDEX `idAdministrador` (`idAdministrador` ASC) VISIBLE,
+  INDEX `idCoordinador` (`idCoordinador` ASC) VISIBLE,
+  CONSTRAINT `horariosemanal_ibfk_1`
+    FOREIGN KEY (`idAdministrador`)
+    REFERENCES `gestiondeportiva`.`usuario` (`idUsuario`),
+  CONSTRAINT `horariosemanal_ibfk_2`
+    FOREIGN KEY (`idCoordinador`)
+    REFERENCES `gestiondeportiva`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`horario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`horario` (
+  `idHorario` INT NOT NULL AUTO_INCREMENT,
+  `idHorarioSemanal` INT NOT NULL,
+  `idComplejoDeportivo` INT NOT NULL,
+  `fecha` DATE NULL DEFAULT NULL,
+  `horaIngreso` TIME NULL DEFAULT NULL,
+  `horaSalida` TIME NULL DEFAULT NULL,
+  PRIMARY KEY (`idHorario`),
+  INDEX `idHorarioSemanal` (`idHorarioSemanal` ASC) VISIBLE,
+  INDEX `idComplejoDeportivo` (`idComplejoDeportivo` ASC) VISIBLE,
+  CONSTRAINT `horario_ibfk_1`
+    FOREIGN KEY (`idHorarioSemanal`)
+    REFERENCES `gestiondeportiva`.`horariosemanal` (`idHorarioSemanal`),
+  CONSTRAINT `horario_ibfk_2`
+    FOREIGN KEY (`idComplejoDeportivo`)
+    REFERENCES `gestiondeportiva`.`complejodeportivo` (`idComplejoDeportivo`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`reporte`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`reporte` (
   `idReporte` INT NOT NULL AUTO_INCREMENT,
-  `tipoReporte` VARCHAR(45),
-  `fechaRecepcion` DATE,
-  `estado` VARCHAR(45),
-  `asunto` VARCHAR(100),
-  `descripcion` VARCHAR(500),
-  `respuesta` VARCHAR(500),
-  `idReserva` INT,
+  `tipoReporte` VARCHAR(45) NULL DEFAULT NULL,
+  `fechaRecepcion` DATE NULL DEFAULT NULL,
+  `estado` VARCHAR(45) NULL DEFAULT NULL,
+  `asunto` VARCHAR(100) NULL DEFAULT NULL,
+  `descripcion` VARCHAR(500) NULL DEFAULT NULL,
+  `respuesta` VARCHAR(500) NULL DEFAULT NULL,
+  `idReserva` INT NULL DEFAULT NULL,
   `idHorario` INT NOT NULL,
+  `idFoto` INT NULL,
   PRIMARY KEY (`idReporte`),
-  FOREIGN KEY (`idReserva`) REFERENCES `Reserva`(`idReserva`),
-  FOREIGN KEY (`idHorario`) REFERENCES `Horario`(`idHorario`)
-);
+  INDEX `idReserva` (`idReserva` ASC) VISIBLE,
+  INDEX `idHorario` (`idHorario` ASC) VISIBLE,
+  INDEX `fk_reporte_foto1_idx` (`idFoto` ASC) VISIBLE,
+  CONSTRAINT `reporte_ibfk_1`
+    FOREIGN KEY (`idReserva`)
+    REFERENCES `gestiondeportiva`.`reserva` (`idReserva`),
+  CONSTRAINT `reporte_ibfk_2`
+    FOREIGN KEY (`idHorario`)
+    REFERENCES `gestiondeportiva`.`horario` (`idHorario`),
+  CONSTRAINT `fk_reporte_foto1`
+    FOREIGN KEY (`idFoto`)
+    REFERENCES `gestiondeportiva`.`foto` (`idFoto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Comentario
-CREATE TABLE `Comentario` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`comentario`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`comentario` (
   `idComentario` INT NOT NULL AUTO_INCREMENT,
-  `fechaHora` DATETIME,
-  `contenido` VARCHAR(300),
+  `fechaHora` DATETIME NULL DEFAULT NULL,
+  `contenido` VARCHAR(300) NULL DEFAULT NULL,
   `idReporte` INT NOT NULL,
   PRIMARY KEY (`idComentario`),
-  FOREIGN KEY (`idReporte`) REFERENCES `Reporte`(`idReporte`)
-);
+  INDEX `idReporte` (`idReporte` ASC) VISIBLE,
+  CONSTRAINT `comentario_ibfk_1`
+    FOREIGN KEY (`idReporte`)
+    REFERENCES `gestiondeportiva`.`reporte` (`idReporte`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Credencial
-CREATE TABLE `Credencial` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`credencial`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`credencial` (
   `idCredencial` INT NOT NULL AUTO_INCREMENT,
-  `correo` VARCHAR(45),
-  `password` VARCHAR(45),
+  `correo` VARCHAR(45) NULL DEFAULT NULL,
+  `password` VARCHAR(45) NULL DEFAULT NULL,
   `idUsuario` INT NOT NULL,
   PRIMARY KEY (`idCredencial`),
-  FOREIGN KEY (`idUsuario`) REFERENCES `Usuario`(`idUsuario`)
-);
+  INDEX `idUsuario` (`idUsuario` ASC) VISIBLE,
+  CONSTRAINT `credencial_ibfk_1`
+    FOREIGN KEY (`idUsuario`)
+    REFERENCES `gestiondeportiva`.`usuario` (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Descuento
-CREATE TABLE `Descuento` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`descuento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`descuento` (
   `idDescuento` INT NOT NULL AUTO_INCREMENT,
-  `codigo` VARCHAR(45),
-  `tipoDescuento` VARCHAR(45),
-  `valor` DECIMAL(10,2),
-  `fechaInicio` DATE,
-  `fechaFinal` DATE,
+  `codigo` VARCHAR(45) NULL DEFAULT NULL,
+  `tipoDescuento` VARCHAR(45) NULL DEFAULT NULL,
+  `valor` DECIMAL(10,2) NULL DEFAULT NULL,
+  `fechaInicio` DATE NULL DEFAULT NULL,
+  `fechaFinal` DATE NULL DEFAULT NULL,
   `idServicio` INT NOT NULL,
   PRIMARY KEY (`idDescuento`),
-  FOREIGN KEY (`idServicio`) REFERENCES `Servicio`(`idServicio`)
-);
+  INDEX `idServicio` (`idServicio` ASC) VISIBLE,
+  CONSTRAINT `descuento_ibfk_1`
+    FOREIGN KEY (`idServicio`)
+    REFERENCES `gestiondeportiva`.`servicio` (`idServicio`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Evidencia
-CREATE TABLE `Evidencia` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`evidencia`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`evidencia` (
   `idEvidencia` INT NOT NULL AUTO_INCREMENT,
-  `nombreArchivo` VARCHAR(100),
-  `urlArchivo` VARCHAR(100),
-  `archivo` LONGBLOB,
-  `idReporte` INT NOT NULL,
+  `nombreArchivo` VARCHAR(100) NULL DEFAULT NULL,
+  `urlArchivo` VARCHAR(100) NULL DEFAULT NULL,
+  `archivo` LONGBLOB NULL DEFAULT NULL,
+  `idComentario` INT NULL,
   PRIMARY KEY (`idEvidencia`),
-  FOREIGN KEY (`idReporte`) REFERENCES `Reporte`(`idReporte`)
-);
+  INDEX `fk_evidencia_comentario1_idx` (`idComentario` ASC) VISIBLE,
+  CONSTRAINT `fk_evidencia_comentario1`
+    FOREIGN KEY (`idComentario`)
+    REFERENCES `gestiondeportiva`.`comentario` (`idComentario`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Mantenimiento
-CREATE TABLE `Mantenimiento` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`mantenimiento`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`mantenimiento` (
   `idMantenimiento` INT NOT NULL AUTO_INCREMENT,
   `idServicio` INT NOT NULL,
-  `fechaInicio` DATE,
-  `fechaFin` DATE,
-  `horaInicio` TIME,
-  `horaFin` TIME,
+  `fechaInicio` DATE NULL DEFAULT NULL,
+  `fechaFin` DATE NULL DEFAULT NULL,
+  `horaInicio` TIME NULL DEFAULT NULL,
+  `horaFin` TIME NULL DEFAULT NULL,
   PRIMARY KEY (`idMantenimiento`),
-  FOREIGN KEY (`idServicio`) REFERENCES `Servicio`(`idServicio`)
-);
+  INDEX `idServicio` (`idServicio` ASC) VISIBLE,
+  CONSTRAINT `mantenimiento_ibfk_1`
+    FOREIGN KEY (`idServicio`)
+    REFERENCES `gestiondeportiva`.`servicio` (`idServicio`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Tarifa
-CREATE TABLE `Tarifa` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`tarifa`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`tarifa` (
   `idTarifa` INT NOT NULL AUTO_INCREMENT,
   `idServicio` INT NOT NULL,
-  `tipoServicio` VARCHAR(45),
-  `diaSemana` VARCHAR(45),
-  `horaInicio` TIME,
-  `horaFin` TIME,
-  `monto` DECIMAL(10,2),
+  `tipoServicio` VARCHAR(45) NULL DEFAULT NULL,
+  `diaSemana` VARCHAR(45) NULL DEFAULT NULL,
+  `horaInicio` TIME NULL DEFAULT NULL,
+  `horaFin` TIME NULL DEFAULT NULL,
+  `monto` DECIMAL(10,2) NULL DEFAULT NULL,
   PRIMARY KEY (`idTarifa`),
-  FOREIGN KEY (`idServicio`) REFERENCES `Servicio`(`idServicio`)
-);
+  INDEX `idServicio` (`idServicio` ASC) VISIBLE,
+  CONSTRAINT `tarifa_ibfk_1`
+    FOREIGN KEY (`idServicio`)
+    REFERENCES `gestiondeportiva`.`servicio` (`idServicio`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
--- Validacion
-CREATE TABLE `Validacion` (
+
+-- -----------------------------------------------------
+-- Table `gestiondeportiva`.`validacion`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`validacion` (
   `idValidacion` INT NOT NULL AUTO_INCREMENT,
-  `timeStampValidacion` DATETIME,
-  `latitudCoordinador` DECIMAL(10,8),
-  `longitudCoordinador` DECIMAL(11,8),
-  `distanciaError` DECIMAL(10,2),
-  `resultado` VARCHAR(45),
+  `timeStampValidacion` DATETIME NULL DEFAULT NULL,
+  `latitudCoordinador` DECIMAL(10,8) NULL DEFAULT NULL,
+  `longitudCoordinador` DECIMAL(11,8) NULL DEFAULT NULL,
+  `distanciaError` DECIMAL(10,2) NULL DEFAULT NULL,
+  `resultado` VARCHAR(45) NULL DEFAULT NULL,
   `idHorario` INT NOT NULL,
   PRIMARY KEY (`idValidacion`),
-  FOREIGN KEY (`idHorario`) REFERENCES `Horario`(`idHorario`)
-);
+  INDEX `idHorario` (`idHorario` ASC) VISIBLE,
+  CONSTRAINT `validacion_ibfk_1`
+    FOREIGN KEY (`idHorario`)
+    REFERENCES `gestiondeportiva`.`horario` (`idHorario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;

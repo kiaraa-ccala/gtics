@@ -1,10 +1,12 @@
 package com.example.proyectosanmiguel.repository;
+import com.example.proyectosanmiguel.dto.ComplejoAgendaAdminDto;
 import com.example.proyectosanmiguel.dto.ReporteFinancieroDto;
 import com.example.proyectosanmiguel.dto.ReporteHorarioDto;
 import com.example.proyectosanmiguel.dto.ReporteServiciosDto;
 import com.example.proyectosanmiguel.entity.*;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -61,6 +63,18 @@ public interface ComplejoRepository extends JpaRepository<ComplejoDeportivo, Int
             "GROUP BY h.idHorario",
             nativeQuery = true)
     List<ReporteHorarioDto> getReporteHorarios();
+    ComplejoDeportivo findFirstBySector(Sector sector);
+
+    @Query("SELECT cd.idComplejoDeportivo AS idComplejoDeportivo, " +
+            "cd.nombre AS nombreComplejo, cd.direccion AS direccionComplejo, " +
+            "s.nombre AS nombreSector, cd.numeroSoporte AS numeroSoporte, " +
+            "cd.latitud AS latitud, cd.longitud AS longitud "+
+            "FROM ComplejoDeportivo cd " +
+            "JOIN cd.sector s " +
+            "WHERE cd.idComplejoDeportivo = :id")
+    ComplejoAgendaAdminDto obtenerComplejoDto(@Param("id") Integer id);
+
+
 
 
 }

@@ -1,0 +1,1013 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="fragments/head_vecino :: head('Agregar Usuario')"></head>
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+
+    <div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+
+    <div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+
+    <div th:replace="fragments/navbar_vecino :: header"></div>
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Servicios</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Checkout</li>
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Checkout</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <!-- [ sample-page ] start -->
+          <div class="col-sm-12">
+            <div class="card">
+              <div class="card-body p-0">
+                <ul class="nav nav-tabs checkout-tabs mb-0" id="myTab" role="tablist">
+                  <li class="nav-item">
+                    <a
+                      class="nav-link active"
+                      id="ecomtab-tab-1"
+                      data-bs-toggle="tab"
+                      href="#ecomtab-1"
+                      role="tab"
+                      aria-controls="ecomtab-1"
+                      aria-selected="true"
+                    >
+                      <div class="d-flex align-items-center">
+                        <div class="avtar avtar-s">
+                          <i class="ti ti-shopping-cart"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                          <h5 class="mb-0">Detalles de servicios</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="ecomtab-tab-2"
+                      data-bs-toggle="tab"
+                      href="#ecomtab-2"
+                      role="tab"
+                      aria-controls="ecomtab-2"
+                      aria-selected="true"
+                    >
+                      <div class="d-flex align-items-center">
+                        <div class="avtar avtar-s">
+                          <i class="ti ti-building-skyscraper"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                          <h5 class="mb-0">Información</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a
+                      class="nav-link"
+                      id="ecomtab-tab-3"
+                      data-bs-toggle="tab"
+                      href="#ecomtab-3"
+                      role="tab"
+                      aria-controls="ecomtab-3"
+                      aria-selected="true"
+                    >
+                      <div class="d-flex align-items-center">
+                        <div class="avtar avtar-s">
+                          <i class="ti ti-credit-card"></i>
+                        </div>
+                        <div class="flex-grow-1 ms-2">
+                          <h5 class="mb-0">Pago</h5>
+                        </div>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="tab-content">
+              <div class="tab-pane show active" id="ecomtab-1" role="tabpanel" aria-labelledby="ecomtab-tab-1">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row align-items-center my-2">
+                          <div class="col">
+                            <div class="progress" style="height: 6px">
+                              <div class="progress-bar bg-primary" style="width: 33%"></div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <p class="mb-0 h6">Paso 1</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="card-body p-0 table-body">
+                        <div class="table-responsive">
+                          <table class="table mb-0" id="pc-dt-simple">
+                            <thead>
+                              <tr>
+                                <th>Productos</th>
+                                <th class="text-end">Precio</th>
+                                <th class="text-center">Cantidad</th>
+                                <th class="text-end">Total</th>
+                                <th class="text-end"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                    <img src="../assets/images/application/img-prod-2.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <div class="flex-grow-1 ms-3">
+                                      <h5 class="mb-1">Apple MacBook Pro</h5>
+                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">S/.100.00</h5>
+                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
+                                </td>
+                                <td class="text-center">
+                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                    <button type="button" onclick="decreaseValue('number')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-minus"></i
+                                    ></button>
+                                    <input
+                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                      type="text"
+                                      id="number"
+                                      value="0"
+                                    />
+                                    <button type="button" onclick="increaseValue('number')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-plus"></i
+                                    ></button>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">S/.100.00</h5>
+                                </td>
+                                <td class="text-end">
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                    <img src="../assets/images/application/img-prod-3.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <div class="flex-grow-1 ms-3">
+                                      <h5 class="mb-1">Apple MacBook Pro</h5>
+                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">S/.100.00</h5>
+                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
+                                </td>
+                                <td class="text-center">
+                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                    <button type="button" onclick="decreaseValue('number2')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-minus"></i
+                                    ></button>
+                                    <input
+                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                      type="text"
+                                      id="number2"
+                                      value="0"
+                                    />
+                                    <button type="button" onclick="increaseValue('number2')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-plus"></i
+                                    ></button>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">S/.100.00</h5>
+                                </td>
+                                <td class="text-end">
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                              <tr>
+                                <td>
+                                  <div class="d-flex align-items-center">
+                                    <img src="../assets/images/application/img-prod-4.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <div class="flex-grow-1 ms-3">
+                                      <h5 class="mb-1">Apple MacBook Pro</h5>
+                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                    </div>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">S/.100.00</h5>
+                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
+                                </td>
+                                <td class="text-center">
+                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
+                                    <button type="button" onclick="decreaseValue('number1')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-minus"></i
+                                    ></button>
+                                    <input
+                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
+                                      type="text"
+                                      id="number1"
+                                      value="0"
+                                    />
+                                    <button type="button" onclick="increaseValue('number1')" class="btn btn-link-secondary"
+                                      ><i class="ti ti-plus"></i
+                                    ></button>
+                                  </div>
+                                </td>
+                                <td class="text-end">
+                                  <h5 class="mb-0">S/.100.00</h5>
+                                </td>
+                                <td class="text-end">
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+                                </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="text-end">
+                      <a href="../application/ecom_product.html" class="btn btn-link-secondary d-inline-flex align-items-center"
+                        ><i class="ti ti-chevron-left me-2"></i> Regresar a servicios</a
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <div class="card">
+                      <div class="card-body">
+                        <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                          ¿Tienes un cupon de descuento?
+                        </button>
+                        <div class="input-group my-2">
+                          <input type="text" class="form-control" placeholder="Cupon de descuento aquí" />
+                          <button class="btn btn-outline-secondary" type="button">Aplicar</button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body py-2">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item px-0">
+                            <h5 class="mb-0">Resumen de servicios</h5>
+                          </li>
+                          <li class="list-group-item px-0">
+                            <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div><span class="text-muted">Sub Total</span>
+                          </li>
+                          <li class="list-group-item px-0">
+                            <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Descuento aplicado</span>
+                          </li>
+
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="card">
+                      <div class="card-body py-2">
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item px-0">
+                            <div class="float-end">
+                              <h5 class="mb-0">S/.300.00</h5>
+                            </div>
+                            <h5 class="mb-0 d-inline-block">Total</h5>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="d-grid mb-3">
+                      <button class="btn btn-primary">Place an Order</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id="ecomtab-2" role="tabpanel" aria-labelledby="ecomtab-tab-2">
+                <div class="row">
+                  <div class="col-xl-8">
+                    <div class="card">
+                      <div class="card-header">
+                        <div class="row align-items-center mb-3">
+                          <div class="col">
+                            <div class="progress" style="height: 6px">
+                              <div class="progress-bar bg-primary" style="width: 66%"></div>
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <p class="mb-0 h6">Paso 2</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="collapse multi-collapse show" id="multiCollapseExample1">
+                        <div class="card-body border-bottom">
+                          <div class="row align-items-center">
+                            <div class="col">
+                              <h5 class="mb-0">Datos del cliente</h5>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="card-body">
+
+                          <div class="card-body">
+                            <div class="row">
+                              <!-- Columna izquierda -->
+                              <div class="col-md-6">
+                                <!-- Nombres -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Nombres:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tus nombres" />
+                                  </div>
+                                </div>
+
+                                <!-- Correo -->
+
+
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    DNI:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tu número de DNI" />
+                                  </div>
+                                </div>
+
+                                <!-- Teléfono -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Teléfono:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tu número de celular" />
+                                  </div>
+                                </div>
+
+                                <!-- DNI -->
+
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Correo:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico" />
+                                  </div>
+                                </div>
+
+                              </div>
+
+                              <!-- Columna derecha -->
+                              <div class="col-md-6">
+                                <!-- Apellidos -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Apellidos:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tus apellidos" />
+                                  </div>
+                                </div>
+
+                                <!-- Fecha de nacimiento -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Fecha de nacimiento:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="date" class="form-control" />
+                                  </div>
+                                </div>
+
+                                <!-- Ciudad -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Distrito:
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tu distrito de residencia" />
+                                  </div>
+                                </div>
+
+                                <!-- Dirección -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">
+                                    Dirección :
+                                  </label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tu dirección completa" />
+                                  </div>
+                                </div>
+                              </div>
+
+                              <!-- Checkbox y botón -->
+                            </div>
+                          </div>
+
+
+
+
+
+                        </div>
+                      </div>
+
+                    </div>
+                    <div class="d-flex justify-content-end mb-3">
+                      <button class="btn btn-link-primary"
+                        ><i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Regresar a servicios</button
+                      >
+                    </div>
+                  </div>
+                  <div class="col-xl-4">
+                    <!-- Cupon -->
+                    <div class="card">
+                      <div class="card-body">
+                        <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                          ¿Tienes un cupón de descuento?
+                        </button>
+                        <div class="input-group my-2">
+                          <input type="text" class="form-control" placeholder="Cupón de descuento aquí" />
+                          <button class="btn btn-outline-secondary" type="button">Aplicar</button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Resumen de productos colapsable -->
+                    <div class="card">
+                      <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Resumen de servicios</h5>
+                        <a data-bs-toggle="collapse" href="#productosResumen2" role="button" aria-expanded="false" aria-controls="productosResumen2" class="text-decoration-none">
+                          <i class="ti ti-chevron-down"></i>
+                        </a>
+                      </div>
+
+                      <div class="collapse" id="productosResumen2">
+                        <div class="card-body p-0">
+                          <ul class="list-group list-group-flush">
+                            <!-- Producto 1 -->
+                            <li class="list-group-item">
+                              <div class="d-flex align-items-start">
+                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-2.jpg" alt="Imagen producto" />
+                                <div class="flex-grow-1 mx-2">
+                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                  <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                </div>
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                  <i class="ti ti-trash f-20"></i>
+                                </a>
+                              </div>
+                            </li>
+
+                            <!-- Producto 2 -->
+                            <li class="list-group-item">
+                              <div class="d-flex align-items-start">
+                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-3.jpg" alt="Imagen producto" />
+                                <div class="flex-grow-1 mx-2">
+                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                  <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                </div>
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                  <i class="ti ti-trash f-20"></i>
+                                </a>
+                              </div>
+                            </li>
+
+                            <!-- Producto 3 -->
+                            <li class="list-group-item">
+                              <div class="d-flex align-items-start">
+                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-4.jpg" alt="Imagen producto" />
+                                <div class="flex-grow-1 mx-2">
+                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                  <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                </div>
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                  <i class="ti ti-trash f-20"></i>
+                                </a>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+
+                      <!-- Totales siempre visibles JUNTOS -->
+                      <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                          <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                          <span class="text-muted">Sub Total</span>
+                        </li>
+                        <li class="list-group-item">
+                          <div class="float-end"> <h5 class="mb-0">-</h5> </div>
+                          <span class="text-muted">Descuento aplicado</span>
+                        </li>
+                        <li class="list-group-item">
+                          <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                          <h5 class="mb-0 d-inline-block">Total</h5>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <!-- Botón de checkout -->
+                    <div class="d-grid mb-3 mt-2">
+                      <button class="btn btn-primary">Process to Checkout</button>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div class="tab-pane" id="ecomtab-3" role="tabpanel" aria-labelledby="ecomtab-tab-3">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-xl-8">
+                      <div class="card">
+                        <div class="card-header">
+                          <div class="row align-items-center my-2">
+                            <div class="col">
+                              <div class="progress" style="height: 6px">
+                                <div class="progress-bar bg-primary" style="width: 99%"></div>
+                              </div>
+                            </div>
+                            <div class="col-auto">
+                              <p class="mb-0 h6">Paso 3</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="card-body border-bottom">
+                          <h5>Proceso de pago</h5>
+                        </div>
+                        <div class="card-body">
+
+                          <div class="row">
+                            <div class="col-xl-12 col-xxl-4">
+                              <div class="address-check border rounded">
+                                <div class="form-check">
+                                  <input
+                                    type="radio"
+                                    name="payoptradio1"
+                                    class="form-check-input input-primary"
+                                    id="payopn-check-1"
+                                    checked=""
+                                  />
+                                  <label class="form-check-label d-block" for="payopn-check-1">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="h5 mb-3 d-block">Tarjeta de credito/debito</span>
+                                      <span class="d-flex align-items-center">
+                                        <span class="f-12 badge bg-success me-3">5% OFF</span>
+                                        <img src="../assets/images/application/card.png" alt="img" class="img-fluid ms-1" />
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                              <div class="address-check border rounded">
+                                <div class="form-check">
+                                  <input type="radio" name="payoptradio1" class="form-check-input input-primary" id="payopn-check-2" />
+                                  <label class="form-check-label d-block" for="payopn-check-2">
+                                    <span class="card-body p-3 d-block">
+                                      <span class="h5 mb-3 d-block">Paga con PayPal</span>
+                                      <span class="d-flex align-items-center">
+                                        <span class="f-12 badge bg-success me-3">5% OFF</span>
+                                        <img src="../assets/images/application/paypal.png" alt="img" class="img-fluid ms-1" />
+                                      </span>
+                                    </span>
+                                  </label>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="col-xl-6 col-xxl-4">
+                              <div class="address-check border rounded">
+                                  <div class="form-check">
+                                      <input type="radio" name="payoptradio1" class="form-check-input input-primary" id="payopn-check-3" />
+                                      <label class="form-check-label d-block" for="payopn-check-3" id="labelPagoEfectivo">
+                                        <span class="card-body p-3 d-block">
+                                          <span class="d-flex align-items-center">
+                                            <span>
+                                              <span class="h5 mb-3 d-block">
+                                                Dinero en efectivo
+                                              </span>
+                                              <span class="f-12 text-muted">Cuando uses este medio debe adjuntar recibo de pago.</span>
+                                            </span>
+                                          </span>
+                                        </span>
+                                      </label>
+                                  </div>
+
+                              </div>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-12 mt-2">
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label">
+                                  Número de tarjeta:
+                                  <small class="text-muted d-block">Ingresa los 16 dígitos que figuran en la tarjeta</small>
+                                </label>
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" />
+                                </div>
+                              </div>
+
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label">
+                                  Fecha de vencimiento:
+                                  <small class="text-muted d-block">Ingresa la fecha de expiración de la tarjeta</small>
+                                </label>
+                                <div class="col-lg-8">
+                                  <div class="row">
+                                    <div class="col-6">
+                                      <input type="text" class="form-control" placeholder="Mes (MM)" />
+                                    </div>
+                                    <div class="col-6">
+                                      <input type="text" class="form-control" placeholder="Año (AA)" />
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label">
+                                  Código CVV:
+                                  <small class="text-muted d-block">Ingresa el código de 3 o 4 dígitos que aparece en tu tarjeta</small>
+                                </label>
+                                <div class="col-lg-8">
+                                  <input type="text" class="form-control" placeholder="CVV" />
+                                </div>
+                              </div>
+
+                              <div class="mb-3 row">
+                                <label class="col-lg-4 col-form-label">
+                                  Correo electronico:
+                                  <small class="text-muted d-block">Ingresa su correo electronico</small>
+                                </label>
+                                <div class="col-lg-8">
+                                  <input type="password" class="form-control" placeholder="Correo electronico" />
+                                </div>
+                              </div>
+
+                              <div class="text-end btn-page mb-0 mt-4">
+                                <button class="btn btn-outline-secondary">Cancelar</button>
+                                <button class="btn btn-primary">Guardar y continuar</button>
+                              </div>
+                            </div>
+
+                          </div>
+                        </div>
+                      </div>
+                      <div class="d-flex justify-content-end mb-3">
+                        <button class="btn btn-link-primary"
+                          ><i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Regresar a servicios</button
+                        >
+                      </div>
+                    </div>
+                    <div class="col-xl-4">
+
+                      <div class="card">
+                        <div class="card-body">
+                          <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                            ¿Tienes un cupon de descuento?
+                          </button>
+                          <div class="input-group my-2">
+                            <input type="text" class="form-control" placeholder="Cupon de descuento aquí" />
+                            <button class="btn btn-outline-secondary" type="button">Aplicar</button>
+                          </div>
+                        </div>
+                      </div>
+                      <!-- Resumen de productos colapsable -->
+                      <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                          <h5 class="mb-0">Resumen de servicios</h5>
+                          <a data-bs-toggle="collapse" href="#productosResumen3" role="button" aria-expanded="false" aria-controls="productosResumen2" class="text-decoration-none">
+                            <i class="ti ti-chevron-down"></i>
+                          </a>
+                        </div>
+
+                        <div class="collapse" id="productosResumen3">
+                          <div class="card-body p-0">
+                            <ul class="list-group list-group-flush">
+                              <!-- Producto 1 -->
+                              <li class="list-group-item">
+                                <div class="d-flex align-items-start">
+                                  <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-2.jpg" alt="Imagen producto" />
+                                  <div class="flex-grow-1 mx-2">
+                                    <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                    <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                    <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                  </div>
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                    <i class="ti ti-trash f-20"></i>
+                                  </a>
+                                </div>
+                              </li>
+
+                              <!-- Producto 2 -->
+                              <li class="list-group-item">
+                                <div class="d-flex align-items-start">
+                                  <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-3.jpg" alt="Imagen producto" />
+                                  <div class="flex-grow-1 mx-2">
+                                    <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                    <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                    <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                  </div>
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                    <i class="ti ti-trash f-20"></i>
+                                  </a>
+                                </div>
+                              </li>
+
+                              <!-- Producto 3 -->
+                              <li class="list-group-item">
+                                <div class="d-flex align-items-start">
+                                  <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-4.jpg" alt="Imagen producto" />
+                                  <div class="flex-grow-1 mx-2">
+                                    <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
+                                    <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
+                                    <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                  </div>
+                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                    <i class="ti ti-trash f-20"></i>
+                                  </a>
+                                </div>
+                              </li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        <!-- Totales siempre visibles JUNTOS -->
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item">
+                            <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                            <span class="text-muted">Sub Total</span>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="float-end"> <h5 class="mb-0">-</h5> </div>
+                            <span class="text-muted">Descuento aplicado</span>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                            <h5 class="mb-0 d-inline-block">Total</h5>
+                          </li>
+                        </ul>
+                      </div>
+
+
+
+                      <div class="d-grid mb-3">
+                        <button class="btn btn-primary">Process to Payment</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- [ sample-page ] end -->
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <!-- Modal Bootstrap -->
+    <!-- Modal -->
+    <div class="modal fade" id="uploadFile" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5">Subir archivos</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <div class="pc-uppy-3">
+              <div class="for-DragDrop"></div>
+              <div class="for-ProgressBar"></div>
+              <div class="uploaded-files mt-3">
+                <h5>Archivos subidos:</h5>
+                <ol></ol>
+              </div>
+            </div>
+            <hr class="my-3 border border-secondary-subtle" />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Agregar archivos</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- [ Main Content ] end -->
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+
+    <!-- Required Js -->
+    <!-- Required Js -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+    <!-- [Page Specific JS] -->
+    <script th:src="@{/assets/js/plugins/uppy.min.js}"></script>
+
+    <script>
+      const onUploadSuccess = (elForUploadedFiles) => (file, response) => {
+        const url = response.uploadURL;
+        const fileName = file.name;
+
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        a.href = url;
+        a.target = '_blank';
+        a.appendChild(document.createTextNode(fileName));
+        li.appendChild(a);
+
+        document.querySelector(elForUploadedFiles).appendChild(li);
+      };
+
+      const uppy = new Uppy.Uppy({
+        debug: true,
+        autoProceed: true,
+        locale: {
+          strings: {
+            dropHereOr: 'Arrastra aquí o selecciona',
+            browse: 'explora'
+          }
+        }
+      });
+
+      uppy.use(Uppy.DragDrop, {
+        target: '.pc-uppy-3 .for-DragDrop'
+      });
+
+      uppy.use(Uppy.Tus, {
+        endpoint: 'https://tusd.tusdemo.net/files/'
+      });
+
+      uppy.use(Uppy.ProgressBar, {
+        target: '.pc-uppy-3 .for-ProgressBar',
+        hideAfterFinish: false
+      });
+
+      uppy.on('upload-success', onUploadSuccess('.pc-uppy-3 .uploaded-files ol'));
+    </script>
+
+    <script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+    <!-- [Page Specific JS] start -->
+    <script>
+      function change_tab(tab_name) {
+        var someTabTriggerEl = document.querySelector('a[href="' + tab_name + '"]');
+        var actTab = new bootstrap.Tab(someTabTriggerEl);
+        actTab.show();
+      }
+      // quantity start
+      function increaseValue(counter) {
+        var value = parseInt(document.getElementById(counter).value, 10);
+        value = isNaN(value) ? 0 : value;
+        value++;
+        document.getElementById(counter).value = value;
+      }
+      function decreaseValue(counter) {
+        var value = parseInt(document.getElementById(counter).value, 10);
+        value = isNaN(value) ? 0 : value;
+        value < 1 ? (value = 1) : '';
+        value--;
+        document.getElementById(counter).value = value;
+      }
+      // quantity end
+    </script>
+
+    <script>
+      document.getElementById("labelPagoEfectivo").addEventListener("click", function () {
+        const modal = new bootstrap.Modal(document.getElementById('uploadFile'));
+        modal.show();
+      });
+    </script>
+
+    <!-- [Page Specific JS] end -->
+
+    <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+
+    <style>
+      /* Fuerza la visibilidad del botón "explora" generado por Uppy */
+      .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"] {
+        display: block !important;
+        width: auto !important;
+        height: auto !important;
+        position: static !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
+        visibility: visible !important;
+      }
+
+      /* Estilo visual del botón como texto subrayado */
+      .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"]::file-selector-button {
+        color: #0d6efd;
+        background: none;
+        border: none;
+        padding: 0;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    </style>
+
+  </body>
+  <!-- [Body] end -->
+</html>

@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="en">
+  <!-- [Head] start -->
+
+  <head th:replace="fragments/head_coordinador :: head('Bienvenido a tus reportes')"></head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+    <div th:replace="fragments/navbar_coordinador :: header"></div>
+<!-- [ Header ] end -->
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Sección de reportes</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="container-fluid">
+            <div class="row g-3">
+              <!-- Sección del gráfico circular (se mantiene igual) -->
+              <div class="col-12 col-lg-6">
+                <div class="card h-100">
+                  <div class="card-body d-flex flex-column">
+                    <div class="d-flex align-items-center justify-content-between mb-3">
+                      <h4 class="mb-0">Distribución de reportes</h4>
+                      <div class="dropdown">
+                        <a class="avtar avtar-s btn-link-secondary dropdown-toggle arrow-none"
+                           href="#" data-bs-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                        </a>
+                      </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center align-items-center flex-grow-1 py-3">
+                      <div style="width: 100%; max-width: 320px; aspect-ratio: 1/1;">
+                        <canvas id="category-donut-chart"></canvas>
+                      </div>
+                    </div>
+                    
+                    <div class="d-grid mt-auto pt-3">
+                      <button type="button" class="btn btn-primary d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#modalCrearReporte">
+                        <i class="ti ti-plus"></i>Añadir nuevo reporte
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          
+              <!-- Sección de reportes (derecha) - SOLO CAMBIÉ EL ESPACIADO -->
+              <div class="col-12 col-lg-6">
+                <div class="card h-100">
+                  <div class="card-header">
+                    <h5 class="mb-0">Tus reportes</h5>
+                  </div>
+                  <div class="card-body d-flex flex-column">
+                    <div class="d-grid gap-3" style="margin-bottom: 1rem;"> <!-- Ajusté este gap -->
+                      <a th:each="reporte : ${ultimosReportes}" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2">
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0 me-3">
+                            <span class="p-1 d-block rounded-circle"
+                                  th:classappend=" ${reporte.estado == 'Cerrado'} ? 'bg-success' :
+                                                (${reporte.estado == 'En proceso'} ? 'bg-warning' :
+                                                (${reporte.estado == 'Abierto'} ? 'bg-danger' : 'bg-secondary'))">
+                            <span class="visually-hidden">Estado</span>
+                          </span>
+                          </div>
+                          <div class="flex-grow-1 text-start">
+                            <h6 class="mb-0" th:text="${reporte.asunto}">
+                              <span class="visually-hidden">Titulo</span>
+                            </h6>
+                            <hr>
+                            <p class="mb-0" th:text="${reporte.descripcion}">
+                              <span class="visually-hidden">Descripción</span>
+                            </p>
+                          </div>
+                        </div>
+                      </a>
+
+                    </div>
+                    
+                    <div class="d-grid mt-auto"> <!-- Mantengo el botón abajo -->
+                      <a th:href="@{/coord/reportes/ver}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                        <i class="ti ti-plus"></i> Ver mis reportes
+                      </a>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Script de Chart.js (se mantiene igual) -->
+          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+          <script>
+          document.addEventListener('DOMContentLoaded', function() {
+            const ctx = document.getElementById('category-donut-chart');
+            
+            new Chart(ctx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Recibido', 'No recibido'],
+                datasets: [{
+                  data: [70, 30],
+                  backgroundColor: ['#28a745', '#dc3545'],
+                  borderWidth: 2,
+                  borderColor: '#fff'
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                  legend: {
+                    position: 'bottom',
+                    labels: {
+                      boxWidth: 12,
+                      padding: 15,
+                      font: {
+                        size: 13
+                      },
+                      usePointStyle: true
+                    }
+                  }
+                },
+                cutout: '72%',
+                animation: {
+                  animateScale: true,
+                  animateRotate: true
+                }
+              }
+            });
+          });
+          </script>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer" style="background: #e0f6ff">
+      <div class="footer-wrapper container-fluid">
+        <div class="row">
+          <div class="col my-1">
+            <p class="m-0">
+              © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+    <!-- [Page Specific JS] start -->
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+    <!-- custom widgets js -->
+    <script th:src="@{/assets/js/widgets/total-line-1-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-line-2-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-line-3-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/cashflow-bar-chart.js}"></script>
+    <!-- Required Js -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+    <script th:src="@{/assets/js/widgets/category-donut-chart.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('category-donut-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Accidentes', 'Uso indebido', 'Conchas mal estado', 'Falta iluminación', 'Pérdida implementos'],
+        datasets: [{
+          data: [15, 20, 10, 25, 30],
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#9966FF'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false // Ocultamos la leyenda del gráfico porque la tenemos aparte
+          }
+        }
+      }
+    });
+  });
+</script>
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+
+
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+    <style>
+        .legend-color {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          margin-right: 5px;
+          border-radius: 2px;
+        }
+        .chart-legend {
+          padding-top: 30px;
+        }
+      </style>
+
+    <!-- Modal de crear reporte -->
+    <div class="modal fade" id="modalCrearReporte" tabindex="-1" aria-labelledby="modalCrearReporteLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Crear Reporte</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formReporte" action="/coord/reportes/crear" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="mb-3 col-md-6">
+                        <label for="tipoReporte" class="form-label">Tipo de Reporte</label>
+                        <select class="form-select" id="tipoReporte" name="tipoReporte" required>
+                            <option value="Alerta">Alerta</option>
+                            <option value="Solicitud de reparación">Solicitud de reparación</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3 col-md-6">
+                        <label for="asunto" class="form-label">Asunto</label>
+                        <input type="text" class="form-control" id="asunto" name="asunto" required>
+                    </div>
+
+                    <div class="mb-3 col-md-12">
+                        <label for="descripcion" class="form-label">Descripción</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="4" required></textarea>
+                    </div>
+
+                    <div class="mb-3 col-md-12">
+                        <label for="imagenSituacion" class="form-label">Imagen de la situación (.png)</label>
+                        <input class="form-control" type="file" id="imagenSituacion" name="imagenSituacion" accept=".png">
+                        <div class="mt-3 d-flex justify-content-center">
+                            <img id="previewSituacion"
+                                 src="#"
+                                 alt="Previsualización"
+                                 class="img-thumbnail"
+                                 style="max-width: 80%; max-height: 200px; display: none; border: 2px solid #ccc; border-radius: 8px;">
+                        </div>
+                    </div>
+
+                    <!-- Campos ocultos -->
+                    <input type="hidden" id="fechaRecepcion" name="fechaRecepcion">
+                    <input type="hidden" name="estado" value="Abierto">
+                    <input type="hidden" name="respuesta" value="">
+                    <input type="hidden" name="idReserva" value="">
+                    <input type="hidden" name="idHorario" value="243">
+                </div>
+
+              <!-- Botón abre el popup -->
+              <div class="text-end">
+                <button type="button" class="btn btn-primary" onclick="openConfirmPopup()">Enviar</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Popup de confirmación -->
+    <div id="popupConfirm" class="popup-overlay">
+      <div class="popup-box">
+        <h5>¿Deseas enviar el reporte?</h5>
+        <button id="btnConfirmSubmit" class="btn btn-success mt-2">Enviar Reporte</button>
+        <button class="btn btn-secondary mt-2" onclick="closeConfirmPopup()">Regresar</button>
+      </div>
+    </div>
+
+    <!-- Popup de carga -->
+    <div id="popupLoading" class="popup-overlay">
+      <div class="popup-box">
+        <h5>Enviando reporte...</h5>
+        <div class="spinner-border text-primary mt-3" role="status">
+          <span class="visually-hidden">Cargando...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Estilos para los popups -->
+    <style>
+      .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 2000;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        display: none;
+        justify-content: center;
+        align-items: center;
+      }
+      .popup-box {
+        background: #fff;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        width: 300px;
+      }
+    </style>
+
+    <!-- JavaScript para popups y fecha -->
+    <script>
+      function openConfirmPopup() {
+        document.getElementById("fechaRecepcion").value = new Date().toISOString().split('T')[0];
+
+        // Cierra el modal usando la API de Bootstrap
+        const modalElement = document.getElementById("modalCrearReporte");
+        const modalInstance = bootstrap.Modal.getInstance(modalElement);
+        if (modalInstance) {
+          modalInstance.hide();
+        }
+
+        // Espera a que el modal se cierre y limpia manualmente el backdrop si queda
+        setTimeout(() => {
+          // Elimina backdrop si todavía existe
+          const backdrop = document.querySelector('.modal-backdrop');
+          if (backdrop) {
+            backdrop.remove();
+          }
+
+          // Elimina clase modal-open que bloquea el scroll y clics
+          document.body.classList.remove('modal-open');
+
+          // Ahora sí muestra el popup
+          document.getElementById('popupConfirm').style.display = 'flex';
+        }, 300); // 300ms: tiempo típico de animación del modal
+
+        // Lógica para restaurar el modal si se cancela
+        const botonRegresar = document.querySelector('#popupConfirm button.btn-secondary');
+        function volverAMostrarModal() {
+          document.getElementById('popupConfirm').style.display = 'none';
+
+          // Reabre el modal
+          const nuevaInstancia = new bootstrap.Modal(modalElement);
+          nuevaInstancia.show();
+
+          // Limpia el listener para no duplicar
+          botonRegresar.removeEventListener('click', volverAMostrarModal);
+        }
+
+        botonRegresar.addEventListener('click', volverAMostrarModal);
+      }
+
+
+
+      function closeConfirmPopup() {
+        document.getElementById('popupConfirm').style.display = 'none';
+      }
+
+      document.getElementById("btnConfirmSubmit").addEventListener("click", function () {
+        closeConfirmPopup();
+        document.getElementById("popupLoading").style.display = "flex";
+        document.getElementById("formReporte").submit();
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const input = document.getElementById('imagenSituacion');
+            const preview = document.getElementById('previewSituacion');
+
+            input.addEventListener('change', function () {
+                const file = this.files[0];
+
+                if (file && file.type === 'image/png') {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    }
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.src = '#';
+                    preview.style.display = 'none';
+                    alert('Por favor, selecciona una imagen en formato PNG.');
+                }
+            });
+        });
+    </script>
+<style>
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+
+  .custom-popup {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeInPopup 0.25s ease-in-out;
+  }
+
+  @keyframes fadeInPopup {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .popup-overlay .btn {
+    min-width: 140px;
+  }
+
+  .popup-overlay .btn-outline-secondary {
+    border-color: #ccc;
+    color: #333;
+  }
+
+  .popup-overlay .btn-outline-secondary:hover {
+    background-color: #f1f1f1;
+  }
+</style>
+
+
+<script>
+  const input = document.getElementById('imagenSituacion');
+  const preview = document.getElementById('previewSituacion');
+
+  input.addEventListener('change', function () {
+    const file = this.files[0];
+
+    if (file && file.type === 'image/png') {
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      }
+
+      reader.readAsDataURL(file);
+    } else {
+      preview.src = '#';
+      preview.style.display = 'none';
+      alert('Por favor, selecciona una imagen en formato PNG.');
+    }
+  });
+</script>
+
+
+  </body>
+  <!-- [Body] end -->
+</html>

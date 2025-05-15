@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<!-- [Head] start -->
+
+<head th:replace="fragments/head_admin :: head('Agenda - Administración')"></head>
+<!-- [Head] end -->
+<!-- [Body] Start -->
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+<!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<div th:replace="fragments/Sidebar_Admin :: sidebar"></div>
+
+<div th:replace="fragments/navbar :: header"></div>
+<!-- [ Main Content ] start -->
+<div class="pc-container">
+  <div class="pc-content">
+    <!-- Main Heading -->
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <h2>Añadir Horarios Semanales</h2>
+      </div>
+    </div>
+
+    <!-- Steps Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="card-title">Primero selecciona un Coordinador y una Semana para asignar horarios.</h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <!-- Coordinador Selection -->
+          <div class="col-md-6">
+            <label for="coordinador">Seleccionar Coordinador</label>
+            <select class="form-select" id="coordinador" name="coordinador" required>
+              <option value="" disabled selected>Seleccionar Coordinador</option>
+              <th:block th:each="coordinador : ${coordinadores}">
+                <option th:value="${coordinador.idUsuario}" th:text="${coordinador.nombre}"></option>
+              </th:block>
+            </select>
+          </div>
+
+          <!-- Semana Selection -->
+          <div class="col-md-6" id="semanaContainer">
+            <label for="semana">Seleccionar Semana</label>
+            <input type="week" id="semana" class="form-control" name="semana">
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="seccionTurnosCalendario" class="d-none">
+      <!-- Wizard Navigation -->
+      <ul class="nav nav-pills mb-4" id="wizard-tabs1">
+        <li class="nav-item">
+          <a class="nav-link active" id="turnos-tab" data-bs-toggle="pill" href="#turnos">Turnos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="calendario-tab" data-bs-toggle="pill" href="#calendario">Vista Calendario</a>
+        </li>
+      </ul>
+      <div class="tab-content" id="wizard-content1">
+        <!-- Turnos Tab -->
+        <div class="tab-pane fade show active" id="turnos">
+          <h3 class="mb-4">Configuración de Turnos</h3>
+          <form>
+
+            <!-- Wizard Navigation for the Days of the Week -->
+            <ul class="nav nav-pills mb-4" id="wizard-tabs2">
+              <li class="nav-item">
+                <a class="nav-link active" id="lunes-tab" data-bs-toggle="pill" href="#lunes">Lunes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="martes-tab" data-bs-toggle="pill" href="#martes">Martes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="miercoles-tab" data-bs-toggle="pill" href="#miercoles">Miércoles</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="jueves-tab" data-bs-toggle="pill" href="#jueves">Jueves</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="viernes-tab" data-bs-toggle="pill" href="#viernes">Viernes</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="sabado-tab" data-bs-toggle="pill" href="#sabado">Sábado</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" id="domingo-tab" data-bs-toggle="pill" href="#domingo">Domingo</a>
+              </li>
+            </ul>
+            <div class="tab-content" id="wizard-content2">
+              <!-- Lunes -->
+              <div class="tab-pane fade show active" id="lunes">
+                <div class="mb-3">
+                  <label for="selectComplejoLunes" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoLunes" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioLunes" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioLunes">
+                  </div>
+
+                  <div class="col-md-5">
+                    <label for="horaFinLunes" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinLunes">
+                  </div>
+
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Espacio</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle me-2"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Lunes:</strong></p>
+                    <ul id="listaTurnosLunes" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Martes -->
+              <div class="tab-pane fade" id="martes">
+                <div class="mb-3">
+                  <label for="selectComplejoMartes" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoMartes" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioMartes" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioMartes">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinMartes" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinMartes">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Espacio</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle me-2"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Martes:</strong></p>
+                    <ul id="listaTurnosMartes" class="list-group mb-4 ms-1"></ul>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Miércoles -->
+              <div class="tab-pane fade" id="miercoles">
+                <div class="mb-3">
+                  <label for="selectComplejoMiercoles" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoMiercoles" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioMiercoles" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioMiercoles">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinMiercoles" class="form-label">Hora de Fin</label>
+                    <input type="time" step="3600" class="form-control" id="horaFinMiercoles">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Espacio</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle me-2"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Martes:</strong></p>
+                    <ul id="listaTurnosMiercoles" class="list-group mb-4 ms-1"></ul>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Jueves -->
+              <div class="tab-pane fade" id="jueves">
+                <div class="mb-3">
+                  <label for="selectComplejoJueves" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoJueves" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioJueves" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioJueves">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinJueves" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinJueves">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Jueves:</strong></p>
+                    <ul id="listaTurnosJueves" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Viernes -->
+              <div class="tab-pane fade" id="viernes">
+                <div class="mb-3">
+                  <label for="selectComplejoViernes" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoViernes" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioViernes" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioViernes">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinViernes" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinViernes">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Viernes:</strong></p>
+                    <ul id="listaTurnosViernes" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Sábado -->
+              <div class="tab-pane fade" id="sabado">
+                <div class="mb-3">
+                  <label for="selectComplejoSabado" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoSabado" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioSabado" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioSabado">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinSabado" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinSabado">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Sábado:</strong></p>
+                    <ul id="listaTurnosSabado" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+              <!-- Domingo -->
+              <div class="tab-pane fade" id="domingo">
+                <div class="mb-3">
+                  <label for="selectComplejoDomingo" class="form-label">Complejo</label>
+                  <select name="complejo" id="selectComplejoDomingo" class="form-select">
+                    <th:block th:each="cmp : ${complejos}">
+                      <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                    </th:block>
+                  </select>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-5">
+                    <label for="horaInicioDomingo" class="form-label">Hora de Inicio</label>
+                    <input type="time" class="form-control" id="horaInicioDomingo">
+                  </div>
+                  <div class="col-md-5">
+                    <label for="horaFinDomingo" class="form-label">Hora de Fin</label>
+                    <input type="time" class="form-control" id="horaFinDomingo">
+                  </div>
+                  <div class="col-md-2">
+                    <label class="form-label invisible">Agregar</label>
+                    <button type="button" class="btn btn-info w-100 d-flex align-items-center justify-content-center gap-2">
+                      <i class="fas fa-plus-circle"></i> Agregar
+                    </button>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-md-12">
+                    <p><strong>Turnos Día Domingo:</strong></p>
+                    <ul id="listaTurnosDomingo" class="list-group mb-4"></ul>
+                  </div>
+                </div>
+              </div>
+
+
+
+            </div>
+
+
+
+
+          </form>
+        </div>
+
+        <!-- Calendario Tab -->
+        <div class="tab-pane fade" id="calendario">
+          <h3 class="mb-4">Vista Calendario</h3>
+          <div class="table-responsive">
+            <table class="table table-bordered text-center align-middle" id="tablaCalendario">
+              <thead class="table-light">
+              <tr>
+                <th>Hora</th>
+                <th>Lunes</th>
+                <th>Martes</th>
+                <th>Miércoles</th>
+                <th>Jueves</th>
+                <th>Viernes</th>
+                <th>Sábado</th>
+                <th>Domingo</th>
+              </tr>
+              </thead>
+              <tbody id="bodyCalendario">
+              <!-- Las filas se llenarán dinámicamente -->
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Save Button -->
+      <div class="text-center mb-4">
+        <button id="btnGuardarCambios" class="btn btn-primary">Guardar</button>
+      </div>
+
+    </div>
+
+
+  </div>
+
+  <!-- [ sample-page ] start -->
+
+    <!-- [ sample-page ] end -->
+  </div>
+  <!-- [ Main Content ] end -->
+
+
+<div class="modal fade" id="modalInfoSeleccionado" tabindex="-1" aria-labelledby="modalInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalInfoLabel">Información del seleccionado</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div id="contenidoModalInfo">
+          <!-- Aquí se llena dinámicamente -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="calendar-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="calendar-modal-title f-w-600 text-truncate">Modal title</h3>
+        <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
+          <i class="ti ti-x f-20"></i>
+        </a>
+      </div>
+      <div class="modal-body">
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <div class="avtar avtar-xs bg-light-secondary">
+              <i class="ti ti-heading f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h5 class="mb-1"><b>Coordinador</b></h5>
+            <p class="pc-event-title text-muted"></p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <div class="avtar avtar-xs bg-light-warning">
+              <i class="ti ti-map-pin f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h5 class="mb-1"><b>Complejo Deportivo</b></h5>
+            <p class="pc-event-venue text-muted"></p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <div class="avtar avtar-xs bg-light-danger">
+              <i class="ti ti-calendar-event f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h5 class="mb-1"><b>Fecha</b></h5>
+            <p class="pc-event-date text-muted"></p>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="flex-shrink-0">
+            <div class="avtar avtar-xs bg-light-primary">
+              <i class="ti ti-file-text f-20"></i>
+            </div>
+          </div>
+          <div class="flex-grow-1 ms-3">
+            <h5 class="mb-1"><b>Descripcion</b></h5>
+            <p class="pc-event-description text-muted"></p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+        <ul class="list-inline me-auto mb-0">
+          <li class="list-inline-item align-bottom">
+            <a
+                    href="#"
+                    id="pc_event_remove"
+                    class="avtar avtar-s btn-link-danger btn-pc-default w-sm-auto"
+                    data-bs-toggle="tooltip"
+                    title="Delete"
+                    data-id=""
+            >
+              <i class="ti ti-trash f-18"></i>
+            </a>
+          </li>
+          <li class="list-inline-item align-bottom">
+            <a href="#" id="pc_event_edit" class="avtar avtar-s btn-link-success btn-pc-default" data-bs-toggle="tooltip" title="Edit">
+              <i class="ti ti-edit-circle f-18"></i>
+            </a>
+          </li>
+        </ul>
+        <div class="flex-grow-1 text-end">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="offcanvas offcanvas-end cal-event-offcanvas" tabindex="-1" id="calendar-add_edit_event">
+  <div class="offcanvas-header">
+    <h3 class="f-w-600 text-truncate">Add Events</h3>
+    <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="offcanvas">
+      <i class="ti ti-x f-20"></i>
+    </a>
+  </div>
+  <div class="offcanvas-body">
+    <form id="pc-form-event" novalidate>
+      <div class="mb-3 hidden" >
+        <label class="form-label">Title</label>
+        <input type="email" class="form-control" id="pc-e-title" placeholder="Enter event title" autofocus />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Venue</label>
+        <input type="email" class="form-control" id="pc-e-venue" placeholder="Enter event venue" />
+      </div>
+      <div>
+        <input type="hidden" class="form-control" id="pc-e-sdate" />
+        <input type="hidden" class="form-control" id="pc-e-edate" />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea class="form-control" placeholder="Enter event description" rows="3" id="pc-e-description"></textarea>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Type</label>
+        <select class="form-select" id="pc-e-type">
+          <option value="empty" selected>Type</option>
+          <option value="event-primary">Primary</option>
+          <option value="event-secondary">Secondary</option>
+          <option value="event-success">Success</option>
+          <option value="event-danger">Danger</option>
+          <option value="event-warning">Warning</option>
+          <option value="event-info">Info</option>
+        </select>
+      </div>
+      <div class="row justify-content-between">
+        <div class="col-auto"
+        ><button type="button" class="btn btn-link-danger btn-pc-default" data-bs-dismiss="offcanvas"
+        ><i class="align-text-bottom me-1 ti ti-circle-x"></i> Close</button
+        ></div
+        >
+        <div class="col-auto">
+          <button id="pc_event_add" type="button" class="btn btn-secondary" data-pc-action="add">
+            <span id="pc-e-btn-text"><i class="align-text-bottom me-1 ti ti-calendar-plus"></i> Add</span>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+
+
+
+
+<!-- [ Main Content ] end -->
+<footer class="pc-footer" style="background: #e0f6ff">
+  <div class="footer-wrapper container-fluid">
+    <div class="row">
+      <div class="col my-1">
+        <p class="m-0">
+          © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+
+<script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectCoordinador = document.getElementById("coordinador");
+    const inputSemana = document.getElementById("semana");
+    const seccionTurnos = document.getElementById("seccionTurnosCalendario");
+
+    function validarMostrarTurnos() {
+      const coordinadorSeleccionado = selectCoordinador.value !== "";
+      const semanaSeleccionada = inputSemana.value !== "";
+
+      if (coordinadorSeleccionado && semanaSeleccionada) {
+        seccionTurnos.classList.remove("d-none");
+      } else {
+        seccionTurnos.classList.add("d-none");
+      }
+    }
+
+    // Ejecutar validación al cambiar los campos
+    selectCoordinador.addEventListener("change", validarMostrarTurnos);
+    inputSemana.addEventListener("change", validarMostrarTurnos);
+
+    // Por si ya estaban seleccionados al cargar
+    validarMostrarTurnos();
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+
+    dias.forEach(function (dia) {
+      const btn = document.querySelector(`#${dia.toLowerCase()} button`);
+      if (!btn) return;
+
+      btn.addEventListener("click", function () {
+        const inicio = document.getElementById(`horaInicio${dia}`).value;
+        const fin = document.getElementById(`horaFin${dia}`).value;
+        const complejoSelect = document.getElementById(`selectComplejo${dia}`);
+        const complejo = complejoSelect?.selectedOptions[0]?.text || "";
+        if (!inicio || !fin || !complejo) {
+          alert("Por favor, completa todos los campos.");
+          return;
+        }
+        const lista = document.getElementById(`listaTurnos${dia}`);
+        const item = document.createElement("li");
+        item.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
+        item.dataset.estado = "porAgregar";
+        item.dataset.diaSemana = dia;
+        item.dataset.horaInicio = inicio;
+        item.dataset.horaFin = fin;
+        item.dataset.idComplejoDeportivo= complejoSelect.value;
+        item.dataset.complejoNombre = complejo;// Marcamos como por agregar
+        item.innerHTML = `
+  <span style="font-size: 0.9rem;" class="d-flex align-items-center gap-2">
+    ${inicio} - ${fin} | ${complejo} | ${complejoSelect.value}
+    <span class="badge bg-info text-white">Por agregar</span>
+  </span>
+  <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-remove-turno" title="Eliminar" style="font-size: 1.2rem;">×</button>
+`;
+
+        lista.appendChild(item);
+
+        // Agregar al calendario
+        agregarTurnoACalendario(dia, inicio, fin, complejo);
+
+        // Limpiar campos
+        document.getElementById(`horaInicio${dia}`).value = "";
+        document.getElementById(`horaFin${dia}`).value = "";
+
+        // Eliminar de la lista y del calendario
+        item.querySelector(".btn-remove-turno").addEventListener("click", () => {
+          item.remove();
+          eliminarTurnoDeCalendario(dia, inicio, fin);
+        });
+      });
+    });
+  });
+
+  function agregarTurnoACalendario(dia, horaInicio, horaFin, complejo) {
+    const cuerpo = document.getElementById('bodyCalendario');
+    const diaIndex = {
+      "Lunes": 1,
+      "Martes": 2,
+      "Miercoles": 3,
+      "Jueves": 4,
+      "Viernes": 5,
+      "Sabado": 6,
+      "Domingo": 7
+    };
+
+    const rango = `${horaInicio} - ${horaFin}`;
+    let fila = Array.from(cuerpo.rows).find(row => row.cells[0].textContent === rango);
+
+    if (!fila) {
+      fila = cuerpo.insertRow();
+      fila.insertCell().textContent = rango;
+      for (let i = 1; i <= 7; i++) fila.insertCell();
+    }
+
+    const celda = fila.cells[diaIndex[dia]];
+    celda.textContent = complejo;
+    celda.classList.add("bg-light", "fw-semibold");
+  }
+
+  function eliminarTurnoDeCalendario(dia, horaInicio, horaFin) {
+    const cuerpo = document.getElementById('bodyCalendario');
+    const diaIndex = {
+      "Lunes": 1,
+      "Martes": 2,
+      "Miercoles": 3,
+      "Jueves": 4,
+      "Viernes": 5,
+      "Sabado": 6,
+      "Domingo": 7
+    };
+
+    const rango = `${horaInicio} - ${horaFin}`;
+    const fila = Array.from(cuerpo.rows).find(row => row.cells[0].textContent === rango);
+
+    if (fila) {
+      fila.cells[diaIndex[dia]].textContent = "";
+      fila.cells[diaIndex[dia]].classList.remove("bg-light", "fw-semibold");
+
+      // Si todas las celdas (excepto hora) están vacías, eliminar la fila
+      const vacias = Array.from(fila.cells).slice(1).every(cell => cell.textContent.trim() === "");
+      if (vacias) fila.remove();
+    }
+  }
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const selectCoordinador = document.getElementById("coordinador");
+    const inputSemana = document.getElementById("semana");
+    const btnGuardar = document.getElementById("btnGuardarCambios");
+
+    // Mapear días de la semana en inglés a español
+    const mapDias = {
+      "Monday": "Lunes",
+      "Tuesday": "Martes",
+      "Wednesday": "Miércoles",
+      "Thursday": "Jueves",
+      "Friday": "Viernes",
+      "Saturday": "Sábado",
+      "Sunday": "Domingo"
+    };
+
+    // Limpiar listas de turnos
+    function limpiarListasTurnos() {
+      Object.values(mapDias).forEach(dia => {
+        const lista = document.getElementById(`listaTurnos${dia}`);
+        if (lista) lista.innerHTML = "";
+      });
+    }
+
+    // Mostrar los turnos en el formulario
+    function mostrarTurnosEnFormulario(turnos) {
+      limpiarListasTurnos();
+
+      turnos.forEach(turno => {
+        const diaEsp = mapDias[turno.diaSemana];
+        const lista = document.getElementById(`listaTurnos${diaEsp}`);
+
+        if (lista) {
+          const li = document.createElement("li");
+          li.className = "list-group-item d-flex justify-content-between align-items-center px-2 py-1";
+          li.dataset.id = turno.id;
+          li.dataset.estado = "cargado"; // por defecto
+
+          li.innerHTML = `
+          <span class="turno-contenido d-flex align-items-center gap-2" style="font-size: 0.9rem;">
+            ${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}
+          </span>
+          <div class="acciones-turno">
+            <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
+          </div>
+        `;
+          lista.appendChild(li);
+
+          // Agregar el evento para marcar como eliminado
+          const btnEliminar = li.querySelector(".btn-marcar-eliminar");
+          btnEliminar.addEventListener("click", function () {
+            const contenido = li.querySelector(".turno-contenido");
+            const acciones = li.querySelector(".acciones-turno");
+
+            // Cambiar estado y marcar visualmente
+            li.dataset.estado = "porEliminar";
+            li.classList.add("bg-secondary", "text-white", "opacity-75");
+
+            // Añadir badge y botón de revertir
+            contenido.innerHTML += `<span class="badge bg-danger">Por eliminar</span>`;
+            acciones.innerHTML = `
+            <button type="button" class="btn btn-link btn-sm text-white p-0 ms-2 btn-revertir" title="Revertir" style="font-size: 1.2rem;">↺</button>
+          `;
+
+            // Evento para revertir
+            acciones.querySelector(".btn-revertir").addEventListener("click", () => {
+              li.dataset.estado = "cargado";
+              li.classList.remove("bg-secondary", "text-white", "opacity-75");
+              contenido.innerHTML = `${turno.horaInicio.slice(0,5)} - ${turno.horaFin.slice(0,5)} | ${turno.nombreComplejo}`;
+              acciones.innerHTML = `
+              <button type="button" class="btn btn-link btn-sm text-danger p-0 ms-2 btn-marcar-eliminar" title="Eliminar" style="font-size: 1.2rem;">×</button>
+            `;
+              // Volver a asignar evento de eliminar
+              acciones.querySelector(".btn-marcar-eliminar").addEventListener("click", () => btnEliminar.click());
+            });
+          });
+        }
+      });
+    }
+
+    // Función para recopilar los datos de los turnos a eliminar
+    function obtenerTurnosEliminar() {
+      const turnosEliminar = [];
+      document.querySelectorAll('li[data-estado="porEliminar"]').forEach(item => {
+        turnosEliminar.push({
+          id: parseInt(item.dataset.id)
+        });
+      });
+      return turnosEliminar;
+    }
+
+    // Función para recopilar los datos de los nuevos turnos
+    function obtenerTurnosGuardar() {
+      const turnosGuardar = [];
+      document.querySelectorAll('li[data-estado="porAgregar"]').forEach(item => {
+        turnosGuardar.push({
+          diaSemana: item.dataset.diaSemana,
+          horaInicio: item.dataset.horaInicio,
+          horaFin: item.dataset.horaFin,
+          //resulta que lo habia dejado en idComplejo y falto el añaidir deportivo JSJSJJSJJAJDAKJASDO, me quiero matar
+          idComplejoDeportivo: parseInt(item.dataset.idComplejoDeportivo), //me habia olvidado de este dato, creo xd si era este me voy a matar
+          nombreComplejo: item.dataset.complejoNombre
+        });
+      });
+      return turnosGuardar;
+    }
+
+    // Función para enviar el formulario
+    btnGuardar.addEventListener("click", function () {
+      const coordinadorId = selectCoordinador.value;
+      const semana = inputSemana.value;
+
+      if (!coordinadorId || !semana) {
+        alert("Selecciona un coordinador y una semana primero.");
+        return;
+      }
+
+      // Obtener turnos nuevos (por agregar)
+      const turnosNuevos = obtenerTurnosGuardar();
+      console.log("Turnos nuevos a guardar:", turnosNuevos);  // Imprimir turnos nuevos en consola
+
+      // Obtener turnos a eliminar (por eliminar)
+      const turnosEliminar = obtenerTurnosEliminar();
+      console.log("Turnos a eliminar:", turnosEliminar);  // Imprimir turnos a eliminar en consola
+
+      // Crear el payload para enviar al backend
+      const payload = {
+        coordinadorId: parseInt(coordinadorId),
+        semana: semana,
+        horariosGuardar: turnosNuevos,
+        horariosEliminar: turnosEliminar
+      };
+
+      // Imprimir el payload completo en la consola antes de enviarlo
+      console.log("Payload a enviar al backend:", payload);
+
+      // Enviar al backend con fetch
+      fetch('/admin/agenda/guardarHorarios', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      })
+              .then(response => response.text())
+              .then(data => {
+                console.log("Respuesta del servidor:", data);  // Imprimir la respuesta del servidor
+                if (data === "Guardado correctamente") {
+                  Swal.fire({
+                    icon: 'success',
+                    title: 'Éxito',
+                    text: 'Horarios guardados correctamente',
+                    customClass: {
+                      confirmButton: 'btn btn-light-success',
+                    },
+                    buttonsStyling: false
+                  });
+                  limpiarListasTurnos();
+                  cargarTurnos();
+                } else {
+                  alert("Error al guardar los horarios");
+                  Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Ocurrió un error al guardar los horarios',
+                    customClass: {
+                      confirmButton: 'btn btn-light-danger',
+                    },
+                    buttonsStyling: false
+                  });
+                }
+              })
+              .catch(error => {
+                console.error("Error:", error);  // Imprimir errores en la consola
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error',
+                  text: 'Hubo un error al comunicarse con el servidor',
+                  customClass: {
+                    confirmButton: 'btn btn-light-danger',
+                  },
+                  buttonsStyling: false
+                });
+              });
+    });
+
+    // Función para cargar los turnos
+    function cargarTurnos() {
+      const idCoord = selectCoordinador.value;
+      const semana = inputSemana.value;
+
+      if (!idCoord || !semana) return;
+
+      fetch(`/admin/test/horarios/buscar?coordinadorId=${idCoord}&semana=${semana}`)
+              .then(response => response.json())
+              .then(data => {
+                mostrarTurnosEnFormulario(data); // Llama tu función
+              })
+              .catch(err => console.error("Error al obtener turnos:", err));
+    }
+
+    selectCoordinador.addEventListener("change", cargarTurnos);
+    inputSemana.addEventListener("change", cargarTurnos);
+
+  });
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const filterType = document.getElementById('filterType');
+    const divComplejo = document.getElementById('divSelectComplejo');
+    const divCoordinador = document.getElementById('divSelectCoordinador');
+
+    filterType.addEventListener('change', function () {
+      if (filterType.value === 'coordinador') {
+        divComplejo.classList.add('d-none');
+        divCoordinador.classList.remove('d-none');
+      } else {
+        divComplejo.classList.remove('d-none');
+        divCoordinador.classList.add('d-none');
+      }
+    });
+  });
+</script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const input = document.createElement('input');
+    input.setAttribute('type', 'week');
+    const isSupported = (input.type === 'week');
+
+    if (!isSupported) {
+      const warning = document.createElement('div');
+      warning.innerText = '⚠ Tu navegador no soporta la selección de semana. Usa Chrome, Edge o una versión moderna.';
+      warning.style.color = 'red';
+      warning.style.fontWeight = 'bold';
+      warning.style.marginTop = '10px';
+
+      const container = document.getElementById('semanaContainer'); // Asegúrate de tener un div con este id
+      if (container) container.appendChild(warning);
+    }
+  });
+</script>
+
+
+<div id="alertaCompatibilidad" class="alert alert-warning d-none">
+  Tu navegador no soporta el selector de semana. Intenta usar Chrome, Edge o Firefox.
+</div>
+
+<!-- 1. Librerías base necesarias (Bootstrap, FullCalendar) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales-all.min.js"></script>
+
+
+<!-- 2. Plugins adicionales que necesita tu calendario o interfaz -->
+<script src="../assets/js/plugins/index.global.min.js"></script>
+<script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
+
+<!-- 3. Tu script personalizado que depende de lo anterior -->
+<script src="../assets/js/application/calendarAdminEventos.js"></script>
+<!-- [Page Specific JS] start -->
+<script src="../assets/js/plugins/apexcharts.min.js"></script>
+<!-- custom widgets js -->
+<script src="../assets/js/widgets/total-line-1-chart.js"></script>
+<script src="../assets/js/widgets/total-line-2-chart.js"></script>
+<script src="../assets/js/widgets/total-line-3-chart.js"></script>
+<script src="../assets/js/widgets/cashflow-bar-chart.js"></script>
+<!-- Required Js -->
+<script src="../assets/js/plugins/popper.min.js"></script>
+<script src="../assets/js/plugins/simplebar.min.js"></script>
+<script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+<script src="../assets/js/plugins/i18next.min.js"></script>
+<script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+<script src="../assets/js/icon/custom-font.js"></script>
+<script src="../assets/js/script.js"></script>
+<script src="../assets/js/theme.js"></script>
+<script src="../assets/js/multi-lang.js"></script>
+<script src="../assets/js/plugins/feather.min.js"></script>
+<script src="../assets/js/widgets/category-donut-chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+
+
+
+<script>
+  layout_change('light');
+</script>
+
+<script>
+  change_box_container('false');
+</script>
+
+<script>
+  layout_caption_change('true');
+</script>
+
+<script>
+  layout_rtl_change('false');
+</script>
+
+<script>
+  preset_change('preset-1');
+</script>
+
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+<div class="offcanvas border-0 pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title">Settings</h5>
+    <button type="button" class="btn btn-icon btn-link-danger ms-auto" data-bs-dismiss="offcanvas" aria-label="Close"
+    ><i class="ti ti-x"></i
+    ></button>
+  </div>
+  <div class="pct-body customizer-body">
+    <div class="offcanvas-body py-0">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <div class="pc-dark">
+            <h6 class="mb-1">Theme Mode</h6>
+            <p class="text-muted text-sm">Choose light or dark mode or Auto</p>
+            <div class="row theme-color theme-layout">
+              <div class="col-4">
+                <div class="d-grid">
+                  <button
+                          class="preset-btn btn active"
+                          data-value="true"
+                          onclick="layout_change('light');"
+                          data-bs-toggle="tooltip"
+                          title="Light"
+                  >
+                    <svg class="pc-icon text-warning">
+                      <use xlink:href="#custom-sun-1"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid">
+                  <button class="preset-btn btn" data-value="false" onclick="layout_change('dark');" data-bs-toggle="tooltip" title="Dark">
+                    <svg class="pc-icon">
+                      <use xlink:href="#custom-moon"></use>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="d-grid">
+                  <button
+                          class="preset-btn btn"
+                          data-value="default"
+                          onclick="layout_change_default();"
+                          data-bs-toggle="tooltip"
+                          title="Automatically sets the theme based on user's operating system's color scheme."
+                  >
+                    <span class="pc-lay-icon d-flex align-items-center justify-content-center">
+                      <i class="ph-duotone ph-cpu"></i>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Theme Contrast</h6>
+          <p class="text-muted text-sm">Choose theme contrast</p>
+          <div class="row theme-contrast">
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                        class="preset-btn btn"
+                        data-value="true"
+                        onclick="layout_theme_contrast_change('true');"
+                        data-bs-toggle="tooltip"
+                        title="True"
+                >
+                  <svg class="pc-icon">
+                    <use xlink:href="#custom-mask"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                        class="preset-btn btn active"
+                        data-value="false"
+                        onclick="layout_theme_contrast_change('false');"
+                        data-bs-toggle="tooltip"
+                        title="False"
+                >
+                  <svg class="pc-icon">
+                    <use xlink:href="#custom-mask-1-outline"></use>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Custom Theme</h6>
+          <p class="text-muted text-sm">Choose your primary theme color</p>
+          <div class="theme-color preset-color">
+            <a href="#!" data-bs-toggle="tooltip" title="Blue" class="active" data-value="preset-1"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Indigo" data-value="preset-2"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Purple" data-value="preset-3"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Pink" data-value="preset-4"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Red" data-value="preset-5"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Orange" data-value="preset-6"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Yellow" data-value="preset-7"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Green" data-value="preset-8"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Teal" data-value="preset-9"><i class="ti ti-checks"></i></a>
+            <a href="#!" data-bs-toggle="tooltip" title="Cyan" data-value="preset-10"><i class="ti ti-checks"></i></a>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Theme layout</h6>
+          <p class="text-muted text-sm">Choose your layout</p>
+          <div class="theme-main-layout d-flex align-center gap-1 w-100">
+            <a href="#!" data-bs-toggle="tooltip" title="Vertical" class="active" data-value="vertical">
+              <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Horizontal" data-value="horizontal">
+              <img src="../assets/images/customizer/horizontal.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Color Header" data-value="color-header">
+              <img src="../assets/images/customizer/color-header.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Compact" data-value="compact">
+              <img src="../assets/images/customizer/compact.svg" alt="img" class="img-fluid" />
+            </a>
+            <a href="#!" data-bs-toggle="tooltip" title="Tab" data-value="tab">
+              <img src="../assets/images/customizer/tab.svg" alt="img" class="img-fluid" />
+            </a>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <h6 class="mb-1">Sidebar Caption</h6>
+          <p class="text-muted text-sm">Sidebar Caption Hide/Show</p>
+          <div class="row theme-color theme-nav-caption">
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                        class="preset-btn btn-img btn active"
+                        data-value="true"
+                        onclick="layout_caption_change('true');"
+                        data-bs-toggle="tooltip"
+                        title="Caption Show"
+                >
+                  <img src="../assets/images/customizer/caption-on.svg" alt="img" class="img-fluid" />
+                </button>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="d-grid">
+                <button
+                        class="preset-btn btn-img btn"
+                        data-value="false"
+                        onclick="layout_caption_change('false');"
+                        data-bs-toggle="tooltip"
+                        title="Caption Hide"
+                >
+                  <img src="../assets/images/customizer/caption-off.svg" alt="img" class="img-fluid" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="pc-rtl">
+            <h6 class="mb-1">Theme Layout</h6>
+            <p class="text-muted text-sm">LTR/RTL</p>
+            <div class="row theme-color theme-direction">
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                          class="preset-btn btn-img btn active"
+                          data-value="false"
+                          onclick="layout_rtl_change('false');"
+                          data-bs-toggle="tooltip"
+                          title="LTR"
+                  >
+                    <img src="../assets/images/customizer/ltr.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                          class="preset-btn btn-img btn"
+                          data-value="true"
+                          onclick="layout_rtl_change('true');"
+                          data-bs-toggle="tooltip"
+                          title="RTL"
+                  >
+                    <img src="../assets/images/customizer/rtl.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item pc-box-width">
+          <div class="pc-container-width">
+            <h6 class="mb-1">Layout Width</h6>
+            <p class="text-muted text-sm">Choose Full or Container Layout</p>
+            <div class="row theme-color theme-container">
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                          class="preset-btn btn-img btn active"
+                          data-value="false"
+                          onclick="change_box_container('false')"
+                          data-bs-toggle="tooltip"
+                          title="Full Width"
+                  >
+                    <img src="../assets/images/customizer/full.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="d-grid">
+                  <button
+                          class="preset-btn btn-img btn"
+                          data-value="true"
+                          onclick="change_box_container('true')"
+                          data-bs-toggle="tooltip"
+                          title="Fixed Width"
+                  >
+                    <img src="../assets/images/customizer/fixed.svg" alt="img" class="img-fluid" />
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </li>
+        <li class="list-group-item">
+          <div class="d-grid">
+            <button class="btn btn-light-danger" id="layoutreset">Reset Layout</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Ítems del menú: blanco */
+  .pc-sidebar .pc-link,
+  .pc-sidebar .pc-mtext,
+  .pc-sidebar .pc-micon {
+    color: #ffffff !important;
+    opacity: 1 !important;
+  }
+
+  /* Títulos de secciones del menú */
+  .pc-sidebar .menu-caption,
+  .pc-sidebar .pc-caption {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 12px;
+  }
+  /* Hover: cambia el texto a celeste claro */
+  .pc-sidebar .pc-link:hover,
+  .pc-sidebar .pc-link:focus {
+    background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+    transition: all 0.2s ease-in-out;
+  }
+</style>
+<style>
+  .legend-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    border-radius: 2px;
+  }
+  .chart-legend {
+    padding-top: 30px;
+  }
+</style>
+
+
+</body>
+<!-- [Body] end -->
+</html>

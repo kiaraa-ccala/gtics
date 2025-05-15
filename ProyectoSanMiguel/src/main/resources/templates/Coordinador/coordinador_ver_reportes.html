@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <!-- [Head] start -->
+
+  <head th:replace="fragments/head_coordinador :: head('Tus reportes')"></head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+    <div th:replace="fragments/navbar_coordinador :: header"></div>
+<!-- [ Header ] end -->
+
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <div class="d-flex flex-column">
+                  <h1 class="mb-2">Todos tus reportes</h1>
+                  <p class="mb-3">Selecciona uno para verlo a detalle</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- [ breadcrumb ] end -->
+
+
+        <!-- [ Main Content ] start -->
+        <div class="container-fluid">
+            <div class="row g-3">
+          
+              <!-- Sección de reportes (derecha) - SOLO CAMBIÉ EL ESPACIADO -->
+              <div class="col-12 col-lg-12">
+                <div class="card h-100">
+                  <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
+                    <div class="d-flex align-items-center">
+                      <h5 class="mb-0 me-3">Tus reportes</h5>
+                      <div id="reportCount" class="text-muted">Mostrando reportes</div>
+                    </div>
+                    <div class="search-box mt-2 mt-md-0" style="width: 300px;">
+                      <input type="text" id="searchInput" class="form-control" placeholder="Buscar reportes...">
+                      <i class="ti ti-search search-icon"></i>
+                    </div>
+                  </div>
+                  
+                  <div class="card-body d-flex flex-column">
+                      <div id="contenido-reportes" th:fragment="contenidoReportes">
+                        <div th:each="reporte:${reportes}" id="reportsContainer" class="d-grid gap-3" style="margin-bottom: 1rem;">
+                            <a th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2">
+                              <div class="d-flex align-items-center">
+                                  <div class="flex-shrink-0 me-3">
+                                        <span class="d-block rounded-circle"
+                                              style="width: 12px; height: 12px;"
+                                              th:class="'d-block rounded-circle ' +
+                                                        (${reporte.estado} == 'Cerrado' ? 'bg-success' :
+                                                         (${reporte.estado} == 'En proceso' ? 'bg-warning' :
+                                                          (${reporte.estado} == 'Abierto' ? 'bg-danger' : 'bg-secondary')))">
+                                        </span>
+                                  </div>
+                                  <div class="flex-grow-1 text-start">
+                                      <h4 class="mb-0" th:text="${reporte.asunto}">Asunto del reporte</h4>
+                                      <hr>
+                                      <p th:text="${reporte.descripcion}">Descripción del reporte</p>
+                                  </div>
+                              </div>
+                          </a>
+                        </div>
+
+                          <div class="d-flex justify-content-center mt-3">
+                              <ul class="pagination">
+                                  <li th:each="i : ${#numbers.sequence(startPage, endPage)}"
+                                      th:class="${i == paginaActual} ? 'page-item active' : 'page-item'">
+                                      <a class="page-link" href="#" th:text="${i + 1}" th:attr="data-page=${i}">1</a>
+                                  </li>
+                              </ul>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+    <!-- [Page Specific JS] start -->
+    <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
+    <!-- custom widgets js -->
+    <script th:src="@{/assets/js/widgets/total-line-1-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-line-2-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-line-3-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/cashflow-bar-chart.js}"></script>
+    <!-- Required Js -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+    <script th:src="@{/assets/js/widgets/category-donut-chart.js}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const ctx = document.getElementById('category-donut-chart').getContext('2d');
+    new Chart(ctx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Accidentes', 'Uso indebido', 'Conchas mal estado', 'Falta iluminación', 'Pérdida implementos'],
+        datasets: [{
+          data: [15, 20, 10, 25, 30],
+          backgroundColor: [
+            '#FF6384',
+            '#36A2EB',
+            '#FFCE56',
+            '#4BC0C0',
+            '#9966FF'
+          ],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: false // Ocultamos la leyenda del gráfico porque la tenemos aparte
+          }
+        }
+      }
+    });
+  });
+</script>
+
+
+<script>
+  layout_change('light');
+</script>
+  
+<script>
+  change_box_container('false');
+</script>
+ 
+<script>
+  layout_caption_change('true');
+</script>
+ 
+<script>
+  layout_rtl_change('false');
+</script>
+ 
+<script>
+  preset_change('preset-1');
+</script>
+ 
+<script>
+  main_layout_change('vertical');
+</script>
+
+
+
+
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+    <style>
+        .legend-color {
+          display: inline-block;
+          width: 12px;
+          height: 12px;
+          margin-right: 5px;
+          border-radius: 2px;
+        }
+        .chart-legend {
+          padding-top: 30px;
+        }
+      </style>
+
+
+
+
+<script>
+  // Cierra el popup de confirmación si haces clic fuera del contenido
+  popupConfirmacion.addEventListener('click', function (e) {
+    if (e.target === popupConfirmacion) {
+      popupConfirmacion.style.display = 'none';
+    }
+  });
+</script>
+<style>
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+  }
+
+  .custom-popup {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 480px;
+    width: 90%;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeInPopup 0.25s ease-in-out;
+  }
+
+  @keyframes fadeInPopup {
+    from {
+      transform: scale(0.9);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  .popup-overlay .btn {
+    min-width: 140px;
+  }
+
+  .popup-overlay .btn-outline-secondary {
+    border-color: #ccc;
+    color: #333;
+  }
+
+  .popup-overlay .btn-outline-secondary:hover {
+    background-color: #f1f1f1;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+
+    let paginaActual = 1;
+    const reportesPorPagina = 3;
+    let reportesFiltrados = [...todosReportes];
+
+    // Elementos del DOM
+    const contenedorReportes = document.getElementById('reportsContainer');
+    const paginacion = document.getElementById('pagination');
+    const buscador = document.getElementById('searchInput');
+    const contadorReportes = document.getElementById('reportCount');
+
+    // Función para mostrar reportes
+    function mostrarReportes(reportes, pagina) {
+      contenedorReportes.innerHTML = '';
+      const indiceInicio = (pagina - 1) * reportesPorPagina;
+      const indiceFin = indiceInicio + reportesPorPagina;
+      const reportesPagina = reportes.slice(indiceInicio, indiceFin);
+
+      if (reportesPagina.length === 0) {
+        contenedorReportes.innerHTML = '<p class="text-center text-muted">No se encontraron reportes</p>';
+        return;
+      }
+
+      reportesPagina.forEach(reporte => {
+        const elementoReporte = document.createElement('a');
+        elementoReporte.href = (reporte.estado === 'success') 
+          ? 'coordinador_reporte_recibido.html' 
+          : 'coordinador_reporte_no_recibido.html';
+        elementoReporte.className = 'btn btn-link-secondary py-2';
+        elementoReporte.innerHTML = `
+          <div class="d-flex align-items-center">
+            <div class="flex-shrink-0 me-3">
+              <span class="d-block bg-${reporte.estado} rounded-circle" style="width: 12px; height: 12px;"></span>
+            </div>
+            <div class="flex-grow-1 text-start">
+              <h4 class="mb-0">${reporte.titulo}</h4>
+              <hr>
+              <p>${reporte.contenido}</p>
+            </div>
+          </div>
+        `;
+        contenedorReportes.appendChild(elementoReporte);
+      });
+
+      // Actualizar contador
+      const totalReportes = reportes.length;
+      const mostrandoDesde = indiceInicio + 1;
+      const mostrandoHasta = Math.min(indiceFin, totalReportes);
+      contadorReportes.textContent = `Mostrando ${mostrandoDesde}-${mostrandoHasta} de ${totalReportes} reportes`;
+    }
+
+    // Función para generar paginación
+    function configurarPaginacion(reportes) {
+  paginacion.innerHTML = '';
+  const totalPaginas = Math.ceil(reportes.length / reportesPorPagina);
+
+  if (totalPaginas <= 1) return;
+
+  // Botón Anterior
+  const liAnterior = document.createElement('li');
+  liAnterior.className = `page-item ${paginaActual === 1 ? 'disabled' : ''}`;
+  liAnterior.innerHTML = `<a class="page-link" href="#" aria-label="Anterior"><span aria-hidden="true">&laquo;</span></a>`;
+  liAnterior.addEventListener('click', () => {
+    if (paginaActual > 1) {
+      paginaActual--;
+      mostrarReportes(reportesFiltrados, paginaActual);
+      configurarPaginacion(reportesFiltrados);
+      window.scrollTo({ top: contenedorReportes.offsetTop - 20, behavior: 'smooth' });
+    }
+  });
+  paginacion.appendChild(liAnterior);
+
+  // Números de página
+  for (let i = 1; i <= totalPaginas; i++) {
+    const li = document.createElement('li');
+    li.className = `page-item ${i === paginaActual ? 'active' : ''}`;
+    li.innerHTML = `<a class="page-link" href="#">${i}</a>`;
+    li.addEventListener('click', () => {
+      paginaActual = i;
+      mostrarReportes(reportesFiltrados, paginaActual);
+      configurarPaginacion(reportesFiltrados);
+      window.scrollTo({ top: contenedorReportes.offsetTop - 20, behavior: 'smooth' });
+    });
+    paginacion.appendChild(li);
+  }
+
+  // Botón Siguiente
+  const liSiguiente = document.createElement('li');
+  liSiguiente.className = `page-item ${paginaActual === totalPaginas ? 'disabled' : ''}`;
+  liSiguiente.innerHTML = `<a class="page-link" href="#" aria-label="Siguiente"><span aria-hidden="true">&raquo;</span></a>`;
+  liSiguiente.addEventListener('click', () => {
+    if (paginaActual < totalPaginas) {
+      paginaActual++;
+      mostrarReportes(reportesFiltrados, paginaActual);
+      configurarPaginacion(reportesFiltrados);
+      window.scrollTo({ top: contenedorReportes.offsetTop - 20, behavior: 'smooth' });
+    }
+  });
+  paginacion.appendChild(liSiguiente);
+}
+
+
+    // Función para buscar reportes
+    function buscarReportes() {
+      const terminoBusqueda = buscador.value.toLowerCase();
+      reportesFiltrados = todosReportes.filter(reporte => 
+        reporte.titulo.toLowerCase().includes(terminoBusqueda) || 
+        reporte.contenido.toLowerCase().includes(terminoBusqueda)
+      );
+      paginaActual = 1;
+      mostrarReportes(reportesFiltrados, paginaActual);
+      configurarPaginacion(reportesFiltrados);
+    }
+
+    // Event listeners
+    buscador.addEventListener('input', buscarReportes);
+
+    // Inicializar
+    mostrarReportes(reportesFiltrados, paginaActual);
+    configurarPaginacion(reportesFiltrados);
+  });
+</script>
+    <script>
+        document.addEventListener('click', function (e) {
+            if (e.target.matches('.page-link[data-page]')) {
+                e.preventDefault();
+                const page = e.target.getAttribute('data-page');
+
+                fetch(`/coord/reportes/pagina?page=${page}`)
+                    .then(response => response.text())
+                    .then(html => {
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(html, 'text/html');
+                        const nuevoContenido = doc.querySelector('#contenido-reportes');
+                        document.getElementById('contenido-reportes').innerHTML = nuevoContenido.innerHTML;
+                    });
+            }
+        });
+    </script>
+<style>
+  .search-box {
+    position: relative;
+    width: 300px;
+  }
+  .search-box .search-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6c757d;
+  }
+  #searchInput {
+    padding-right: 35px;
+  }
+  
+</style>
+
+  </body>
+  <!-- [Body] end -->
+</html>

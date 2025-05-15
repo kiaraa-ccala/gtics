@@ -7,7 +7,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "Evidencia")
+@Table(name = "evidencia")
 public class Evidencia {
 
     @Id
@@ -26,7 +26,7 @@ public class Evidencia {
     private byte[] archivo;
 
     @ManyToOne
-    @JoinColumn(name = "idReporte")
-    private Reporte reporte;
+    @JoinColumn(name = "idComentario")
+    private  Comentario comentario;
 
 }

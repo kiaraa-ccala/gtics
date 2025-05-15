@@ -9,6 +9,7 @@
   var y = date.getFullYear();
 
   var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    locale: 'es',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
@@ -22,7 +23,7 @@
     droppable: true,
     selectable: true,
     selectMirror: true,
-    editable: true,
+    editable: false,
     dayMaxEvents: true,
     handleWindowResize: true,
     select: function (info) {

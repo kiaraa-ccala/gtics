@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "Usuario")
+@Table(name = "usuario")
 public class Usuario {
 
     @Id
@@ -30,6 +30,8 @@ public class Usuario {
     private String departamento;
     @Column(name = "telefono", nullable = false, length = 9)
     private String telefono;
+    @Column(name = "activo")
+    private Integer activo;
     @ManyToOne
     @JoinColumn(name="idSector")
     private Sector sector;
@@ -41,5 +43,7 @@ public class Usuario {
     private Rol rol;
     @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Credencial credencial;
-
+    @OneToOne
+    @JoinColumn(name = "idFoto")
+    private Foto foto;
 }

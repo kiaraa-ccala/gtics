@@ -1,0 +1,375 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- [Head] start -->
+<head th:replace="fragments/head_vecino :: head('Mis Reservas')"></head>
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+
+
+<div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+
+<div th:replace="fragments/navbar_vecino :: header"></div>
+
+<!-- [ Main Content ] start -->
+<div class="pc-container" style="background: #e0f6ff">
+  <div class="pc-content">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <ul class="breadcrumb">
+                <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
+                <li class="breadcrumb-item" aria-current="page">Mis servicios</li>
+              </ul>
+            </div>
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h2 class="mb-0">Mis reservas</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+        <div class="row">
+
+          <div class="col-sm-12">
+            <div class="card table-card">
+              <div class="card-body">
+                <div class="table-responsive">
+                  <div th:if="${msg}" class="alert alert-info" role="alert" style="border-radius: 10px;">
+                    <i class="ti ti-info-circle me-2"></i>
+                    <span th:text="${msg}">Reserva cancelada correctamente.</span>
+                  </div>
+                  <div th:if="${error}" class="alert alert-danger" role="alert" style="border-radius: 10px;">
+                    <i class="ti ti-alert-triangle me-2"></i>
+                    <span th:text="${error}">Hubo un problema al cancelar la reserva.</span>
+                  </div>
+
+                  <table class="table table-hover" id="pc-dt-simple">
+                    <thead>
+                      <tr>
+                        <th class="text-end">#</th>
+                        <th>Usuario</th>
+                        <th>Reservas</th>
+                        <th>Zonas</th>
+                        <th class="text-end">Costo</th>
+                        <th>Fecha</th>
+                        <th>Hora Inicio</th>
+                        <th>Hora Fin</th>
+                        <th>Estado</th>
+                        <th>Registro</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="dto : ${listaReservas}">
+                        <!-- ID -->
+                        <td class="text-end" th:text="${dto.reserva.idReserva}">1</td>
+
+                        <!-- Nombre del usuario -->
+                        <td th:text="${dto.reserva.usuario.nombre}">Nombre Usuario</td>
+
+                        <!-- Servicio: nombre -->
+                        <td>
+                          <h6 class="mb-1" th:text="${dto.reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h6>
+                        </td>
+
+                        <!-- Complejo deportivo -->
+                        <td th:text="${dto.reserva.instanciaServicio.complejoDeportivo.nombre}">Nombre Complejo</td>
+
+                        <!-- Costo -->
+                        <td class="text-end" th:text="'S/ ' + ${dto.costo}">S/ 0.00</td>
+
+                        <!-- Fecha de reserva -->
+                        <td th:text="${dto.reserva.fecha}">2025-05-09</td>
+
+                        <!-- Hora inicio -->
+                        <td th:text="${dto.reserva.horaInicio}">09:00</td>
+
+                        <!-- Hora fin -->
+                        <td th:text="${dto.reserva.horaFin}">10:00</td>
+
+                        <!-- Estado -->
+                        <td>
+                          <span class="badge f-12"
+                                th:classappend="${dto.reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
+                                th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
+                            Estado
+                          </span>
+                        </td>
+
+                        <!-- Fecha de registro -->
+                        <td th:text="${#temporals.format(dto.reserva.fechaHoraRegistro, 'yyyy-MM-dd HH:mm')}">2025-05-09 13:00</td>
+
+                    <!-- Acciones -->
+                        <td class="text-center">
+                          <ul class="list-inline me-auto mb-0">
+                            <!-- Ver -->
+                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Ver">
+                              <a href="#" class="avtar avtar-xs btn-link-secondary btn-pc-default"
+                                 data-bs-toggle="modal" data-bs-target="#cust-modal">
+                                <i class="ti ti-eye f-18"></i>
+                              </a>
+                            </li>
+
+                                <!-- Editar -->
+                                <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Editar">
+                                  <a th:href="@{'/vecino/reserva/editar/' + ${dto.reserva.idReserva}}" class="avtar avtar-xs btn-link-success btn-pc-default">
+                                    <i class="ti ti-edit-circle f-18"></i>
+                                  </a>
+                                </li>
+
+                                <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Cancelar">
+                                  <a href="#"
+                                     class="avtar avtar-xs btn-link-danger btn-pc-default"
+                                     th:attr="data-id=${dto.reserva.idReserva}"
+                                     th:attrappend="data-bs-target=${dto.puedeCancelar} ? '#modalCancelarReserva' : '#modalNoCancelar'"
+                                     data-bs-toggle="modal"
+                                     data-pc-animate="fade-in-scale">
+                                    <i class="ti ti-trash f-18"></i>
+                                  </a>
+
+
+                                </li>
+
+                              </ul>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+   <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+
+
+      <div class="modal fade modal-animate" id="modalNoCancelar" tabindex="-1" aria-hidden="true"  data-pc-animate="fade-in-scale">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Cancelación no permitida</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-2 text-dark">No puedes cancelar esta reserva.</p>
+              <p class="text-muted mb-0">
+                El plazo para cancelarla ha vencido. Debes hacerlo con al menos <strong>48 horas de anticipación</strong>.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Entendido</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade modal-animate" id="modalCancelarReserva" tabindex="-1" aria-hidden="true"  data-pc-animate="fade-in-scale">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">¿Cancelar reserva?</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <p class="mb-2 text-dark">¿Estás seguro de que deseas cancelar esta reserva?</p>
+              <p class="text-muted mb-0">
+                Solo puedes cancelar hasta <strong>48 horas antes</strong> de la hora de inicio.
+              </p>
+            </div>
+            <div class="modal-footer">
+              <form id="formCancelarReserva" method="get">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="submit" class="btn btn-danger shadow-2" style="background-color: #fa1d1d; border-color: #f82929;">
+                  Sí, cancelar
+                </button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="cust-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header border-0 pb-0">
+              <h5 class="mb-0">Product Details</h5>
+              <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
+                <i class="ti ti-x f-20"></i>
+              </a>
+            </div>
+            <div class="modal-body">
+              <div class="row align-items-center">
+                <div class="col-sm-4">
+                  <div class="bg-light rounded position-relative">
+                    <div class="text-center">
+                      <div class="chat-avtar d-inline-flex mx-auto">
+                        <img class="img-fluid rounded" src="../assets/images/application/img-prod-4.jpg" alt="User image" />
+                      </div>
+                    </div>
+                    <div class="position-absolute end-0 top-0 p-3">
+                      <span class="badge bg-success">In Stock</span>
+                    </div> <!-- cierre de .position-absolute -->
+                  </div> <!-- cierre de .bg-light -->
+                </div> <!-- cierre de .col-sm-4 -->
+              </div> <!-- cierre de .row -->
+            </div> <!-- cierre de .modal-body -->
+          </div> <!-- cierre de .modal-content -->
+        </div> <!-- cierre de .modal-dialog -->
+      </div> <!-- cierre de .modal -->
+
+  <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+  <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+  <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+  <script th:src="@{/assets/js/script.js}"></script>
+  <script th:src="@{/assets/js/theme.js}"></script>
+  <script th:src="@{/assets/js/multi-lang.js}"></script>
+  <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+  <script>
+    layout_change('light');
+  </script>
+
+  <script>
+    change_box_container('false');
+  </script>
+
+  <script>
+    layout_caption_change('true');
+  </script>
+
+  <script>
+    layout_rtl_change('false');
+  </script>
+
+  <script>
+    preset_change('preset-1');
+  </script>
+
+  <script>
+    main_layout_change('vertical');
+  </script>
+
+  <script src="../assets/js/plugins/simple-datatables.js"></script>
+  <script>
+    const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
+      sortable: false,
+      perPage: 5
+    });
+  </script>
+
+      <script>
+        const modalCancelar = document.getElementById('modalCancelarReserva');
+        modalCancelar.addEventListener('show.bs.modal', function (event) {
+          const button = event.relatedTarget;
+          const idReserva = button.getAttribute('data-id');
+          const form = modalCancelar.querySelector('#formCancelarReserva');
+          form.setAttribute('action', `/vecino/reserva/eliminar/${idReserva}`);
+        });
+      </script>
+
+      <style>
+      #basic-btn_info {
+        display: none !important;
+      }
+
+    /* Ítems del menú: blanco */
+    .pc-sidebar .pc-link,
+    .pc-sidebar .pc-mtext,
+    .pc-sidebar .pc-micon {
+      color: #ffffff !important;
+      opacity: 1 !important;
+    }
+
+    /* Títulos de secciones del menú */
+    .pc-sidebar .menu-caption,
+    .pc-sidebar .pc-caption {
+      color: rgba(255, 255, 255, 0.6) !important;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+    /* Hover: cambia el texto a celeste claro */
+    .pc-sidebar .pc-link:hover,
+    .pc-sidebar .pc-link:focus {
+      background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+      transition: all 0.2s ease-in-out;
+    }
+  </style>
+
+  <style>
+    /* Fuerza la visibilidad del botón "explora" generado por Uppy */
+    .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"] {
+      display: block !important;
+      width: auto !important;
+      height: auto !important;
+      position: static !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
+      visibility: visible !important;
+    }
+
+    /* Estilo visual del botón como texto subrayado */
+    .uppy-DragDrop-container .uppy-DragDrop-label input[type="file"]::file-selector-button {
+      color: #0d6efd;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: underline;
+      cursor: pointer;
+    }
+  </style>
+
+      <script>
+        const modalCancelar = document.getElementById('modalCancelarReserva');
+        modalCancelar.addEventListener('show.bs.modal', function (event) {
+          const button = event.relatedTarget;
+          const idReserva = button.getAttribute('data-id');
+          const form = modalCancelar.querySelector('#formCancelarReserva');
+          form.setAttribute('action', `/vecino/reserva/eliminar/${idReserva}`);
+        });
+      </script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+
+
+    <script>
+      $$(document).ready(function () {
+        $('#pc-dt-simple').DataTable({
+          lengthChange: false, // Oculta "Mostrar X entradas"
+          language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' // Traducción completa al español
+          }
+        });
+      });
+    </script>
+
+   </div>
+  </div>
+</body>
+  <!-- [Body] end -->
+</html>

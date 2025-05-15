@@ -8,7 +8,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
-@Table(name = "Reporte")
+@Table(name = "reporte")
 public class Reporte {
 
     @Id
@@ -33,6 +33,10 @@ public class Reporte {
 
     @Column(name = "respuesta", nullable = false, length = 500)
     private String respuesta;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name ="idFoto")
+    private Foto foto;
 
     @ManyToOne
     @JoinColumn(name = "idReserva")

@@ -1,0 +1,618 @@
+<!doctype html>
+<html lang="en">
+  <!-- [Head] start -->
+
+  <head th:replace="fragments/head_coordinador :: head('Bienvenido Coordinador')"></head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+<div class="loader-bg">
+  <div class="loader-track">
+    <div class="loader-fill"></div>
+  </div>
+</div>
+<!-- [ Pre-loader ] End -->
+ <!-- [ Sidebar Menu ] start -->
+    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+<!-- [ Sidebar Menu ] end -->
+ <!-- [ Header Topbar ] start -->
+    <div th:replace="fragments/navbar_coordinador :: header"></div>
+
+<!-- [ Header ] end -->
+
+
+
+    <!-- [ Main Content ] start -->
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ Main Content ] start -->
+        <div class="row">
+          <div class="col-12">
+            <div class="card welcome-banner bg-blue-800">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-sm-8">
+                    <div class="p-3">
+                      <h2 class="text-white" th:text="'¡Bienvenido coordinador '+${usuario.nombre}+'!'"></h2>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Reportes enviados</h5>
+                  </div>
+                  
+                </div>
+
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-primary">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            opacity="0.4"
+                            d="M7 9H17"
+                            stroke="#4680FF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M7 13H13"
+                            stroke="#4680FF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                          <path
+                            d="M21 12C21 16.4183 16.9706 20 12 20C10.412 20 8.92635 19.6104 7.68298 18.9321L3 20L4.136 15.6734C3.42157 14.5525 3 13.3174 3 12C3 7.58172 7.02944 4 12 4C16.9706 4 21 7.58172 21 12Z"
+                            stroke="#4680FF"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                      <h5 class="mb-1" th:text="${cantidadReportes} + ' enviados'">0 sent</h5>
+                      <p class="text-primary mb-0">
+                        <i class="ti ti-check"></i>
+                        <span th:text="${cantidadCerrados}+' recibidos'">0</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Última hora de entrada</h5>
+                  </div>                
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-warning">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                         <!-- Campanas -->
+                        <path
+                          d="M5 4L3 6"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M19 4L21 6"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        
+                        <!-- Cuerpo del reloj -->
+                        <path
+                          d="M12 21C16.4183 21 20 17.4183 20 13C20 8.58172 16.4183 5 12 5C7.58172 5 4 8.58172 4 13C4 17.4183 7.58172 21 12 21Z"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        
+                        <!-- Manecillas -->
+                        <path
+                          d="M12 13V9"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                        <path
+                          d="M12 13L14.5 14.5"
+                          stroke="#E58A00"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                      <h5 class="mb-1">08:35 AM</h5>
+                      <p class="text-warning mb-0"><i class="ti ti-check"></i> 86%</p>                    
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Complejo asignado</h5>
+                  </div>
+                  
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-success">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <!-- Disco izquierdo -->
+                        <path
+                          d="M3 8V16"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M5 6V18"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        
+                        <!-- Barra -->
+                        <path
+                          d="M5 12H19"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                        />
+                        
+                        <!-- Disco derecho -->
+                        <path
+                          d="M19 6V18"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          d="M21 8V16"
+                          stroke="#2ca87f"
+                          stroke-width="1.5"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                      <strong class="mb-1" th:text="${complejo.nombre}">Nombre del complejo</strong>
+                      <p class="text-success mb-0 small">
+                        <i class="ti ti-map-pin"></i> <span th:text="${complejo.direccion}">Dirección</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-xxl-3">
+            <div class="card">
+              <div class="card-body">
+                <div class="d-flex align-items-center">
+                  <div class="flex-grow-1 ms-3">
+                    <h5 class="mb-0">Horas semanales</h5>
+                  </div>
+                  
+                </div>
+                <div class="bg-body p-3 mt-3 rounded">
+                  <div class="row align-items-center">
+                    <!-- Icono -->
+                    <div class="col-6 d-flex align-items-center">
+                      <div class="avtar avtar-xl bg-light-danger">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+                          stroke="#DC2626"
+                          stroke-width="1.5"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />
+                        <path
+                          opacity="0.6"
+                          d="M12 6V12L16 14"
+                          stroke="#DC2626"
+                          stroke-width="1.5"
+                          stroke-miterlimit="10"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        />                        </svg>
+                      </div>
+                    </div>
+                  
+                    <!-- Texto -->
+                    <div class="col-6">
+                     <h5 class="mb-1">15</h5>
+                      <p class="text-danger mb-0"><i class="ti ti-check"></i> 98.1%</p>                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h4 class="mb-0">Registra tu entrada</h4>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <div class="d-flex justify-content-center" style="margin-top: 15%"> <!-- Cambiado a justify-content-center -->
+                  <style>
+                    .circle-button {
+                      width: 40vw;
+                      max-width: 300px;
+                      aspect-ratio: 1/1;
+                      border-radius: 50%;
+                      background-color: #fbbebe;
+                      border: 2px solid black;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      cursor: pointer;
+                      padding: 0;
+                      transition: background-color 0.3s ease;
+                      margin-bottom: 4%;
+                    }
+                    .circle-button:hover {
+                      background-color: #c85858;
+                    }
+                  </style>
+
+                  <button class="circle-button" id="geoButton">
+                    <!-- Icono SVG estilo reloj + marcador -->
+                    <img src="../assets/images/reloj_gps.png" alt="geo" style="width: 60%">
+                  </button>
+                </div>
+                <div class="overlay" id="overlay"></div>
+                <br>
+                <div style="margin-top: 5%">
+                  <h5 class="" style="font-size: 110%; margin-top: 5%"><b>NOTA:</b></h5>
+                  <p class="" style="font-size: 110%">Al presionar el botón se activará la geolocalización, asegurese de estar dentro del complejo</p>
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h4 class="mb-0">Tus reportes</h4>
+              </div>
+              <div class="card-body">
+                <div class="d-grid gap-2" style="margin-top: 7%;">
+
+                    <a th:each="reporte : ${ultimosReportes}" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2">
+                      <div class="d-flex align-items-center">
+                        <div class="flex-shrink-0" style="margin-bottom: 9%">
+                            <span class="p-1 d-block rounded-circle"
+                                  th:classappend=" ${reporte.estado == 'Cerrado'} ? 'bg-success' :
+                                                (${reporte.estado == 'En proceso'} ? 'bg-warning' :
+                                                (${reporte.estado == 'Abierto'} ? 'bg-danger' : 'bg-secondary'))">
+                            <span class="visually-hidden">Estado</span>
+                          </span>
+                        </div>
+                        <div class="flex-grow-1 mx-2">
+                          <p class="mb-0" th:text="${reporte.asunto}">
+                            <span class="visually-hidden">Titulo</span>
+                          </p>
+                        </div>
+                        <br>
+                      </div>
+                    </a>
+
+                </div>
+                <br>
+                <div class="d-grid mt-3">
+                  <a th:href="@{/coord/reportes/mostrar}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                    <i class="ti ti-external-link"></i> Ir a reportes
+                  </a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="card h-100">
+              <div class="card-header">
+                <h4 class="mb-0">Ingresa a tu perfil</h4>
+              </div>
+              <div class="card-body ">
+                <div class="text-center d-grid gap-3">
+                  <!-- Imagen centrada con borde -->
+                  <img th:src="@{${usuario.foto.urlFoto}}" alt="img" class="img-bordered mx-auto"
+                       style="width: 80%; border:3px solid black; border-radius:4px;margin-top: 20%;margin-bottom: 21%">
+                  <br>
+                  <!-- Botón centrado -->
+                  <a th:href="@{/coord/perfil}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+                    <i class="ti ti-user-circle"></i> Ve a tu perfil
+                  </a>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <footer class="pc-footer" style="background: #e0f6ff">
+      <div class="footer-wrapper container-fluid">
+        <div class="row">
+          <div class="col my-1">
+            <p class="m-0"
+              >© Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+          </div>
+
+        </div>
+      </div>
+    </footer>
+ 
+    <!-- [Page Specific JS] start -->
+    <script src="../assets/js/plugins/apexcharts.min.js"></script>
+    <script src="../assets/js/widgets/all-earnings-graph.js"></script>
+    <script src="../assets/js/widgets/page-views-graph.js"></script>
+    <script src="../assets/js/widgets/total-task-graph.js"></script>
+    <script src="../assets/js/widgets/download-graph.js"></script>
+    <script src="../assets/js/widgets/customer-rate-graph.js"></script>
+    <script src="../assets/js/widgets/tasks-graph.js"></script>
+    <script src="../assets/js/widgets/total-income-graph.js"></script>
+    <!-- [Page Specific JS] end -->
+    <!-- Required Js -->
+    <script src="../assets/js/plugins/popper.min.js"></script>
+    <script src="../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="../assets/js/plugins/i18next.min.js"></script>
+    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+    <script src="../assets/js/icon/custom-font.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/multi-lang.js"></script>
+    <script src="../assets/js/plugins/feather.min.js"></script>
+    
+    
+    <script>
+      layout_change('light');
+    </script>
+      
+    <script>
+      change_box_container('false');
+    </script>
+     
+    <script>
+      layout_caption_change('true');
+    </script>
+     
+    <script>
+      layout_rtl_change('false');
+    </script>
+     
+    <script>
+      preset_change('preset-1');
+    </script>
+     
+    <script>
+      main_layout_change('vertical');
+    </script>
+    
+    <style>
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+    <!-- Popup Azul (Inicial) -->
+    <div class="popup popup-blue" id="initialPopup">
+      <h2><strong>ESTAS POR ACTIVAR LA GEOLOCALIZACIÓN</strong></h2>
+      <br>
+      <p>
+        ⚠️ Asegúrate de estar dentro de tu complejo deportivo asignado, de no estar dentro el registro fallará y deberá intentarlo otra vez
+      </p>
+      <button class="popup-button" id="confirmButton">CONFIRMAR</button>
+  </div>
+  
+  <!-- Popup Verde (Éxito) -->
+  <div class="popup popup-green" id="successPopup">
+      <h2><strong>¡REGISTRO EXITOSO!</strong></h2>
+      <h5>EL REGISTRO SE REALIZÓ DE MANERA CORRECTA</h5>
+      <p>Tu registro de asistencia se realizó correctamente<br>
+      ¡Que tengas un buen día!</p>
+      <button class="popup-button" id="closeSuccessButton">CERRAR</button>
+  </div>
+  
+  <!-- Popup Rojo (Error) - Solo diseño, no implementado -->
+  <div class="popup popup-red" id="errorPopup" style="display: none;">
+      <h2>¡ERROR AL REGISTRAR!</h2>
+      <p><strong>EL REGISTRO NO SE REALIZÓ CORRECTAMENTE</strong></p>
+      <p>debido a que te encuentras lejos del complejo deportivo, adeñaste a tu local designado e instruirlo de nuevo.</p>
+      <button class="popup-button">ENTENDIDO</button>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const geoButton = document.getElementById('geoButton');
+        const overlay = document.getElementById('overlay');
+        const initialPopup = document.getElementById('initialPopup');
+        const successPopup = document.getElementById('successPopup');
+        const confirmButton = document.getElementById('confirmButton');
+        const closeSuccessButton = document.getElementById('closeSuccessButton');
+        
+        // Mostrar popup azul al hacer clic en el botón circular
+        geoButton.addEventListener('click', function() {
+            overlay.style.display = 'block';
+            initialPopup.style.display = 'block';
+        });
+        
+        // Confirmar en popup azul muestra popup verde
+        confirmButton.addEventListener('click', function() {
+            initialPopup.style.display = 'none';
+            successPopup.style.display = 'block';
+        });
+        
+        // Cerrar popup verde
+        closeSuccessButton.addEventListener('click', function() {
+            successPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+        
+        // Cerrar popups al hacer clic en el overlay
+        overlay.addEventListener('click', function() {
+            initialPopup.style.display = 'none';
+            successPopup.style.display = 'none';
+            overlay.style.display = 'none';
+        });
+    });
+</script>
+<style>
+  .popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: none;
+    z-index: 1000;
+}
+
+.popup-blue {
+    background-color: #4a90e2;
+    color: white;
+}
+
+.popup-green {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.popup-red {
+    background-color: #f44336;
+    color: white;
+}
+
+.popup h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.popup p {
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    line-height: 1.4;
+}
+
+.popup-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: white;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.popup-blue .popup-button {
+    color: #4a90e2;
+}
+
+.popup-green .popup-button {
+    color: #4CAF50;
+}
+
+.popup-red .popup-button {
+    color: #f44336;
+}
+
+.popup-button:hover {
+    background-color: #f0f0f0;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    z-index: 999;
+}
+</style>
+  </body>
+  <!-- [Body] end -->
+</html>
