@@ -244,7 +244,8 @@
 
                     <!-- Columna derecha: imagen única -->
                     <div class="col-md-6 text-center">
-                      <div th:each="evidencia : ${evidenciasPorComentario[comentario.idComentario]}">
+                      <div th:each="evidencia : ${evidenciasPorComentario[comentario.idComentario]}"
+                           th:if="${#strings.endsWith(evidencia.nombreArchivo, '.png')}">
                         <img th:src="@{'/admin/ver-evidencia/' + ${evidencia.idEvidencia}}"
                              class="img-fluid rounded shadow-sm"/>
                       </div>
