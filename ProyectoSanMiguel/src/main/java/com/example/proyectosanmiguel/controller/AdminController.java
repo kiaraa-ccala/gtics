@@ -110,6 +110,7 @@ public class AdminController {
             }
 
             //Observamos que si envia correctamente :,vvvvv probablemente el error sea el metodo (lo era) xD
+            //se resolvioXD
 
             return horarioRepository.obtenerTurnosPorHorarioSemanal(existente.get().getIdHorarioSemanal());
 
