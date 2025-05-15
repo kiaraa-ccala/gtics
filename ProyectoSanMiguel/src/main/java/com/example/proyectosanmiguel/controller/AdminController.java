@@ -8,7 +8,9 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -542,5 +544,43 @@ public class AdminController {
             }
         }
         return "ok";
+    }
+
+    //Fotos
+    @GetMapping("/reporte/imagen/{id}")
+    @ResponseBody
+    public ResponseEntity<byte[]> mostrarImagen(@PathVariable("id") Integer id) {
+        Optional<Foto> optionalFoto = fotoRepository.findById(id);
+
+        if (optionalFoto.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        Foto foto = optionalFoto.get();
+
+        // Validar que sea .png
+        if (foto.getNombreFoto() == null || !foto.getNombreFoto().toLowerCase().endsWith(".png")) {
+            return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE).build();
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(foto.getFoto(), headers, HttpStatus.OK);
+    }
+
+    @PostMapping("/reporte/cambiar-estado")
+    public String cambiarEstado(@RequestParam Integer idReporte,
+                                @RequestParam String nuevoEstado,
+                                RedirectAttributes redirectAttributes) {
+        Optional<Reporte> optionalReporte = reporteRepository.findById(idReporte);
+        if (optionalReporte.isPresent()) {
+            Reporte reporte = optionalReporte.get();
+            reporte.setEstado(nuevoEstado);
+            reporteRepository.save(reporte);
+            redirectAttributes.addFlashAttribute("success", "Estado actualizado correctamente.");
+        } else {
+            redirectAttributes.addFlashAttribute("error", "No se encontró el reporte.");
+        }
+        return "redirect:/admin/reportes/detalle/" + idReporte;
     }
 }

@@ -46,7 +46,7 @@
               <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                   <h5><strong>ASUNTO:</strong> <span th:text="${reporte.asunto}">Corte de luz</span></h5>
-                  <span th:classappend="${reporte.estado == 'Cerrado'} ? 'badge bg-danger' : (${reporte.estado == 'En Proceso'} ? 'badge bg-success' : 'badge bg-warning')">
+                  <span th:classappend="${reporte.estado == 'Abierto'} ? 'badge bg-danger' : (${reporte.estado == 'En proceso'} ? 'badge bg-warning' : 'badge bg-success')">
                   <span th:text="${reporte.estado}">Estado</span>
                   </span>
                 </div>
@@ -54,11 +54,20 @@
                   <p><strong>DESCRIPCIÓN:</strong></p>
                   <p th:text="${reporte.descripcion}"></p>
                   <div class="text-center mt-3">
-                    <img src="https://media.telemetro.com/p/1cb140baafe438aa30a06f1af8a20b79/adjuntos/311/imagenes/018/319/0018319409/1200x675/smart/imagepng.png"
-                         alt="Evidencia de incidencia"
-                         class="img-fluid rounded shadow"
-                         style="max-width: 90%; height: auto;" />
-                    <p class="text-muted mt-2">Evidencia subida</p>
+                      <div th:if="${reporte.foto != null
+                                        and reporte.foto.foto != null
+                                        and #strings.endsWith(reporte.foto.nombreFoto?.toLowerCase(), '.png')}">
+                        <img th:src="@{/admin/reporte/imagen/{id}(id=${reporte.foto.idFoto})}"
+                             class="img-fluid rounded shadow"
+                             style="max-width: 90%; height: auto;">
+                        <p class="text-muted mt-2">Evidencia subida</p>
+                      </div>
+                      <div th:if="${reporte.foto == null
+                                        or reporte.foto.foto == null
+                                        or !#strings.endsWith(reporte.foto.nombreFoto?.toLowerCase(), '.png')}">
+                        <p class="text-muted mt-2">Este reporte no contiene imagen PNG.</p>
+                      </div>
+
                   </div>
                 </div>
               </div>
@@ -75,7 +84,7 @@
                     <!-- Columna izquierda: detalles -->
                     <div class="col-md-9">
                       <div class="card bg-light p-3 rounded">
-                        <p><strong>Fecha:</strong> 04/04/2025 - 10:32 AM - Cancha 2 - Parque Chicama</p>
+                        <p><strong>Fecha:</strong> <span th:text="${#strings.replace(reporte.fechaRecepcion.toString(), 'T', ' ')}">Fecha </span> </p>
                         <p><strong>Ubicación:</strong>
                           <span th:text="${reporte.horario.complejoDeportivo.direccion}">Ubicación no disponible</span>
                         </p>
@@ -175,25 +184,47 @@
                   <div class="d-flex flex-column gap-3 px-3">
 
                     <!-- Estado: Abierto -->
-                    <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
-                            style="background-color: #fff3cd; border-radius: 12px;">
-                      <span><i class="bi bi-unlock me-2 text-warning"></i><strong>ABIERTO</strong></span>
-                      <i class="bi bi-chevron-right text-muted"></i>
-                    </button>
+                    <form th:action="@{/admin/reporte/cambiar-estado}" method="post" class="w-100">
+                      <input type="hidden" name="idReporte" th:value="${reporte.idReporte}" />
+                      <input type="hidden" name="nuevoEstado" value="Abierto" />
+                      <button type="submit"
+                              class="btn w-100 text-start d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
+                              style="background-color: #f8d7da; border-radius: 12px;">
+                      <span class="d-inline-flex align-items-center">
+                        <i class="bi bi-unlock me-2 text-danger"></i><strong>ABIERTO</strong>
+                      </span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </button>
+                    </form>
 
                     <!-- Estado: En Proceso -->
-                    <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
-                            style="background-color: #d4edda; border-radius: 12px;">
-                      <span><i class="bi bi-hourglass-split me-2 text-success"></i><strong>EN PROCESO</strong></span>
-                      <i class="bi bi-chevron-right text-muted"></i>
-                    </button>
+                    <form th:action="@{/admin/reporte/cambiar-estado}" method="post" class="w-100">
+                      <input type="hidden" name="idReporte" th:value="${reporte.idReporte}" />
+                      <input type="hidden" name="nuevoEstado" value="En proceso" />
+                      <button type="submit"
+                              class="btn w-100 text-start d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
+                              style="background-color: #fff3cd; border-radius: 12px;">
+                      <span class="d-inline-flex align-items-center">
+                        <i class="bi bi-hourglass-split me-2 text-warning"></i><strong>EN PROCESO</strong>
+                      </span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </button>
+                    </form>
 
                     <!-- Estado: Cerrado -->
-                    <button class="btn d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
-                            style="background-color: #f8d7da; border-radius: 12px;">
-                      <span><i class="bi bi-check2-circle me-2 text-danger"></i><strong>CERRADO</strong></span>
-                      <i class="bi bi-chevron-right text-muted"></i>
-                    </button>
+                    <form th:action="@{/admin/reporte/cambiar-estado}" method="post" class="w-100">
+                      <input type="hidden" name="idReporte" th:value="${reporte.idReporte}" />
+                      <input type="hidden" name="nuevoEstado" value="Cerrado" />
+                      <button type="submit"
+                              class="btn w-100 text-start d-flex align-items-center justify-content-between px-4 py-2 shadow-sm border-0"
+                              style="background-color: #d4edda; border-radius: 12px;">
+                      <span class="d-inline-flex align-items-center">
+                        <i class="bi bi-check2-circle me-2 text-success"></i><strong>CERRADO</strong>
+                      </span>
+                        <i class="bi bi-chevron-right text-muted"></i>
+                      </button>
+                    </form>
+
 
                   </div>
                 </div>
