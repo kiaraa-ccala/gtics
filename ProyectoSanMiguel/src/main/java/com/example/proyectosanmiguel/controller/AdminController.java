@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -60,6 +61,9 @@ public class AdminController {
 
     @Autowired
     private FotoRepository fotoRepository;
+
+    @Autowired
+    private MantenimientoRepository mantenimientoRepository;
 
     @ResponseBody
     @GetMapping("/horarios")
@@ -398,6 +402,8 @@ public class AdminController {
     @GetMapping("/servicios/monitoreo")
     public String monitoreoServicios(Model model) {
         List<InstanciaServicio> lista = instanciaServicioRepository.findAll();
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+        model.addAttribute("complejos", complejos);
         model.addAttribute("instancias", lista);
         return "Admin/admin_mantenimiento_modal";
 
@@ -557,4 +563,37 @@ public class AdminController {
         }
         return "redirect:/admin/reportes/detalle/" + idReporte;
     }
+    @PostMapping("/mantenimientos/guardar")
+    public String guardarMantenimiento(
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) String fechaFinStr,
+            @RequestParam("horaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horaInicio,
+            @RequestParam("horaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horaFin,
+            @RequestParam("idComplejo") Integer idComplejo,
+            @RequestParam("descripcion") String descripcion,
+            RedirectAttributes redirectAttributes
+    ) {
+        ComplejoDeportivo complejo = complejoRepository.findById(idComplejo).orElseThrow();
+
+        Mantenimiento mantenimiento = new Mantenimiento();
+        mantenimiento.setFechaInicio(fechaInicio);
+            System.out.println(fechaInicio);
+
+        LocalDate fechaFin;
+        if (fechaFinStr == null || fechaFinStr.trim().isEmpty()) {
+            fechaFin = fechaInicio;
+        } else {
+            fechaFin = LocalDate.parse(fechaFinStr);
+        }
+        System.out.println(fechaFin);
+        mantenimiento.setFechaFin(fechaFin);
+        mantenimiento.setHoraInicio(horaInicio);
+        mantenimiento.setHoraFin(horaFin);
+        mantenimiento.setComplejoDeportivo(complejo);
+
+        mantenimientoRepository.save(mantenimiento);
+        redirectAttributes.addFlashAttribute("exito", "¡Mantenimiento guardado correctamente!");
+        return "redirect:/admin/servicios/monitoreo";
+    }
+
 }
