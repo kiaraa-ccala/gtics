@@ -14,5 +14,5 @@ public interface S3StorageService {
      * @return key generado o ruta local del archivo
      * @throws IOException si hay error al guardar el archivo
      */
-    String upload(MultipartFile file, String pathPrefix) throws IOException;
+    String upload(MultipartFile file, String nombreDestino) throws IOException;
 }

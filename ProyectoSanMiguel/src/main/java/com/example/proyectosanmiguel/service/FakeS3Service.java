@@ -1,6 +1,9 @@
 package com.example.proyectosanmiguel.service;
 
 
+import com.example.proyectosanmiguel.entity.Foto;
+import com.example.proyectosanmiguel.repository.FotoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,21 +16,16 @@ import java.io.IOException;
 public class FakeS3Service implements S3StorageService {
 
 
+    @Autowired
+    private FotoRepository fotoRepository;
+
+
     @Override
-    public String upload(MultipartFile file, String pathPrefix) throws IOException {
-        String originalFilename = file.getOriginalFilename();
-        if (originalFilename == null || originalFilename.isBlank()) {
-            throw new IllegalArgumentException("El nombre del archivo es inválido.");
-        }
-
-        File dir = new File("uploads/" + pathPrefix);
-        if (!dir.exists()) dir.mkdirs();
-
-        String filename = System.currentTimeMillis() + "_" + originalFilename;
-        File targetFile = new File(dir, filename);
-        file.transferTo(targetFile);
-
-        return targetFile.getAbsolutePath(); // Ruta local donde se guardó
+    public String upload(MultipartFile file, String nombreDestino) throws IOException {
+        Foto f = new Foto();
+        f.setNombreFoto(nombreDestino);
+        f.setFoto(file.getBytes()); // guarda como LONGBLOB
+        fotoRepository.save(f);
+        return "guardado en base de datos con ID: " + f.getIdFoto();
     }
-
 }
