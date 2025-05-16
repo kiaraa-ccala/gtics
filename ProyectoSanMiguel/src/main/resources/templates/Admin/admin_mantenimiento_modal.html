@@ -299,6 +299,14 @@
                             <input type="time" class="form-control" id="horaFin" required onkeydown="return false;">
                           </div>
                         </div>
+                        <div class="mb-3 ">
+                          <label for="complejo" class="form-label">Complejo Deportivo</label>
+                          <select class="form-select" id="complejo" required>
+                            <th:block th:each="cmp : ${complejos}">
+                              <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                            </th:block>
+                          </select>
+                        </div>
                 
                         <div class="mb-3">
                           <label for="descripcion" class="form-label">Mantenimiento a Realizar</label>
