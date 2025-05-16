@@ -111,6 +111,27 @@ public class AdminController {
             return List.of();
         }
     }
+    @GetMapping("/api/mantenimientos/{idComplejo}")
+    @ResponseBody
+    public List<Map<String, Object>> obtenerMantenimientosPorComplejo(@PathVariable Integer idComplejo) {
+        List<Mantenimiento> mantenimientos = mantenimientoRepository.findByComplejoDeportivoIdComplejoDeportivo(idComplejo);
+        List<Map<String, Object>> eventos = new ArrayList<>();
+
+        for (Mantenimiento m : mantenimientos) {
+            Map<String, Object> evento = new HashMap<>();
+            evento.put("title", "MANTENIMIENTO");
+            evento.put("start", m.getFechaInicio().toString() + "T" + m.getHoraInicio().toString());
+            evento.put("end", m.getFechaFin().toString() + "T" + m.getHoraFin().toString());
+            evento.put("type", "event-danger"); // para marcar visualmente
+            evento.put("venue", m.getComplejoDeportivo().getNombre());
+            eventos.add(evento);
+        }
+
+        return eventos;
+    }
+
+
+
 
     @PostMapping("/agenda/guardarHorarios")
     @ResponseBody
@@ -563,6 +584,23 @@ public class AdminController {
         }
         return "redirect:/admin/reportes/detalle/" + idReporte;
     }
+
+
+    @PostMapping("/reporte/cerrar")
+    public String cerrarReporte(@RequestParam("idReporte") Integer idReporte, RedirectAttributes attr) {
+        Optional<Reporte> optionalReporte = reporteRepository.findById(idReporte);
+
+        if (optionalReporte.isPresent()) {
+            Reporte reporte = optionalReporte.get();
+            reporte.setEstado("Cerrado");
+            reporteRepository.save(reporte);
+            attr.addFlashAttribute("msg", "El reporte fue cerrado correctamente.");
+        }
+
+        return "redirect:/admin/reportes/detalle/" + idReporte;
+    }
+
+
     @PostMapping("/mantenimientos/guardar")
     public String guardarMantenimiento(
             @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
@@ -594,6 +632,11 @@ public class AdminController {
         mantenimientoRepository.save(mantenimiento);
         redirectAttributes.addFlashAttribute("exito", "¡Mantenimiento guardado correctamente!");
         return "redirect:/admin/servicios/monitoreo";
+
+
+
+
     }
+
 
 }
