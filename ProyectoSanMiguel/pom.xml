@@ -76,10 +76,28 @@
 			<scope>provided</scope>
 		</dependency>
 
+
+		<!-- para spring cloud aws 3.x no es necesario condigurar el framework ya lo hace automaticamente -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-validation</artifactId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>io.awspring.cloud</groupId>
+			<artifactId>spring-cloud-aws-starter-s3</artifactId>
+			<version>3.0.2</version> <!-- Usa la versión más reciente -->
+		</dependency>
+		<dependency>
+			<groupId>io.awspring.cloud</groupId>
+			<artifactId>spring-cloud-aws-autoconfigure</artifactId>
+			<version>3.0.2</version>
+		</dependency>
+
+
+
+
+
 
 	</dependencies>
 
@@ -91,5 +109,6 @@
 			</plugin>
 		</plugins>
 	</build>
+
 
 </project>
