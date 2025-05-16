@@ -1,6 +1,8 @@
 package com.example.proyectosanmiguel.controller;
 
 import com.example.proyectosanmiguel.service.S3StorageService;
+import jakarta.annotation.PostConstruct;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -9,7 +11,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/s3")
+@ResponseBody
 public class NeoS3 {
+
+
+
+    @GetMapping("/ping")
+    @ResponseBody
+    public String ping() {
+        return "pong";
+    }
+
+    @PostConstruct
+    public void init() {
+        System.out.println("✅ NeoS3 cargado correctamente");
+    }
     private final S3StorageService almacenamientoService;
 
     /**
