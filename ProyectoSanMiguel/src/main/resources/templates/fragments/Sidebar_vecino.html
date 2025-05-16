@@ -1,64 +1,47 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>Sidebar Fragment</title>
-</head>
-<body>
-<th:block th:fragment="sidebar">
-  <nav class="pc-sidebar" style="background-color: #1a3570;">
-    <div class="navbar-wrapper text-white">
-      <div class="m-header" style="background-color: #fffffb;">
-        <a class="b-brand text-primary">
-          <img th:src="@{/assets/images/logo-sanM.png}" class="img-fluid" style="height: 40px;" alt="logoSM" />
-          <span class="badge bg-light-success rounded-pill ms-2 theme-version">Administrador</span>
-        </a>
-      </div>
-      <div class="navbar-content">
-        <ul class="pc-navbar">
-            <li class="pc-item pc-caption">
-                <label data-i18n="Incidentes">Incidentes</label>
-            </li>
-          <li class="pc-item">
-            <a th:href="@{/admin/reportes}" class="pc-link">
-                            <span class="pc-micon">
-                                <svg class="pc-icon">
-                                    <use xlink:href="#custom-notification-status"></use>
-                                </svg>
-                            </span>
-              <span class="pc-mtext">Incidentes</span>
-            </a>
-          </li>
-            <li class="pc-item pc-caption">
-                <label data-i18n="Servicios">Servicios</label>
-            </li>
-          <li class="pc-item">
-            <a th:href="@{/admin/servicios/monitoreo}" class="pc-link">
-                            <span class="pc-micon">
-                                <svg class="pc-icon">
-                                    <use xlink:href="#custom-element-plus"></use>
-                                </svg>
-                            </span>
-              <span class="pc-mtext">Servicios</span>
-            </a>
-          </li>
-            <li class="pc-item pc-caption">
-                <label data-i18n="Horarios">Horarios</label>
-            </li>
-            <li class="pc-item pc-hasmenu">
-                <a href="#!" class="pc-link">
-                    <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-calendar-1"></use></svg></span>
-                    <span class="pc-mtext">Horarios</span>
-                    <span class="pc-arrow"><i data-feather="chevron-right"></i></span>
-                </a>
-                <ul class="pc-submenu">
-                    <li class="pc-item"><a class="pc-link" th:href="@{/admin/agenda}">Ver Agenda Horarios</a></li>
-                    <li class="pc-item"><a class="pc-link" th:href="@{/admin/agregarHorarios}">Añadir Horarios</a></li>
-                </ul>
-            </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</th:block>
-</body>
+    <head>
+        <title>Sidebar Vecino</title>
+    </head>
+    <body>
+        <th:block th:fragment="sidebar">
+            <nav class="pc-sidebar" style="background-color: #1a3570;">
+                <div class="navbar-wrapper text-white">
+                    <div class="m-header" style="background-color: #fffffb;">
+                        <a class="b-brand text-primary">
+                            <img th:src="@{/assets/images/logo-sanM.png}" class="img-fluid" style="height: 40px;" alt="logoSM" />
+                            <span class="badge bg-light-success rounded-pill ms-2 theme-version">Vecino</span>
+                        </a>
+                    </div>
+
+                    <div class="navbar-content">
+                        <ul class="pc-navbar">
+                            <li class="pc-item">
+                                <a th:href="@{/vecino/listarComplejos}" class="pc-link">
+                                    <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-element-plus"></use></svg></span>
+                                    <span class="pc-mtext">Servicios Disponibles</span>
+                                </a>
+                            </li>
+
+                            <li class="pc-item">
+                                <a th:href="@{/vecino/misReservas}" class="pc-link">
+                                    <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-calendar-1"></use></svg></span>
+                                    <span class="pc-mtext">Mis Reservas</span>
+                                </a>
+                            </li>
+
+
+                            <li class="pc-item">
+                                <a th:href="@{/vecino/pagos}" class="pc-link">
+                                    <span class="pc-micon"><svg class="pc-icon"><use xlink:href="#custom-dollar-sign"></use></svg></span>
+                                    <span class="pc-mtext">Pagos</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </th:block>
+    </body>
 </html>

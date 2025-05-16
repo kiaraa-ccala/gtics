@@ -14,5 +14,6 @@ public interface InstanciaServicioRepository extends JpaRepository<InstanciaServ
 
     @Query("SELECT i FROM InstanciaServicio i WHERE i.complejoDeportivo.idComplejoDeportivo = :idComplejoDeportivo")
     List<InstanciaServicio> findInstanciaServicioByComplejoDeportivo(@Param("idComplejoDeportivo") int idComplejoDeportivo);
+
 }
 

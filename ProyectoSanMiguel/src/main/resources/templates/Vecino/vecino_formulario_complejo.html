@@ -225,76 +225,60 @@
               <!-- [ Main Content ] start -->
 
               <form th:action="@{/vecino/guardarReserva}" method="post" th:object="${reserva}">
-
                 <div class="container-fluid">
                   <div class="row g-3">
 
+                    <!-- DATOS PERSONALES -->
                     <div class="col-12 col-lg-8">
                       <div class="card h-100">
-                          <div class="card-header">
-                            <h4 class="mb-0">Datos personales</h4>
-                          </div>
-                          <div class="card-body">
-                            <div class="row">
-                              <div class="col-md-6">
-                                <div class="mb-3">
-                                  <label id="nombre" class="form-label">Nombres</label>
-                                  <input type="text" class="form-control" placeholder="Ingrese el nombre" th:field="*{usuario.getNombre()}" />
-                                  <br>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="mb-3">
-                                  <label class="form-label">Apellidos</label>
-                                  <input type="text" class="form-control" placeholder="Ingrese los apellidos" th:field="*{usuario.getApellido()}" />
-                                  <br>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="mb-3">
-                                  <label class="form-label">Correo electrónico</label>
-                                  <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" th:field="*{usuario.getCredencial().getCorreo()}" />
-                                  <br>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="mb-3">
-                                  <label class="form-label">DNI</label>
-                                  <input type="text" class="form-control" placeholder="Ingrese el DNI" th:field="*{usuario.getDni()}" />
-                                  <br>
-                                </div>
-                              </div>
+                        <div class="card-header">
+                          <h4 class="mb-0">Datos personales</h4>
+                        </div>
+                        <div class="card-body">
+                          <div class="row">
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label">Nombres</label>
+                              <input type="text" class="form-control" placeholder="Ingrese el nombre" th:field="*{usuario.nombre}" />
+                            </div>
 
-                              <div class="col-md-6">
-                                <div class="mb-3">
-                                  <label class="form-label">Telefono</label>
-                                  <input type="tel" class="form-control" placeholder="Ingrese su teléfono" th:field="*{usuario.getTelefono()}" />
-                                  <br>
-                                </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="mb-3" hidden>
-                                  <label class="form-label">Tipo de persona</label>
-                                  <select class="form-select">
-                                    <option value="1">Persona Natural</option>
-                                    <option value="2">Persona Jurídica</option>
-                                  </select>
-                                  <br>
-                                </div>
-                              </div>
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label">Apellidos</label>
+                              <input type="text" class="form-control" placeholder="Ingrese los apellidos" th:field="*{usuario.apellido}" />
+                            </div>
 
-                              <div class="col-md-12">
-                                <div class="mb-3">
-                                  <label class="form-label">Dirección</label>
-                                  <input type="text" class="form-control" value="" placeholder="Ingrese su dirección" th:field="*{usuario.getDireccion()}"/>
-                                </div>
-                              </div>
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label">Correo electrónico</label>
+                              <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" th:field="*{usuario.credencial.correo}" />
+                            </div>
 
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label">DNI</label>
+                              <input type="text" class="form-control" placeholder="Ingrese el DNI" th:field="*{usuario.dni}" />
+                            </div>
 
+                            <div class="col-md-6 mb-3">
+                              <label class="form-label">Teléfono</label>
+                              <input type="tel" class="form-control" placeholder="Ingrese su teléfono" th:field="*{usuario.telefono}" />
+                            </div>
+
+                            <div class="col-md-6 mb-3" hidden>
+                              <label class="form-label">Tipo de persona</label>
+                              <select class="form-select">
+                                <option value="1">Persona Natural</option>
+                                <option value="2">Persona Jurídica</option>
+                              </select>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label">Dirección</label>
+                              <input type="text" class="form-control" placeholder="Ingrese su dirección" th:field="*{usuario.direccion}" />
                             </div>
                           </div>
+                        </div>
                       </div>
                     </div>
+
+                    <!-- INFORMACIÓN DEL CAMPO -->
                     <div class="col-12 col-lg-4">
                       <div class="card h-100">
                         <div class="card-header">
@@ -302,52 +286,51 @@
                         </div>
                         <div class="card-body">
                           <div class="row">
-                            <div class="col-md-12">
-                              <div class="mb-3">
-                                <label class="form-label">Selecciona el campo</label>
-                                <select class="form-select">
-                                  <option value="1">Cancha #01 (Grass sintético)</option>
-                                  <option value="2">Cancha #02 (Losa)</option>
-                                </select>
-                                <br>
-                              </div>
-                            </div>
-                            <br>
-                            <div class="col-md-12">
-                              <div class="mb-3">
-                                <label class="form-label">Seleccione fecha</label>
-                                <input type="date" class="form-control" value=""  />
-                              </div>
-                            </div>
-                            <br>
-                            <div class="col-md-12">
-                              <div class="mb-3">
-                                <label class="form-label">Hora inicio</label>
-                                <input type="time" class="form-control" value=""/>
-                              </div>
-                            </div>
-                            <br>
-                            <div class="col-md-12">
-                              <div class="mb-3">
-                                <label class="form-label">Hora fin</label>
-                                <input type="time" class="form-control" value=""/>
-                              </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label">Selecciona el campo</label>
+                              <select class="form-select" th:field="*{instanciaServicio.idInstanciaServicio}" id="selectInstancia">
+                                <option value="" disabled selected>-- Selecciona una cancha --</option>
+                                <option th:each="i : ${instanciaServicios}"
+                                        th:value="${i.idInstanciaServicio}"
+                                        th:text="${i.nombre}"></option>
+                              </select>
                             </div>
 
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label">Seleccione fecha</label>
+                              <input type="date" id="inputFecha" class="form-control" th:field="*{fecha}" />
+
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label">Hora inicio</label>
+                              <select class="form-select" id="inputHoraInicio" th:field="*{horaInicio}">
+                                <option value="">-- Selecciona hora inicio --</option>
+                              </select>
+                            </div>
+
+                            <div class="col-md-12 mb-3">
+                              <label class="form-label">Hora fin</label>
+                              <select class="form-select" id="inputHoraFin" th:field="*{horaFin}">
+                                <option value="">-- Selecciona hora fin --</option>
+                              </select>
+                            </div>
 
                           </div>
                         </div>
                       </div>
                     </div>
+
+                    <!-- BOTÓN DE RESERVA -->
                     <div class="text-center">
-                      <button type="button" class="btn btn-lg btn-primary" style="width: 200px;" data-bs-toggle="modal" data-bs-target="#cartModal">
-                          <i class="bi bi-credit-card me-2"></i> Reservar
+                      <button type="submit" class="btn btn-lg btn-primary" style="width: 200px;">
+                        <i class="bi bi-credit-card me-2"></i> Reservar
                       </button>
                     </div>
 
                   </div>
                 </div>
-
               </form>
 
               <!-- [ Main Content ] end -->
@@ -368,6 +351,8 @@
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/multi-lang.js}"></script>
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+
 
 <script>
   layout_change('light');
@@ -538,6 +523,79 @@
           background-color: #0b5ed7;
         }
       </style>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        const inputFecha = document.getElementById("inputFecha");
+        const selectInstancia = document.getElementById("selectInstancia");
+        const inputHoraInicio = document.getElementById("inputHoraInicio");
+        const inputHoraFin = document.getElementById("inputHoraFin");
+
+        let fechasDisponibles = [];
+
+        // Al cambiar de cancha
+        selectInstancia.addEventListener("change", function () {
+          const id = this.value;
+
+          // Limpiar campos
+          inputFecha.value = "";
+          inputHoraInicio.innerHTML = '<option value="">-- Selecciona hora --</option>';
+          inputHoraFin.innerHTML = '<option value="">-- Selecciona hora --</option>';
+
+          // Obtener fechas con horarios disponibles
+          fetch(`/api/complejos/fechasDisponibles?idInstancia=${id}`)
+                  .then(res => res.json())
+                  .then(fechas => {
+                    fechasDisponibles = fechas;
+
+                    if (fechasDisponibles.length === 0) {
+                      inputFecha.setAttribute("disabled", "disabled");
+                      alert("No hay fechas disponibles para esta cancha.");
+                      return;
+                    }
+
+                    inputFecha.removeAttribute("disabled");
+                    inputFecha.setAttribute("min", fechasDisponibles[0]);
+                    inputFecha.setAttribute("max", fechasDisponibles[fechasDisponibles.length - 1]);
+                  });
+        });
+
+        // Al cambiar la fecha
+        inputFecha.addEventListener("change", function () {
+          const fecha = this.value;
+          const idInstancia = selectInstancia.value;
+
+          if (!fechasDisponibles.includes(fecha)) {
+            alert("Esta fecha no tiene horarios disponibles.");
+            this.value = "";
+            inputHoraInicio.innerHTML = '<option value="">-- Selecciona hora --</option>';
+            inputHoraFin.innerHTML = '<option value="">-- Selecciona hora --</option>';
+            return;
+          }
+
+          // Si la fecha está permitida, consultar horas libres
+          fetch(`/api/complejos/disponibilidad?idInstancia=${idInstancia}&fecha=${fecha}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    const ocupadas = new Set(data.horas || []);
+
+                    inputHoraInicio.innerHTML = '<option value="">-- Selecciona hora --</option>';
+                    inputHoraFin.innerHTML = '<option value="">-- Selecciona hora --</option>';
+
+                    for (let h = 7; h < 22; h++) {
+                      const hora = `${String(h).padStart(2, '0')}:00`;
+                      if (!ocupadas.has(hora)) {
+                        inputHoraInicio.innerHTML += `<option value="${hora}">${hora}</option>`;
+                        inputHoraFin.innerHTML += `<option value="${hora}">${hora}</option>`;
+                      }
+                    }
+                  });
+        });
+      });
+    </script>
+
+
+
   </body>
   <!-- [Body] end -->
 </html>
