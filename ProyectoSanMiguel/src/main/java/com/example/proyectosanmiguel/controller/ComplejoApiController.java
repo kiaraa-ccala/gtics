@@ -4,6 +4,10 @@ import com.example.proyectosanmiguel.dto.ComplejoDetalleDTO;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import java.util.stream.Stream;
+import java.util.stream.Collectors;
+import java.time.format.TextStyle;
+import java.util.Locale;
+import java.text.Normalizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,8 +18,6 @@ import java.util.HashMap;
 import com.example.proyectosanmiguel.repository.ReservaRepository;
 
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.RequestParam;
-
 import java.math.BigDecimal;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -59,7 +61,6 @@ public class ComplejoApiController {
         dto.setLongitud(new BigDecimal(complejo.getLongitud()));
         dto.setSector(complejo.getSector().getNombre());
 
-        // Servicios
         List<InstanciaServicio> instancias = instanciaServicioRepository
                 .findInstanciaServicioByComplejoDeportivo(id);
 
@@ -75,7 +76,6 @@ public class ComplejoApiController {
 
         dto.setServicios(serviciosDTO);
 
-        // Tarifas
         List<Tarifa> tarifasFiltradas = tarifaRepository.findAll().stream()
                 .filter(t -> instancias.stream()
                         .anyMatch(inst -> inst.getServicio().getIdServicio().equals(t.getServicio().getIdServicio()))
@@ -92,7 +92,6 @@ public class ComplejoApiController {
         }).toList();
         dto.setTarifas(tarifasDTO);
 
-        // Horarios globales (apertura/cierre semana y finde)
         LocalTime aperturaSemana = null;
         LocalTime cierreSemana = null;
         LocalTime aperturaFin = null;
@@ -122,77 +121,140 @@ public class ComplejoApiController {
         dto.setHorarioAperturaFin(aperturaFin != null ? aperturaFin.toString() : "--:--");
         dto.setHorarioCierreFin(cierreFin != null ? cierreFin.toString() : "--:--");
 
-        // Fotos (vacío por ahora)
         dto.setFotos(new ArrayList<>());
 
         return ResponseEntity.ok(dto);
     }
     @GetMapping("/disponibilidad")
-    @ResponseBody
-    public ResponseEntity<?> verificarDisponibilidad(
+    public ResponseEntity<Map<String, Object>> verificarDisponibilidad(
             @RequestParam("idInstancia") Integer idInstancia,
             @RequestParam("fecha") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fecha) {
 
-        List<Reserva> reservas = reservaRepository
-                .findByInstanciaServicio_IdInstanciaServicioAndFecha(idInstancia, fecha);
+        Map<String, Object> respuesta = new HashMap<>();
 
-        List<Map<String, String>> bloquesOcupados = reservas.stream().map(r -> {
-            Map<String, String> bloque = new HashMap<>();
-            bloque.put("inicio", r.getHoraInicio().toString());
-            bloque.put("fin", r.getHoraFin().toString());
-            return bloque;
-        }).toList();
+        Optional<InstanciaServicio> instanciaOpt = instanciaServicioRepository.findById(idInstancia);
+        if (instanciaOpt.isEmpty()) {
+            respuesta.put("fechaLlena", true);
+            respuesta.put("bloques", List.of());
+            return ResponseEntity.ok(respuesta);
+        }
 
-        List<String> horasOcupadas = reservas.stream()
-                .flatMap(r -> Stream.of(r.getHoraInicio(), r.getHoraFin()))
-                .distinct()
-                .sorted()
-                .map(LocalTime::toString)
+        Servicio servicio = instanciaOpt.get().getServicio();
+        String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+
+        // Normalizar para comparación robusta
+        String diaNormalizado = Normalizer.normalize(diaSemana.toLowerCase(), Normalizer.Form.NFD)
+                .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+
+        // Buscar tarifas para ese día y servicio
+        List<Tarifa> tarifas = tarifaRepository.findAll().stream()
+                .filter(t -> t.getServicio().getIdServicio().equals(servicio.getIdServicio()))
+                .filter(t -> {
+                    String diaT = Normalizer.normalize(t.getDiaSemana().toLowerCase(), Normalizer.Form.NFD)
+                            .replaceAll("[\\p{InCombiningDiacriticalMarks}]", "");
+                    return diaT.equals(diaNormalizado);
+                })
                 .toList();
 
-        boolean fechaLlena = reservas.size() >= 15;
+        if (tarifas.isEmpty()) {
+            respuesta.put("fechaLlena", true);
+            respuesta.put("bloques", List.of());
+            return ResponseEntity.ok(respuesta);
+        }
 
-        Map<String, Object> respuesta = new HashMap<>();
-        respuesta.put("bloques", bloquesOcupados);
-        respuesta.put("horas", horasOcupadas);
-        respuesta.put("fechaLlena", fechaLlena);
+        // Horas ocupadas por reservas
+        List<Reserva> reservas = reservaRepository.findByInstanciaServicio_IdInstanciaServicioAndFecha(idInstancia, fecha);
+        List<LocalTime> horasOcupadas = reservas.stream()
+                .flatMap(r -> {
+                    List<LocalTime> horas = new ArrayList<>();
+                    for (LocalTime h = r.getHoraInicio(); h.isBefore(r.getHoraFin()); h = h.plusHours(1)) {
+                        horas.add(h);
+                    }
+                    return horas.stream();
+                }).toList();
 
+        // Armar bloques con horas disponibles
+        List<Map<String, Object>> bloques = new ArrayList<>();
+
+        for (Tarifa tarifa : tarifas) {
+            List<String> horasDisponibles = new ArrayList<>();
+
+            for (LocalTime h = tarifa.getHoraInicio(); h.isBefore(tarifa.getHoraFin()); h = h.plusHours(1)) {
+                if (!horasOcupadas.contains(h)) {
+                    horasDisponibles.add(h.toString());
+                }
+            }
+
+            if (!horasDisponibles.isEmpty()) {
+                Map<String, Object> bloque = new HashMap<>();
+                bloque.put("inicioTarifa", tarifa.getHoraInicio().toString());
+                bloque.put("finTarifa", tarifa.getHoraFin().toString());
+                bloque.put("monto", tarifa.getMonto());
+                bloque.put("horasDisponibles", horasDisponibles);
+                bloques.add(bloque);
+            }
+        }
+
+        respuesta.put("fechaLlena", bloques.isEmpty());
+        respuesta.put("bloques", bloques);
         return ResponseEntity.ok(respuesta);
     }
 
     @GetMapping("/fechasOcupadas")
-    public ResponseEntity<Map<String, Object>> fechasOcupadas(
-            @RequestParam("idInstancia") Integer idInstancia) {
-
+    public ResponseEntity<Map<String, Object>> fechasOcupadas(@RequestParam("idInstancia") Integer idInstancia) {
         List<LocalDate> fechas = reservaRepository.findFechasLlenasByInstancia(idInstancia);
-
         Map<String, Object> response = new HashMap<>();
         response.put("fechas", fechas.stream().map(LocalDate::toString).toList());
-
         return ResponseEntity.ok(response);
     }
+
     @GetMapping("/fechasDisponibles")
-    @ResponseBody
-    public List<String> obtenerFechasDisponibles(@RequestParam("idInstancia") Integer idInstancia) {
+    public ResponseEntity<List<String>> obtenerFechasDisponibles(@RequestParam("idInstancia") Integer idInstancia) {
         LocalDate hoy = LocalDate.now();
         LocalDate hasta = hoy.plusMonths(3);
 
-        List<Reserva> reservas = reservaRepository.findByInstanciaServicio_IdInstanciaServicioBetweenDates(idInstancia, hoy, hasta);
+        Optional<InstanciaServicio> instanciaOpt = instanciaServicioRepository.findById(idInstancia);
+        if (instanciaOpt.isEmpty()) return ResponseEntity.badRequest().build();
 
-        Map<LocalDate, Integer> conteoPorFecha = new HashMap<>();
-        for (Reserva r : reservas) {
-            conteoPorFecha.put(r.getFecha(), conteoPorFecha.getOrDefault(r.getFecha(), 0) + 1);
+        Servicio servicio = instanciaOpt.get().getServicio();
+
+        List<String> fechasConDisponibilidad = new ArrayList<>();
+
+        for (LocalDate fecha = hoy; !fecha.isAfter(hasta); fecha = fecha.plusDays(1)) {
+            String diaSemana = fecha.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+
+            List<Tarifa> tarifas = tarifaRepository.findAll().stream()
+                    .filter(t -> t.getServicio().getIdServicio().equals(servicio.getIdServicio()) &&
+                            t.getDiaSemana().equalsIgnoreCase(diaSemana))
+                    .toList();
+
+            List<LocalTime> horasPosibles = new ArrayList<>();
+            for (Tarifa t : tarifas) {
+                for (LocalTime h = t.getHoraInicio(); h.isBefore(t.getHoraFin()); h = h.plusHours(1)) {
+                    horasPosibles.add(h);
+                }
+            }
+
+            List<Reserva> reservas = reservaRepository.findByInstanciaServicio_IdInstanciaServicioAndFecha(idInstancia, fecha);
+            List<LocalTime> horasOcupadas = reservas.stream()
+                    .flatMap(r -> {
+                        List<LocalTime> horas = new ArrayList<>();
+                        for (LocalTime h = r.getHoraInicio(); h.isBefore(r.getHoraFin()); h = h.plusHours(1)) {
+                            horas.add(h);
+                        }
+                        return horas.stream();
+                    }).toList();
+
+            boolean hayHoraLibre = horasPosibles.stream().anyMatch(h -> !horasOcupadas.contains(h));
+
+            if (hayHoraLibre) {
+                fechasConDisponibilidad.add(fecha.toString());
+            }
         }
 
-        // Supongamos que una fecha se considera "llena" si tiene 15 reservas
-        return conteoPorFecha.entrySet().stream()
-                .filter(e -> e.getValue() < 15)
-                .map(e -> e.getKey().toString())
-                .toList();
+        return ResponseEntity.ok(fechasConDisponibilidad);
     }
-
 
 
 
 }
-

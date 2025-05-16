@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.time.LocalDate;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import java.time.LocalTime;
 
 import java.util.List;
 
@@ -21,6 +22,17 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
     @Query("SELECT r FROM Reserva r WHERE r.instanciaServicio.idInstanciaServicio = :id AND r.fecha BETWEEN :inicio AND :fin")
     List<Reserva> findByInstanciaServicio_IdInstanciaServicioBetweenDates(@Param("id") Integer id, @Param("inicio") LocalDate inicio, @Param("fin") LocalDate fin);
 
+    @Query("SELECT COUNT(r) > 0 FROM Reserva r " +
+            "WHERE r.instanciaServicio.idInstanciaServicio = :idInstancia " +
+            "AND r.fecha = :fecha " +
+            "AND r.estado IN (0, 1) " + // Pendiente o pagada
+            "AND (" +
+            "  (:horaInicio < r.horaFin AND :horaFin > r.horaInicio)" +
+            ")")
+    boolean existeCruceReserva(@Param("idInstancia") Integer idInstancia,
+                               @Param("fecha") LocalDate fecha,
+                               @Param("horaInicio") LocalTime horaInicio,
+                               @Param("horaFin") LocalTime horaFin);
 
 
 }

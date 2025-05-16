@@ -213,7 +213,7 @@
                     <div class="col-md-12">
                       <div class="page-header-title">
                         <h1 class="mb-0">Nueva reserva</h1>
-                        <h5 class="mb-0">Complejo deportivo #20</h5>
+                        <h5 class="mb-0">Complejo deportivo #<span th:text="${complejo.idComplejoDeportivo}"></span></h5>
                       </div>
                     </div>
                   </div>
@@ -299,22 +299,19 @@
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label">Seleccione fecha</label>
-                              <input type="date" id="inputFecha" class="form-control" th:field="*{fecha}" />
+                              <input id="inputFecha" class="form-control" th:field="*{fecha}" placeholder="Selecciona una fecha" readonly />
 
                             </div>
 
-                            <div class="col-md-12 mb-3">
-                              <label class="form-label">Hora inicio</label>
-                              <select class="form-select" id="inputHoraInicio" th:field="*{horaInicio}">
-                                <option value="">-- Selecciona hora inicio --</option>
-                              </select>
-                            </div>
+
 
                             <div class="col-md-12 mb-3">
-                              <label class="form-label">Hora fin</label>
-                              <select class="form-select" id="inputHoraFin" th:field="*{horaFin}">
-                                <option value="">-- Selecciona hora fin --</option>
+                            <label class="form-label">Horario disponible</label>
+                              <select class="form-select" name="bloqueHorario" id="selectHorario">
+                                <option value="">-- Selecciona un horario --</option>
+                                <option value="08:00-10:00">08:00 – 10:00</option>
                               </select>
+
                             </div>
 
                           </div>
@@ -353,8 +350,14 @@
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 
 
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-<script>
+
+
+
+    <script>
   layout_change('light');
 </script>
   
@@ -524,75 +527,79 @@
         }
       </style>
 
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const inputFecha = document.getElementById("inputFecha");
         const selectInstancia = document.getElementById("selectInstancia");
-        const inputHoraInicio = document.getElementById("inputHoraInicio");
-        const inputHoraFin = document.getElementById("inputHoraFin");
+        const selectHorario = document.getElementById("selectHorario");
 
         let fechasDisponibles = [];
+        let flatpickrInstance = null;
 
-        // Al cambiar de cancha
         selectInstancia.addEventListener("change", function () {
           const id = this.value;
 
-          // Limpiar campos
-          inputFecha.value = "";
-          inputHoraInicio.innerHTML = '<option value="">-- Selecciona hora --</option>';
-          inputHoraFin.innerHTML = '<option value="">-- Selecciona hora --</option>';
+          // Reset horarios
+          selectHorario.innerHTML = '<option value="">-- Selecciona un horario --</option>';
 
-          // Obtener fechas con horarios disponibles
+          // Obtener fechas disponibles
           fetch(`/api/complejos/fechasDisponibles?idInstancia=${id}`)
                   .then(res => res.json())
                   .then(fechas => {
                     fechasDisponibles = fechas;
 
-                    if (fechasDisponibles.length === 0) {
-                      inputFecha.setAttribute("disabled", "disabled");
-                      alert("No hay fechas disponibles para esta cancha.");
-                      return;
-                    }
+                    if (flatpickrInstance) flatpickrInstance.destroy();
 
-                    inputFecha.removeAttribute("disabled");
-                    inputFecha.setAttribute("min", fechasDisponibles[0]);
-                    inputFecha.setAttribute("max", fechasDisponibles[fechasDisponibles.length - 1]);
+                    flatpickrInstance = flatpickr(inputFecha, {
+                      locale: "es",
+                      dateFormat: "Y-m-d",
+                      enable: fechasDisponibles,
+                      onChange: function (selectedDates, dateStr) {
+                        if (dateStr) {
+                          cargarHorasDisponibles(id, dateStr);
+                        }
+                      }
+                    });
                   });
         });
 
-        // Al cambiar la fecha
-        inputFecha.addEventListener("change", function () {
-          const fecha = this.value;
-          const idInstancia = selectInstancia.value;
-
-          if (!fechasDisponibles.includes(fecha)) {
-            alert("Esta fecha no tiene horarios disponibles.");
-            this.value = "";
-            inputHoraInicio.innerHTML = '<option value="">-- Selecciona hora --</option>';
-            inputHoraFin.innerHTML = '<option value="">-- Selecciona hora --</option>';
-            return;
-          }
-
-          // Si la fecha está permitida, consultar horas libres
+        function cargarHorasDisponibles(idInstancia, fecha) {
           fetch(`/api/complejos/disponibilidad?idInstancia=${idInstancia}&fecha=${fecha}`)
                   .then(res => res.json())
                   .then(data => {
-                    const ocupadas = new Set(data.horas || []);
+                    selectHorario.innerHTML = '<option value="">-- Selecciona un horario --</option>';
 
-                    inputHoraInicio.innerHTML = '<option value="">-- Selecciona hora --</option>';
-                    inputHoraFin.innerHTML = '<option value="">-- Selecciona hora --</option>';
-
-                    for (let h = 7; h < 22; h++) {
-                      const hora = `${String(h).padStart(2, '0')}:00`;
-                      if (!ocupadas.has(hora)) {
-                        inputHoraInicio.innerHTML += `<option value="${hora}">${hora}</option>`;
-                        inputHoraFin.innerHTML += `<option value="${hora}">${hora}</option>`;
-                      }
+                    if (data.fechaLlena || !data.bloques || data.bloques.length === 0) {
+                      alert("No hay horarios disponibles para esta fecha.");
+                      return;
                     }
+
+                    data.bloques.forEach(bloque => {
+                      const horas = bloque.horasDisponibles;
+                      for (let i = 0; i < horas.length - 1; i++) {
+                        const h1 = horas[i];
+                        const h2 = horas[i + 1];
+
+                        // Verificar que sean consecutivas
+                        const h1Num = parseInt(h1.split(':')[0]);
+                        const h2Num = parseInt(h2.split(':')[0]);
+
+                        if (h2Num === h1Num + 1) {
+                          const label = `${h1} – ${h2} (S/ ${bloque.monto})`;
+                          const value = `${h1}-${h2}`;
+                          const opt = new Option(label, value);
+                          selectHorario.add(opt);
+                        }
+                      }
+                    });
                   });
-        });
+        }
       });
     </script>
+
+    </script>
+
 
 
 
