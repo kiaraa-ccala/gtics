@@ -11,13 +11,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/s3")
-@ResponseBody
 public class NeoS3 {
 
 
 
     @GetMapping("/ping")
-    @ResponseBody
     public String ping() {
         return "pong";
     }
