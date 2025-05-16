@@ -1,4 +1,5 @@
 package com.example.proyectosanmiguel.controller;
+import com.example.proyectosanmiguel.repository.InformacionPagoRepository;
 
 import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.LocalDateTime;
+
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.Locale;
@@ -26,18 +27,25 @@ public class VecinoController {
     private ComplejoRepository complejoRepository;
     @Autowired
     private InformacionPagoRepository informacionPagoRepository;
+
     @Autowired
     private SectorRepository sectorRepository;
+
     @Autowired
     private ServicioRepository servicioRepository;
+
     @Autowired
     private TarifaRepository tarifaRepository;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @Autowired
     private FotoRepository fotoRepository;
+
     @Autowired
     private ReservaRepository reservaRepository;
+
     @Autowired
     private InstanciaServicioRepository instanciaServicioRepository;
 
@@ -113,12 +121,14 @@ public class VecinoController {
             reserva.setUsuario(usuario);
             model.addAttribute("reserva", reserva);
             model.addAttribute("instanciaServicios", instanciaServicios);
+            model.addAttribute("complejo", instancia.get().getComplejoDeportivo()); // ✅ Agregado
 
             return "Vecino/vecino_formulario_complejo";
         } else {
             return "redirect:/vecino/listarComplejos";
         }
     }
+
 
     @PostMapping("/guardarReserva")
     public String guardarReserva(@ModelAttribute Reserva reserva,
@@ -151,19 +161,6 @@ public class VecinoController {
         InstanciaServicio instancia = instanciaOpt.get();
         reserva.setInstanciaServicio(instancia);
 
-        // Verificar si ya existe una reserva que cruce con este horario
-        boolean hayCruce = reservaRepository.existeCruceReserva(
-                instancia.getIdInstanciaServicio(),
-                reserva.getFecha(),
-                horaInicio,
-                horaFin
-        );
-
-        if (hayCruce) {
-            redirectAttributes.addFlashAttribute("error", "Ya existe una reserva en ese horario.");
-            return "redirect:/vecino/crearReserva?idInstancia=" + instancia.getIdInstanciaServicio();
-        }
-
         // Buscar la tarifa correspondiente
         Tarifa tarifa = tarifaRepository.findAll().stream()
                 .filter(t -> t.getServicio().getIdServicio().equals(instancia.getServicio().getIdServicio()))
@@ -191,6 +188,8 @@ public class VecinoController {
 
         return "redirect:/vecino/misReservas";
     }
+
+
 
     private String obtenerDia(LocalDate fecha) {
         return fecha.getDayOfWeek()

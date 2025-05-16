@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head_vecino :: head('Agregar Usuario')"></head>
+  <head th:replace="~{fragments/head_vecino :: head('Agregar Usuario')}"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
 
@@ -11,9 +11,9 @@
   </div>
 </div>
 
-    <div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+    <div th:replace="~{fragments/Sidebar_vecino :: sidebar}"></div>
 
-    <div th:replace="fragments/navbar_vecino :: header"></div>
+    <div th:replace="~{fragments/navbar_vecino :: header}"></div>
 
     <!-- [ Main Content ] start -->
     <div class="pc-container" style="background: #e0f6ff">
@@ -829,7 +829,7 @@
     </div>
 
     <!-- [ Main Content ] end -->
-    <div th:replace="fragments/footer_superadmin :: footer"></div>
+    <div th:replace="~{fragments/footer_superadmin :: footer}"></div>
 
 
     <!-- Required Js -->
