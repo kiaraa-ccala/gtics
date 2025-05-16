@@ -18,8 +18,8 @@ public class Mantenimiento {
     private Integer idMantenimiento;
 
     @ManyToOne
-    @JoinColumn(name = "idServicio")
-    private Servicio servicio;
+    @JoinColumn(name = "idComplejoDeportivo")
+    private ComplejoDeportivo complejoDeportivo;
 
     @Column(name = "fechaInicio", nullable = false)
     private LocalDate fechaInicio;

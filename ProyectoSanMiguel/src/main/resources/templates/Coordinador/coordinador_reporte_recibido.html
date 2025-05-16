@@ -50,7 +50,7 @@
                                         and #strings.endsWith(reporte.foto.nombreFoto?.toLowerCase(), '.png')}">
                                           <img th:src="@{/coord/reporte/imagen/{id}(id=${reporte.foto.idFoto})}"
                                                class="img-thumbnail"
-                                               style="max-width: 80%; border: 3px solid #000; border-radius: 5px;">
+                                               style="max-width: 60%; border: 3px solid #000; border-radius: 5px;">
                                       </div>
                                       <div th:if="${reporte.foto == null
                                         or reporte.foto.foto == null

@@ -58,11 +58,18 @@
                         </a>
                       </div>
                     </div>
-                    
-                    <div class="d-flex justify-content-center align-items-center flex-grow-1 py-3">
-                      <div style="width: 100%; max-width: 320px; aspect-ratio: 1/1;">
-                        <canvas id="category-donut-chart"></canvas>
-                      </div>
+
+                      <div id="total-income-graph2"></div>
+                    <div class="justify-content-center align-items-center flex-grow-1 py-3">
+                        <div class="mb-3 mt-3 d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-danger f-12"></i> Abierto</h6>
+                        </div>
+                        <div class="mb-3 d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-success f-12"></i> Cerrado</h6>
+                        </div>
+                        <div class="mb-1 d-flex align-items-center justify-content-between">
+                            <h6 class="mb-0 d-flex align-items-center gap-2"><i class="fas fa-circle text-warning f-12"></i> En Proceso</h6>
+                        </div>
                     </div>
                     
                     <div class="d-grid mt-auto pt-3">
@@ -119,18 +126,18 @@
           </div>
           
           <!-- Script de Chart.js (se mantiene igual) -->
-          <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
           <script>
           document.addEventListener('DOMContentLoaded', function() {
             const ctx = document.getElementById('category-donut-chart');
             
             new Chart(ctx, {
               type: 'doughnut',
+              marginBottom:200,
               data: {
-                labels: ['Recibido', 'No recibido'],
+                labels: ['Cerrado', 'Abierto','En proceso'],
                 datasets: [{
-                  data: [70, 30],
-                  backgroundColor: ['#28a745', '#dc3545'],
+                  data: [20, 50, 30],
+                  backgroundColor: ['#28a745', '#dc3545','#F27D1E'],
                   borderWidth: 2,
                   borderColor: '#fff'
                 }]
@@ -143,9 +150,9 @@
                     position: 'bottom',
                     labels: {
                       boxWidth: 12,
-                      padding: 15,
+                      padding: 12,
                       font: {
-                        size: 13
+                        size: 14
                       },
                       usePointStyle: true
                     }
@@ -196,6 +203,7 @@
     <script th:src="@{/assets/js/multi-lang.js}"></script>
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
     <script th:src="@{/assets/js/widgets/category-donut-chart.js}"></script>
+    <script th:src="@{/assets/js/widgets/total-income-graph3.js}"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
