@@ -3,11 +3,13 @@ package com.example.proyectosanmiguel.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.io.Serializable;
+
 @Getter
 @Setter
 @Entity
 @Table(name = "sector")
-public class Sector {
+public class Sector implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idSector", nullable = false)

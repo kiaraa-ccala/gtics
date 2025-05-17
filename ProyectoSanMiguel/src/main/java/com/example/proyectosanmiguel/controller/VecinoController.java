@@ -109,4 +109,17 @@ public class VecinoController {
         return "Vecino/vecino_servicios";  // Asegúrate de que esta sea la vista correcta
     }
 
+    @GetMapping("/crearReserva")
+    public String crearReserva(Model model, @ModelAttribute("reserva") Reserva reserva) {
+
+        List<Servicio> servicios = servicioRepository.findAll();
+
+        return "Vecino/vecino_formulario_complejo";
+    }
+
+    @GetMapping("/guardarReserva")
+    public String guardarReserva(@ModelAttribute Reserva reserva) {
+
+        return "Vecino/vecino_formulario_complejo";
+    }
 }

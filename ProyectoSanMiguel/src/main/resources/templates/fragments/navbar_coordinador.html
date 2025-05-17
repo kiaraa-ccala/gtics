@@ -134,11 +134,14 @@
                                     </div>
                                     <hr class="border-secondary border-opacity-50" />
                                     <div class="d-grid mb-3">
-                                        <button class="btn btn-primary">
-                                            <svg class="pc-icon me-2">
-                                                <use xlink:href="#custom-logout-1-outline"></use>
-                                            </svg>Salir
-                                        </button>
+                                        <form th:action="@{/salir}" method="post">
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                            <button type="submit" class="btn btn-primary">
+                                                <svg class="pc-icon me-2">
+                                                    <use xlink:href="#custom-logout-1-outline"></use>
+                                                </svg>Salir
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

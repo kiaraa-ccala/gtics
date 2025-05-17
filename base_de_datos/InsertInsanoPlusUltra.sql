@@ -4,7 +4,8 @@ INSERT INTO sector (idSector, nombre) VALUES
 (2, 'La Paz'),
 (3, 'Pando'),
 (4, 'Maranga'),
-(5, 'La Arboleda');
+(5, 'La Arboleda'),
+(6, 'Otro distrito');
 
 INSERT INTO complejodeportivo (idComplejoDeportivo, nombre, direccion, idSector, numeroSoporte, latitud, longitud) VALUES
 (1, 'Polideportivo Maranga', 'Av. La Marina 2200', 4, '999999999', -1234567, -7654321),
@@ -64,12 +65,10 @@ INSERT INTO rol (idRol, nombre) VALUES
 (3, 'Coordinador'),
 (4, 'Vecino');
 
-
 INSERT INTO tercerizado (idTercerizado, ruc, direccionFiscal) VALUES
 (1, '20123456789', 'Av. La Marina 1200, San Miguel'),
 (2, '20198765432', 'Av. Universitaria 300, San Miguel'),
 (3, '20567891234', 'Calle Mantaro 250, San Miguel');
-
 
 INSERT INTO foto (idFoto, nombreFoto, urlFoto) VALUES
 (1, 'Foto Perfil Usuario 1', 'https://tse4.mm.bing.net/th/id/OIP.cgNMVEvuDEun1YTljSQU-QAAAA?rs=1&pid=ImgDetMain'),
@@ -125,41 +124,42 @@ INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, prov
 (32, 'Alejandro', 'Vargas', '40000032', 'Jr. Amazonas 400', 'Breña', 'Lima', 'Lima', 2, 1, 5, 3),
 (33, 'Daniela', 'Castillo', '40000033', 'Av. La Marina 2300', 'San Miguel', 'Lima', 'Lima', 1, 1, 5, 3);
 
-
 INSERT INTO credencial (correo, password, idUsuario) VALUES
-('tony.flores@gmail.com', '123456', 1),
-('kiara.ccala@gmail.com', '123456', 2),
-('daniel.vargas@gmail.com', '123456', 3),
-('mathias.tirado@gmail.com', '123456', 4),
-('luciana.salazar@gmail.com', '123456', 5),
-('jorge.ramirez@gmail.com', '123456', 6),
-('paula.perez@gmail.com', '123456', 7),
-('santiago.caceres@gmail.com', '123456', 8),
-('valeria.lopez@gmail.com', '123456', 9),
-('adrian.quispe@gmail.com', '123456', 10),
-('mariana.guzman@gmail.com', '123456', 11),
-('diego.ortega@gmail.com', '123456', 12),
-('natalia.fernandez@gmail.com', '123456', 13),
-('sebastian.morales@gmail.com', '123456', 14),
-('gabriela.campos@gmail.com', '123456', 15),
-('mateo.valverde@gmail.com', '123456', 16),
-('camila.chavez@gmail.com', '123456', 17),
-('andres.delgado@gmail.com', '123456', 18),
-('isabella.mendoza@gmail.com', '123456', 19),
-('samuel.vasquez@gmail.com', '123456', 20),
-('ana.lopez@gmail.com', '123456', 21),
-('marcos.torres@gmail.com', '123456', 22),
-('daniela.sanchez@gmail.com', '123456', 23),
-('ricardo.paredes@gmail.com', '123456', 24),
-('julieta.ramos@gmail.com', '123456', 25),
-('cristian.mejia@gmail.com', '123456', 26),
-('valeria.gomez@gmail.com', '123456', 27),
-('sebastian.torres@gmail.com', '123456', 28),
-('luciana.medina@gmail.com', '123456', 29),
-('jorge.salazar@gmail.com', '123456', 30),
-('camila.rojas@gmail.com', '123456', 31),
-('alejandro.vargas@gmail.com', '123456', 32),
-('daniela.castillo@gmail.com', '123456', 33);
+('tony.flores@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 1), #Password uncrypted = asd123
+('kiara.ccala@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 2),
+('daniel.vargas@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 3),
+('mathias.tirado@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 4),
+('luciana.salazar@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 5), #Password uncrypted = 123456
+('jorge.ramirez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 6),
+('paula.perez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 7),
+('santiago.caceres@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 8),
+('valeria.lopez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 9),
+('adrian.quispe@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 10),
+('mariana.guzman@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 11),
+('diego.ortega@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 12),
+('natalia.fernandez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 13),
+('sebastian.morales@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 14),
+('gabriela.campos@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 15),
+('mateo.valverde@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 16),
+('camila.chavez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 17),
+('andres.delgado@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 18),
+('isabella.mendoza@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 19),
+('samuel.vasquez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 20),
+('ana.lopez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 21),
+('marcos.torres@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 22),
+('daniela.sanchez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 23),
+('ricardo.paredes@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 24),
+('julieta.ramos@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 25),
+('cristian.mejia@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 26),
+('valeria.gomez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 27),
+('sebastian.torres@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 28),
+('luciana.medina@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 29),
+('jorge.salazar@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 30),
+('camila.rojas@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 31),
+('alejandro.vargas@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 32),
+('daniela.castillo@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 33);
+
+Update usuario Set Activo = 1 where idUsuario >= 0;  
 
 -- Cancha de Grass (idServicio = 1)
 INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
