@@ -6,6 +6,7 @@ import com.example.proyectosanmiguel.repository.CredencialRepository;
 import com.example.proyectosanmiguel.repository.RolRepository;
 import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -28,10 +29,13 @@ public class SessionController {
     private CredencialRepository credencialRepository;
 
     @GetMapping("/inicio")
-    public String iniciarSesion(@RequestParam(required = false) String error, Model model) {
+    public String iniciarSesion(HttpServletRequest request, Model model) {
+        Object error = request.getSession().getAttribute("error");
+        System.out.println("Error : " + error);
         if (error != null) {
+            System.out.println("Error desde sesión: " + error);
             model.addAttribute("error", error);
-            return "Acceso/login";
+            request.getSession().removeAttribute("error"); // borra el error una vez mostrado
         }
         return "Acceso/login";
     }
