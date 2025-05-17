@@ -44,7 +44,7 @@ public class WebSecurityConfig {
                                 Object usuario = credencialRepository.findByCorreo(authentication.getName());
                                 if (usuario == null) {
                                     System.out.println("Error: No se encontró usuario para el correo " + authentication.getName());
-                                    response.sendRedirect("/inicio?error=usuarioNoEncontrado");
+                                    response.sendRedirect("/inicio?error='Usuario no encontrado' ");
                                 }
                                 session.setAttribute("usuario", usuario);
 
@@ -89,7 +89,7 @@ public class WebSecurityConfig {
                             } catch (Exception e) {
                                 System.err.println("Error en successHandler: " + e.getMessage());
                                 e.printStackTrace();
-                                response.sendRedirect("/inicio?error=loginFallido");
+                                response.sendRedirect("/inicio?error='Inicio de sesion fallido, intente más tarde' ");
                             }
                         })
                 );

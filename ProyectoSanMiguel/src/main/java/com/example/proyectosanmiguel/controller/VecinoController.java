@@ -95,20 +95,6 @@ public class VecinoController {
         return "Vecino/vecino_servicios";
     }
 
-    @GetMapping("/crearReserva")
-    public String crearReserva(Model model, @ModelAttribute("reserva") Reserva reserva) {
-
-        List<Servicio> servicios = servicioRepository.findAll();
-
-        return "Vecino/vecino_formulario_complejo";
-    }
-
-    @GetMapping("/guardarReserva")
-    public String guardarReserva(@ModelAttribute Reserva reserva) {
-
-        return "Vecino/vecino_formulario_complejo";
-    }
-
     @GetMapping("/pagos")
     public String mostrarPagos() {
         return "Vecino/vecino_pagos";
@@ -202,8 +188,6 @@ public class VecinoController {
 
         return "redirect:/vecino/misReservas";
     }
-
-
 
     private String obtenerDia(LocalDate fecha) {
         return fecha.getDayOfWeek()

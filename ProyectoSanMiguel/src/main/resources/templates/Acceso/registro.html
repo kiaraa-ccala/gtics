@@ -11,8 +11,10 @@
     <meta name="keywords" content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard" />
     <meta name="author" content="Phoenixcoded" />
 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <!-- [Favicon] icon -->
-    <link rel="icon" th:href="@{assets/images/logo.jpg}" type="image/x-icon" />
+    <link rel="icon" th:href="@{/assets/images/logo-circular.png}" type="image/x-icon" />
     <!-- [Font] Family -->
     <link rel="stylesheet" th:href="@{assets/fonts/inter/inter.css}" id="main-font-link" />
     <!-- [phosphor Icons] https://phosphoricons.com/ -->
@@ -72,63 +74,134 @@
 
                     <!-- Formulario de registro OWO -->
 
-                    <form method="post" th:action="@{'/crear'}" th:object="${usuario}">
-
-                    <div class="row justify-content-center p-1">
-                        <div class="col-md-6 p-1">
-                            <input required type="number" class="form-control" th:field="*{dni}" placeholder="DNI" />
-                        </div>
-                    </div>
-                    <div class="row justify-content-center p-1">
-                        <div class="col-md-6 p-1">
-                            <input required type="text" class="form-control" th:field="*{nombre}" placeholder="Nombre" />
-                        </div>
-                        <div class="col-md-6 p-1">
-                            <input required type="text" class="form-control" th:field="*{apellido}" placeholder="Apellido" />
-                        </div>
-                    </div>
-                    <div class="row justify-content-center p-1">
-                        <div class="col-md-12 p-1">
-                            <input required type="email" class="form-control" th:field="*{credencial.correo}" placeholder="Correo Electrónico" />
-                        </div>
-                    </div>
-                    <div class="row justify-content-center p-1">
-                        <div class="col-md-6 p-1">
-                            <input required type="password" class="form-control" th:field="*{credencial.password}" placeholder="Contraseña" />
-                        </div>
-                        <div class="col-md-6 p-1">
-                            <input required type="password" class="form-control" id="password2" name="password2" placeholder="Confirmar contraseña" />
-                        </div>
-                    </div>
-
-                    <div class="row justify-content-center p-1">
-                        <select th:field="*{sector}" class="form-select" required>
-                            <option value = "" disabled selected>Seleccione un sector</option>
-                            <option th:each="sector : ${listaSectores}"
-                                    th:value="${sector.idSector}"
-                                    th:text="${sector.nombre}"></option>
-                        </select>
-                    </div>
-
+                    <form method="post" th:action="@{'/crear'}" th:object="${usuario}" id="registroForm" onsubmit="return validateForm()">
                         <div class="row justify-content-center p-1">
                             <div class="col-md-6 p-1">
-                                <input required type="text" class="form-control" th:field="*{direccion}" placeholder="Dirección" />
+                                <input
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{dni}"
+                                        placeholder="DNI"
+                                        pattern="\d{8}"
+                                        maxlength="8"
+                                        title="El DNI debe tener exactamente 8 dígitos"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                <div class="invalid-feedback" th:errors="*{dni}"></div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center p-1">
+                            <div class="col-md-6 p-1">
+                                <input
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{nombre}"
+                                        placeholder="Nombre"
+                                        maxlength="45"
+                                        pattern="[A-Za-z\s]+"
+                                        title="El nombre solo puede contener letras y espacios" />
+                                <div class="invalid-feedback" th:errors="*{nombre}"></div>
                             </div>
                             <div class="col-md-6 p-1">
-                                <input required type="text" class="form-control" th:field="*{telefono}" min="900000000" max="999999999" oninput="this.value = this.value.slice(0, 9)"  placeholder="Teléfono" />
+                                <input
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{apellido}"
+                                        placeholder="Apellido"
+                                        maxlength="45"
+                                        pattern="[A-Za-z\s]+"
+                                        title="El apellido solo puede contener letras y espacios" />
+                                <div class="invalid-feedback" th:errors="*{apellido}"></div>
                             </div>
                         </div>
-
-                    <div class="d-flex mt-1 justify-content-between align-items-center">
-                        <div class="form-check">
-                            <input class="form-check-input input-primary" type="checkbox" id="customCheckc1" checked="" />
-                            <label class="form-check-label text-muted" for="customCheckc1">Estoy de acuerdo con los términos y condiciones</label>
+                        <div class="row justify-content-center p-1">
+                            <div class="col-md-12 p-1">
+                                <input
+                                        required
+                                        type="email"
+                                        class="form-control"
+                                        th:field="*{credencial.correo}"
+                                        placeholder="Correo Electrónico"
+                                        maxlength="255" />
+                                <div class="invalid-feedback" th:errors="*{credencial.correo}"></div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-grid mt-4">
-                        <button type="submit" class="btn btn-primary">Registrarse</button>
-                    </div>
-
+                        <div class="row justify-content-center p-1">
+                            <div class="col-md-6 p-1">
+                                <input
+                                        required
+                                        type="password"
+                                        class="form-control"
+                                        th:field="*{credencial.password}"
+                                        id="password"
+                                        placeholder="Contraseña"
+                                        minlength="6"
+                                        maxlength="128"
+                                        title="La contraseña debe tener al menos 6 caracteres" />
+                                <div class="invalid-feedback" th:errors="*{credencial.password}"></div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <input
+                                        required
+                                        type="password"
+                                        class="form-control"
+                                        id="password2"
+                                        name="password2"
+                                        placeholder="Confirmar contraseña"
+                                        minlength="6"
+                                        maxlength="128" />
+                                <div class="invalid-feedback" id="password2-error"></div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-center p-1">
+                            <select th:field="*{sector}" class="form-select" required>
+                                <option value="" disabled selected>Seleccione un sector</option>
+                                <option th:each="sector : ${listaSectores}"
+                                        th:value="${sector.idSector}"
+                                        th:text="${sector.nombre}"></option>
+                            </select>
+                            <div class="invalid-feedback" th:errors="*{sector}"></div>
+                        </div>
+                        <div class="row justify-content-center p-1">
+                            <div class="col-md-6 p-1">
+                                <input
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{direccion}"
+                                        placeholder="Dirección"
+                                        maxlength="45" />
+                                <div class="invalid-feedback" th:errors="*{direccion}"></div>
+                            </div>
+                            <div class="col-md-6 p-1">
+                                <input
+                                        required
+                                        type="text"
+                                        class="form-control"
+                                        th:field="*{telefono}"
+                                        placeholder="Teléfono"
+                                        pattern="\d{9}"
+                                        maxlength="9"
+                                        title="El teléfono debe tener exactamente 9 dígitos"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                <div class="invalid-feedback" th:errors="*{telefono}"></div>
+                            </div>
+                        </div>
+                        <div class="d-flex mt-1 justify-content-between align-items-center">
+                            <div class="form-check">
+                                <input
+                                        class="form-check-input input-primary"
+                                        type="checkbox"
+                                        id="customCheckc1"
+                                        required />
+                                <label class="form-check-label text-muted" for="customCheckc1">Estoy de acuerdo con los términos y condiciones</label>
+                            </div>
+                        </div>
+                        <div class="d-grid mt-4">
+                            <button type="submit" class="btn btn-primary">Registrarse</button>
+                        </div>
                     </form>
 
                     <div th:if="${error}" class="alert alert-danger">
@@ -143,6 +216,47 @@
     </div>
 </div>
 <!-- [ Main Content ] end -->
+
+<!-- Form validations -->
+
+<script>
+
+
+    function validateForm() {
+        const password = document.getElementById('password').value;
+        const password2 = document.getElementById('password2').value;
+        const password2Error = document.getElementById('password2-error');
+
+        // Reset error message
+        password2Error.textContent = '';
+
+        // Check if passwords match
+        if (password !== password2) {
+            password2Error.textContent = 'Las contraseñas no coinciden';
+            return false;
+        }
+
+        return true;
+    }
+
+    // Enable Bootstrap 5 validation styles
+    (function () {
+        'use strict';
+        const forms = document.querySelectorAll('#registroForm');
+        Array.from(forms).forEach(form => {
+            form.addEventListener('submit', event => {
+                if (!form.checkValidity() || !validateForm()) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+                form.classList.add('was-validated');
+            }, false);
+        });
+    })();
+
+</script>
+
+
 <!-- Required Js -->
 <script th:src="@{assets/js/plugins/popper.min.js}"></script>
 <script th:src="@{assets/js/plugins/simplebar.min.js}"></script>

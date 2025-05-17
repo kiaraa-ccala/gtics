@@ -19,7 +19,7 @@
     <meta name="author" content="Phoenixcoded" />
 
     <!-- [Favicon] icon -->
-    <link rel="icon"  th:href="@{assets/images/logo.jpg}" type="image/x-icon" />
+    <link rel="icon" th:href="@{/assets/images/logo-circular.png}" type="image/x-icon" />
     <!-- [Font] Family -->
     <link rel="stylesheet" th:href="@{/assets/fonts/inter/inter.css}" id="main-font-link" />
     <!-- [phosphor Icons] https://phosphoricons.com/ -->
@@ -74,10 +74,10 @@
                         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 
                         <div class="mb-3">
-                            <input type="email" class="form-control" id="username" name="username" placeholder="Usuario" />
+                            <input required type="email" class="form-control" id="username" name="username" placeholder="Usuario" />
                         </div>
                         <div class="mb-3">
-                            <input type="password" class="form-control" id="password" name = "password" placeholder="Contraseña" />
+                            <input required type="password" class="form-control" id="password" name = "password" placeholder="Contraseña" />
                         </div>
                         <div class="d-flex mt-1 justify-content-between align-items-center">
                             <div class="form-check">

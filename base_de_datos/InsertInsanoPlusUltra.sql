@@ -125,12 +125,12 @@ INSERT INTO usuario (idUsuario, nombre, apellido, dni, direccion, distrito, prov
 (33, 'Daniela', 'Castillo', '40000033', 'Av. La Marina 2300', 'San Miguel', 'Lima', 'Lima', 1, 1, 5, 3);
 
 INSERT INTO credencial (correo, password, idUsuario) VALUES
-('tony.flores@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 1), #Password uncrypted = asd123
-('kiara.ccala@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 2),
-('daniel.vargas@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 3),
-('mathias.tirado@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 4),
-('luciana.salazar@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 5), #Password uncrypted = 123456
-('jorge.ramirez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 6),
+('tony.flores@gmail.com', '$2a$10$DiJX5WJut04XVwXDT6YRjODcfXepPhZ9tPUCsfYRVKio0lY6aG5Qi', 1), #Password uncrypted = Tonylee1 | Rol = Superadministrador
+('kiara.ccala@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 2),  #Password uncrypted = asd123 | Rol = Administrador
+('daniel.vargas@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 3), #Password uncrypted = asd123 | Rol = Coordinador
+('mathias.tirado@gmail.com', '$2a$10$ApVyPIIV5Zi8RLJyLGnXhO0ZAbzMMviCUu1pUbvLXelUklnwDQtBa', 4), #Password uncrypted = asd123 | Rol = Vecino
+('luciana.salazar@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 5), #Password uncrypted = Tonylee1 | Rol = Vecino
+('jorge.ramirez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 6), 
 ('paula.perez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 7),
 ('santiago.caceres@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 8),
 ('valeria.lopez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 9),
@@ -1152,4 +1152,3 @@ UPDATE usuario
 SET telefono = '987654321'
 WHERE idRol NOT IN (1, 2);
         
-UPDATE usuario SET activo = 1 WHERE idRol NOT IN (1);

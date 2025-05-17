@@ -2,6 +2,7 @@ package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.entity.Credencial;
 import com.example.proyectosanmiguel.entity.Rol;
 import com.example.proyectosanmiguel.entity.Usuario;
+import com.example.proyectosanmiguel.repository.CredencialRepository;
 import com.example.proyectosanmiguel.repository.RolRepository;
 import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
@@ -23,11 +24,13 @@ public class SessionController {
     private SectorRepository sectorRepository;
     @Autowired
     private RolRepository rolRepository;
+    @Autowired
+    private CredencialRepository credencialRepository;
 
     @GetMapping("/inicio")
     public String iniciarSesion(@RequestParam(required = false) String error, Model model) {
         if (error != null) {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
+            model.addAttribute("error", error);
             return "Acceso/login";
         }
         return "Acceso/login";
@@ -45,6 +48,12 @@ public class SessionController {
     public String procesarRegistro(@ModelAttribute("usuario") Usuario usuario,
                                    @RequestParam("password2") String password2,
                                    Model model){
+
+        // Valida que no existe usuario que haya registrado ese correo
+        if (credencialRepository.existsByCorreo(usuario.getCredencial().getCorreo())) {
+            model.addAttribute("error", "El correo ya está registrado");
+            return "Acceso/registro";
+        }
 
         // Valida que las contraseñas coincidan
         if (!usuario.getCredencial().getPassword().equals(password2)) {

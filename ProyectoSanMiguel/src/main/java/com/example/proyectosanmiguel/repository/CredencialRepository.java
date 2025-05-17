@@ -7,5 +7,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface CredencialRepository extends JpaRepository<Credencial, Integer> {
 
     Credencial findByCorreo(String correo);
+    Boolean existsByCorreo(String correo);
 
 }
