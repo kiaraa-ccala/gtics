@@ -13,11 +13,10 @@
 </div>
 
 
-<div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+  <div th:replace="~{fragments/Sidebar_vecino :: sidebar}"></div>
 
-<div th:replace="fragments/navbar_vecino :: header"></div>
+  <div th:replace="~{fragments/navbar_vecino :: header}"></div>
 
-<!-- [ Main Content ] start -->
 <div class="pc-container" style="background: #e0f6ff">
   <div class="pc-content">
     <div class="pc-content">
@@ -25,12 +24,6 @@
       <div class="page-header">
         <div class="page-block">
           <div class="row align-items-center">
-            <div class="col-md-12">
-              <ul class="breadcrumb">
-                <li class="breadcrumb-item"><a href="javascript: void(0)">Inicio</a></li>
-                <li class="breadcrumb-item" aria-current="page">Mis servicios</li>
-              </ul>
-            </div>
             <div class="col-md-12">
               <div class="page-header-title">
                 <h2 class="mb-0">Mis reservas</h2>
@@ -55,13 +48,14 @@
                     <span th:text="${error}">Hubo un problema al cancelar la reserva.</span>
                   </div>
 
+
                   <table class="table table-hover" id="pc-dt-simple">
                     <thead>
                       <tr>
                         <th class="text-end">#</th>
-                        <th>Usuario</th>
                         <th>Reservas</th>
                         <th>Zonas</th>
+                        <th>Ubicación</th>
                         <th class="text-end">Costo</th>
                         <th>Fecha</th>
                         <th>Hora Inicio</th>
@@ -76,16 +70,16 @@
                         <!-- ID -->
                         <td class="text-end" th:text="${dto.reserva.idReserva}">1</td>
 
-                        <!-- Nombre del usuario -->
-                        <td th:text="${dto.reserva.usuario.nombre}">Nombre Usuario</td>
-
-                        <!-- Servicio: nombre -->
+                        <!-- Nombre del servicio -->
                         <td>
                           <h6 class="mb-1" th:text="${dto.reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h6>
                         </td>
 
-                        <!-- Complejo deportivo -->
-                        <td th:text="${dto.reserva.instanciaServicio.complejoDeportivo.nombre}">Nombre Complejo</td>
+                        <!-- Zonas (sector) -->
+                        <td th:text="${dto.reserva.instanciaServicio.complejoDeportivo.sector.nombre}">Sector</td>
+
+                        <!-- Ubicación (dirección del complejo deportivo) -->
+                        <td th:text="${dto.reserva.instanciaServicio.complejoDeportivo.direccion}">Dirección</td>
 
                         <!-- Costo -->
                         <td class="text-end" th:text="'S/ ' + ${dto.costo}">S/ 0.00</td>
@@ -101,17 +95,17 @@
 
                         <!-- Estado -->
                         <td>
-                          <span class="badge f-12"
-                                th:classappend="${dto.reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
-                                th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
-                            Estado
-                          </span>
+      <span class="badge f-12"
+            th:classappend="${dto.reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
+            th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
+        Estado
+      </span>
                         </td>
 
                         <!-- Fecha de registro -->
                         <td th:text="${#temporals.format(dto.reserva.fechaHoraRegistro, 'yyyy-MM-dd HH:mm')}">2025-05-09 13:00</td>
 
-                    <!-- Acciones -->
+                        <!-- Acciones -->
                         <td class="text-center">
                           <ul class="list-inline me-auto mb-0">
                             <!-- Ver -->
@@ -122,31 +116,26 @@
                               </a>
                             </li>
 
-                                <!-- Editar -->
-                                <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Editar">
-                                  <a th:href="@{'/vecino/reserva/editar/' + ${dto.reserva.idReserva}}" class="avtar avtar-xs btn-link-success btn-pc-default">
-                                    <i class="ti ti-edit-circle f-18"></i>
-                                  </a>
-                                </li>
-
-                                <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Cancelar">
-                                  <a href="#"
-                                     class="avtar avtar-xs btn-link-danger btn-pc-default"
-                                     th:attr="data-id=${dto.reserva.idReserva}"
-                                     th:attrappend="data-bs-target=${dto.puedeCancelar} ? '#modalCancelarReserva' : '#modalNoCancelar'"
-                                     data-bs-toggle="modal"
-                                     data-pc-animate="fade-in-scale">
-                                    <i class="ti ti-trash f-18"></i>
-                                  </a>
 
 
-                                </li>
-
-                              </ul>
+                            <!-- Cancelar -->
+                            <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Cancelar">
+                              <a href="#"
+                                 class="avtar avtar-xs btn-link-danger btn-pc-default"
+                                 th:attr="data-id=${dto.reserva.idReserva}"
+                                 th:attrappend="data-bs-target=${dto.puedeCancelar} ? '#modalCancelarReserva' : '#modalNoCancelar'"
+                                 data-bs-toggle="modal"
+                                 data-pc-animate="fade-in-scale">
+                                <i class="ti ti-trash f-18"></i>
+                              </a>
+                            </li>
+                          </ul>
                         </td>
                       </tr>
                     </tbody>
+
                   </table>
+
 
                 </div>
               </div>
@@ -158,7 +147,7 @@
 
   </div>
 
-   <div th:replace="fragments/footer_superadmin :: footer"></div>
+  <div th:replace="~{fragments/footer_superadmin :: footer}"></div>
 
 
 
@@ -274,13 +263,6 @@
     main_layout_change('vertical');
   </script>
 
-  <script src="../assets/js/plugins/simple-datatables.js"></script>
-  <script>
-    const dataTable = new simpleDatatables.DataTable('#pc-dt-simple', {
-      sortable: false,
-      perPage: 5
-    });
-  </script>
 
       <script>
         const modalCancelar = document.getElementById('modalCancelarReserva');
@@ -358,18 +340,46 @@
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
 
-    <script>
-      $$(document).ready(function () {
-        $('#pc-dt-simple').DataTable({
-          lengthChange: false, // Oculta "Mostrar X entradas"
-          language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json' // Traducción completa al español
-          }
-        });
-      });
-    </script>
+  <script>
+    $('#pc-dt-simple').DataTable({
+      lengthChange: false,
+      language: {
+        search: "Buscar:",
+        zeroRecords: "No se encontraron resultados",
+        info: "Mostrando _START_ a _END_ de _TOTAL_ reservas",
+        infoEmpty: "No hay reservas disponibles",
+        infoFiltered: "(filtrado de _MAX_ reservas totales)",
+        paginate: {
+          first: "Primero",
+          last: "Último",
+          next: "Siguiente",
+          previous: "Anterior"
+        }
+      }
+    });
+  </script>
 
-   </div>
+  <style>
+    div.dataTables_length,
+    div.dataTables_info {
+      display: none !important;
+    }
+  </style>
+
+
+  <script>
+    $(document).ready(function () {
+      const table = $('#miTabla').DataTable();
+
+      $('#customSearch').on('keyup', function () {
+        table.search(this.value).draw();
+      });
+    });
+
+  </script>
+
+
+  </div>
   </div>
 </body>
   <!-- [Body] end -->

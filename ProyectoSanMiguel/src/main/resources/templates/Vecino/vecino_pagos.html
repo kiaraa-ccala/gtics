@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head_vecino :: head('Agregar Usuario')"></head>
+  <head th:replace="~{fragments/head_vecino :: head('Agregar Usuario')}"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
 
@@ -11,9 +11,9 @@
   </div>
 </div>
 
-    <div th:replace="fragments/Sidebar_vecino :: sidebar"></div>
+    <div th:replace="~{fragments/Sidebar_vecino :: sidebar}"></div>
 
-    <div th:replace="fragments/navbar_vecino :: header"></div>
+    <div th:replace="~{fragments/navbar_vecino :: header}"></div>
 
     <!-- [ Main Content ] start -->
     <div class="pc-container" style="background: #e0f6ff">
@@ -22,13 +22,7 @@
         <div class="page-header">
           <div class="page-block">
             <div class="row align-items-center">
-              <div class="col-md-12">
-                <ul class="breadcrumb">
-                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
-                  <li class="breadcrumb-item"><a href="javascript: void(0)">Servicios</a></li>
-                  <li class="breadcrumb-item" aria-current="page">Checkout</li>
-                </ul>
-              </div>
+
               <div class="col-md-12">
                 <div class="page-header-title">
                   <h2 class="mb-0">Checkout</h2>
@@ -835,7 +829,7 @@
     </div>
 
     <!-- [ Main Content ] end -->
-    <div th:replace="fragments/footer_superadmin :: footer"></div>
+    <div th:replace="~{fragments/footer_superadmin :: footer}"></div>
 
 
     <!-- Required Js -->

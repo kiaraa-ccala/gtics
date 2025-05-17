@@ -8,6 +8,7 @@ import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +18,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -59,9 +59,11 @@ public class AdminController {
     @Autowired
     private HorarioSemanalRepository horarioSemanalRepository;
 
-
     @Autowired
     private FotoRepository fotoRepository;
+
+    @Autowired
+    private MantenimientoRepository mantenimientoRepository;
 
     @ResponseBody
     @GetMapping("/horarios")
@@ -88,39 +90,48 @@ public class AdminController {
             LocalDate fechaInicio = LocalDate.of(anio, 1, 4)
                     .with(WeekFields.ISO.weekOfWeekBasedYear(), semanaNum)
                     .with(WeekFields.ISO.getFirstDayOfWeek()); // lunes
-
-
-
             LocalDate fechaFin = fechaInicio.plusDays(6); // domingo
-
-
             //lo que se hizo fue sacar los dias fecha de inicio fecha fin lun -dom
-
             //se usa optional, ya que se espera solo una semana, no varias semanas
-
             //La logica del HTML es que cuando seleccione la semana, verifique con AJAx SI
             //existe un horario semanal para esa semana, si existe, se cargan los turnos
             //si no existe, muestra vacio, pero en el front puedo cargar horarios y crear una semana nueva :D
             //asi esta vista me sirve para inclusive editar turnos y borrar turnos
-
             // Buscar si ya existe HorarioSemanal
             Optional<HorarioSemanal> existente = horarioSemanalRepository
                     .findByCoordinadorIdUsuarioAndFechaInicioAndFechaFin(coordinadorId, fechaInicio, fechaFin);
-
             if (existente.isEmpty()) {
                 return List.of(); // No hay turnos para esa semana
             }
-
             //Observamos que si envia correctamente :,vvvvv probablemente el error sea el metodo (lo era) xD
             //se resolvioXD
-
             return horarioRepository.obtenerTurnosPorHorarioSemanal(existente.get().getIdHorarioSemanal());
-
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
         }
     }
+    @GetMapping("/api/mantenimientos/{idComplejo}")
+    @ResponseBody
+    public List<Map<String, Object>> obtenerMantenimientosPorComplejo(@PathVariable Integer idComplejo) {
+        List<Mantenimiento> mantenimientos = mantenimientoRepository.findByComplejoDeportivoIdComplejoDeportivo(idComplejo);
+        List<Map<String, Object>> eventos = new ArrayList<>();
+
+        for (Mantenimiento m : mantenimientos) {
+            Map<String, Object> evento = new HashMap<>();
+            evento.put("title", "MANTENIMIENTO");
+            evento.put("start", m.getFechaInicio().toString() + "T" + m.getHoraInicio().toString());
+            evento.put("end", m.getFechaFin().toString() + "T" + m.getHoraFin().toString());
+            evento.put("type", "event-danger"); // para marcar visualmente
+            evento.put("venue", m.getComplejoDeportivo().getNombre());
+            eventos.add(evento);
+        }
+
+        return eventos;
+    }
+
+
+
 
     @PostMapping("/agenda/guardarHorarios")
     @ResponseBody
@@ -148,8 +159,6 @@ public class AdminController {
                         nuevo.setIdAdministrador(1);  // Este ID puede cambiar según tu lógica
                         return horarioSemanalRepository.save(nuevo);
                     });
-
-
             System.out.println("Revisar si Horarios Eliminar es null: "+ dto.getHorariosEliminar());
             System.out.println("HorarioSemanal ID: " + semanal.getIdHorarioSemanal());
             // 3. Eliminar turnos por ID
@@ -160,11 +169,9 @@ public class AdminController {
                     System.out.println("test2");
                 }
             }
-
             System.out.println("Revisar si Horarios Guardar es null: "+ dto.getHorariosGuardar());
             //ya voy 3 horas aca sin poder resolverlo :c, si me retiro de gtics? aun hay tiempo :D
             //no eres tu profe brenda, soy yo
-
 
             // 4. Insertar turnos nuevos
             if (dto.getHorariosGuardar() != null) {
@@ -183,14 +190,12 @@ public class AdminController {
                     horarioRepository.save(nuevo);
                 }
             }
-
             return ResponseEntity.ok("Guardado correctamente");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar");
         }
     }
-
 
 /*
     @PostMapping("/agenda/guardarHorarios")
@@ -376,7 +381,6 @@ public class AdminController {
 
         return "redirect:/admin/reportes";
     }
-
     @GetMapping("/ver-evidencia/{id}")
     public ResponseEntity<byte[]> verEvidencia(@PathVariable Integer id) {
         try {
@@ -407,7 +411,6 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
     @GetMapping("/descargar-evidencia/{id}")
     public ResponseEntity<byte[]> descargarEvidencia(@PathVariable Integer id) {
         return evidenciaRepository.findById(id)
@@ -416,16 +419,16 @@ public class AdminController {
                         .body(e.getArchivo()))
                 .orElse(ResponseEntity.notFound().build());
     }
-
     // ========== Monitoreo ==========
     @GetMapping("/servicios/monitoreo")
     public String monitoreoServicios(Model model) {
         List<InstanciaServicio> lista = instanciaServicioRepository.findAll();
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+        model.addAttribute("complejos", complejos);
         model.addAttribute("instancias", lista);
         return "Admin/admin_mantenimiento_modal";
 
     }
-
     // ========== TESTEO ==========
     @GetMapping("/testing")
     public String testing() {
@@ -486,8 +489,6 @@ public class AdminController {
         }
     }
 
-
-
     // ========== Guardar Nuevo Complejo ==========
     @PostMapping("/servicios/guardarComplejo")
     @ResponseBody
@@ -546,7 +547,6 @@ public class AdminController {
         }
         return "ok";
     }
-
     //Fotos
     @GetMapping("/reporte/imagen/{id}")
     @ResponseBody
@@ -584,4 +584,59 @@ public class AdminController {
         }
         return "redirect:/admin/reportes/detalle/" + idReporte;
     }
+
+
+    @PostMapping("/reporte/cerrar")
+    public String cerrarReporte(@RequestParam("idReporte") Integer idReporte, RedirectAttributes attr) {
+        Optional<Reporte> optionalReporte = reporteRepository.findById(idReporte);
+
+        if (optionalReporte.isPresent()) {
+            Reporte reporte = optionalReporte.get();
+            reporte.setEstado("Cerrado");
+            reporteRepository.save(reporte);
+            attr.addFlashAttribute("msg", "El reporte fue cerrado correctamente.");
+        }
+
+        return "redirect:/admin/reportes/detalle/" + idReporte;
+    }
+
+
+    @PostMapping("/mantenimientos/guardar")
+    public String guardarMantenimiento(
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) String fechaFinStr,
+            @RequestParam("horaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horaInicio,
+            @RequestParam("horaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horaFin,
+            @RequestParam("idComplejo") Integer idComplejo,
+            @RequestParam("descripcion") String descripcion,
+            RedirectAttributes redirectAttributes
+    ) {
+        ComplejoDeportivo complejo = complejoRepository.findById(idComplejo).orElseThrow();
+
+        Mantenimiento mantenimiento = new Mantenimiento();
+        mantenimiento.setFechaInicio(fechaInicio);
+            System.out.println(fechaInicio);
+
+        LocalDate fechaFin;
+        if (fechaFinStr == null || fechaFinStr.trim().isEmpty()) {
+            fechaFin = fechaInicio;
+        } else {
+            fechaFin = LocalDate.parse(fechaFinStr);
+        }
+        System.out.println(fechaFin);
+        mantenimiento.setFechaFin(fechaFin);
+        mantenimiento.setHoraInicio(horaInicio);
+        mantenimiento.setHoraFin(horaFin);
+        mantenimiento.setComplejoDeportivo(complejo);
+
+        mantenimientoRepository.save(mantenimiento);
+        redirectAttributes.addFlashAttribute("exito", "¡Mantenimiento guardado correctamente!");
+        return "redirect:/admin/servicios/monitoreo";
+
+
+
+
+    }
+
+
 }

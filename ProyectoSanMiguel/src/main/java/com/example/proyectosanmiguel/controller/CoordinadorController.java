@@ -63,9 +63,18 @@ public class CoordinadorController {
     }
 
     @GetMapping("/reportes/pagina")
-    public String obtenerPaginaParcial(@RequestParam(defaultValue = "0") int page, Model model) {
+    public String obtenerPaginaParcial(@RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(required = false) String filtro,
+                                       Model model) {
         Pageable pageable = PageRequest.of(page, 4, Sort.by("fechaRecepcion").descending());
-        Page<Reporte> pagina = reporteRepository.findAll(pageable);
+
+        Page<Reporte> pagina;
+
+        if (filtro != null && !filtro.trim().isEmpty()) {
+            pagina = reporteRepository.findByAsuntoContainingIgnoreCaseOrDescripcionContainingIgnoreCase(filtro, filtro, pageable);
+        } else {
+            pagina = reporteRepository.findAll(pageable);
+        }
 
         int totalPaginas = pagina.getTotalPages();
         int startPage = Math.max(0, page - 1);
@@ -79,6 +88,7 @@ public class CoordinadorController {
 
         return "Coordinador/coordinador_ver_reportes :: contenidoReportes";
     }
+
 
 
     @GetMapping("/reportes/mostrar")

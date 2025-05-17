@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalTime;
 import java.util.Optional;
+import java.util.List;
 
 @Repository
 public interface TarifaRepository extends JpaRepository<Tarifa, Integer> {
@@ -19,4 +20,13 @@ public interface TarifaRepository extends JpaRepository<Tarifa, Integer> {
                                          @Param("diaSemana") String diaSemana,
                                          @Param("horaInicio") LocalTime horaInicio,
                                          @Param("horaFin") LocalTime horaFin);
+
+    @Query("""
+    SELECT t FROM Tarifa t 
+    JOIN t.servicio s 
+    JOIN InstanciaServicio i ON i.servicio.idServicio = s.idServicio
+    WHERE i.complejoDeportivo.idComplejoDeportivo = :idComplejo
+    """)
+    List<Tarifa> findTarifasByIdComplejo(@Param("idComplejo") Integer idComplejo);
+
 }
