@@ -28,7 +28,7 @@ public class SessionController {
     @Autowired
     private CredencialRepository credencialRepository;
 
-    @GetMapping("/inicio")
+    @GetMapping(value = {"/", "/inicio", ""})
     public String iniciarSesion(HttpServletRequest request, Model model) {
         Object error = request.getSession().getAttribute("error");
         System.out.println("Error : " + error);

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
@@ -101,6 +103,8 @@ public class WebSecurityConfig {
                             request.getSession().setAttribute("error", "Credenciales incorrectas o usuario no válido");
                             response.sendRedirect("/inicio");
                         })
+
+
                 );
 
         http.authorizeHttpRequests(authz -> authz
@@ -110,6 +114,8 @@ public class WebSecurityConfig {
                 .requestMatchers("/vecino", "/vecino/**").hasAnyAuthority("Vecino")
                 .anyRequest().permitAll());
 
+
+
         http.logout(logout -> logout
                 .logoutUrl("/salir")
                 .logoutSuccessUrl("/inicio")
@@ -117,6 +123,47 @@ public class WebSecurityConfig {
                 .invalidateHttpSession(true)
                 .permitAll()
         );
+        http.exceptionHandling(exception -> exception
+                .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+                    if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
+                        System.out.println("Acceso denegado: usuario no autenticado");
+                        response.sendRedirect("/inicio");
+                    } else {
+                        // Obtener el rol principal
+                        String rol = auth.getAuthorities().iterator().next().getAuthority();
+                        System.out.println("Tu rol es: " + rol);
+
+                        // Redirigir según el rol
+                        switch (rol) {
+                            case "Superadministrador" -> {
+                                System.out.println("Redirigiendo a /superadmin");
+                                response.sendRedirect("/superadmin");
+                            }
+                            case "Administrador" -> {
+                                System.out.println("Redirigiendo a /admin/agenda");
+                                response.sendRedirect("/admin/agenda");
+                            }
+                            case "Coordinador" -> {
+                                System.out.println("Redirigiendo a /coord/inicio");
+                                response.sendRedirect("/coord/inicio");
+                            }
+                            case "Vecino" -> {
+                                System.out.println("Redirigiendo a /vecino/misReservas");
+                                response.sendRedirect("/vecino/misReservas");
+                            }
+                            default -> {
+                                System.out.println("Redirigiendo a /inicio por rol desconocido");
+                                response.sendRedirect("/inicio");
+                            }
+                        }
+                    }
+                })
+        );
+
+
+
 
         return http.build();
     }
