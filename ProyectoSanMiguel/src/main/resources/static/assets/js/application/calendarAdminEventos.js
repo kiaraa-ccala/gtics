@@ -59,7 +59,7 @@
       var e_title = clickedevent.title === undefined ? '' : clickedevent.title;
       var e_desc = clickedevent.extendedProps.description === undefined ? '' : clickedevent.extendedProps.description;
       var e_date_start = clickedevent.start === null ? '' : dateformat(clickedevent.start);
-      var e_date_end = clickedevent.end === null ? '' : " <i class='text-sm'>to</i> " + dateformat(clickedevent.end);
+      var e_date_end = clickedevent.end === null ? '' : " <i class='text-sm'>hasta</i> " + dateformat(clickedevent.end);
       e_date_end = clickedevent.end === null ? '' : e_date_end;
       var e_venue = clickedevent.extendedProps.description === undefined ? '' : clickedevent.extendedProps.venue;
 
@@ -70,6 +70,14 @@
       document.querySelector('.pc-event-venue').innerHTML = e_venue;
       document.querySelector('#pc_event_remove').setAttribute('data-id', clickedevent.id);
 
+      const btnEliminar = document.querySelector('#pc_event_remove');
+      if (clickedevent.extendedProps.isMantenimiento) {
+        btnEliminar.style.display = 'none';
+      } else {
+        btnEliminar.style.display = 'inline-block';
+        btnEliminar.setAttribute('data-id', clickedevent.id);
+      }
+
       calendarmodal.show();
     },
     events: function(fetchInfo, successCallback, failureCallback) {
@@ -77,35 +85,77 @@
       const idComplejo = document.getElementById('selectComplejo').value;
       const idCoordinador = document.getElementById('selectCoordinador').value;
 
-      let url = '/admin/horarios?';
-
+      let urlHorarios = '/admin/horarios?';
       if (filterType === 'complejo') {
-        url += `idComplejo=${idComplejo}`;
+        urlHorarios += `idComplejo=${idComplejo}`;
       } else if (filterType === 'coordinador') {
-        url += `idCoordinador=${idCoordinador}`;
+        urlHorarios += `idCoordinador=${idCoordinador}`;
       }
 
-      fetch(url)
-          .then(response => response.json())
-          .then(data => {
-            const eventos = data.map(horario => ({
-              id: horario.idHorario,
-              title: horario.nombreCoordinador,
-              start: `${horario.fecha}T${horario.horaIngreso}`,
-              end: `${horario.fecha}T${horario.horaSalida}`,
-              extendedProps: {
-                description: `Horario de ${horario.nombreCoordinador}`,
-                venue: horario.nombreComplejo
-              },
-              className: 'event-primary'
-            }));
-            successCallback(eventos);
-          })
-          .catch(err => {
-            console.error('Error al cargar eventos:', err);
-            failureCallback(err);
-          });
+      const fetchHorarios = fetch(urlHorarios).then(res => res.json());
+
+      if (filterType === 'complejo') {
+        // Si es "complejo", también pedir mantenimientos
+        const fetchMantenimientos = fetch(`/admin/api/mantenimientos/${idComplejo}`).then(res => res.json());
+
+        Promise.all([fetchHorarios, fetchMantenimientos])
+            .then(([horarios, mantenimientos]) => {
+              const eventosHorarios = horarios.map(horario => ({
+                id: 'H' + horario.idHorario,
+                title: horario.nombreCoordinador,
+                start: `${horario.fecha}T${horario.horaIngreso}`,
+                end: `${horario.fecha}T${horario.horaSalida}`,
+                extendedProps: {
+                  description: `Horario de ${horario.nombreCoordinador}`,
+                  venue: horario.nombreComplejo
+                },
+                className: 'event-primary'
+              }));
+
+              const eventosMantenimientos = mantenimientos.map(m => ({
+                id: m.id,
+                title: `Mantenimiento`,
+                start: m.start,
+                end: m.end,
+                extendedProps: {
+                  description: `Mantenimiento programado para el complejo ${m.nombreComplejo}`,
+                  venue: m.venue,
+                  isMantenimiento: true,
+                },
+                className: 'event-danger'
+              }));
+
+              successCallback([...eventosHorarios, ...eventosMantenimientos]);
+            })
+            .catch(err => {
+              console.error('Error al cargar eventos:', err);
+              failureCallback(err);
+            });
+
+      } else {
+        // Solo horarios
+        fetchHorarios
+            .then(horarios => {
+              const eventos = horarios.map(horario => ({
+                id: 'H' + horario.idHorario,
+                title: horario.nombreCoordinador,
+                start: `${horario.fecha}T${horario.horaIngreso}`,
+                end: `${horario.fecha}T${horario.horaSalida}`,
+                extendedProps: {
+                  description: `Horario de ${horario.nombreCoordinador}`,
+                  venue: horario.nombreComplejo
+                },
+                className: 'event-primary'
+              }));
+              successCallback(eventos);
+            })
+            .catch(err => {
+              console.error('Error al cargar eventos:', err);
+              failureCallback(err);
+            });
+      }
     }
+
 
   });
 

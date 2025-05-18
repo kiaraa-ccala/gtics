@@ -121,11 +121,14 @@ public class AdminController {
 
         for (Mantenimiento m : mantenimientos) {
             Map<String, Object> evento = new HashMap<>();
+            evento.put("id", m.getIdMantenimiento());
             evento.put("title", "MANTENIMIENTO");
             evento.put("start", m.getFechaInicio().toString() + "T" + m.getHoraInicio().toString());
             evento.put("end", m.getFechaFin().toString() + "T" + m.getHoraFin().toString());
             evento.put("type", "event-danger"); // para marcar visualmente
             evento.put("venue", m.getComplejoDeportivo().getNombre());
+            evento.put("nombreComplejo", m.getComplejoDeportivo().getNombre());
+
             eventos.add(evento);
         }
 
