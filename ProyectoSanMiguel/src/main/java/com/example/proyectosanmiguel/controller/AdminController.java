@@ -3,6 +3,8 @@ package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.criteria.CriteriaBuilder;
@@ -491,62 +493,123 @@ public class AdminController {
 
     // ========== Guardar Nuevo Complejo ==========
     @PostMapping("/servicios/guardarComplejo")
-    @ResponseBody
     public String guardarNuevoComplejo(
             @RequestParam("nombreComplejo") String nombreComplejo,
-            @RequestParam("direccionComplejo") String direccionComplejo,
-            @RequestParam("numSoporte") String numSoporte,
-            @RequestParam("serviciosSeleccionados") String serviciosSeleccionadosJson,
-            @RequestParam(value = "cantidadLosa", required = false) String cantidadLosaStr,
-            @RequestParam(value = "cantidadGrass", required = false) String cantidadGrassStr,
-            @RequestParam("latitud") Double latitud,
-            @RequestParam("longitud") Double longitud,
-            @RequestParam(value = "cantidadCarriles", required = false) String cantidadCarrilesStr
+            @RequestParam("direccionComplejo") String direccion,
+            @RequestParam("numSoporte") String numeroSoporte,
+            @RequestParam("latitudInput") Double latitud,
+            @RequestParam("longitudInput") Double longitud,
+            @RequestParam("sector") Integer idSector,
+            @RequestParam("modoAcceso") String modoAcceso,
+            @RequestParam("capacidadMaxima") String capacidadMaxima,
+            @RequestParam("tipoServicio") List<String> servicios,
+            @RequestParam Map<String, String> allParams
     ) {
-        ComplejoDeportivo nuevoComplejo = new ComplejoDeportivo();
-        nuevoComplejo.setNombre(nombreComplejo);
-        nuevoComplejo.setDireccion(direccionComplejo);
-        nuevoComplejo.setNumeroSoporte(numSoporte);
-        nuevoComplejo.setLatitud(latitud);
-        nuevoComplejo.setLongitud(longitud);
+        System.out.println("========= DEBUG FORM INPUTS =========");
+        System.out.println("nombreComplejo: " + nombreComplejo);
+        System.out.println("direccionComplejo: " + direccion);
+        System.out.println("numSoporte: " + numeroSoporte);
+        System.out.println("latitud: " + latitud);
+        System.out.println("longitud: " + longitud);
+        System.out.println("sector: " + idSector);
+        System.out.println("modoAcceso: " + modoAcceso);
+        System.out.println("capacidadMaxima: " + capacidadMaxima);
+        System.out.println("tipoServicio: " + servicios);
+        System.out.println("------------- allParams -------------");
+        allParams.forEach((k, v) -> System.out.println(k + ": " + v));
+        System.out.println("=====================================");
+        // Construir sector por ID
+        Sector sector = new Sector();
+        sector.setIdSector(idSector);
 
-        Sector sector = sectorRepository.findById(1).orElseThrow(); // Busca un sector por defecto
-        nuevoComplejo.setSector(sector);
+        // Guardar complejo deportivo
+        ComplejoDeportivo complejo = new ComplejoDeportivo();
+        complejo.setNombre(nombreComplejo);
+        complejo.setDireccion(direccion);
+        complejo.setNumeroSoporte(numeroSoporte);
+        complejo.setLatitud(latitud);
+        complejo.setLongitud(longitud);
+        complejo.setSector(sector);
+        complejoRepository.save(complejo);
 
+        for (String servicioNombre : servicios) {
+            Servicio servicio = servicioRepository.findByNombre(servicioNombre);
+            if (servicio == null) continue;
 
-        complejoRepository.save(nuevoComplejo);
-
-        List<String> servicios = new Gson().fromJson(serviciosSeleccionadosJson, new TypeToken<List<String>>() {}.getType());
-
-        Integer cantidadLosa = (cantidadLosaStr != null && !cantidadLosaStr.isEmpty()) ? Integer.parseInt(cantidadLosaStr) : null;
-        Integer cantidadGrass = (cantidadGrassStr != null && !cantidadGrassStr.isEmpty()) ? Integer.parseInt(cantidadGrassStr) : null;
-        Integer cantidadCarriles = (cantidadCarrilesStr != null && !cantidadCarrilesStr.isEmpty()) ? Integer.parseInt(cantidadCarrilesStr) : null;
-
-        for (String nombreServicio : servicios) {
-            Servicio servicioEncontrado = servicioRepository.findByNombre(nombreServicio);
-            if (servicioEncontrado != null) {
-                InstanciaServicio instancia = new InstanciaServicio();
-                instancia.setComplejoDeportivo(nuevoComplejo);
-                instancia.setServicio(servicioEncontrado);
-                instancia.setNombre(nombreServicio);
-
-                if ("Cancha de losa".equals(nombreServicio) && cantidadLosa != null) {
-                    instancia.setCapacidadMaxima(String.valueOf(cantidadLosa));
-                } else if ("Cancha de grass".equals(nombreServicio) && cantidadGrass != null) {
-                    instancia.setCapacidadMaxima(String.valueOf(cantidadGrass));
-                } else if ("Piscina".equals(nombreServicio) && cantidadCarriles != null) {
-                    instancia.setCapacidadMaxima(String.valueOf(cantidadCarriles));
-                } else {
-                    instancia.setCapacidadMaxima("1");
+            switch (servicioNombre) {
+                case "Cancha de grass" -> {
+                    int cantidad = Integer.parseInt(allParams.getOrDefault("cantidadGrass", "0"));
+                    for (int i = 1; i <= cantidad; i++) {
+                        String nombre = allParams.get("nombreGrass" + i);
+                        if (nombre != null && !nombre.isEmpty()) {
+                            InstanciaServicio instancia = new InstanciaServicio();
+                            instancia.setNombre(nombre);
+                            instancia.setCapacidadMaxima(capacidadMaxima);
+                            instancia.setModoAcceso(modoAcceso);
+                            instancia.setServicio(servicio);
+                            instancia.setComplejoDeportivo(complejo);
+                            instanciaServicioRepository.save(instancia);
+                        }
+                    }
                 }
-
-
-                instancia.setModoAcceso("Normal");
-                instanciaServicioRepository.save(instancia);
+                case "Cancha de losa" -> {
+                    int cantidad = Integer.parseInt(allParams.getOrDefault("cantidadLosa", "0"));
+                    for (int i = 1; i <= cantidad; i++) {
+                        String nombre = allParams.get("nombreLosa" + i);
+                        if (nombre != null && !nombre.isEmpty()) {
+                            InstanciaServicio instancia = new InstanciaServicio();
+                            instancia.setNombre(nombre);
+                            instancia.setCapacidadMaxima(capacidadMaxima);
+                            instancia.setModoAcceso(modoAcceso);
+                            instancia.setServicio(servicio);
+                            instancia.setComplejoDeportivo(complejo);
+                            instanciaServicioRepository.save(instancia);
+                        }
+                    }
+                }
+                case "Piscina" -> {
+                    String nombre = allParams.get("nombrePiscina");
+                    if (nombre != null && !nombre.isEmpty()) {
+                        InstanciaServicio instancia = new InstanciaServicio();
+                        instancia.setNombre(nombre);
+                        instancia.setCapacidadMaxima(capacidadMaxima);
+                        instancia.setModoAcceso(modoAcceso);
+                        instancia.setServicio(servicio);
+                        instancia.setComplejoDeportivo(complejo);
+                        instanciaServicioRepository.save(instancia);
+                    }
+                }
+                case "Gimnasio" -> {
+                    String nombre = allParams.get("nombreGimnasio");
+                    if (nombre != null && !nombre.isEmpty()) {
+                        InstanciaServicio instancia = new InstanciaServicio();
+                        instancia.setNombre(nombre);
+                        instancia.setCapacidadMaxima(capacidadMaxima);
+                        instancia.setModoAcceso(modoAcceso);
+                        instancia.setServicio(servicio);
+                        instancia.setComplejoDeportivo(complejo);
+                        instanciaServicioRepository.save(instancia);
+                    }
+                }
+                case "Pista de atletismo" -> {
+                    String nombre = allParams.get("nombrePista");
+                    if (nombre != null && !nombre.isEmpty()) {
+                        InstanciaServicio instancia = new InstanciaServicio();
+                        instancia.setNombre(nombre);
+                        instancia.setCapacidadMaxima(capacidadMaxima);
+                        instancia.setModoAcceso(modoAcceso);
+                        instancia.setServicio(servicio);
+                        instancia.setComplejoDeportivo(complejo);
+                        instanciaServicioRepository.save(instancia);
+                    }
+                }
             }
         }
-        return "ok";
+
+        return "redirect:/admin/servicios/monitoreo"; // Cambia esto si quieres redirigir a otra vista
     }
+
+
     //Fotos
     @GetMapping("/reporte/imagen/{id}")
     @ResponseBody

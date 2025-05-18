@@ -2,7 +2,7 @@
 <html lang="en">
   <!-- [Head] start -->
 
-  <head th:replace="fragments/head_coordinador :: head('Detalle de reporte')"></head>
+  <head th:replace="~{fragments/head_coordinador :: head('Detalle de reporte')}"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
 
@@ -15,10 +15,10 @@
 </div>
 <!-- [ Pre-loader ] End -->
  <!-- [ Sidebar Menu ] start -->
-    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+    <div th:replace="~{fragments/Sidebar_coordinador :: sidebar}"></div>
 <!-- [ Sidebar Menu ] end -->
  <!-- [ Header Topbar ] start -->
-    <div th:replace="fragments/navbar_coordinador :: header"></div>
+    <div th:replace="~{fragments/navbar_coordinador :: header}"></div>
 <!-- [ Header ] end -->
     <!-- [ Main Content ] start -->
     <div class="pc-container" style="background: #e0f6ff">
@@ -50,7 +50,7 @@
                                         and #strings.endsWith(reporte.foto.nombreFoto?.toLowerCase(), '.png')}">
                                           <img th:src="@{/coord/reporte/imagen/{id}(id=${reporte.foto.idFoto})}"
                                                class="img-thumbnail"
-                                               style="max-width: 60%; border: 3px solid #000; border-radius: 5px;">
+                                               style="max-width: 40%; border: 3px solid #000; border-radius: 5px;">
                                       </div>
                                       <div th:if="${reporte.foto == null
                                         or reporte.foto.foto == null
