@@ -10,15 +10,15 @@
   var d = date.getDate();
   var m = date.getMonth();
   var y = date.getFullYear();
+  const isMobile = window.innerWidth < 768;
 
   var calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+    initialView: isMobile ? 'listWeek' : 'dayGridMonth',
+    headerToolbar: isMobile
+        ? { left: 'prev,next', center: 'title', right: 'listWeek' }
+        : { left: 'prev,next today', center: 'title', right: 'dayGridMonth,timeGridWeek,timeGridDay' },
     locale: 'es',
     firstDay: 1,
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
-    },
     buttonText: {
       today: 'Hoy',
       month: 'Mes',
