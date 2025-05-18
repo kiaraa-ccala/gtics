@@ -342,105 +342,75 @@
                               <!-- Columna izquierda -->
                               <div class="col-md-6">
                                 <!-- Nombres -->
+                                <!-- Nombres -->
                                 <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Nombres:
-                                  </label>
+                                  <label class="col-lg-4 col-form-label">Nombres:</label>
                                   <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tus nombres" />
+                                    <input type="text" class="form-control" placeholder="Ingresa tus nombres"
+                                           th:value="${usuario.nombre}" />
                                   </div>
                                 </div>
 
-                                <!-- Correo -->
-
-
+                                <!-- Apellidos -->
                                 <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    DNI:
-                                  </label>
+                                  <label class="col-lg-4 col-form-label">Apellidos:</label>
                                   <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu número de DNI" />
+                                    <input type="text" class="form-control" placeholder="Ingresa tus apellidos"
+                                           th:value="${usuario.apellido}" />
+                                  </div>
+                                </div>
+
+                                <!-- DNI -->
+                                <div class="mb-3 row">
+                                  <label class="col-lg-4 col-form-label">DNI:</label>
+                                  <div class="col-lg-8">
+                                    <input type="text" class="form-control" placeholder="Ingresa tu número de DNI"
+                                           th:value="${usuario.dni}" />
                                   </div>
                                 </div>
 
                                 <!-- Teléfono -->
                                 <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Teléfono:
-                                  </label>
+                                  <label class="col-lg-4 col-form-label">Teléfono:</label>
                                   <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu número de celular" />
+                                    <input type="text" class="form-control" placeholder="Ingresa tu número de celular"
+                                           th:value="${usuario.telefono}" />
                                   </div>
                                 </div>
 
-                                <!-- DNI -->
-
+                                <!-- Correo -->
                                 <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Correo:
-                                  </label>
+                                  <label class="col-lg-4 col-form-label">Correo:</label>
                                   <div class="col-lg-8">
-                                    <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico" />
+                                    <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico"
+                                           th:value="${credencial.correo}" />
                                   </div>
                                 </div>
 
-                              </div>
 
-                              <!-- Columna derecha -->
-                              <div class="col-md-6">
-                                <!-- Apellidos -->
+                                <!-- Distrito -->
                                 <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Apellidos:
-                                  </label>
+                                  <label class="col-lg-4 col-form-label">Distrito:</label>
                                   <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tus apellidos" />
-                                  </div>
-                                </div>
-
-                                <!-- Fecha de nacimiento -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Fecha de nacimiento:
-                                  </label>
-                                  <div class="col-lg-8">
-                                    <input type="date" class="form-control" />
-                                  </div>
-                                </div>
-
-                                <!-- Ciudad -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Distrito:
-                                  </label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu distrito de residencia" />
+                                    <input type="text" class="form-control" placeholder="Ingresa tu distrito de residencia"
+                                           th:value="${usuario.sector.nombre}" readonly />
                                   </div>
                                 </div>
 
                                 <!-- Dirección -->
                                 <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">
-                                    Dirección :
-                                  </label>
+                                  <label class="col-lg-4 col-form-label">Dirección :</label>
                                   <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu dirección completa" />
+                                    <input type="text" class="form-control" placeholder="Ingresa tu dirección completa"
+                                           th:value="${usuario.direccion}" />
                                   </div>
                                 </div>
                               </div>
-
-                              <!-- Checkbox y botón -->
                             </div>
                           </div>
-
-
-
-
-
                         </div>
-                      </div>
 
-                    </div>
+                      </div>
                     <div class="d-flex justify-content-end mb-3">
                       <button class="btn btn-link-primary"
                         ><i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Regresar a servicios</button
@@ -473,46 +443,26 @@
                       <div class="collapse" id="productosResumen2">
                         <div class="card-body p-0">
                           <ul class="list-group list-group-flush">
-                            <!-- Producto 1 -->
-                            <li class="list-group-item">
+                            <li class="list-group-item" th:each="reserva : ${reservasPendientes}">
                               <div class="d-flex align-items-start">
-                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-2.jpg" alt="Imagen producto" />
-                                <div class="flex-grow-1 mx-2">
-                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
-                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
-                                  <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
-                                </div>
-                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
-                                  <i class="ti ti-trash f-20"></i>
-                                </a>
-                              </div>
-                            </li>
+                                <!-- Imagen simulada por ahora -->
+                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                     th:src="@{/assets/images/application/img-prod-2.jpg}"
+                                     alt="Imagen producto" />
 
-                            <!-- Producto 2 -->
-                            <li class="list-group-item">
-                              <div class="d-flex align-items-start">
-                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-3.jpg" alt="Imagen producto" />
                                 <div class="flex-grow-1 mx-2">
-                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
-                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
-                                  <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                                  <h5 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}"></h5>
+                                  <p class="text-muted text-sm mb-2"
+                                     th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} +
+                        ' | Hora: ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
+                                  </p>
+                                  <h5 class="mb-1">
+                                    <b th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}"></b>
+                                  </h5>
                                 </div>
-                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
-                                  <i class="ti ti-trash f-20"></i>
-                                </a>
-                              </div>
-                            </li>
 
-                            <!-- Producto 3 -->
-                            <li class="list-group-item">
-                              <div class="d-flex align-items-start">
-                                <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-4.jpg" alt="Imagen producto" />
-                                <div class="flex-grow-1 mx-2">
-                                  <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
-                                  <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
-                                  <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
-                                </div>
-                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0"
+                                   th:href="@{'/vecino/reserva/eliminar/' + ${reserva.idReserva}}">
                                   <i class="ti ti-trash f-20"></i>
                                 </a>
                               </div>
@@ -521,26 +471,33 @@
                         </div>
                       </div>
 
+
                       <!-- Totales siempre visibles JUNTOS -->
+                      <!-- Totales -->
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item">
-                          <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                          <div class="float-end">
+                            <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}"></h5>
+                          </div>
                           <span class="text-muted">Sub Total</span>
                         </li>
                         <li class="list-group-item">
-                          <div class="float-end"> <h5 class="mb-0">-</h5> </div>
+                          <div class="float-end"><h5 class="mb-0">-</h5></div>
                           <span class="text-muted">Descuento aplicado</span>
                         </li>
                         <li class="list-group-item">
-                          <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                          <div class="float-end">
+                            <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}"></h5>
+                          </div>
                           <h5 class="mb-0 d-inline-block">Total</h5>
                         </li>
                       </ul>
+
                     </div>
 
                     <!-- Botón de checkout -->
                     <div class="d-grid mb-3 mt-2">
-                      <button class="btn btn-primary">Process to Checkout</button>
+                      <button class="btn btn-primary">Procesar pago</button>
                     </div>
                   </div>
 
@@ -584,7 +541,9 @@
                                       <span class="h5 mb-3 d-block">Tarjeta de credito/debito</span>
                                       <span class="d-flex align-items-center">
                                         <span class="f-12 badge bg-success me-3">5% OFF</span>
-                                        <img src="../assets/images/application/card.png" alt="img" class="img-fluid ms-1" />
+                                          <img class="bg-light rounded img-fluid wid-60 flex-shrink-0"
+                                               src="/assets/images/complejoOscuro.png"
+                                               alt="Imagen complejo oscuro" />
                                       </span>
                                     </span>
                                   </label>
@@ -673,14 +632,18 @@
                                   <small class="text-muted d-block">Ingresa su correo electronico</small>
                                 </label>
                                 <div class="col-lg-8">
-                                  <input type="password" class="form-control" placeholder="Correo electronico" />
+                                  <input type="email" class="form-control" placeholder="Correo electronico" />
                                 </div>
                               </div>
 
                               <div class="text-end btn-page mb-0 mt-4">
                                 <button class="btn btn-outline-secondary">Cancelar</button>
-                                <button class="btn btn-primary">Guardar y continuar</button>
+                                <div id="pagoEnProceso" class="alert alert-info d-none" role="alert">
+                                  Procesando pago, por favor espere...
+                                </div>
+                                <button id="btnProcesarPago" class="btn btn-primary">Procesar pago</button>
                               </div>
+
                             </div>
 
                           </div>
@@ -717,75 +680,57 @@
                         <div class="collapse" id="productosResumen3">
                           <div class="card-body p-0">
                             <ul class="list-group list-group-flush">
-                              <!-- Producto 1 -->
-                              <li class="list-group-item">
-                                <div class="d-flex align-items-start">
-                                  <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-2.jpg" alt="Imagen producto" />
-                                  <div class="flex-grow-1 mx-2">
-                                    <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
-                                    <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
-                                    <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
+                              <th:block th:each="reserva : ${reservasPendientes}">
+                                <li class="list-group-item">
+                                  <div class="d-flex align-items-start">
+                                    <img th:src="@{'/assets/images/complejos/complejo' + ${reserva.instanciaServicio.complejoDeportivo.idComplejoDeportivo} + '.png'}"
+                                         class="bg-light rounded img-fluid wid-60 flex-shrink-0" alt="Imagen complejo" />
+                                    <div class="flex-grow-1 mx-2">
+                                      <h5 class="mb-1" th:text="${reserva.instanciaServicio.complejoDeportivo.nombre}"></h5>
+                                      <p class="text-muted text-sm mb-2" th:text="${#dates.format(reserva.fecha, 'dd/MM/yyyy')} + ' de ' + ${reserva.horaInicio} + ' a ' + ${reserva.horaFin}"></p>
+                                      <h5 class="mb-1"><b th:text="'S/.' + ${reserva.informacionPago.total}"></b></h5>
+                                    </div>
+                                    <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
+                                      <i class="ti ti-trash f-20"></i>
+                                    </a>
                                   </div>
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
-                                    <i class="ti ti-trash f-20"></i>
-                                  </a>
-                                </div>
-                              </li>
-
-                              <!-- Producto 2 -->
-                              <li class="list-group-item">
-                                <div class="d-flex align-items-start">
-                                  <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-3.jpg" alt="Imagen producto" />
-                                  <div class="flex-grow-1 mx-2">
-                                    <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
-                                    <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
-                                    <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
-                                  </div>
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
-                                    <i class="ti ti-trash f-20"></i>
-                                  </a>
-                                </div>
-                              </li>
-
-                              <!-- Producto 3 -->
-                              <li class="list-group-item">
-                                <div class="d-flex align-items-start">
-                                  <img class="bg-light rounded img-fluid wid-60 flex-shrink-0" src="../assets/images/application/img-prod-4.jpg" alt="Imagen producto" />
-                                  <div class="flex-grow-1 mx-2">
-                                    <h5 class="mb-1">Canon EOS 1500D 24.1</h5>
-                                    <p class="text-muted text-sm mb-2">SLR Camera (Black) with EF</p>
-                                    <h5 class="mb-1"><b>S/.275</b><span class="mx-2 text-sm text-decoration-line-through text-muted f-w-400">S/.325</span></h5>
-                                  </div>
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
-                                    <i class="ti ti-trash f-20"></i>
-                                  </a>
-                                </div>
-                              </li>
+                                </li>
+                              </th:block>
                             </ul>
+
                           </div>
                         </div>
 
-                        <!-- Totales siempre visibles JUNTOS -->
+                        <!-- Totales siempre visibles -->
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item">
-                            <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                            <div class="float-end">
+                              <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReserva, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
+
+                            </div>
                             <span class="text-muted">Sub Total</span>
                           </li>
                           <li class="list-group-item">
-                            <div class="float-end"> <h5 class="mb-0">-</h5> </div>
+                            <div class="float-end">
+                              <h5 class="mb-0">-</h5>
+                            </div>
                             <span class="text-muted">Descuento aplicado</span>
                           </li>
                           <li class="list-group-item">
-                            <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div>
+                            <div class="float-end">
+                              <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReserva, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
+
+                            </div>
                             <h5 class="mb-0 d-inline-block">Total</h5>
                           </li>
                         </ul>
+
                       </div>
 
 
 
                       <div class="d-grid mb-3">
-                        <button class="btn btn-primary">Process to Payment</button>
+                        <button class="btn btn-primary">Procesar pago</button>
                       </div>
                     </div>
                   </div>
@@ -797,6 +742,7 @@
         </div>
         <!-- [ Main Content ] end -->
       </div>
+    </div>
     </div>
 
     <!-- Modal -->
@@ -948,7 +894,64 @@
       });
     </script>
 
-    <!-- [Page Specific JS] end -->
+
+    <script>
+      const radios = document.querySelectorAll('input[name="payoptradio1"]');
+      radios.forEach(radio => {
+        radio.addEventListener("change", function () {
+          const isTarjeta = this.id === "payopn-check-1";
+          document.querySelectorAll(".payment-fields").forEach(field => {
+            field.style.display = isTarjeta ? "block" : "none";
+          });
+        });
+      });
+    </script>
+
+    <script>
+      document.getElementById("btnProcesarPago").addEventListener("click", function () {
+        const selectedPayment = document.querySelector('input[name="payoptradio1"]:checked').id;
+
+        if (selectedPayment === "payopn-check-1") {
+          // Validar tarjeta
+          const numero = document.querySelector('input[placeholder*="XXXX"]').value;
+          const mes = document.querySelector('input[placeholder="Mes (MM)"]').value;
+          const año = document.querySelector('input[placeholder="Año (AA)"]').value;
+          const cvv = document.querySelector('input[placeholder="CVV"]').value;
+
+          if (!numero || !mes || !año || !cvv) {
+            alert("Completa los campos de la tarjeta.");
+            return;
+          }
+        }
+
+        if (selectedPayment === "payopn-check-3") {
+          const modal = new bootstrap.Modal(document.getElementById("uploadFile"));
+          modal.show();
+          return;
+        }
+
+        // Mostrar estado de proceso
+        const alerta = document.getElementById('pagoEnProceso');
+        alerta.classList.remove('d-none');
+        alerta.classList.remove('alert-success');
+        alerta.classList.add('alert-info');
+        alerta.textContent = "Procesando pago, por favor espere...";
+        this.disabled = true;
+        this.textContent = "Procesando...";
+
+        // Simulación
+        setTimeout(() => {
+          alerta.classList.replace('alert-info', 'alert-success');
+          alerta.textContent = "✅ ¡Pago realizado con éxito! Redirigiendo...";
+          setTimeout(() => {
+            window.location.href = '/vecino/misReservas';
+          }, 1500);
+        }, 2000);
+      });
+    </script>
+
+
+
 
     <style>
       #basic-btn_info {

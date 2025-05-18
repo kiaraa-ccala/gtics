@@ -14,7 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
     @Query("SELECT u FROM Usuario u WHERE u.rol.nombre = 'COORDINADOR'")
     List<Usuario> findAllCoordinadores();
     Usuario findFirstByRol_IdRol(int idRol);
-
+    Optional<Usuario> findByCredencial_Correo(String correo);
 
 
     @Query("SELECT u.idUsuario AS idCoordinador, u.nombre AS nombreCoordinador, " +
@@ -26,6 +26,8 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
             "JOIN Credencial c ON u.idUsuario = c.usuario.idUsuario " +
             "WHERE u.idUsuario = :id")
     CoordinadorAgendaAdminDto obtenerCoordinadorDto(@Param("id") Integer id);
+
+
 
 
 }
