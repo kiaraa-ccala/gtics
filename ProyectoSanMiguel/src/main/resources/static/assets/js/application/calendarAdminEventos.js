@@ -101,7 +101,7 @@
         Promise.all([fetchHorarios, fetchMantenimientos])
             .then(([horarios, mantenimientos]) => {
               const eventosHorarios = horarios.map(horario => ({
-                id: 'H' + horario.idHorario,
+                id: horario.idHorario,
                 title: horario.nombreCoordinador,
                 start: `${horario.fecha}T${horario.horaIngreso}`,
                 end: `${horario.fecha}T${horario.horaSalida}`,
@@ -137,7 +137,7 @@
         fetchHorarios
             .then(horarios => {
               const eventos = horarios.map(horario => ({
-                id: 'H' + horario.idHorario,
+                id: horario.idHorario,
                 title: horario.nombreCoordinador,
                 start: `${horario.fecha}T${horario.horaIngreso}`,
                 end: `${horario.fecha}T${horario.horaSalida}`,
