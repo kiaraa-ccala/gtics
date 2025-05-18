@@ -711,6 +711,8 @@
     const selectCoordinador = document.getElementById("coordinador");
     const inputSemana = document.getElementById("semana");
     const btnGuardar = document.getElementById("btnGuardarCambios");
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
     // Mapear días de la semana en inglés a español
     const mapDias = {
@@ -789,6 +791,7 @@
 
     // Función para recopilar los datos de los turnos a eliminar
     function obtenerTurnosEliminar() {
+
       const turnosEliminar = [];
       document.querySelectorAll('li[data-estado="porEliminar"]').forEach(item => {
         turnosEliminar.push({
@@ -843,11 +846,23 @@
       // Imprimir el payload completo en la consola antes de enviarlo
       console.log("Payload a enviar al backend:", payload);
 
+
       // Enviar al backend con fetch
+      if (!csrfToken || !csrfHeader) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de seguridad',
+          text: 'No se pudo enviar la solicitud.',
+          customClass: { confirmButton: 'btn btn-light-danger' },
+          buttonsStyling: false
+        });
+        return; // Evita continuar si no hay token
+      }
       fetch('/admin/agenda/guardarHorarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          [csrfHeader]: csrfToken
         },
         body: JSON.stringify(payload),
       })

@@ -2,6 +2,9 @@
   const calendaroffcanvas = new bootstrap.Offcanvas('#calendar-add_edit_event');
   const calendarmodal = new bootstrap.Modal('#calendar-modal');
   var calendevent = '';
+  const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+  const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
 
   var date = new Date();
   var d = date.getDate();
@@ -163,9 +166,23 @@
             if (result.isConfirmed) {
               const eventId = calendevent.id;  // Recupera el ID del evento a eliminar
 
+              if (!window._csrfToken || !window._csrfHeader) {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Error de seguridad',
+                  text: 'No se pudo enviar la solicitud.',
+                  customClass: { confirmButton: 'btn btn-light-danger' },
+                  buttonsStyling: false
+                });
+                return; // Evita continuar si no hay token
+              }
+
               // Enviar solicitud DELETE al backend
               fetch(`/admin/agenda/eliminarHorario/${eventId}`, {
                 method: 'DELETE',
+                headers: {
+                  [csrfHeader]: csrfToken
+                }
               })
                   .then(response => response.text())
                   .then(data => {
