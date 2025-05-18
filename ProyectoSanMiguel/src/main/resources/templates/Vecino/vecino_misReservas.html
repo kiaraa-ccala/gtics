@@ -110,8 +110,10 @@
                           <ul class="list-inline me-auto mb-0">
                             <!-- Ver -->
                             <li class="list-inline-item align-bottom" data-bs-toggle="tooltip" title="Ver">
-                              <a href="#" class="avtar avtar-xs btn-link-secondary btn-pc-default"
-                                 data-bs-toggle="modal" data-bs-target="#cust-modal">
+                              <a href="#"
+                                 class="avtar avtar-xs btn-link-secondary btn-pc-default"
+                                 th:attr="data-bs-target='#modal-ver-' + ${dto.reserva.idReserva}"
+                                 data-bs-toggle="modal">
                                 <i class="ti ti-eye f-18"></i>
                               </a>
                             </li>
@@ -197,36 +199,57 @@
         </div>
       </div>
 
-      <div class="modal fade" id="cust-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header border-0 pb-0">
-              <h5 class="mb-0">Product Details</h5>
-              <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
-                <i class="ti ti-x f-20"></i>
-              </a>
-            </div>
-            <div class="modal-body">
-              <div class="row align-items-center">
-                <div class="col-sm-4">
-                  <div class="bg-light rounded position-relative">
-                    <div class="text-center">
-                      <div class="chat-avtar d-inline-flex mx-auto">
-                        <img class="img-fluid rounded" src="../assets/images/application/img-prod-4.jpg" alt="User image" />
-                      </div>
-                    </div>
-                    <div class="position-absolute end-0 top-0 p-3">
-                      <span class="badge bg-success">In Stock</span>
-                    </div> <!-- cierre de .position-absolute -->
-                  </div> <!-- cierre de .bg-light -->
-                </div> <!-- cierre de .col-sm-4 -->
-              </div> <!-- cierre de .row -->
-            </div> <!-- cierre de .modal-body -->
-          </div> <!-- cierre de .modal-content -->
-        </div> <!-- cierre de .modal-dialog -->
-      </div> <!-- cierre de .modal -->
+<!-- Modals por reserva -->
+<div th:each="dto : ${listaReservas}">
+  <div class="modal fade" th:id="'modal-ver-' + ${dto.reserva.idReserva}" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header border-0 pb-0">
+          <h5 class="mb-0">Detalles de la reserva</h5>
+          <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default ms-auto" data-bs-dismiss="modal">
+            <i class="ti ti-x f-20"></i>
+          </a>
+        </div>
+        <div class="modal-body">
+          <div class="row justify-content-center align-items-start">
 
-  <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+            <!-- Imagen -->
+            <div class="col-sm-5 mb-3 mb-sm-0 d-flex justify-content-center">
+              <div class="bg-light rounded p-2 shadow-sm w-100 text-center">
+                <img class="img-fluid rounded" th:src="@{/assets/images/complejos/complejo1.png}" alt="Imagen complejo" style="max-height: 230px; object-fit: cover;" />
+              </div>
+            </div>
+
+            <!-- Detalles -->
+            <div class="col-sm-7">
+              <div class="bg-light rounded p-3 shadow-sm">
+                <p class="mb-2"><strong>Zona:</strong> <span th:text="${dto.reserva.instanciaServicio.complejoDeportivo.sector.nombre}">Norte</span></p>
+                <p class="mb-2"><strong>Ubicación:</strong> <span th:text="${dto.reserva.instanciaServicio.complejoDeportivo.direccion}">Dirección</span></p>
+                <p class="mb-2"><strong>Costo:</strong> S/ <span th:text="${dto.costo}">0.00</span></p>
+                <p class="mb-2"><strong>Fecha y hora registro:</strong> <span th:text="${#temporals.format(dto.reserva.fechaHoraRegistro, 'yyyy-MM-dd HH:mm')}">Fecha registro</span></p>
+                <p class="mb-2"><strong>Hora Inicio:</strong> <span th:text="${dto.reserva.horaInicio}">11:00 AM</span></p>
+                <p class="mb-2"><strong>Hora Fin:</strong> <span th:text="${dto.reserva.horaFin}">12:30 PM</span></p>
+                <p class="mb-0"><strong>Estado:</strong>
+                  <span class="badge"
+                        th:classappend="${dto.reserva.estado == 1} ? 'bg-primary' : 'bg-secondary'"
+                        th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Cancelado'">
+                    Activo
+                  </span>
+                </p>
+              </div>
+            </div>
+
+          </div> <!-- row -->
+        </div> <!-- modal-body -->
+      </div> <!-- modal-content -->
+    </div> <!-- modal-dialog -->
+  </div> <!-- modal -->
+</div>
+
+
+
+
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
   <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
   <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
 

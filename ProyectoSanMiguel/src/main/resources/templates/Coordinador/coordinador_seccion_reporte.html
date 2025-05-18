@@ -2,7 +2,7 @@
 <html lang="en">
   <!-- [Head] start -->
 
-  <head th:replace="fragments/head_coordinador :: head('Bienvenido a tus reportes')"></head>
+  <head th:replace="~{fragments/head_coordinador :: head('Bienvenido a tus reportes')}"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
 
@@ -15,10 +15,10 @@
 </div>
 <!-- [ Pre-loader ] End -->
  <!-- [ Sidebar Menu ] start -->
-    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+    <div th:replace="~{fragments/Sidebar_coordinador :: sidebar}"></div>
 <!-- [ Sidebar Menu ] end -->
  <!-- [ Header Topbar ] start -->
-    <div th:replace="fragments/navbar_coordinador :: header"></div>
+    <div th:replace="~{fragments/navbar_coordinador :: header}"></div>
 <!-- [ Header ] end -->
     <!-- [ Main Content ] start -->
     <div class="pc-container" style="background: #e0f6ff">
@@ -311,9 +311,9 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
           <div class="modal-body">
-            <form id="formReporte" action="/coord/reportes/crear" method="post" enctype="multipart/form-data">
+            <form id="formReporte" th:action="@{/coord/reportes/crear}" method="post" enctype="multipart/form-data">
                 <div class="row">
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-md-12">
                         <label for="tipoReporte" class="form-label">Tipo de Reporte</label>
                         <select class="form-select" id="tipoReporte" name="tipoReporte" required>
                             <option value="Alerta">Alerta</option>
@@ -321,7 +321,7 @@
                         </select>
                     </div>
 
-                    <div class="mb-3 col-md-6">
+                    <div class="mb-3 col-md-12">
                         <label for="asunto" class="form-label">Asunto</label>
                         <input type="text" class="form-control" id="asunto" name="asunto" required>
                     </div>

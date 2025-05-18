@@ -2,7 +2,7 @@
 <html lang="en">
   <!-- [Head] start -->
 
-  <head th:replace="fragments/head_coordinador :: head('Bienvenido a tu perfil')"></head>
+  <head th:replace="~{fragments/head_coordinador :: head('Bienvenido a tu perfil')}"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
 
@@ -15,10 +15,10 @@
 </div>
 <!-- [ Pre-loader ] End -->
  <!-- [ Sidebar Menu ] start -->
-    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+    <div th:replace="~{fragments/Sidebar_coordinador :: sidebar}"></div>
 <!-- [ Sidebar Menu ] end -->
  <!-- [ Header Topbar ] start -->
-    <div th:replace="fragments/navbar_coordinador :: header"></div>
+    <div th:replace="~{fragments/navbar_coordinador :: header}"></div>
 <!-- [ Header ] end -->
 
 

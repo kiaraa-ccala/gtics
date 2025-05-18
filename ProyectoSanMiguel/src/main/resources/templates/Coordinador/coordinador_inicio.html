@@ -2,7 +2,7 @@
 <html lang="en">
   <!-- [Head] start -->
 
-  <head th:replace="fragments/head_coordinador :: head('Bienvenido Coordinador')"></head>
+  <head th:replace="~{fragments/head_coordinador :: head('Bienvenido Coordinador')}"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
 
@@ -15,10 +15,10 @@
 </div>
 <!-- [ Pre-loader ] End -->
  <!-- [ Sidebar Menu ] start -->
-    <div th:replace="fragments/Sidebar_coordinador :: sidebar"></div>
+    <div th:replace="~{fragments/Sidebar_coordinador :: sidebar}"></div>
 <!-- [ Sidebar Menu ] end -->
  <!-- [ Header Topbar ] start -->
-    <div th:replace="fragments/navbar_coordinador :: header"></div>
+    <div th:replace="~{fragments/navbar_coordinador :: header}"></div>
 
 <!-- [ Header ] end -->
 
@@ -331,9 +331,9 @@
               <div class="card-body">
                 <div class="d-grid gap-2" style="margin-top: 7%;">
 
-                    <a th:each="reporte : ${ultimosReportes}" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2">
+                    <a th:each="reporte : ${ultimosReportes}" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2" style="margin-bottom: 3%">
                       <div class="d-flex align-items-center">
-                        <div class="flex-shrink-0" style="margin-bottom: 9%">
+                        <div class="flex-shrink-0">
                             <span class="p-1 d-block rounded-circle"
                                   th:classappend=" ${reporte.estado == 'Cerrado'} ? 'bg-success' :
                                                 (${reporte.estado == 'En proceso'} ? 'bg-warning' :
