@@ -34,5 +34,11 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
                                @Param("horaInicio") LocalTime horaInicio,
                                @Param("horaFin") LocalTime horaFin);
 
+    @Query("SELECT r FROM Reserva r " +
+            "WHERE r.usuario.idUsuario = :idUsuario " +
+            "AND r.estado = 0 " +
+            "AND r.informacionPago.estado = 'Pendiente'")
+    List<Reserva> findReservasPendientesConPagoPendiente(@Param("idUsuario") Integer idUsuario);
+
 
 }
