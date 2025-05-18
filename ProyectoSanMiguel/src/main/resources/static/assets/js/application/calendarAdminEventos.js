@@ -166,7 +166,7 @@
             if (result.isConfirmed) {
               const eventId = calendevent.id;  // Recupera el ID del evento a eliminar
 
-              if (!window._csrfToken || !window._csrfHeader) {
+              if (!csrfToken || !csrfHeader) {
                 Swal.fire({
                   icon: 'error',
                   title: 'Error de seguridad',
