@@ -142,8 +142,8 @@
                                          alt="Imagen" class="bg-light wid-50 rounded" />
                                     <div class="flex-grow-1 ms-3">
                                       <h5 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h5>
-                                      <p class="text-sm text-muted mb-0"
-                                         th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ', ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
+                                      <p class="text-muted text-sm mb-2"
+                                         th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ' de ' + ${reserva.horaInicio} + ' a ' + ${reserva.horaFin}">
                                       </p>
                                     </div>
                                   </div>
@@ -343,8 +343,10 @@
                                 <div class="flex-grow-1 mx-2">
                                   <h5 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}"></h5>
                                   <p class="text-muted text-sm mb-2"
-                                     th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ' | Hora: ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
+                                     th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ' de ' + ${reserva.horaInicio} + ' a ' + ${reserva.horaFin}">
                                   </p>
+
+
                                   <h5 class="mb-1">
                                     <b th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}"></b>
                                   </h5>
@@ -571,7 +573,9 @@
                                          class="bg-light rounded img-fluid wid-60 flex-shrink-0" alt="Imagen complejo" />
                                     <div class="flex-grow-1 mx-2">
                                       <h5 class="mb-1" th:text="${reserva.instanciaServicio.complejoDeportivo.nombre}"></h5>
-                                      <p class="text-muted text-sm mb-2" th:text="${#dates.format(reserva.fecha, 'dd/MM/yyyy')} + ' de ' + ${reserva.horaInicio} + ' a ' + ${reserva.horaFin}"></p>
+                                      <p class="text-muted text-sm mb-2"
+                                         th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ' de ' + ${reserva.horaInicio} + ' a ' + ${reserva.horaFin}">
+                                      </p>
                                       <h5 class="mb-1"><b th:text="'S/.' + ${reserva.informacionPago.total}"></b></h5>
                                     </div>
                                     <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
