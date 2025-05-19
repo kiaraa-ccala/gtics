@@ -955,6 +955,17 @@
         });
         return; // Evita continuar si no hay token
       }
+      if (turnosNuevos.length === 0 && turnosEliminar.length === 0) {
+        const btnGuardar = document.getElementById("btnGuardarCambios");
+        mostrarAlertaInformativa("Debes agregar o eliminar al menos un turno antes de guardar.");
+
+        setTimeout(() => {
+          btnGuardar.disabled = false;
+        }, 3000);
+
+
+        return;
+      }
       fetch('/admin/agenda/guardarHorarios', {
         method: 'POST',
         headers: {
@@ -1022,6 +1033,25 @@
 
     selectCoordinador.addEventListener("change", cargarTurnos);
     inputSemana.addEventListener("change", cargarTurnos);
+    function mostrarAlertaInformativa(mensaje) {
+      const contenedor = document.getElementById('alertaGlobalFixed');
+      contenedor.innerHTML = `
+    <div class="alert alert-info d-flex align-items-center alert-dismissible fade show shadow-lg" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+        <use xlink:href="#info-circle-fill"/>
+      </svg>
+      <div>${mensaje}</div>
+      <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+  `;
+      contenedor.style.display = 'block';
+
+      setTimeout(() => {
+        contenedor.style.display = 'none';
+        contenedor.innerHTML = '';
+      }, 5000);
+    }
+
 
   });
 
