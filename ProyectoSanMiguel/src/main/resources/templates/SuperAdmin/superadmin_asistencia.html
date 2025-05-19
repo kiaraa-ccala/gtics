@@ -53,7 +53,7 @@
                   <div class="d-flex align-items-center gap-3 mb-3 filters-row" style="flex-wrap: nowrap; overflow-x: auto;">
 
                     <div style="min-width: 150px;">
-                      <select class="form-select">
+                      <select hidden class="form-select">
                         <option>Nombre</option>
                         <option>Servicio</option>
                         <option>Complejo</option>
@@ -63,7 +63,7 @@
 
 
                     <div style="min-width: 150px;">
-                      <input type="date" class="form-control" id="example-datemax" max="1979-12-31" />
+                      <input hidden type="date" class="form-control" id="example-datemax" max="1979-12-31" />
                     </div>
                   </div>
 
@@ -171,28 +171,26 @@
 
       // Inicializar DataTable con botones y buscador visible
       const dt = $('#basic-btn').DataTable({
-        dom: "<'d-flex justify-content-start gap-2 mb-2'B><'dt-search-row'f>t<'bottom'ip>",
+        dom: "<'d-flex justify-content-between align-items-center gap-2 mb-2'Bf>t<'bottom'ip>",
         buttons: ['copy', 'excel', 'pdf', 'print'],
         pageLength: 6,
         language: {
           url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json',
           search: "Buscar:"
-
         }
       });
 
-      // Mover el buscador debajo de los filtros
+      // Ajustar el contenedor para alinear botones y buscador
       setTimeout(() => {
-        const dtSearch = document.querySelector('.dt-search-row');
-        const filtersRow = document.querySelector('.filters-row');
-
-        if (dtSearch && filtersRow) {
-          dtSearch.classList.remove('dt-search-row');
-          dtSearch.classList.add('ms-auto', 'mb-0');
-          filtersRow.appendChild(dtSearch);
+        const buttonContainer = $('.dt-buttons');
+        const searchContainer = $('.dataTables_filter');
+        if (buttonContainer.length && searchContainer.length) {
+          buttonContainer.parent().removeClass('justify-content-start').addClass('d-flex align-items-center gap-2');
+          searchContainer.addClass('ms-auto');
+          buttonContainer.parent().append(searchContainer);
         }
         // Cambiar placeholder
-        const input = dtSearch?.querySelector('input');
+        const input = searchContainer.find('input');
         if (input) input.placeholder = "Buscar";
       }, 100);
     </script>
@@ -226,10 +224,6 @@
         transition: all 0.2s ease-in-out;
       }
     </style>
-
-
-
-
 
   </body>
   <!-- [Body] end -->

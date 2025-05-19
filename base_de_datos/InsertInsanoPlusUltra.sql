@@ -132,7 +132,7 @@ INSERT INTO credencial (correo, password, idUsuario) VALUES
 ('luciana.salazar@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 5), #Password uncrypted = Tonylee1 | Rol = Vecino
 ('jorge.ramirez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 6), 
 ('paula.perez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 7),
-('santiago.caceres@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 8),
+('santiago.caceres@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 8), #Password uncrypted = Tonylee1 | Rol = Vecino
 ('valeria.lopez@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 9),
 ('adrian.quispe@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 10),
 ('mariana.guzman@gmail.com', '$2a$10$Vd52riJwl4I8TjQTc2SDP.4GYDTkwcppYqdWFy4W90dG2ltnlx2Ca', 11),

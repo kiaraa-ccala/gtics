@@ -75,14 +75,21 @@
                             </div>
                           </div>
                         </td>
-                        <td th:text="${usuario.getTelefono()}">Telefono</td>
+                        <td th:text="${#strings.isEmpty(usuario.getTelefono()) ? 'No registrado' : usuario.getTelefono()}">Telefono</td>
 
                         <td th:text="${usuario.getSector().getNombre()}">Zona</td>
 
                         <td th:text="${usuario.getCredencial().getCorreo()}">Correo</td>
 
-                        <td> <span th:text="${usuario.getRol().getNombre()}" class="badge bg-light-warning">Rol</span></td>
+                        <td>
 
+                          <span th:text="${usuario.getRol().getNombre()}"
+                                th:classappend="${usuario.getRol().getIdRol() == 2 ? 'badge bg-light-warning' :
+                                  (usuario.getRol().getIdRol() == 3 ? 'badge bg-light-info' :
+                                  (usuario.getRol().getIdRol() == 4 ? 'badge bg-light-secondary' : 'badge bg-light-success'))}">Rol
+                          </span>
+
+                        </td>
 
                         <td>
 
@@ -157,7 +164,7 @@
         perPage: 5,
         perPageSelect: false,
         labels: {
-          placeholder: "Buscar...",
+          placeholder: "Buscar usuario",
           perPage: "",
           info: "",
           noRows: "No se encontraron registros"
