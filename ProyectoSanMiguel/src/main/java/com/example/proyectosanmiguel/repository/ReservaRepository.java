@@ -40,5 +40,6 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
             "AND r.informacionPago.estado = 'Pendiente'")
     List<Reserva> findReservasPendientesConPagoPendiente(@Param("idUsuario") Integer idUsuario);
 
+    List<Reserva> findByUsuario_IdUsuarioAndEstado(Integer idUsuario, Integer estado);
 
 }

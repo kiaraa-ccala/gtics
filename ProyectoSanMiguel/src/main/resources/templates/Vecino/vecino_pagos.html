@@ -346,8 +346,8 @@
                                 <div class="mb-3 row">
                                   <label class="col-lg-4 col-form-label">Nombres:</label>
                                   <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tus nombres"
-                                           th:value="${usuario.nombre}" />
+                                    <input type="text" th:value="${usuario != null ? usuario.nombre : ''}" />
+
                                   </div>
                                 </div>
 
@@ -680,8 +680,10 @@
                         <div class="collapse" id="productosResumen3">
                           <div class="card-body p-0">
                             <ul class="list-group list-group-flush">
-                              <th:block th:each="reserva : ${reservasPendientes}">
-                                <li class="list-group-item">
+                              <li class="list-group-item text-center text-muted" th:if="${#lists.isEmpty(reservasPendientes)}">
+                                No tienes reservas pendientes por pagar.
+                              </li>
+                                <li class="list-group-item" th:block th:each="reserva : ${reservasPendientes}">
                                   <div class="d-flex align-items-start">
                                     <img th:src="@{'/assets/images/complejos/complejo' + ${reserva.instanciaServicio.complejoDeportivo.idComplejoDeportivo} + '.png'}"
                                          class="bg-light rounded img-fluid wid-60 flex-shrink-0" alt="Imagen complejo" />
