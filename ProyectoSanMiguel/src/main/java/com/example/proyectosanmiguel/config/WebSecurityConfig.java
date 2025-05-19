@@ -1,4 +1,5 @@
 package com.example.proyectosanmiguel.config;
+import com.example.proyectosanmiguel.entity.Credencial;
 import com.example.proyectosanmiguel.repository.CredencialRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpSession;
@@ -43,15 +44,16 @@ public class WebSecurityConfig {
                         .successHandler((request, response, authentication) -> {
                             try {
                                 HttpSession session = request.getSession();
-                                Object usuario = credencialRepository.findByCorreo(authentication.getName());
-                                if (usuario == null) {
+                                Credencial credencial = credencialRepository.findByCorreo(authentication.getName());
+                                if (credencial == null) {
                                     System.out.println("Error: No se encontró usuario para el correo " + authentication.getName());
                                     request.getSession().setAttribute("error", "Usuario no encontrado");
                                     response.sendRedirect("/inicio");
 
                                     return;
                                 }
-                                session.setAttribute("usuario", usuario);
+
+                                session.setAttribute("credencial", credencial);
 
                                 DefaultSavedRequest defaultSavedRequest = (DefaultSavedRequest) request.getSession().getAttribute("SPRING_SECURITY_SAVED_REQUEST");
                                 String rol = authentication.getAuthorities().iterator().next().getAuthority();
@@ -161,9 +163,6 @@ public class WebSecurityConfig {
                     }
                 })
         );
-
-
-
 
         return http.build();
     }
