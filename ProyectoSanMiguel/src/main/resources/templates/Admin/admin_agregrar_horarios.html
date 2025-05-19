@@ -990,16 +990,16 @@
                   limpiarListasTurnos();
                   cargarTurnos();
                 } else {
-                  alert("Error al guardar los horarios");
                   Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Ocurrió un error al guardar los horarios',
+                    icon: 'info',
+                    title: 'Validación',
+                    text: data, //
                     customClass: {
-                      confirmButton: 'btn btn-light-danger',
+                      confirmButton: 'btn btn-light-primary',
                     },
                     buttonsStyling: false
                   });
+
                 }
               })
               .catch(error => {

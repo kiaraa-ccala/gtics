@@ -25,6 +25,7 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.*;
 
@@ -166,35 +167,95 @@ public class AdminController {
                     });
             System.out.println("Revisar si Horarios Eliminar es null: "+ dto.getHorariosEliminar());
             System.out.println("HorarioSemanal ID: " + semanal.getIdHorarioSemanal());
-            // 3. Eliminar turnos por ID
-            if (dto.getHorariosEliminar() != null) {
-                for (var item : dto.getHorariosEliminar()) {
-                    System.out.println("test1");
-                    horarioRepository.deleteById(item.getId());
-                    System.out.println("test2");
+
+            // Lista de IDs de turnos que se eliminarán, para excluirlos de la validación
+            List<Integer> idsEliminar = dto.getHorariosEliminar() != null
+                    ? dto.getHorariosEliminar().stream()
+                    .map(HorarioEliminarDto::getId)
+                    .toList()
+                    : Collections.emptyList();
+            System.out.println("IDs a eliminar (excluir de validación): " + idsEliminar);
+
+
+
+            // Validar solapamientos primero
+            if (dto.getHorariosGuardar() != null) {
+                List<HorarioDiarioTurnoGuardarDto> turnos = dto.getHorariosGuardar();
+
+                for (int i = 0; i < turnos.size(); i++) {
+                    HorarioDiarioTurnoGuardarDto t1 = turnos.get(i);
+                    LocalDate fecha1 = mapearDiaSemanaAFecha(fechaInicio, t1.getDiaSemana());
+                    LocalTime inicio1 = LocalTime.parse(t1.getHoraInicio());
+                    LocalTime fin1 = LocalTime.parse(t1.getHoraFin());
+
+                    if (!fin1.isAfter(inicio1)) {
+                        return ResponseEntity.badRequest().body(
+                                "La hora fin debe ser posterior a la hora inicio en el día " + t1.getDiaSemana());
+                    }
+
+                    // Validación contra la base de datos
+                    boolean solapaBD = horarioRepository.existeSolapamiento(
+                            dto.getCoordinadorId(),
+                            fecha1,
+                            inicio1,
+                            fin1,
+                            idsEliminar
+                    );
+
+                    if (solapaBD) {
+                        String nombreDia = fecha1.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es"));
+                        return ResponseEntity.badRequest().body(
+                                "El horario del día " + nombreDia + " (" + t1.getHoraInicio() +
+                                        " - " + t1.getHoraFin() + ") se solapa con otro horario ya registrado.");
+                    }
+
+                    // Validación contra los otros turnos nuevos del mismo payload
+                    for (int j = i + 1; j < turnos.size(); j++) {
+                        HorarioDiarioTurnoGuardarDto t2 = turnos.get(j);
+
+                        if (t1.getDiaSemana().equals(t2.getDiaSemana())) {
+                            LocalTime inicio2 = LocalTime.parse(t2.getHoraInicio());
+                            LocalTime fin2 = LocalTime.parse(t2.getHoraFin());
+
+                            if (inicio1.isBefore(fin2) && fin1.isAfter(inicio2)) {
+                                String nombreDia = fecha1.getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es"));
+                                System.out.println("Turnos solapados: " + t1.getHoraInicio() + "-" + t1.getHoraFin() + " y " +
+                                        t2.getHoraInicio() + "-" + t2.getHoraFin());
+                                return ResponseEntity.badRequest().body(
+                                        "Los turnos nuevos del día " + nombreDia + " se solapan entre sí: " +
+                                                t1.getHoraInicio() + "-" + t1.getHoraFin() + " y " +
+                                                t2.getHoraInicio() + "-" + t2.getHoraFin()
+                                );
+                            }
+                        }
+                    }
                 }
             }
-            System.out.println("Revisar si Horarios Guardar es null: "+ dto.getHorariosGuardar());
-            //ya voy 3 horas aca sin poder resolverlo :c, si me retiro de gtics? aun hay tiempo :D
-            //no eres tu profe brenda, soy yo
 
-            // 4. Insertar turnos nuevos
+
+            // Eliminar turnos
+            if (!idsEliminar.isEmpty()) {
+                for (Integer id : idsEliminar) {
+                    horarioRepository.deleteById(id);
+                }
+            }
+            // Insertar nuevos turnos
+            System.out.println("Revisar si Horarios Guardar es null: "+ dto.getHorariosGuardar());
             if (dto.getHorariosGuardar() != null) {
                 for (HorarioDiarioTurnoGuardarDto turno : dto.getHorariosGuardar()) {
                     Horario nuevo = new Horario();
-                    System.out.println(semanal.getIdHorarioSemanal());
                     nuevo.setIdHorarioSemanal(semanal.getIdHorarioSemanal());
-                    System.out.println(turno.getIdComplejoDeportivo());
                     nuevo.setIdComplejoDeportivo(turno.getIdComplejoDeportivo());
-                    System.out.println(turno.getDiaSemana());
                     nuevo.setFecha(mapearDiaSemanaAFecha(fechaInicio, turno.getDiaSemana()));
-                    System.out.println(turno.getHoraInicio());
                     nuevo.setHoraIngreso(LocalTime.parse(turno.getHoraInicio()));
-                    System.out.println(turno.getHoraFin());
                     nuevo.setHoraSalida(LocalTime.parse(turno.getHoraFin()));
                     horarioRepository.save(nuevo);
                 }
             }
+
+            //ya voy 3 horas aca sin poder resolverlo :c, si me retiro de gtics? aun hay tiempo :D
+            //no eres tu profe brenda, soy yo
+
             return ResponseEntity.ok("Guardado correctamente");
         } catch (Exception e) {
             e.printStackTrace();

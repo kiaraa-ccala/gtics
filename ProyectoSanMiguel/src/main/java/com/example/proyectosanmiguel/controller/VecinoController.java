@@ -13,7 +13,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.LocalDateTime;
-
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.Locale;
@@ -49,9 +51,21 @@ public class VecinoController {
     @Autowired
     private InstanciaServicioRepository instanciaServicioRepository;
 
+    @Autowired
+    private CredencialRepository credencialRepository;
+
     @GetMapping("/misReservas")
     public String mostrarReservasVecino(Model model) {
-        int idUsuario = 8;
+        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<Credencial> optionalCredencial = credencialRepository.findOptionalByCorreo(correo);
+
+        if (optionalCredencial.isEmpty()) {
+            return "redirect:/login";
+        }
+
+        Usuario usuario = optionalCredencial.get().getUsuario();
+        int idUsuario = usuario.getIdUsuario();
+
         List<Reserva> reservas = reservaRepository.findByUsuario_IdUsuario(idUsuario);
         List<ReservaCostoDto> reservasConCosto = new ArrayList<>();
         for (Reserva r : reservas) {
@@ -96,9 +110,56 @@ public class VecinoController {
     }
 
     @GetMapping("/pagos")
-    public String mostrarPagos() {
+    public String mostrarPasarelaPago(Model model) {
+        Usuario usuario = obtenerUsuarioAutenticado();
+
+        if (usuario == null) {
+            return "redirect:/login";
+        }
+
+        List<Reserva> reservasPendientes = reservaRepository.findByUsuario_IdUsuario(usuario.getIdUsuario())
+                .stream()
+                .filter(r -> r.getEstado() == 0 && r.getInformacionPago() != null
+                        && "Pendiente".equalsIgnoreCase(r.getInformacionPago().getEstado()))
+                .toList();
+
+        double total = reservasPendientes.stream()
+                .mapToDouble(r -> r.getInformacionPago() != null ? r.getInformacionPago().getTotal().doubleValue() : 0.0)
+                .sum();
+
+        // Asegurarse de evitar el error si falta credencial
+        Credencial credencial = credencialRepository.findByCorreo(usuario.getCredencial().getCorreo());
+
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("credencial", credencial); // Agregarlo si lo usas en el HTML
+        model.addAttribute("reservasPendientes", reservasPendientes);
+        model.addAttribute("totalReservas", total);
+
         return "Vecino/vecino_pagos";
     }
+
+    private Usuario obtenerUsuarioAutenticado() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        String correo;
+        if (principal instanceof UserDetails) {
+            correo = ((UserDetails) principal).getUsername();
+        } else {
+            correo = principal.toString();
+        }
+
+        System.out.println("Correo autenticado: " + correo);
+
+        Credencial credencial = credencialRepository.findByCorreo(correo);
+        if (credencial == null) {
+            System.out.println("No se encontró credencial para el correo");
+            return null;
+        }
+        System.out.println("Usuario encontrado: " + credencial.getUsuario().getNombre());
+        return credencial.getUsuario();
+    }
+
+
 
     @GetMapping("/crearReserva")
     public String crearReserva(@RequestParam("idInstancia") Integer idInstancia, Model model) {
@@ -109,7 +170,9 @@ public class VecinoController {
             reserva.setInstanciaServicio(instancia.get());
             reserva.setFecha(LocalDate.now());
 
-            Usuario usuario = usuarioRepository.findById(8).orElse(new Usuario());
+            String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+            Optional<Credencial> optionalCredencial = credencialRepository.findOptionalByCorreo(correo);
+            Usuario usuario = optionalCredencial.map(Credencial::getUsuario).orElse(new Usuario());
             if (usuario.getCredencial() == null) {
                 usuario.setCredencial(new Credencial());
             }
@@ -145,9 +208,13 @@ public class VecinoController {
         reserva.setEstado(0); // 0 = Pendiente
 
         // 👉 Asignar el usuario (por ahora, fijo)
-        Usuario usuario = usuarioRepository.findById(8)
+        String correo = SecurityContextHolder.getContext().getAuthentication().getName();
+        Optional<Credencial> optionalCredencial = credencialRepository.findOptionalByCorreo(correo);
+        Usuario usuario = optionalCredencial
+                .map(Credencial::getUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
         reserva.setUsuario(usuario);
+
 
         // ⚠️ Cargar instanciaServicio desde BD
         Optional<InstanciaServicio> instanciaOpt = instanciaServicioRepository
@@ -193,4 +260,7 @@ public class VecinoController {
         return fecha.getDayOfWeek()
                 .getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
     }
+
+
+
 }

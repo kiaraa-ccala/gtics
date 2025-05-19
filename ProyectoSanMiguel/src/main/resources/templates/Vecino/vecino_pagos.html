@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="~{fragments/head_vecino :: head('Agregar Usuario')}"></head>
+  <head th:replace="~{fragments/head_vecino :: head('Pasarela de pago')}"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
 
@@ -135,124 +135,36 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr th:each="reserva : ${reservasPendientes}">
                                 <td>
                                   <div class="d-flex align-items-center">
-                                    <img src="../assets/images/application/img-prod-2.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <img th:src="@{'/assets/images/complejos/complejo' + ${reserva.instanciaServicio.complejoDeportivo.idComplejoDeportivo} + '.png'}"
+                                         alt="Imagen" class="bg-light wid-50 rounded" />
                                     <div class="flex-grow-1 ms-3">
-                                      <h5 class="mb-1">Apple MacBook Pro</h5>
-                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                      <h5 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h5>
+                                      <p class="text-sm text-muted mb-0"
+                                         th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ', ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
+                                      </p>
                                     </div>
                                   </div>
                                 </td>
                                 <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
+                                  <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                                 </td>
                                 <td class="text-center">
-                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
-                                    <button type="button" onclick="decreaseValue('number')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-minus"></i
-                                    ></button>
-                                    <input
-                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
-                                      type="text"
-                                      id="number"
-                                      value="0"
-                                    />
-                                    <button type="button" onclick="increaseValue('number')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-plus"></i
-                                    ></button>
-                                  </div>
+                                  <span class="text-muted">1</span> <!-- No editable, ya que es una reserva única -->
                                 </td>
                                 <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
+                                  <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                                 </td>
                                 <td class="text-end">
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
-                                    <i class="ti ti-trash f-18"></i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="d-flex align-items-center">
-                                    <img src="../assets/images/application/img-prod-3.jpg" alt="image" class="bg-light wid-50 rounded" />
-                                    <div class="flex-grow-1 ms-3">
-                                      <h5 class="mb-1">Apple MacBook Pro</h5>
-                                      <p class="text-sm text-muted mb-0">Dark Red</p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
-                                </td>
-                                <td class="text-center">
-                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
-                                    <button type="button" onclick="decreaseValue('number2')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-minus"></i
-                                    ></button>
-                                    <input
-                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
-                                      type="text"
-                                      id="number2"
-                                      value="0"
-                                    />
-                                    <button type="button" onclick="increaseValue('number2')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-plus"></i
-                                    ></button>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                </td>
-                                <td class="text-end">
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
-                                    <i class="ti ti-trash f-18"></i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="d-flex align-items-center">
-                                    <img src="../assets/images/application/img-prod-4.jpg" alt="image" class="bg-light wid-50 rounded" />
-                                    <div class="flex-grow-1 ms-3">
-                                      <h5 class="mb-1">Apple MacBook Pro</h5>
-                                      <p class="text-sm text-muted mb-0">Dark Red</p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
-                                </td>
-                                <td class="text-center">
-                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
-                                    <button type="button" onclick="decreaseValue('number1')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-minus"></i
-                                    ></button>
-                                    <input
-                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
-                                      type="text"
-                                      id="number1"
-                                      value="0"
-                                    />
-                                    <button type="button" onclick="increaseValue('number1')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-plus"></i
-                                    ></button>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                </td>
-                                <td class="text-end">
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                  <a th:href="@{'/vecino/reserva/eliminar/' + ${reserva.idReserva}}" class="avtar avtar-s btn-link-danger btn-pc-default">
                                     <i class="ti ti-trash f-18"></i>
                                   </a>
                                 </td>
                               </tr>
                             </tbody>
+
                           </table>
                         </div>
                       </div>
@@ -282,27 +194,32 @@
                             <h5 class="mb-0">Resumen de servicios</h5>
                           </li>
                           <li class="list-group-item px-0">
-                            <div class="float-end"> <h5 class="mb-0">S/.300.00</h5> </div><span class="text-muted">Sub Total</span>
+                            <div class="float-end">
+                              <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
+                            </div>
+                            <span class="text-muted">Sub Total</span>
                           </li>
                           <li class="list-group-item px-0">
-                            <div class="float-end"> <h5 class="mb-0">-</h5> </div><span class="text-muted">Descuento aplicado</span>
+                            <div class="float-end"><h5 class="mb-0">-</h5></div>
+                            <span class="text-muted">Descuento aplicado</span>
                           </li>
-
                         </ul>
                       </div>
                     </div>
+
                     <div class="card">
                       <div class="card-body py-2">
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item px-0">
                             <div class="float-end">
-                              <h5 class="mb-0">S/.300.00</h5>
+                              <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                             </div>
                             <h5 class="mb-0 d-inline-block">Total</h5>
                           </li>
                         </ul>
                       </div>
                     </div>
+
 
                     <div class="d-grid mb-3">
                       <button class="btn btn-primary">Place an Order</button>
@@ -312,6 +229,7 @@
               </div>
               <div class="tab-pane" id="ecomtab-2" role="tabpanel" aria-labelledby="ecomtab-tab-2">
                 <div class="row">
+                  <!-- Columna izquierda -->
                   <div class="col-xl-8">
                     <div class="card">
                       <div class="card-header">
@@ -326,97 +244,73 @@
                           </div>
                         </div>
                       </div>
-                      <div class="collapse multi-collapse show" id="multiCollapseExample1">
-                        <div class="card-body border-bottom">
-                          <div class="row align-items-center">
-                            <div class="col">
-                              <h5 class="mb-0">Datos del cliente</h5>
+
+                      <div class="card-body border-bottom">
+                        <h5 class="mb-3">Datos del cliente</h5>
+                        <div class="row">
+                          <div class="col-md-6">
+                            <!-- Nombres -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">Nombres:</label>
+                              <div class="col-lg-8">
+                                <input type="text" th:value="${usuario != null ? usuario.nombre : ''}" class="form-control"/>
+                              </div>
                             </div>
-
-                          </div>
-                        </div>
-                        <div class="card-body">
-
-                          <div class="card-body">
-                            <div class="row">
-                              <!-- Columna izquierda -->
-                              <div class="col-md-6">
-                                <!-- Nombres -->
-                                <!-- Nombres -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">Nombres:</label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tus nombres"
-                                           th:value="${usuario.nombre}" />
-                                  </div>
-                                </div>
-
-                                <!-- Apellidos -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">Apellidos:</label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tus apellidos"
-                                           th:value="${usuario.apellido}" />
-                                  </div>
-                                </div>
-
-                                <!-- DNI -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">DNI:</label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu número de DNI"
-                                           th:value="${usuario.dni}" />
-                                  </div>
-                                </div>
-
-                                <!-- Teléfono -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">Teléfono:</label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu número de celular"
-                                           th:value="${usuario.telefono}" />
-                                  </div>
-                                </div>
-
-                                <!-- Correo -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">Correo:</label>
-                                  <div class="col-lg-8">
-                                    <input type="email" class="form-control" placeholder="Ingresa tu correo electrónico"
-                                           th:value="${credencial.correo}" />
-                                  </div>
-                                </div>
-
-
-                                <!-- Distrito -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">Distrito:</label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu distrito de residencia"
-                                           th:value="${usuario.sector.nombre}" readonly />
-                                  </div>
-                                </div>
-
-                                <!-- Dirección -->
-                                <div class="mb-3 row">
-                                  <label class="col-lg-4 col-form-label">Dirección :</label>
-                                  <div class="col-lg-8">
-                                    <input type="text" class="form-control" placeholder="Ingresa tu dirección completa"
-                                           th:value="${usuario.direccion}" />
-                                  </div>
-                                </div>
+                            <!-- Apellidos -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">Apellidos:</label>
+                              <div class="col-lg-8">
+                                <input type="text" class="form-control" th:value="${usuario.apellido}" />
+                              </div>
+                            </div>
+                            <!-- DNI -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">DNI:</label>
+                              <div class="col-lg-8">
+                                <input type="text" class="form-control" th:value="${usuario.dni}" />
+                              </div>
+                            </div>
+                            <!-- Teléfono -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">Teléfono:</label>
+                              <div class="col-lg-8">
+                                <input type="text" class="form-control" th:value="${usuario.telefono}" />
+                              </div>
+                            </div>
+                            <!-- Correo -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">Correo:</label>
+                              <div class="col-lg-8">
+                                <input type="email" class="form-control" th:value="${credencial.correo}" />
+                              </div>
+                            </div>
+                            <!-- Distrito -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">Distrito:</label>
+                              <div class="col-lg-8">
+                                <input type="text" class="form-control" th:value="${usuario.sector.nombre}" readonly />
+                              </div>
+                            </div>
+                            <!-- Dirección -->
+                            <div class="mb-3 row">
+                              <label class="col-lg-4 col-form-label">Dirección:</label>
+                              <div class="col-lg-8">
+                                <input type="text" class="form-control" th:value="${usuario.direccion}" />
                               </div>
                             </div>
                           </div>
                         </div>
-
                       </div>
-                    <div class="d-flex justify-content-end mb-3">
-                      <button class="btn btn-link-primary"
-                        ><i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Regresar a servicios</button
-                      >
+
+                      <div class="card-footer text-end">
+                        <button class="btn btn-link-primary">
+                          <i class="ti ti-arrow-narrow-left align-text-bottom me-2"></i>Regresar a servicios
+                        </button>
+                      </div>
                     </div>
                   </div>
+
+                  <!-- Columna derecha -->
                   <div class="col-xl-4">
                     <!-- Cupon -->
                     <div class="card">
@@ -431,38 +325,32 @@
                       </div>
                     </div>
 
-                    <!-- Resumen de productos colapsable -->
-                    <div class="card">
+                    <!-- Resumen -->
+                    <div class="card mt-3">
                       <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Resumen de servicios</h5>
-                        <a data-bs-toggle="collapse" href="#productosResumen2" role="button" aria-expanded="false" aria-controls="productosResumen2" class="text-decoration-none">
+                        <a data-bs-toggle="collapse" href="#productosResumen2" role="button" aria-expanded="false" aria-controls="productosResumen2">
                           <i class="ti ti-chevron-down"></i>
                         </a>
                       </div>
-
-                      <div class="collapse" id="productosResumen2">
+                      <div class="collapse show" id="productosResumen2">
                         <div class="card-body p-0">
                           <ul class="list-group list-group-flush">
                             <li class="list-group-item" th:each="reserva : ${reservasPendientes}">
                               <div class="d-flex align-items-start">
-                                <!-- Imagen simulada por ahora -->
                                 <img class="bg-light rounded img-fluid wid-60 flex-shrink-0"
-                                     th:src="@{/assets/images/application/img-prod-2.jpg}"
-                                     alt="Imagen producto" />
-
+                                     th:src="@{/assets/images/application/img-prod-2.jpg}" alt="Imagen producto" />
                                 <div class="flex-grow-1 mx-2">
                                   <h5 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}"></h5>
                                   <p class="text-muted text-sm mb-2"
-                                     th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} +
-                        ' | Hora: ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
+                                     th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ' | Hora: ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
                                   </p>
                                   <h5 class="mb-1">
                                     <b th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}"></b>
                                   </h5>
                                 </div>
-
-                                <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0"
-                                   th:href="@{'/vecino/reserva/eliminar/' + ${reserva.idReserva}}">
+                                <a th:href="@{'/vecino/reserva/eliminar/' + ${reserva.idReserva}}"
+                                   class="avtar avtar-s btn-link-danger btn-pc-default flex-shrink-0">
                                   <i class="ti ti-trash f-20"></i>
                                 </a>
                               </div>
@@ -470,14 +358,10 @@
                           </ul>
                         </div>
                       </div>
-
-
-                      <!-- Totales siempre visibles JUNTOS -->
-                      <!-- Totales -->
                       <ul class="list-group list-group-flush">
                         <li class="list-group-item">
                           <div class="float-end">
-                            <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}"></h5>
+                            <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                           </div>
                           <span class="text-muted">Sub Total</span>
                         </li>
@@ -487,20 +371,18 @@
                         </li>
                         <li class="list-group-item">
                           <div class="float-end">
-                            <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}"></h5>
+                            <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                           </div>
                           <h5 class="mb-0 d-inline-block">Total</h5>
                         </li>
                       </ul>
-
-                    </div>
-
-                    <!-- Botón de checkout -->
-                    <div class="d-grid mb-3 mt-2">
-                      <button class="btn btn-primary">Procesar pago</button>
+                      <div class="card-footer">
+                        <div class="d-grid">
+                          <button class="btn btn-primary">Procesar pago</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-
                 </div>
               </div>
               <div class="tab-pane" id="ecomtab-3" role="tabpanel" aria-labelledby="ecomtab-tab-3">
@@ -680,8 +562,10 @@
                         <div class="collapse" id="productosResumen3">
                           <div class="card-body p-0">
                             <ul class="list-group list-group-flush">
-                              <th:block th:each="reserva : ${reservasPendientes}">
-                                <li class="list-group-item">
+                              <li class="list-group-item text-center text-muted" th:if="${#lists.isEmpty(reservasPendientes)}">
+                                No tienes reservas pendientes por pagar.
+                              </li>
+                                <li class="list-group-item" th:block th:each="reserva : ${reservasPendientes}">
                                   <div class="d-flex align-items-start">
                                     <img th:src="@{'/assets/images/complejos/complejo' + ${reserva.instanciaServicio.complejoDeportivo.idComplejoDeportivo} + '.png'}"
                                          class="bg-light rounded img-fluid wid-60 flex-shrink-0" alt="Imagen complejo" />
@@ -742,7 +626,6 @@
         </div>
         <!-- [ Main Content ] end -->
       </div>
-    </div>
     </div>
 
     <!-- Modal -->

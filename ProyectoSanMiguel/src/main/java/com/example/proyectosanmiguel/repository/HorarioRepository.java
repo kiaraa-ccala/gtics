@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 public interface HorarioRepository extends JpaRepository<Horario, Integer> {
@@ -73,6 +75,43 @@ JOIN h.complejoDeportivo c
 WHERE h.idHorarioSemanal = :idHorarioSemanal
 """)
     List<HorarioTurnoDto> obtenerTurnosPorHorarioSemanal(@Param("idHorarioSemanal") Integer idHorarioSemanal);
+
+    @Query("""
+  SELECT h FROM Horario h
+  JOIN h.horarioSemanal hs
+  WHERE hs.idCoordinador = :idCoordinador
+    AND h.fecha = :fecha
+    AND h.idComplejoDeportivo = :idComplejo
+    AND (:horaInicio < h.horaSalida AND :horaFin > h.horaIngreso)
+""")
+    List<Horario> buscarSolapamientos(@Param("idCoordinador") int idCoordinador,
+                                      @Param("fecha") LocalDate fecha,
+                                      @Param("idComplejo") int idComplejo,
+                                      @Param("horaInicio") LocalTime horaInicio,
+                                      @Param("horaFin") LocalTime horaFin);
+
+
+    List<Horario> findAllByIdHorarioIn(List<Integer> ids);
+
+    @Query("""
+  SELECT COUNT(h) > 0
+  FROM Horario h
+  JOIN h.horarioSemanal hs
+  WHERE hs.idCoordinador = :idCoordinador
+    AND h.fecha = :fecha
+    AND (:horaInicio < h.horaSalida AND :horaFin > h.horaIngreso)
+    AND h.idHorario NOT IN :idsAExcluir
+""")
+    boolean existeSolapamiento(@Param("idCoordinador") int idCoordinador,
+                               @Param("fecha") LocalDate fecha,
+                               @Param("horaInicio") LocalTime horaInicio,
+                               @Param("horaFin") LocalTime horaFin,
+                               @Param("idsAExcluir") List<Integer> idsAExcluir);
+    //usamos ids a excluir porque si te pones a pensar en el gudar horarios tambien habran eliminados y luego en la parctica no afectaran.
+
+
+
+
 
 
 
