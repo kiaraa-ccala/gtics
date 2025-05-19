@@ -1,9 +1,9 @@
 <th:block xmlns:th="http://www.thymeleaf.org" th:fragment="header">
     <header class="pc-header">
-        <div class="header-wrapper" style="background: #FFFFFF">
-
+        <div class="header-wrapper" style="background: #FFFFFF"> <!-- [Mobile Media Block] start -->
             <div class="me-auto pc-mob-drp">
                 <ul class="list-unstyled">
+                    <!-- ======= Menu collapse Icon ===== -->
                     <li class="pc-h-item pc-sidebar-collapse">
                         <a href="#" class="pc-head-link ms-0" id="sidebar-hide">
                             <i class="ti ti-menu-2"></i>
@@ -14,36 +14,38 @@
                             <i class="ti ti-menu-2"></i>
                         </a>
                     </li>
+                    <li class="pc-h-item d-none d-md-inline-flex">
+                        <form class="form-search">
+                            <i class="bi bi-search"></i>
+
+                            <input type="search" class="form-control" placeholder="Buscar" />
+                        </form>
+                    </li>
                 </ul>
             </div>
-
+            <!-- [Mobile Media Block end] -->
             <div class="ms-auto">
-                <ul class="list-unstyled d-flex align-items-center">
+                <ul class="list-unstyled">
 
-                    <!-- Mis reservas -->
-                    <li class="pc-h-item d-flex align-items-center ms-3">
-                        <a th:href="@{/vecino/misReservas}" class="btn btn-outline-primary d-flex align-items-center px-3 py-1 rounded-pill text-decoration-none">
-                            <i class="ti ti-calendar-check me-2"></i>
-                            <span class="fw-semibold">Mis reservas</span>
-                        </a>
+                    <li class="d-flex justify-content-center align-items-center">
+
+                      <span class="badge bg-light-Secondary rounded-pill ms-2 theme-version">
+                        Vecino
+                      </span>
 
                     </li>
 
-
-
-
-
-                    <!-- Rol usuario -->
-                    <li class="d-flex justify-content-center align-items-center ms-2">
-                        <span class="badge bg-light-success rounded-pill theme-version">
-                            vecino
-                        </span>
-                    </li>
-
-                    <!-- Perfil -->
-                    <li class="dropdown pc-h-item header-user-profile ms-2">
-                        <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
-                            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar" />
+                    <li class="dropdown pc-h-item header-user-profile">
+                        <a
+                                class="pc-head-link dropdown-toggle arrow-none me-0"
+                                data-bs-toggle="dropdown"
+                                href="#"
+                                role="button"
+                                aria-haspopup="false"
+                                data-bs-auto-close="outside"
+                                aria-expanded="false"
+                        >
+                            <img th:src="@{/assets/images/user/default.png}" alt="user-image" class="user-avtar" />
                         </a>
                         <div class="dropdown-menu dropdown-user-profile dropdown-menu-end pc-h-dropdown">
                             <div class="dropdown-header d-flex align-items-center justify-content-between">
@@ -53,35 +55,29 @@
                                 <div class="profile-notification-scroll position-relative" style="max-height: calc(100vh - 225px)">
                                     <div class="d-flex mb-1">
                                         <div class="flex-shrink-0">
-                                            <img src="../assets/images/user/avatar-2.jpg" alt="user-image" class="user-avtar wid-35" />
+                                            <img th:src="@{/assets/images/user/default.png}" alt="user-image" class="user-avtar wid-35" />
                                         </div>
                                         <div class="flex-grow-1 ms-3">
                                             <h6 class="mb-1"> Vecino </h6>
-                                            <span>kiara.ccala@sanmi.gob.pe</span>
+                                            <div th:text="${session.credencial.usuario.nombre + ' ' + session.credencial.usuario.apellido}"> Nombre y Apellido</div>
+                                            <div th:text="${session.credencial.correo}">Correo</div>
                                         </div>
                                     </div>
+
                                     <hr class="border-secondary border-opacity-50" />
-                                    <div class="card">
-                                        <div class="card-body py-3">
-                                            <div class="d-flex align-items-center justify-content-between">
-                                                <h5 class="mb-0 d-inline-flex align-items-center">
-                                                    <svg class="pc-icon text-muted me-2">
-                                                        <use xlink:href="#custom-notification-outline"></use>
-                                                    </svg>Notificaciones
-                                                </h5>
-                                                <div class="form-check form-switch form-check-reverse m-0">
-                                                    <input class="form-check-input f-18" type="checkbox" role="switch" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <hr class="border-secondary border-opacity-50" />
-                                    <p class="text-span">Usuarios</p>
-                                    <a href="#" class="dropdown-item">
-                                        <span>
-                                            <i class="bi bi-person-fill-add text-muted me-2"></i>
-                                            <span>Agregar</span>
-                                        </span>
+
+                                    <p class="text-span">Reservas</p>
+                                    <a th:href="@{/vecino/misReservas}" class="dropdown-item">
+                                      <span>
+                                        <i class="bi bi-card-checklist"></i>
+                                        <span>Mis reservas</span>
+                                      </span>
+                                    </a>
+                                    <a th:href="@{/vecino/misReservas}" class="dropdown-item">
+                                      <span>
+                                        <i class="bi bi-person-fill-add text-muted me-2"></i>
+                                        <span>Mis pagos</span>
+                                      </span>
                                     </a>
                                     <hr class="border-secondary border-opacity-50" />
                                     <div class="d-grid mb-3">
@@ -98,7 +94,6 @@
                             </div>
                         </div>
                     </li>
-
                 </ul>
             </div>
         </div>
