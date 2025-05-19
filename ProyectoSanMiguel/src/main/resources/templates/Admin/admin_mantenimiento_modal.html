@@ -950,7 +950,7 @@ window.addEventListener("DOMContentLoaded", function () {
           contenedor.innerHTML += `
       <div class="mb-3">
         <label for="nombre${tipo}${i}" class="form-label">Nombre de la ${tipo.toLowerCase()} ${i}</label>
-        <input type="text" class="form-control" id="nombre${tipo}${i}" name="nombre${tipo}[]" required>
+        <input type="text" class="form-control" id="nombre${tipo}${i}" name="nombre${tipo}${i}" required>
       </div>
     `;
         }
