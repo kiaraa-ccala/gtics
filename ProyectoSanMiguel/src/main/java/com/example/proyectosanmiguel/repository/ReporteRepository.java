@@ -16,4 +16,5 @@ public interface ReporteRepository extends JpaRepository<Reporte, Integer> {
     List<Reporte> findTop4ByOrderByFechaRecepcionDesc();
     long countByEstado(String estado);
     Optional<Reporte> findById(Integer id);
+    Page<Reporte> findByAsuntoContainingIgnoreCaseOrDescripcionContainingIgnoreCase(String asunto, String descripcion, Pageable pageable);
 }

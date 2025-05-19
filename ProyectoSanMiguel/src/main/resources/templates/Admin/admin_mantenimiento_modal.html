@@ -162,11 +162,7 @@
                     >
                     <p class="mb-0 text-muted">20% <i class="ti ti-arrow-narrow-down" style="color: red;"></i></p>
                   </div>
-                  <div class="d-grid mt-3">
-                    <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2"
-                      ><i class="ti ti-external-link"></i> Ver todos los complejos</button
-                    >
-                  </div>
+
                   <div class="d-grid mt-3">
                     <button class="btn btn-primary d-flex align-items-center justify-content-center gap-2" data-bs-toggle="modal" data-bs-target="#nuevoComplejoModal">
                       <i class="ti ti-plus"></i> Añadir nuevo complejo
@@ -271,7 +267,9 @@
                 
                     <!-- Formulario -->
                     <div class="col-lg-6">
-                      <form id="formMantenimiento">
+                      <form id="formMantenimiento"
+                            method="post"
+                            th:action="@{/admin/mantenimientos/guardar}">
                         <div class="mb-3 form-check form-switch">
                           <input class="form-check-input" type="checkbox" id="mantenimientoUnDia" checked>
                           <label class="form-check-label" for="mantenimientoUnDia">El mantenimiento solo tarda un día</label>
@@ -279,30 +277,38 @@
                 
                         <div class="row g-3 mb-3">
                           <div class="col-md-6">
-                            <label for="fechaInicio" class="form-label">Fecha Inicio</label>
-                            <input type="date" class="form-control" id="fechaInicio" required onkeydown="return false;">
+                            <label for="fechaInicio" class="form-label" >Fecha Inicio</label>
+                            <input type="date" class="form-control" id="fechaInicio" name="fechaInicio"  required onkeydown="return false;" />
 
                           </div>
                           <div class="col-md-6">
                             <label for="fechaFin" class="form-label">Fecha Fin</label>
-                            <input type="date" class="form-control" id="fechaFin" required onkeydown="return false;">
+                            <input type="date" class="form-control" id="fechaFin" name="fechaFin"  required onkeydown="return false;" />
                           </div>
                         </div>
                 
                         <div class="row g-3 mb-3">
                           <div class="col-md-6">
                             <label for="horaInicio" class="form-label">Hora Inicio</label>
-                            <input type="time" class="form-control" id="horaInicio" required onkeydown="return false;">
+                              <input type="time" class="form-control" id="horaInicio" name="horaInicio"  required onkeydown="return false;" />
                           </div>
                           <div class="col-md-6">
                             <label for="horaFin" class="form-label">Hora Fin</label>
-                            <input type="time" class="form-control" id="horaFin" required onkeydown="return false;">
+                            <input type="time" class="form-control" id="horaFin" name="horaFin"  required onkeydown="return false;" />
                           </div>
+                        </div>
+                        <div class="mb-3 ">
+                          <label for="complejo" class="form-label">Complejo Deportivo</label>
+                          <select class="form-select" id="complejo" required name="idComplejo" >
+                            <th:block th:each="cmp : ${complejos}">
+                              <option th:value="${cmp.idComplejoDeportivo}" th:text="${cmp.nombre}"></option>
+                            </th:block>
+                          </select>
                         </div>
                 
                         <div class="mb-3">
                           <label for="descripcion" class="form-label">Mantenimiento a Realizar</label>
-                          <textarea class="form-control" id="descripcion" rows="3" required></textarea>
+                          <textarea class="form-control" id="descripcion" rows="3" name="descripcion"></textarea>
                         </div>
                 
                         <div class="text-end">
@@ -385,7 +391,9 @@
         horaFin.value = "";
       }
     });
+
   });
+
 </script>
 
 <!-- LO ANTERIOR FUE LA VALIDACION, ACA ES DIRECTAMENTE MOSTRA LA ALERTA-->
@@ -420,9 +428,20 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
 
   fechaFinInput.disabled = isChecked;
   if (isChecked) {
-    fechaFinInput.value = ""; 
+    fechaFinInput.value = "";
   }
 });
+// Deshabilitar fechaFin si ya viene activado al cargar la página
+window.addEventListener("DOMContentLoaded", function () {
+  const mantenimientoUnDia = document.getElementById("mantenimientoUnDia");
+  const fechaFinInput = document.getElementById("fechaFin");
+
+  if (mantenimientoUnDia.checked) {
+    fechaFinInput.disabled = true;
+    fechaFinInput.value = ""; // opcional
+  }
+});
+
 
 
 </script>
@@ -580,6 +599,15 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
 <script>
   main_layout_change('vertical');
 </script>
+    <!-- Required JS -->
+    <script src="../assets/js/plugins/jquery.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+    <script src="../assets/js/plugins/popper.min.js"></script>
+    <script src="../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../assets/js/plugins/feather.min.js"></script>
+    <script src="../assets/js/icon/custom-font.js"></script>
+    <script src="../assets/js/script.js"></script>
+
 
     <script th:src="@{/assets/js/plugins/datepicker-full.min.js}"></script>
     <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
@@ -721,18 +749,22 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
           </div>
           <div class="modal-body">
-            <form id="formNuevoComplejo">
-              <div class="row g-4"> <!-- 2 columnas -->
+            <form id="formNuevoComplejo"
+                  method="post"
+                  th:action="@{/admin/servicios/guardarComplejo}"
+                  enctype="multipart/form-data">
+
+            <div class="row g-4"> <!-- 2 columnas -->
 
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label for="nombreComplejo" class="form-label">Nombre del Complejo</label>
-                    <input type="text" class="form-control" id="nombreComplejo" required>
+                    <input type="text" class="form-control" id="nombreComplejo" name="nombreComplejo" required>
                   </div>
 
                   <div class="mb-3">
                     <label for="direccionComplejo" class="form-label">Dirección</label>
-                    <input type="text" class="form-control" id="direccionComplejo" required>
+                    <input type="text" class="form-control" id="direccionComplejo" name="direccionComplejo" required>
                   </div>
 
                   <div class="mb-3">
@@ -744,10 +776,12 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
                     <label for="sector" class="form-label">Sector</label>
                     <select class="form-select" id="sector" name="sector" required>
                       <option value="" disabled selected>Selecciona un sector</option>
-                      <option value="Norte">Norte</option>
-                      <option value="Sur">Sur</option>
-                      <option value="Este">Este</option>
-                      <option value="Oeste">Oeste</option>
+                      <option value="1">Costanera</option>
+                      <option value="2">La Paz</option>
+                      <option value="3">Pando</option>
+                      <option value="4">Maranga</option>
+                      <option value="5">La Arboleda</option>
+                      <option value="6">Otro distrito</option>
                     </select>
                   </div>
 
@@ -768,7 +802,7 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
                 <div class="col-md-6">
                   <div class="mb-3">
                     <label for="tipoServicio" class="form-label">Tipos de Servicios</label>
-                    <select class="form-select" id="tipoServicio" multiple required>
+                    <select class="form-select" id="tipoServicio" name="tipoServicio" multiple required>
                       <option value="Gimnasio">Gimnasio</option>
                       <option value="Cancha de losa">Cancha de losa</option>
                       <option value="Cancha de grass">Cancha de grass</option>
@@ -780,7 +814,7 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
 
                   <div class="mb-3">
                     <label for="numSoporte" class="form-label">Número de soporte</label>
-                    <input type="text" class="form-control" id="numSoporte" required>
+                    <input type="text" class="form-control" id="numSoporte" name="numSoporte" required>
                   </div>
 
                   <div class="mb-3">
@@ -797,79 +831,28 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
                     <div id="inputsServiciosExtrasCol2"></div>
                   </div>
 
-
               </div>
-
+              <div class="col-md-12">
+                <label for="imagenSituacion" class="form-label">Imagen del complejo (.png)</label>
+                <input class="form-control" type="file" id="imagenSituacion" accept=".png">
+                <div class="mt-3 d-flex justify-content-center">
+                  <img id="previewSituacion"
+                       src="#"
+                       alt="Previsualización"
+                       class="img-thumbnail"
+                       style="max-width: 60%; max-height: 200px; display: none; border: 2px solid #ccc; border-radius: 8px;">
+                </div>
+              </div>
               <div class="text-end mt-4">
                 <button type="submit" class="btn btn-primary">Guardar</button>
               </div>
-
-              <!-- Hidden fields -->
-              <input type="hidden" id="latitud" name="latitud" value="0">
-              <input type="hidden" id="longitud" name="longitud" value="0">
-
+            </div>
             </form>
           </div>
         </div>
       </div>
     </div>
 
-
-    <script>
-      document.getElementById('formNuevoComplejo').addEventListener('submit', function(event) {
-        event.preventDefault(); // No recargar la página
-
-        const nombreComplejo = document.getElementById('nombreComplejo').value;
-        const direccionComplejo = document.getElementById('direccionComplejo').value;
-        const numSoporte = document.getElementById('numSoporte').value;
-        const latitud = document.getElementById('latitud').value || "0";
-        const longitud = document.getElementById('longitud').value || "0";
-
-
-        const serviciosSeleccionados = Array.from(document.getElementById('tipoServicio').selectedOptions)
-                .map(opt => opt.value);
-
-        const formData = new FormData();
-        formData.append('nombreComplejo', nombreComplejo);
-        formData.append('direccionComplejo', direccionComplejo);
-        formData.append('numSoporte', numSoporte);
-        formData.append('serviciosSeleccionados', JSON.stringify(serviciosSeleccionados));
-        formData.append('latitud', latitud);
-        formData.append('longitud', longitud);
-        // Solo agregar si existen los inputs
-        const cantidadLosaInput = document.getElementById('cantidadLosa');
-        if (cantidadLosaInput && cantidadLosaInput.value !== '') {
-          formData.append('cantidadLosa', cantidadLosaInput.value);
-        }
-
-        const cantidadGrassInput = document.getElementById('cantidadGrass');
-        if (cantidadGrassInput && cantidadGrassInput.value !== '') {
-          formData.append('cantidadGrass', cantidadGrassInput.value);
-        }
-
-        const cantidadCarrilesInput = document.getElementById('cantidadCarriles');
-        if (cantidadCarrilesInput && cantidadCarrilesInput.value !== '') {
-          formData.append('cantidadCarriles', cantidadCarrilesInput.value);
-        }
-
-        fetch('/admin/servicios/guardarComplejo', {
-          method: 'POST',
-          body: formData
-        })
-                .then(response => {
-                  if (response.ok) {
-                    alert('¡Complejo creado correctamente!');
-                    location.reload(); // Para actualizar la tabla
-                  } else {
-                    alert('Error al guardar el complejo.');
-                  }
-                })
-                .catch(error => {
-                  console.error('Error:', error);
-                  alert('Error en la solicitud.');
-                });
-      });
-    </script>
 
     <script>
       const tipoServicioSelect = document.getElementById("tipoServicio");
@@ -967,13 +950,35 @@ document.getElementById("mantenimientoUnDia").addEventListener("change", functio
           contenedor.innerHTML += `
       <div class="mb-3">
         <label for="nombre${tipo}${i}" class="form-label">Nombre de la ${tipo.toLowerCase()} ${i}</label>
-        <input type="text" class="form-control" id="nombre${tipo}${i}" name="nombre${tipo}[]" required>
+        <input type="text" class="form-control" id="nombre${tipo}${i}" name="nombre${tipo}${i}" required>
       </div>
     `;
         }
       }
     </script>
+    <script>
+      const input = document.getElementById('imagenSituacion');
+      const preview = document.getElementById('previewSituacion');
 
+      input.addEventListener('change', function () {
+        const file = this.files[0];
+
+        if (file && file.type === 'image/png') {
+          const reader = new FileReader();
+
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+          }
+
+          reader.readAsDataURL(file);
+        } else {
+          preview.src = '#';
+          preview.style.display = 'none';
+          alert('Por favor, selecciona una imagen en formato PNG.');
+        }
+      });
+    </script>
 
 
 

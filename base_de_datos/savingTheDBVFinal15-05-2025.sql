@@ -330,7 +330,7 @@ COLLATE = utf8mb4_0900_ai_ci;
 CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`credencial` (
   `idCredencial` INT NOT NULL AUTO_INCREMENT,
   `correo` VARCHAR(45) NULL DEFAULT NULL,
-  `password` VARCHAR(45) NULL DEFAULT NULL,
+  `password` VARCHAR(60) NULL DEFAULT NULL,
   `idUsuario` INT NOT NULL,
   PRIMARY KEY (`idCredencial`),
   INDEX `idUsuario` (`idUsuario` ASC) VISIBLE,

@@ -28,76 +28,6 @@
           </span>
                     </li>
 
-                    <li class="dropdown pc-h-item">
-                        <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
-                            <svg class="pc-icon">
-                                <use xlink:href="#custom-notification"></use>
-                            </svg>
-                            <span class="badge bg-success pc-h-badge">3</span>
-                        </a>
-                        <div class="dropdown-menu dropdown-notification dropdown-menu-end pc-h-dropdown">
-                            <div class="dropdown-header d-flex align-items-center justify-content-between">
-                                <h5 class="m-0">Notificaciones</h5>
-                                <a href="#!" class="btn btn-link btn-sm">Marcar todo como leído</a>
-                            </div>
-                            <div class="dropdown-body text-wrap header-notification-scroll position-relative" style="max-height: calc(100vh - 215px)">
-                                <p class="text-span">Hoy</p>
-                                <div class="card mb-2">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0">
-                                                <svg class="pc-icon text-primary">
-                                                    <use xlink:href="#custom-layer"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <span class="float-end text-sm text-muted">hace 2 min</span>
-                                                <h5 class="text-body mb-2">Actualización reporte: Canchas en mal estado</h5>
-                                                <p class="mb-0">Encargado Tony Vargas de la municipalidad ha respondido el reporte.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-2">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0">
-                                                <svg class="pc-icon text-primary">
-                                                    <use xlink:href="#custom-sms"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <span class="float-end text-sm text-muted">hace 1 hora</span>
-                                                <h5 class="text-body mb-2">Mensaje</h5>
-                                                <p class="mb-0">Tu registro se ha realizado de manera correcta.</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <p class="text-span">Ayer</p>
-                                <div class="card mb-2">
-                                    <div class="card-body">
-                                        <div class="d-flex">
-                                            <div class="flex-shrink-0">
-                                                <svg class="pc-icon text-primary">
-                                                    <use xlink:href="#custom-document-text"></use>
-                                                </svg>
-                                            </div>
-                                            <div class="flex-grow-1 ms-3">
-                                                <span class="float-end text-sm text-muted">hace 2 horas</span>
-                                                <h5 class="text-body mb-2">Nuevo reporte realizado</h5>
-                                                <p class="mb-0">Se pierden implementos dentro del complejo deportivo</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="text-center py-2">
-                                <a href="#!" class="link-danger">Vaciar bandeja</a>
-                            </div>
-                        </div>
-                    </li>
-
                     <li class="dropdown pc-h-item header-user-profile">
                         <a class="pc-head-link dropdown-toggle arrow-none me-0" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" data-bs-auto-close="outside" aria-expanded="false">
                             <img th:src="@{/assets/images/user/avatar-2.jpg}" alt="user-image" class="user-avtar" />
@@ -134,11 +64,14 @@
                                     </div>
                                     <hr class="border-secondary border-opacity-50" />
                                     <div class="d-grid mb-3">
-                                        <button class="btn btn-primary">
-                                            <svg class="pc-icon me-2">
-                                                <use xlink:href="#custom-logout-1-outline"></use>
-                                            </svg>Salir
-                                        </button>
+                                        <form th:action="@{/salir}" method="post">
+                                            <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                                            <button type="submit" class="btn btn-primary">
+                                                <svg class="pc-icon me-2">
+                                                    <use xlink:href="#custom-logout-1-outline"></use>
+                                                </svg>Salir
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                             </div>

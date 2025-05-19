@@ -106,12 +106,12 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioLunes" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioLunes">
+                    <input type="time" class="form-control" id="horaInicioLunes" onkeydown="return false;">
                   </div>
 
                   <div class="col-md-5">
                     <label for="horaFinLunes" class="form-label">Hora de Fin</label>
-                    <input type="time" class="form-control" id="horaFinLunes">
+                    <input type="time" class="form-control" id="horaFinLunes" onkeydown="return false;">
                   </div>
 
                   <div class="col-md-2">
@@ -143,11 +143,11 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioMartes" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioMartes">
+                    <input type="time" class="form-control" id="horaInicioMartes" onkeydown="return false;">
                   </div>
                   <div class="col-md-5">
                     <label for="horaFinMartes" class="form-label">Hora de Fin</label>
-                    <input type="time" class="form-control" id="horaFinMartes">
+                    <input type="time" class="form-control" id="horaFinMartes" onkeydown="return false;">
                   </div>
                   <div class="col-md-2">
                     <label class="form-label invisible">Espacio</label>
@@ -179,11 +179,11 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioMiercoles" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioMiercoles">
+                    <input type="time" class="form-control" id="horaInicioMiercoles" onkeydown="return false;">
                   </div>
                   <div class="col-md-5">
                     <label for="horaFinMiercoles" class="form-label">Hora de Fin</label>
-                    <input type="time" step="3600" class="form-control" id="horaFinMiercoles">
+                    <input type="time" step="3600" class="form-control" id="horaFinMiercoles" onkeydown="return false;">
                   </div>
                   <div class="col-md-2">
                     <label class="form-label invisible">Espacio</label>
@@ -215,11 +215,11 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioJueves" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioJueves">
+                    <input type="time" class="form-control" id="horaInicioJueves" onkeydown="return false;">
                   </div>
                   <div class="col-md-5">
                     <label for="horaFinJueves" class="form-label">Hora de Fin</label>
-                    <input type="time" class="form-control" id="horaFinJueves">
+                    <input type="time" class="form-control" id="horaFinJueves" onkeydown="return false;">
                   </div>
                   <div class="col-md-2">
                     <label class="form-label invisible">Agregar</label>
@@ -252,11 +252,11 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioViernes" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioViernes">
+                    <input type="time" class="form-control" id="horaInicioViernes" onkeydown="return false;">
                   </div>
                   <div class="col-md-5">
                     <label for="horaFinViernes" class="form-label">Hora de Fin</label>
-                    <input type="time" class="form-control" id="horaFinViernes">
+                    <input type="time" class="form-control" id="horaFinViernes" onkeydown="return false;">
                   </div>
                   <div class="col-md-2">
                     <label class="form-label invisible">Agregar</label>
@@ -289,11 +289,11 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioSabado" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioSabado">
+                    <input type="time" class="form-control" id="horaInicioSabado" onkeydown="return false;">
                   </div>
                   <div class="col-md-5">
                     <label for="horaFinSabado" class="form-label">Hora de Fin</label>
-                    <input type="time" class="form-control" id="horaFinSabado">
+                    <input type="time" class="form-control" id="horaFinSabado" onkeydown="return false;">
                   </div>
                   <div class="col-md-2">
                     <label class="form-label invisible">Agregar</label>
@@ -326,11 +326,11 @@
                 <div class="row mb-3">
                   <div class="col-md-5">
                     <label for="horaInicioDomingo" class="form-label">Hora de Inicio</label>
-                    <input type="time" class="form-control" id="horaInicioDomingo">
+                    <input type="time" class="form-control" id="horaInicioDomingo" onkeydown="return false;">
                   </div>
                   <div class="col-md-5">
                     <label for="horaFinDomingo" class="form-label">Hora de Fin</label>
-                    <input type="time" class="form-control" id="horaFinDomingo">
+                    <input type="time" class="form-control" id="horaFinDomingo" onkeydown="return false;">
                   </div>
                   <div class="col-md-2">
                     <label class="form-label invisible">Agregar</label>
@@ -419,6 +419,28 @@
     </div>
   </div>
 </div>
+<!-- ALERTA VISUAL FIJA -->
+<div id="alertaGlobalFixed" style="
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 9999;
+  min-width: 300px;
+  max-width: 600px;
+  display: none;">
+</div>
+
+<!-- ÍCONO PARA LA ALERTA -->
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+    <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091
+            1.767.98 1.767h13.71c.889 0 1.438-.99.98-1.767L8.982
+            1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0
+            1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002
+            6a1 1 0 1 1-2.002 0 1 1 0 0 1 2.002 0z"/>
+  </symbol>
+</svg>
 
 
 <div class="modal fade" id="calendar-modal" data-bs-keyboard="false" tabindex="-1" aria-hidden="true">
@@ -573,6 +595,81 @@
     </div>
   </div>
 </footer>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const inputsFechaHoraSemana = document.querySelectorAll('input[type="date"], input[type="time"], input[type="week"]');
+
+    inputsFechaHoraSemana.forEach(input => {
+      input.addEventListener("click", function () {
+        this.showPicker && this.showPicker(); // Abre el selector si el navegador lo soporta
+      });
+
+      // Evita ingreso manual con teclado
+      input.addEventListener("keydown", function (e) {
+        e.preventDefault();
+      });
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const dias = ["Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"];
+    dias.forEach(function(dia) {
+      const horaInicio = document.getElementById(`horaInicio${dia}`);
+      const horaFin = document.getElementById(`horaFin${dia}`);
+      if (!horaInicio || !horaFin) return;
+
+      // Evitar escritura manual
+      horaInicio.setAttribute("onkeydown", "return false;");
+      horaFin.setAttribute("onkeydown", "return false;");
+
+      // Forzar apertura visual del selector
+      horaInicio.addEventListener("click", () => horaInicio.showPicker && horaInicio.showPicker());
+      horaFin.addEventListener("click", () => horaFin.showPicker && horaFin.showPicker());
+
+      // Validación
+      horaInicio.addEventListener("change", function () {
+        if (horaInicio.value && horaFin.value && horaFin.value <= horaInicio.value) {
+          mostrarAlertaGlobal("La hora fin no puede ser menor o igual que la hora inicio.");
+          horaFin.value = "";
+        }
+      });
+
+      horaFin.addEventListener("change", function () {
+        if (horaInicio.value && horaFin.value && horaFin.value <= horaInicio.value) {
+          mostrarAlertaGlobal("La hora fin no puede ser menor o igual que la hora inicio.");
+          horaFin.value = "";
+        }
+      });
+    });
+  });
+</script>
+
+
+
+<script>
+  function mostrarAlertaGlobal(mensaje, tipo = 'warning') {
+    const contenedor = document.getElementById('alertaGlobalFixed');
+    contenedor.innerHTML = `
+      <div class="alert alert-${tipo} d-flex align-items-center alert-dismissible fade show shadow-lg" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+          <use xlink:href="#exclamation-triangle-fill"/>
+        </svg>
+        <div>${mensaje}</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    `;
+    contenedor.style.display = 'block';
+
+    setTimeout(() => {
+      contenedor.style.display = 'none';
+      contenedor.innerHTML = '';
+    }, 6000);
+  }
+</script>
+
+
 
 
 <script src="../assets/js/plugins/sweetalert2.all.min.js"></script>
@@ -711,6 +808,8 @@
     const selectCoordinador = document.getElementById("coordinador");
     const inputSemana = document.getElementById("semana");
     const btnGuardar = document.getElementById("btnGuardarCambios");
+    const csrfToken = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+    const csrfHeader = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
     // Mapear días de la semana en inglés a español
     const mapDias = {
@@ -789,6 +888,7 @@
 
     // Función para recopilar los datos de los turnos a eliminar
     function obtenerTurnosEliminar() {
+
       const turnosEliminar = [];
       document.querySelectorAll('li[data-estado="porEliminar"]').forEach(item => {
         turnosEliminar.push({
@@ -843,11 +943,34 @@
       // Imprimir el payload completo en la consola antes de enviarlo
       console.log("Payload a enviar al backend:", payload);
 
+
       // Enviar al backend con fetch
+      if (!csrfToken || !csrfHeader) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error de seguridad',
+          text: 'No se pudo enviar la solicitud.',
+          customClass: { confirmButton: 'btn btn-light-danger' },
+          buttonsStyling: false
+        });
+        return; // Evita continuar si no hay token
+      }
+      if (turnosNuevos.length === 0 && turnosEliminar.length === 0) {
+        const btnGuardar = document.getElementById("btnGuardarCambios");
+        mostrarAlertaInformativa("Debes agregar o eliminar al menos un turno antes de guardar.");
+
+        setTimeout(() => {
+          btnGuardar.disabled = false;
+        }, 3000);
+
+
+        return;
+      }
       fetch('/admin/agenda/guardarHorarios', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          [csrfHeader]: csrfToken
         },
         body: JSON.stringify(payload),
       })
@@ -910,6 +1033,25 @@
 
     selectCoordinador.addEventListener("change", cargarTurnos);
     inputSemana.addEventListener("change", cargarTurnos);
+    function mostrarAlertaInformativa(mensaje) {
+      const contenedor = document.getElementById('alertaGlobalFixed');
+      contenedor.innerHTML = `
+    <div class="alert alert-info d-flex align-items-center alert-dismissible fade show shadow-lg" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+        <use xlink:href="#info-circle-fill"/>
+      </svg>
+      <div>${mensaje}</div>
+      <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+    </div>
+  `;
+      contenedor.style.display = 'block';
+
+      setTimeout(() => {
+        contenedor.style.display = 'none';
+        contenedor.innerHTML = '';
+      }, 5000);
+    }
+
 
   });
 
@@ -1028,6 +1170,15 @@
 <script>
   main_layout_change('vertical');
 </script>
+<!-- Required JS -->
+<script src="../assets/js/plugins/jquery.min.js"></script>
+<script src="../assets/js/plugins/bootstrap.min.js"></script>
+<script src="../assets/js/plugins/popper.min.js"></script>
+<script src="../assets/js/plugins/simplebar.min.js"></script>
+<script src="../assets/js/plugins/feather.min.js"></script>
+<script src="../assets/js/icon/custom-font.js"></script>
+<script src="../assets/js/script.js"></script>
+
 
 
 <div class="offcanvas border-0 pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">

@@ -3,11 +3,14 @@ package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -17,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 import java.io.IOException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
@@ -59,9 +61,11 @@ public class AdminController {
     @Autowired
     private HorarioSemanalRepository horarioSemanalRepository;
 
-
     @Autowired
     private FotoRepository fotoRepository;
+
+    @Autowired
+    private MantenimientoRepository mantenimientoRepository;
 
     @ResponseBody
     @GetMapping("/horarios")
@@ -88,39 +92,51 @@ public class AdminController {
             LocalDate fechaInicio = LocalDate.of(anio, 1, 4)
                     .with(WeekFields.ISO.weekOfWeekBasedYear(), semanaNum)
                     .with(WeekFields.ISO.getFirstDayOfWeek()); // lunes
-
-
-
             LocalDate fechaFin = fechaInicio.plusDays(6); // domingo
-
-
             //lo que se hizo fue sacar los dias fecha de inicio fecha fin lun -dom
-
             //se usa optional, ya que se espera solo una semana, no varias semanas
-
             //La logica del HTML es que cuando seleccione la semana, verifique con AJAx SI
             //existe un horario semanal para esa semana, si existe, se cargan los turnos
             //si no existe, muestra vacio, pero en el front puedo cargar horarios y crear una semana nueva :D
             //asi esta vista me sirve para inclusive editar turnos y borrar turnos
-
             // Buscar si ya existe HorarioSemanal
             Optional<HorarioSemanal> existente = horarioSemanalRepository
                     .findByCoordinadorIdUsuarioAndFechaInicioAndFechaFin(coordinadorId, fechaInicio, fechaFin);
-
             if (existente.isEmpty()) {
                 return List.of(); // No hay turnos para esa semana
             }
-
             //Observamos que si envia correctamente :,vvvvv probablemente el error sea el metodo (lo era) xD
             //se resolvioXD
-
             return horarioRepository.obtenerTurnosPorHorarioSemanal(existente.get().getIdHorarioSemanal());
-
         } catch (Exception e) {
             e.printStackTrace();
             return List.of();
         }
     }
+    @GetMapping("/api/mantenimientos/{idComplejo}")
+    @ResponseBody
+    public List<Map<String, Object>> obtenerMantenimientosPorComplejo(@PathVariable Integer idComplejo) {
+        List<Mantenimiento> mantenimientos = mantenimientoRepository.findByComplejoDeportivoIdComplejoDeportivo(idComplejo);
+        List<Map<String, Object>> eventos = new ArrayList<>();
+
+        for (Mantenimiento m : mantenimientos) {
+            Map<String, Object> evento = new HashMap<>();
+            evento.put("id", m.getIdMantenimiento());
+            evento.put("title", "MANTENIMIENTO");
+            evento.put("start", m.getFechaInicio().toString() + "T" + m.getHoraInicio().toString());
+            evento.put("end", m.getFechaFin().toString() + "T" + m.getHoraFin().toString());
+            evento.put("type", "event-danger"); // para marcar visualmente
+            evento.put("venue", m.getComplejoDeportivo().getNombre());
+            evento.put("nombreComplejo", m.getComplejoDeportivo().getNombre());
+
+            eventos.add(evento);
+        }
+
+        return eventos;
+    }
+
+
+
 
     @PostMapping("/agenda/guardarHorarios")
     @ResponseBody
@@ -148,8 +164,6 @@ public class AdminController {
                         nuevo.setIdAdministrador(1);  // Este ID puede cambiar según tu lógica
                         return horarioSemanalRepository.save(nuevo);
                     });
-
-
             System.out.println("Revisar si Horarios Eliminar es null: "+ dto.getHorariosEliminar());
             System.out.println("HorarioSemanal ID: " + semanal.getIdHorarioSemanal());
             // 3. Eliminar turnos por ID
@@ -160,11 +174,9 @@ public class AdminController {
                     System.out.println("test2");
                 }
             }
-
             System.out.println("Revisar si Horarios Guardar es null: "+ dto.getHorariosGuardar());
             //ya voy 3 horas aca sin poder resolverlo :c, si me retiro de gtics? aun hay tiempo :D
             //no eres tu profe brenda, soy yo
-
 
             // 4. Insertar turnos nuevos
             if (dto.getHorariosGuardar() != null) {
@@ -183,14 +195,12 @@ public class AdminController {
                     horarioRepository.save(nuevo);
                 }
             }
-
             return ResponseEntity.ok("Guardado correctamente");
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al guardar");
         }
     }
-
 
 /*
     @PostMapping("/agenda/guardarHorarios")
@@ -376,7 +386,6 @@ public class AdminController {
 
         return "redirect:/admin/reportes";
     }
-
     @GetMapping("/ver-evidencia/{id}")
     public ResponseEntity<byte[]> verEvidencia(@PathVariable Integer id) {
         try {
@@ -407,7 +416,6 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
-
     @GetMapping("/descargar-evidencia/{id}")
     public ResponseEntity<byte[]> descargarEvidencia(@PathVariable Integer id) {
         return evidenciaRepository.findById(id)
@@ -416,16 +424,16 @@ public class AdminController {
                         .body(e.getArchivo()))
                 .orElse(ResponseEntity.notFound().build());
     }
-
     // ========== Monitoreo ==========
     @GetMapping("/servicios/monitoreo")
     public String monitoreoServicios(Model model) {
         List<InstanciaServicio> lista = instanciaServicioRepository.findAll();
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+        model.addAttribute("complejos", complejos);
         model.addAttribute("instancias", lista);
         return "Admin/admin_mantenimiento_modal";
 
     }
-
     // ========== TESTEO ==========
     @GetMapping("/testing")
     public String testing() {
@@ -486,66 +494,140 @@ public class AdminController {
         }
     }
 
-
-
     // ========== Guardar Nuevo Complejo ==========
     @PostMapping("/servicios/guardarComplejo")
-    @ResponseBody
     public String guardarNuevoComplejo(
             @RequestParam("nombreComplejo") String nombreComplejo,
-            @RequestParam("direccionComplejo") String direccionComplejo,
-            @RequestParam("numSoporte") String numSoporte,
-            @RequestParam("serviciosSeleccionados") String serviciosSeleccionadosJson,
-            @RequestParam(value = "cantidadLosa", required = false) String cantidadLosaStr,
-            @RequestParam(value = "cantidadGrass", required = false) String cantidadGrassStr,
-            @RequestParam("latitud") Double latitud,
-            @RequestParam("longitud") Double longitud,
-            @RequestParam(value = "cantidadCarriles", required = false) String cantidadCarrilesStr
+            @RequestParam("direccionComplejo") String direccion,
+            @RequestParam("numSoporte") String numeroSoporte,
+            @RequestParam("latitudInput") Double latitud,
+            @RequestParam("longitudInput") Double longitud,
+            @RequestParam("sector") Integer idSector,
+            @RequestParam("modoAcceso") String modoAcceso,
+            @RequestParam("capacidadMaxima") String capacidadMaxima,
+            @RequestParam("tipoServicio") List<String> servicios,
+            @RequestParam Map<String, String> allParams
     ) {
-        ComplejoDeportivo nuevoComplejo = new ComplejoDeportivo();
-        nuevoComplejo.setNombre(nombreComplejo);
-        nuevoComplejo.setDireccion(direccionComplejo);
-        nuevoComplejo.setNumeroSoporte(numSoporte);
-        nuevoComplejo.setLatitud(latitud);
-        nuevoComplejo.setLongitud(longitud);
+        System.out.println("========= DEBUG FORM INPUTS =========");
+        System.out.println("nombreComplejo: " + nombreComplejo);
+        System.out.println("direccionComplejo: " + direccion);
+        System.out.println("numSoporte: " + numeroSoporte);
+        System.out.println("latitud: " + latitud);
+        System.out.println("longitud: " + longitud);
+        System.out.println("sector: " + idSector);
+        System.out.println("modoAcceso: " + modoAcceso);
+        System.out.println("capacidadMaxima: " + capacidadMaxima);
+        System.out.println("tipoServicio: " + servicios);
+        System.out.println("------------- allParams -------------");
+        allParams.forEach((k, v) -> System.out.println(k + ": " + v));
+        System.out.println("=====================================");
+        // Construir sector por ID
+        Sector sector = new Sector();
+        sector.setIdSector(idSector);
 
-        Sector sector = sectorRepository.findById(1).orElseThrow(); // Busca un sector por defecto
-        nuevoComplejo.setSector(sector);
+        // Guardar complejo deportivo
+        ComplejoDeportivo complejo = new ComplejoDeportivo();
+        complejo.setNombre(nombreComplejo);
+        complejo.setDireccion(direccion);
+        complejo.setNumeroSoporte(numeroSoporte);
+        complejo.setLatitud(latitud);
+        complejo.setLongitud(longitud);
+        complejo.setSector(sector);
+        complejoRepository.save(complejo);
 
+        for (String servicioNombre : servicios) {
+            Servicio servicio = servicioRepository.findByNombre(servicioNombre);
+            if (servicio == null) continue;
 
-        complejoRepository.save(nuevoComplejo);
-
-        List<String> servicios = new Gson().fromJson(serviciosSeleccionadosJson, new TypeToken<List<String>>() {}.getType());
-
-        Integer cantidadLosa = (cantidadLosaStr != null && !cantidadLosaStr.isEmpty()) ? Integer.parseInt(cantidadLosaStr) : null;
-        Integer cantidadGrass = (cantidadGrassStr != null && !cantidadGrassStr.isEmpty()) ? Integer.parseInt(cantidadGrassStr) : null;
-        Integer cantidadCarriles = (cantidadCarrilesStr != null && !cantidadCarrilesStr.isEmpty()) ? Integer.parseInt(cantidadCarrilesStr) : null;
-
-        for (String nombreServicio : servicios) {
-            Servicio servicioEncontrado = servicioRepository.findByNombre(nombreServicio);
-            if (servicioEncontrado != null) {
-                InstanciaServicio instancia = new InstanciaServicio();
-                instancia.setComplejoDeportivo(nuevoComplejo);
-                instancia.setServicio(servicioEncontrado);
-                instancia.setNombre(nombreServicio);
-
-                if ("Cancha de losa".equals(nombreServicio) && cantidadLosa != null) {
-                    instancia.setCapacidadMaxima(String.valueOf(cantidadLosa));
-                } else if ("Cancha de grass".equals(nombreServicio) && cantidadGrass != null) {
-                    instancia.setCapacidadMaxima(String.valueOf(cantidadGrass));
-                } else if ("Piscina".equals(nombreServicio) && cantidadCarriles != null) {
-                    instancia.setCapacidadMaxima(String.valueOf(cantidadCarriles));
-                } else {
-                    instancia.setCapacidadMaxima("1");
+            switch (servicioNombre) {
+                case "Cancha de grass" -> {
+                    String cantidadStr = allParams.get("cantidadGrass");
+                    if (cantidadStr != null && !cantidadStr.isBlank()) {
+                        int cantidad = Integer.parseInt(cantidadStr);
+                        for (int i = 1; i <= cantidad; i++) {
+                            String key = "nombreGrass" + i;
+                            String nombre = allParams.get(key);
+                            System.out.println("➡ Grass " + i + " key: " + key + ", value: " + nombre);
+                            if (nombre != null && !nombre.isBlank()) {
+                                InstanciaServicio instancia = new InstanciaServicio();
+                                instancia.setNombre(nombre);
+                                instancia.setCapacidadMaxima(capacidadMaxima);
+                                instancia.setModoAcceso(modoAcceso);
+                                instancia.setServicio(servicio);
+                                instancia.setComplejoDeportivo(complejo);
+                                instanciaServicioRepository.save(instancia);
+                            }
+                        }
+                    } else {
+                        System.out.println("⚠️ cantidadGrass no recibida o vacía.");
+                    }
                 }
 
+                case "Cancha de losa" -> {
+                    String cantidadStr = allParams.get("cantidadLosa");
+                    if (cantidadStr != null && !cantidadStr.isBlank()) {
+                        int cantidad = Integer.parseInt(cantidadStr);
+                        for (int i = 1; i <= cantidad; i++) {
+                            String key = "nombreLosa" + i;
+                            String nombre = allParams.get(key);
+                            System.out.println("➡ Losa " + i + " key: " + key + ", value: " + nombre);
+                            if (nombre != null && !nombre.isBlank()) {
+                                InstanciaServicio instancia = new InstanciaServicio();
+                                instancia.setNombre(nombre);
+                                instancia.setCapacidadMaxima(capacidadMaxima);
+                                instancia.setModoAcceso(modoAcceso);
+                                instancia.setServicio(servicio);
+                                instancia.setComplejoDeportivo(complejo);
+                                instanciaServicioRepository.save(instancia);
+                            }
+                        }
+                    } else {
+                        System.out.println("⚠️ cantidadLosa no recibida o vacía.");
+                    }
+                }
 
-                instancia.setModoAcceso("Normal");
-                instanciaServicioRepository.save(instancia);
+                case "Piscina" -> {
+                    String nombre = allParams.get("nombrePiscina");
+                    if (nombre != null && !nombre.isEmpty()) {
+                        InstanciaServicio instancia = new InstanciaServicio();
+                        instancia.setNombre(nombre);
+                        instancia.setCapacidadMaxima(capacidadMaxima);
+                        instancia.setModoAcceso(modoAcceso);
+                        instancia.setServicio(servicio);
+                        instancia.setComplejoDeportivo(complejo);
+                        instanciaServicioRepository.save(instancia);
+                    }
+                }
+                case "Gimnasio" -> {
+                    String nombre = allParams.get("nombreGimnasio");
+                    if (nombre != null && !nombre.isEmpty()) {
+                        InstanciaServicio instancia = new InstanciaServicio();
+                        instancia.setNombre(nombre);
+                        instancia.setCapacidadMaxima(capacidadMaxima);
+                        instancia.setModoAcceso(modoAcceso);
+                        instancia.setServicio(servicio);
+                        instancia.setComplejoDeportivo(complejo);
+                        instanciaServicioRepository.save(instancia);
+                    }
+                }
+                case "Pista de atletismo" -> {
+                    String nombre = allParams.get("nombrePista");
+                    if (nombre != null && !nombre.isEmpty()) {
+                        InstanciaServicio instancia = new InstanciaServicio();
+                        instancia.setNombre(nombre);
+                        instancia.setCapacidadMaxima(capacidadMaxima);
+                        instancia.setModoAcceso(modoAcceso);
+                        instancia.setServicio(servicio);
+                        instancia.setComplejoDeportivo(complejo);
+                        instanciaServicioRepository.save(instancia);
+                    }
+                }
             }
         }
-        return "ok";
+
+        return "redirect:/admin/servicios/monitoreo"; // Cambia esto si quieres redirigir a otra vista
     }
+
 
     //Fotos
     @GetMapping("/reporte/imagen/{id}")
@@ -584,4 +666,59 @@ public class AdminController {
         }
         return "redirect:/admin/reportes/detalle/" + idReporte;
     }
+
+
+    @PostMapping("/reporte/cerrar")
+    public String cerrarReporte(@RequestParam("idReporte") Integer idReporte, RedirectAttributes attr) {
+        Optional<Reporte> optionalReporte = reporteRepository.findById(idReporte);
+
+        if (optionalReporte.isPresent()) {
+            Reporte reporte = optionalReporte.get();
+            reporte.setEstado("Cerrado");
+            reporteRepository.save(reporte);
+            attr.addFlashAttribute("msg", "El reporte fue cerrado correctamente.");
+        }
+
+        return "redirect:/admin/reportes/detalle/" + idReporte;
+    }
+
+
+    @PostMapping("/mantenimientos/guardar")
+    public String guardarMantenimiento(
+            @RequestParam("fechaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaInicio,
+            @RequestParam(value = "fechaFin", required = false) String fechaFinStr,
+            @RequestParam("horaInicio") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horaInicio,
+            @RequestParam("horaFin") @DateTimeFormat(iso = DateTimeFormat.ISO.TIME) LocalTime horaFin,
+            @RequestParam("idComplejo") Integer idComplejo,
+            @RequestParam("descripcion") String descripcion,
+            RedirectAttributes redirectAttributes
+    ) {
+        ComplejoDeportivo complejo = complejoRepository.findById(idComplejo).orElseThrow();
+
+        Mantenimiento mantenimiento = new Mantenimiento();
+        mantenimiento.setFechaInicio(fechaInicio);
+            System.out.println(fechaInicio);
+
+        LocalDate fechaFin;
+        if (fechaFinStr == null || fechaFinStr.trim().isEmpty()) {
+            fechaFin = fechaInicio;
+        } else {
+            fechaFin = LocalDate.parse(fechaFinStr);
+        }
+        System.out.println(fechaFin);
+        mantenimiento.setFechaFin(fechaFin);
+        mantenimiento.setHoraInicio(horaInicio);
+        mantenimiento.setHoraFin(horaFin);
+        mantenimiento.setComplejoDeportivo(complejo);
+
+        mantenimientoRepository.save(mantenimiento);
+        redirectAttributes.addFlashAttribute("exito", "¡Mantenimiento guardado correctamente!");
+        return "redirect:/admin/servicios/monitoreo";
+
+
+
+
+    }
+
+
 }

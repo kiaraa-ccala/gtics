@@ -6,6 +6,7 @@ import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,9 @@ public class SuperAdminController {
 
     @Autowired
     private ComplejoRepository complejoRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     //Lista de Usuarios
 
@@ -100,11 +104,14 @@ public class SuperAdminController {
 
             if (usuarioExistente.getCredencial() != null) {
                 usuarioExistente.getCredencial().setCorreo(email);
-                usuarioExistente.getCredencial().setPassword(password);
+                // Hasheamos la contraseña
+                if (password != null && !password.isEmpty()) {
+                    usuarioExistente.getCredencial().setPassword(passwordEncoder.encode(password));
+                }
             } else {
                 Credencial credencial = new Credencial();
                 credencial.setCorreo(email);
-                credencial.setPassword(password);
+                credencial.setPassword(passwordEncoder.encode(password));
                 credencial.setUsuario(usuarioExistente);
                 usuarioExistente.setCredencial(credencial);
             }
@@ -115,7 +122,7 @@ public class SuperAdminController {
             // Crear nuevo
             Credencial credencial = new Credencial();
             credencial.setCorreo(email);
-            credencial.setPassword(password);
+            credencial.setPassword(passwordEncoder.encode(password)); // Hasheamos la contraseña
             credencial.setUsuario(usuario);
             usuario.setCredencial(credencial);
             usuario.setActivo(1);
