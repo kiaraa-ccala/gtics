@@ -135,124 +135,36 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
+                              <tr th:each="reserva : ${reservasPendientes}">
                                 <td>
                                   <div class="d-flex align-items-center">
-                                    <img src="../assets/images/application/img-prod-2.jpg" alt="image" class="bg-light wid-50 rounded" />
+                                    <img th:src="@{'/assets/images/complejos/complejo' + ${reserva.instanciaServicio.complejoDeportivo.idComplejoDeportivo} + '.png'}"
+                                         alt="Imagen" class="bg-light wid-50 rounded" />
                                     <div class="flex-grow-1 ms-3">
-                                      <h5 class="mb-1">Apple MacBook Pro</h5>
-                                      <p class="text-sm text-muted mb-0">Dark Red</p>
+                                      <h5 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Nombre servicio</h5>
+                                      <p class="text-sm text-muted mb-0"
+                                         th:text="'Fecha: ' + ${#temporals.format(reserva.fecha, 'dd/MM/yyyy')} + ', ' + ${reserva.horaInicio} + ' - ' + ${reserva.horaFin}">
+                                      </p>
                                     </div>
                                   </div>
                                 </td>
                                 <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
+                                  <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                                 </td>
                                 <td class="text-center">
-                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
-                                    <button type="button" onclick="decreaseValue('number')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-minus"></i
-                                    ></button>
-                                    <input
-                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
-                                      type="text"
-                                      id="number"
-                                      value="0"
-                                    />
-                                    <button type="button" onclick="increaseValue('number')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-plus"></i
-                                    ></button>
-                                  </div>
+                                  <span class="text-muted">1</span> <!-- No editable, ya que es una reserva única -->
                                 </td>
                                 <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
+                                  <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                                 </td>
                                 <td class="text-end">
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
-                                    <i class="ti ti-trash f-18"></i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="d-flex align-items-center">
-                                    <img src="../assets/images/application/img-prod-3.jpg" alt="image" class="bg-light wid-50 rounded" />
-                                    <div class="flex-grow-1 ms-3">
-                                      <h5 class="mb-1">Apple MacBook Pro</h5>
-                                      <p class="text-sm text-muted mb-0">Dark Red</p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
-                                </td>
-                                <td class="text-center">
-                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
-                                    <button type="button" onclick="decreaseValue('number2')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-minus"></i
-                                    ></button>
-                                    <input
-                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
-                                      type="text"
-                                      id="number2"
-                                      value="0"
-                                    />
-                                    <button type="button" onclick="increaseValue('number2')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-plus"></i
-                                    ></button>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                </td>
-                                <td class="text-end">
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
-                                    <i class="ti ti-trash f-18"></i>
-                                  </a>
-                                </td>
-                              </tr>
-                              <tr>
-                                <td>
-                                  <div class="d-flex align-items-center">
-                                    <img src="../assets/images/application/img-prod-4.jpg" alt="image" class="bg-light wid-50 rounded" />
-                                    <div class="flex-grow-1 ms-3">
-                                      <h5 class="mb-1">Apple MacBook Pro</h5>
-                                      <p class="text-sm text-muted mb-0">Dark Red</p>
-                                    </div>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                  <span class="text-sm text-muted text-decoration-line-through">S/.129.99</span>
-                                </td>
-                                <td class="text-center">
-                                  <div class="btn-group btn-group-sm mb-2 border" role="group">
-                                    <button type="button" onclick="decreaseValue('number1')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-minus"></i
-                                    ></button>
-                                    <input
-                                      class="wid-35 text-center border-0 m-0 form-control rounded-0 shadow-none"
-                                      type="text"
-                                      id="number1"
-                                      value="0"
-                                    />
-                                    <button type="button" onclick="increaseValue('number1')" class="btn btn-link-secondary"
-                                      ><i class="ti ti-plus"></i
-                                    ></button>
-                                  </div>
-                                </td>
-                                <td class="text-end">
-                                  <h5 class="mb-0">S/.100.00</h5>
-                                </td>
-                                <td class="text-end">
-                                  <a href="#" class="avtar avtar-s btn-link-danger btn-pc-default">
+                                  <a th:href="@{'/vecino/reserva/eliminar/' + ${reserva.idReserva}}" class="avtar avtar-s btn-link-danger btn-pc-default">
                                     <i class="ti ti-trash f-18"></i>
                                   </a>
                                 </td>
                               </tr>
                             </tbody>
+
                           </table>
                         </div>
                       </div>
@@ -503,6 +415,7 @@
 
                 </div>
               </div>
+                </div>
               <div class="tab-pane" id="ecomtab-3" role="tabpanel" aria-labelledby="ecomtab-tab-3">
                 <div class="card-body">
                   <div class="row">
@@ -744,7 +657,6 @@
         </div>
         <!-- [ Main Content ] end -->
       </div>
-    </div>
     </div>
 
     <!-- Modal -->
