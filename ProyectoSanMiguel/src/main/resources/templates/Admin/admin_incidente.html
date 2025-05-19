@@ -327,7 +327,7 @@
                       <div class="col-md-6">
                         <input type="hidden" name="idReporte" th:value="${reporte.idReporte}" />
                         <label for="contenido" class=" form-label">Descripción de la acción</label>
-                        <textarea class="form-control" name="contenido" id="contenido" rows="6" placeholder="Escribe aquí..." required></textarea>
+                        <textarea class="form-control" name="contenido" id="contenido" rows="6" placeholder="Escribe aquí..." maxlength="150" required></textarea>
                         <label for="archivos" class=" mt-3 form-label">Adjuntar documentos</label>
                           <div id="customDropArea" class="border border-dashed p-4 rounded text-center bg-light" style="cursor: pointer;">
                             <i class="bi bi-cloud-arrow-up fs-1 text-primary mb-2"></i>

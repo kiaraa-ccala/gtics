@@ -57,27 +57,27 @@
                           <div class="row">
                             <div class="col-md-6 mb-3">
                               <label class="form-label">Nombres</label>
-                              <input type="text" class="form-control" placeholder="Ingrese el nombre" th:field="*{usuario.nombre}" />
+                              <input type="text" class="form-control" placeholder="Ingrese el nombre" th:field="*{usuario.nombre}" readonly/>
                             </div>
 
                             <div class="col-md-6 mb-3">
                               <label class="form-label">Apellidos</label>
-                              <input type="text" class="form-control" placeholder="Ingrese los apellidos" th:field="*{usuario.apellido}" />
+                              <input type="text" class="form-control" placeholder="Ingrese los apellidos" th:field="*{usuario.apellido}" readonly/>
                             </div>
 
                             <div class="col-md-6 mb-3">
                               <label class="form-label">Correo electrónico</label>
-                              <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" th:field="*{usuario.credencial.correo}" />
+                              <input type="email" class="form-control" placeholder="Ingrese el correo electrónico" th:field="*{usuario.credencial.correo}" readonly/>
                             </div>
 
                             <div class="col-md-6 mb-3">
                               <label class="form-label">DNI</label>
-                              <input type="text" class="form-control" placeholder="Ingrese el DNI" th:field="*{usuario.dni}" />
+                              <input type="text" class="form-control" placeholder="Ingrese el DNI" th:field="*{usuario.dni}" readonly/>
                             </div>
 
                             <div class="col-md-6 mb-3">
                               <label class="form-label">Teléfono</label>
-                              <input type="tel" class="form-control" placeholder="Ingrese su teléfono" th:field="*{usuario.telefono}" />
+                              <input type="tel" class="form-control" placeholder="Ingrese su teléfono" th:field="*{usuario.telefono}" readonly/>
                             </div>
 
                             <div class="col-md-6 mb-3" hidden>
@@ -90,7 +90,7 @@
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label">Dirección</label>
-                              <input type="text" class="form-control" placeholder="Ingrese su dirección" th:field="*{usuario.direccion}" />
+                              <input type="text" class="form-control" placeholder="Ingrese su dirección" th:field="*{usuario.direccion}" readonly/>
                             </div>
                           </div>
                         </div>
@@ -108,7 +108,7 @@
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label">Selecciona el campo</label>
-                              <select class="form-select" th:field="*{instanciaServicio.idInstanciaServicio}" id="selectInstancia">
+                              <select class="form-select" th:field="*{instanciaServicio.idInstanciaServicio}" id="selectInstancia" required>
                                 <option value="" disabled selected>-- Selecciona una cancha --</option>
                                 <option th:each="i : ${instanciaServicios}"
                                         th:value="${i.idInstanciaServicio}"
@@ -126,9 +126,11 @@
 
                             <div class="col-md-12 mb-3">
                             <label class="form-label">Horario disponible</label>
-                              <select class="form-select" name="bloqueHorario" id="selectHorario">
+                              <select class="form-select" name="bloqueHorario" id="selectHorario" required>
                                 <option value="">-- Selecciona un horario --</option>
                                 <option value="08:00-10:00">08:00 – 10:00</option>
+                                <option value="10:00-12:00">10:00 – 12:00</option>
+                                <option value="12:00-14:00">12:00 – 14:00</option>
                               </select>
 
                             </div>
