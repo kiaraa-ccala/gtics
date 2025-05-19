@@ -541,35 +541,51 @@ public class AdminController {
 
             switch (servicioNombre) {
                 case "Cancha de grass" -> {
-                    int cantidad = Integer.parseInt(allParams.getOrDefault("cantidadGrass", "0"));
-                    for (int i = 1; i <= cantidad; i++) {
-                        String nombre = allParams.get("nombreGrass" + i);
-                        if (nombre != null && !nombre.isEmpty()) {
-                            InstanciaServicio instancia = new InstanciaServicio();
-                            instancia.setNombre(nombre);
-                            instancia.setCapacidadMaxima(capacidadMaxima);
-                            instancia.setModoAcceso(modoAcceso);
-                            instancia.setServicio(servicio);
-                            instancia.setComplejoDeportivo(complejo);
-                            instanciaServicioRepository.save(instancia);
+                    String cantidadStr = allParams.get("cantidadGrass");
+                    if (cantidadStr != null && !cantidadStr.isBlank()) {
+                        int cantidad = Integer.parseInt(cantidadStr);
+                        for (int i = 1; i <= cantidad; i++) {
+                            String key = "nombreGrass" + i;
+                            String nombre = allParams.get(key);
+                            System.out.println("➡ Grass " + i + " key: " + key + ", value: " + nombre);
+                            if (nombre != null && !nombre.isBlank()) {
+                                InstanciaServicio instancia = new InstanciaServicio();
+                                instancia.setNombre(nombre);
+                                instancia.setCapacidadMaxima(capacidadMaxima);
+                                instancia.setModoAcceso(modoAcceso);
+                                instancia.setServicio(servicio);
+                                instancia.setComplejoDeportivo(complejo);
+                                instanciaServicioRepository.save(instancia);
+                            }
                         }
+                    } else {
+                        System.out.println("⚠️ cantidadGrass no recibida o vacía.");
                     }
                 }
+
                 case "Cancha de losa" -> {
-                    int cantidad = Integer.parseInt(allParams.getOrDefault("cantidadLosa", "0"));
-                    for (int i = 1; i <= cantidad; i++) {
-                        String nombre = allParams.get("nombreLosa" + i);
-                        if (nombre != null && !nombre.isEmpty()) {
-                            InstanciaServicio instancia = new InstanciaServicio();
-                            instancia.setNombre(nombre);
-                            instancia.setCapacidadMaxima(capacidadMaxima);
-                            instancia.setModoAcceso(modoAcceso);
-                            instancia.setServicio(servicio);
-                            instancia.setComplejoDeportivo(complejo);
-                            instanciaServicioRepository.save(instancia);
+                    String cantidadStr = allParams.get("cantidadLosa");
+                    if (cantidadStr != null && !cantidadStr.isBlank()) {
+                        int cantidad = Integer.parseInt(cantidadStr);
+                        for (int i = 1; i <= cantidad; i++) {
+                            String key = "nombreLosa" + i;
+                            String nombre = allParams.get(key);
+                            System.out.println("➡ Losa " + i + " key: " + key + ", value: " + nombre);
+                            if (nombre != null && !nombre.isBlank()) {
+                                InstanciaServicio instancia = new InstanciaServicio();
+                                instancia.setNombre(nombre);
+                                instancia.setCapacidadMaxima(capacidadMaxima);
+                                instancia.setModoAcceso(modoAcceso);
+                                instancia.setServicio(servicio);
+                                instancia.setComplejoDeportivo(complejo);
+                                instanciaServicioRepository.save(instancia);
+                            }
                         }
+                    } else {
+                        System.out.println("⚠️ cantidadLosa no recibida o vacía.");
                     }
                 }
+
                 case "Piscina" -> {
                     String nombre = allParams.get("nombrePiscina");
                     if (nombre != null && !nombre.isEmpty()) {

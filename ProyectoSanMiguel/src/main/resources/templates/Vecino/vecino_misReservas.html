@@ -231,8 +231,8 @@
                 <p class="mb-2"><strong>Hora Fin:</strong> <span th:text="${dto.reserva.horaFin}">12:30 PM</span></p>
                 <p class="mb-0"><strong>Estado:</strong>
                   <span class="badge"
-                        th:classappend="${dto.reserva.estado == 1} ? 'bg-primary' : 'bg-secondary'"
-                        th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Cancelado'">
+                        th:classappend="${dto.reserva.estado == 1} ? 'bg-success' : 'bg-danger'"
+                        th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
                     Activo
                   </span>
                 </p>
@@ -261,6 +261,7 @@
   <script th:src="@{/assets/js/theme.js}"></script>
   <script th:src="@{/assets/js/multi-lang.js}"></script>
   <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+<script th:src="@{/assets/js/reservas-datatable.js}"></script>
 
   <script>
     layout_change('light');
@@ -349,61 +350,178 @@
     }
   </style>
 
-      <script>
-        const modalCancelar = document.getElementById('modalCancelarReserva');
-        modalCancelar.addEventListener('show.bs.modal', function (event) {
-          const button = event.relatedTarget;
-          const idReserva = button.getAttribute('data-id');
-          const form = modalCancelar.querySelector('#formCancelarReserva');
-          form.setAttribute('action', `/vecino/reserva/eliminar/${idReserva}`);
-        });
-      </script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
 
-  <script>
-    $('#pc-dt-simple').DataTable({
-      lengthChange: false,
-      language: {
-        search: "Buscar:",
-        zeroRecords: "No se encontraron resultados",
-        info: "Mostrando _START_ a _END_ de _TOTAL_ reservas",
-        infoEmpty: "No hay reservas disponibles",
-        infoFiltered: "(filtrado de _MAX_ reservas totales)",
-        paginate: {
-          first: "Primero",
-          last: "Último",
-          next: "Siguiente",
-          previous: "Anterior"
-        }
-      }
-    });
-  </script>
 
-  <style>
-    div.dataTables_length,
-    div.dataTables_info {
-      display: none !important;
+<style>
+  /* Contenedor principal con márgenes */
+  .dataTables_wrapper {
+    margin: 20px 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+  }
+
+  /* Cabecera de la tabla - Fondo azul con texto blanco */
+  #pc-dt-simple thead th {
+    background-color: #5d87ff;
+    color: white;
+    font-weight: 600;
+    padding: 12px 15px;
+    vertical-align: middle;
+    text-align: left;
+    border: none;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  /* Filas de la tabla */
+  #pc-dt-simple tbody td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    border-top: 1px solid #e9ecef;
+    white-space: nowrap;
+  }
+
+  /* Filas alternas */
+  #pc-dt-simple tbody tr:nth-child(even) {
+    background-color: #f8f9fa;
+  }
+
+  /* Hover en filas */
+  #pc-dt-simple tbody tr:hover {
+    background-color: #e9f0ff;
+  }
+
+  /* Controles superiores (Mostrar y Buscar) */
+  .dataTables_wrapper .row:first-child {
+    margin-bottom: 20px;
+    align-items: center;
+  }
+
+  /* Label "Mostrar" */
+  .dataTables_length label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: #495057;
+  }
+
+  /* Selector de registros */
+  .dataTables_length select {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 12px;
+    width: auto;
+    background-color: white;
+    color: #495057;
+    font-size: 14px;
+  }
+
+  /* Label "Buscar" */
+  .dataTables_filter label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 500;
+    color: #495057;
+    justify-content: flex-end;
+  }
+
+  /* Input de búsqueda */
+  .dataTables_filter input {
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    padding: 8px 15px;
+    width: 100%;
+    max-width: 300px;
+    background-color: white;
+    color: #495057;
+    font-size: 14px;
+    margin-left: 10px;
+  }
+
+  /* Información (Mostrando X a Y de Z) */
+  .dataTables_info {
+    padding-top: 15px;
+    color: #6c757d;
+    font-size: 14px;
+    clear: both;
+  }
+
+  /* Paginación */
+  .dataTables_paginate {
+    margin-top: 15px;
+    float: right;
+  }
+
+  /* Botones de paginación */
+  .dataTables_paginate .paginate_button {
+    padding: 8px 15px;
+    margin: 0 5px;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    color: #5d87ff;
+    background: white;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  /* Botón activo */
+  .dataTables_paginate .paginate_button.current {
+    background: #5d87ff;
+    color: white;
+    border-color: #5d87ff;
+  }
+
+  /* Badges de estado */
+  .badge-estado {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+    font-size: 12px;
+  }
+
+  .bg-light-success {
+    background-color: #e6f7e6;
+    color: #28a745;
+  }
+
+  .bg-light-danger {
+    background-color: #ffebeb;
+    color: #dc3545;
+  }
+
+  /* Scroll horizontal */
+  .table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 20px;
+  }
+
+  /* Ajustes para tablas responsivas */
+  @media (max-width: 768px) {
+    .dataTables_wrapper {
+      margin: 15px;
     }
-  </style>
 
+    .dataTables_length,
+    .dataTables_filter {
+      float: none;
+      width: 100%;
+      margin-bottom: 10px;
+    }
 
-  <script>
-    $(document).ready(function () {
-      const table = $('#miTabla').DataTable();
+    .dataTables_filter input {
+      max-width: 100%;
+    }
+  }
+</style>
 
-      $('#customSearch').on('keyup', function () {
-        table.search(this.value).draw();
-      });
-    });
-
-  </script>
-
-
-  </div>
-  </div>
 </body>
   <!-- [Body] end -->
 </html>
