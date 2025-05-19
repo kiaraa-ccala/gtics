@@ -76,7 +76,15 @@
                          th:data-idinstancia="${instanciaServicios[__${iterStat.index}__].idInstanciaServicio}">
                       <div class="card product-card h-100">
                         <div class="card-img-container position-relative">
-                          <img th:src="@{'../assets/images/complejos/complejo' + ${iterStat.index+1} +'.png'}" alt="Complejo" class="img-fluid">
+                          <!-- Imagen si el índice está dentro del rango (ej. tenemos hasta complejo5.png) -->
+                          <img th:if="${iterStat.index < 7}"
+                               th:src="@{'../assets/images/complejos/complejo' + ${iterStat.index + 1} + '.png'}"
+                               alt="Complejo" class="img-fluid" />
+
+                          <!-- Imagen por defecto si no hay una específica -->
+                          <img th:unless="${iterStat.index < 7}"
+                               th:src="@{'../assets/images/complejos/complejo8.png'}"
+                               alt="Complejo" class="img-fluid" />
                         </div>
                         <div class="card-body d-flex flex-column">
                           <h5 class="card-title mb-1" th:text="${complejo.nombre}"></h5>
@@ -379,12 +387,20 @@
       document.querySelectorAll('.product-card').forEach(card => {
         card.addEventListener('click', function () {
           const complejoId = this.getAttribute('data-id');
+          // Obtener el ID del complejo
+          const id = complejoId;
+
+          // Número total de imágenes disponibles (ajústalo según cuántas tengas)
+          const totalImagenes = 7;
+
+          // Construir el nombre de archivo
+          let nombreImagen = id <= totalImagenes ? `complejo${id}.png` : 'complejo8.png';
 
           fetch(`/api/complejos/${complejoId}`)
                   .then(response => response.json())
                   .then(data => {
                     // Imagen
-                    document.getElementById('modalServicioImagen').src = data.fotos?.[0]?.url || '';
+                    document.getElementById('modalServicioImagen').src = `/assets/images/complejos/${nombreImagen}`;
 
                     // Nombre y dirección
                     document.getElementById('modalServicioNombre').textContent = data.nombre;
@@ -554,7 +570,10 @@
   });
 </script>
 
-<style>
+
+
+
+  <style>
   
 
   /* Paginación fija en la parte inferior */
