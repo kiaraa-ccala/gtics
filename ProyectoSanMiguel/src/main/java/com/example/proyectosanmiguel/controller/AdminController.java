@@ -3,6 +3,7 @@ package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
+import com.example.proyectosanmiguel.service.EmailService;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -67,6 +68,9 @@ public class AdminController {
 
     @Autowired
     private MantenimientoRepository mantenimientoRepository;
+
+    @Autowired
+    private EmailService emailService;
 
     @ResponseBody
     @GetMapping("/horarios")
@@ -515,6 +519,17 @@ public class AdminController {
     public ResponseEntity<String> eliminarHorario(@PathVariable Integer id) {
         if (horarioRepository.existsById(id)) {  // verifica exist
             horarioRepository.deleteById(id);  // eloknina el horario
+            try {
+                // Configura destinatario asunto y cuerpo // primera version
+                String destinatario = "a20212624@pucp.edu.pe"; //seteado manualmente por el momento
+                String asunto = "Horario eliminado";
+                String cuerpo = "El horario con ID " + id + " ha sido eliminado correctamente.";
+
+                emailService.enviarEmail(destinatario, asunto, cuerpo);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+            }
             return ResponseEntity.ok("Horario eliminado correctamente");
         } else {
             return ResponseEntity.status(404).body("Horario no encontrado");
