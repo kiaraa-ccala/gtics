@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Horario eliminado</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f6f6f6; padding: 20px;">
+<div style="max-width: 600px; background-color: #fff; padding: 20px; margin: auto; border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+    <h2 style="color: #c0392b;">Notificación de eliminación de horario</h2>
+
+    <p>Estimado/a <strong th:text="${nombreCompleto}">Usuario</strong>,</p>
+
+    <p>Le informamos que se ha eliminado el siguiente horario:</p>
+
+    <ul>
+        <li><strong>Fecha:</strong> <span th:text="${fecha}">2025-05-21</span></li>
+        <li><strong>Hora de inicio:</strong> <span th:text="${horaInicio}">08:00</span></li>
+        <li><strong>Hora de fin:</strong> <span th:text="${horaFin}">10:00</span></li>
+        <li><strong>Complejo deportivo:</strong> <span th:text="${complejo}">Complejo A</span></li>
+    </ul>
+
+    <p style="color: #555;">Si esta acción no fue realizada por usted o considera que es un error, comuníquese con el administrador del sistema.</p>
+
+    <hr>
+    <p style="font-size: 12px; color: #888;">© 2025 Municipalidad de San Miguel – Este es un mensaje automático, por favor no responda.</p>
+</div>
+</body>
+</html>
