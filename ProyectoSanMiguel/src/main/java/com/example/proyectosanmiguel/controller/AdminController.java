@@ -517,15 +517,28 @@ public class AdminController {
     }
     @DeleteMapping("/agenda/eliminarHorario/{id}")
     public ResponseEntity<String> eliminarHorario(@PathVariable Integer id) {
+        Optional <Horario> horarioOpt = horarioRepository.findById(id);
         if (horarioRepository.existsById(id)) {  // verifica exist
             horarioRepository.deleteById(id);  // eloknina el horario
             try {
+                Map<String, Object> datos = new HashMap<>();
+                Horario horario = horarioOpt.get();
+                String nombreCompleto = horario.getHorarioSemanal().getCoordinador().getNombre() + " " +
+                        horario.getHorarioSemanal().getCoordinador().getApellido();
+
+                datos.put("nombreCompleto", nombreCompleto);
+                datos.put("fecha", horario.getFecha());
+                datos.put("horaInicio", horario.getHoraIngreso());
+                datos.put("horaFin", horario.getHoraSalida());
+                datos.put("complejo", horario.getComplejoDeportivo().getNombre()); // si tienes relación con complejo
+
+
                 // Configura destinatario asunto y cuerpo // primera version
                 String destinatario = "a20212624@pucp.edu.pe"; //seteado manualmente por el momento
                 String asunto = "Horario eliminado";
-                String cuerpo = "El horario con ID " + id + " ha sido eliminado correctamente.";
+                String emailTemplate = "email/emailtemplate"; // Cambia esto por la ruta correcta de tu plantilla
 
-                emailService.enviarEmail(destinatario, asunto, cuerpo);
+                emailService.enviarEmail(destinatario, asunto, emailTemplate, datos);
             } catch (IOException e) {
                 e.printStackTrace();
 
