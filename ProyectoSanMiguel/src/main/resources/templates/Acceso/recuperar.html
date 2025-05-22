@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+  <!-- [Head] start -->
+
+  <head>
+    <title>Recuperar Contraseña</title>
+    <!-- [Meta] -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+
+    <!-- [Favicon] icon -->
+    <link rel="icon" th:href="@{/assets/images/logo-circular.png}" type="image/x-icon" />
+    <!-- [Font] Family -->
+    <link rel="stylesheet" th:href="@{/assets/fonts/inter/inter.css}" id="main-font-link" />
+    <!-- [phosphor Icons] https://phosphoricons.com/ -->
+    <link rel="stylesheet"  th:href="@{/assets/fonts/phosphor/duotone/style.css}" />
+    <!-- [Tabler Icons] https://tablericons.com -->
+    <link rel="stylesheet"  th:href="@{/assets/fonts/tabler-icons.min.css}"/>
+    <!-- [Feather Icons] https://feathericons.com -->
+    <link rel="stylesheet"  th:href="@{assets/fonts/feather.css}" />
+    <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+    <link rel="stylesheet"  th:href="@{assets/fonts/fontawesome.css}" />
+    <!-- [Material Icons] https://fonts.google.com/icons -->
+    <link rel="stylesheet"  th:href="@{assets/fonts/material.css}" />
+    <!-- [Template CSS Files] -->
+    <link rel="stylesheet"  th:href="@{assets/css/style.css}" id="main-style-link" />
+    <script  th:href="@{assets/js/tech-stack.js}"></script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
+    <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
+    <script type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
+    <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
+    <link rel="stylesheet"  th:href="@{assets/css/style-preset.css}"/>
+  </head>
+  <!-- [Head] end -->
+  <!-- [Body] Start -->
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+    <!-- [ Pre-loader ] End -->
+
+    <div class="auth-main">
+      <div class="auth-wrapper v2">
+        <div class="auth-sidecontent">
+          <img th:src="@{assets/images/authentication/sanmi2.png}" alt="images" class="img-fluid img-auth-side" />
+        </div>
+        <div class="auth-form">
+          <div class="card my-5">
+            <div class="card-body">
+              <a href="#"><img th:src="@{assets/images/logo-sanM.png}" width="50%" class="mb-4 img-fluid" alt="img" /></a>
+              <div class="d-flex justify-content-between align-items-end mb-4">
+                <h3 class="mb-0"><b>Olvide mi contraseña</b></h3>
+                <a th:href="@{/}" class="link-primary">Regresar al login</a>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Correo Electrónico:</label>
+                <input type="email" class="form-control" id="floatingInput" placeholder="Ingresa tu correo..." />
+              </div>
+              <p class="mt-4 text-sm text-muted">No olvides de revisar tu buzón de SPAM/Correo no deseado</p>
+              <div class="d-grid mt-3">
+                <button type="button" class="btn btn-primary">Seguir</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ Main Content ] end -->
+    <!-- Required Js -->
+    <script src="../assets/js/plugins/popper.min.js"></script>
+    <script src="../assets/js/plugins/simplebar.min.js"></script>
+    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+
+    <script src="../assets/js/plugins/i18next.min.js"></script>
+    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+
+    <script src="../assets/js/icon/custom-font.js"></script>
+    <script src="../assets/js/script.js"></script>
+    <script src="../assets/js/theme.js"></script>
+    <script src="../assets/js/multi-lang.js"></script>
+    <script src="../assets/js/plugins/feather.min.js"></script>
+    
+    <script>
+      layout_change('light');
+    </script>
+      
+    <script>
+      change_box_container('false');
+    </script>
+     
+    <script>
+      layout_caption_change('true');
+    </script>
+     
+    <script>
+      layout_rtl_change('false');
+    </script>
+     
+    <script>
+      preset_change('preset-1');
+    </script>
+     
+    <script>
+      main_layout_change('vertical');
+    </script>
+
+
+
+  </body>
+  <!-- [Body] end -->
+</html>

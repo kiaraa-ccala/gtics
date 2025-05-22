@@ -92,4 +92,9 @@ public class SessionController {
         return "redirect:/inicio";
     }
 
+    @GetMapping("/recuperacion")
+    public String recuperarContrasena() {
+        return "Acceso/recuperar";
+    }
+
 }
