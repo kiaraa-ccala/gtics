@@ -1,13 +1,13 @@
 package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.entity.Credencial;
 import com.example.proyectosanmiguel.entity.Rol;
+import com.example.proyectosanmiguel.entity.TokenRecuperacion;
 import com.example.proyectosanmiguel.entity.Usuario;
-import com.example.proyectosanmiguel.repository.CredencialRepository;
-import com.example.proyectosanmiguel.repository.RolRepository;
-import com.example.proyectosanmiguel.repository.SectorRepository;
-import com.example.proyectosanmiguel.repository.UsuarioRepository;
+import com.example.proyectosanmiguel.repository.*;
+import com.example.proyectosanmiguel.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,6 +15,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Controller
 public class SessionController {
@@ -27,6 +34,10 @@ public class SessionController {
     private RolRepository rolRepository;
     @Autowired
     private CredencialRepository credencialRepository;
+    @Autowired
+    private TokenRecuperacionRepository tokenRecuperacionRepository;
+    @Autowired
+    private EmailService emailService;
 
     @GetMapping(value = {"/", "/inicio", ""})
     public String iniciarSesion(HttpServletRequest request, Model model) {
@@ -96,5 +107,76 @@ public class SessionController {
     public String recuperarContrasena() {
         return "Acceso/recuperar";
     }
+
+
+    @Value("${app.url.base}")
+    private String appUrlBase;
+
+    @PostMapping("/recuperar")
+    public String procesarRecuperacion(@RequestParam("correo") String correo,
+                                       RedirectAttributes attr) {
+        Credencial credencial = credencialRepository.findByCorreo(correo);
+
+        if (credencial != null) {
+            Usuario usuario = credencial.getUsuario();
+            System.out.println("Usuario: " + usuario.getNombre() + " " + usuario.getApellido());
+
+            // Verificar que sea usuario "Vecino"
+            if (usuario.getRol() != null && usuario.getRol().getIdRol() == 4) {
+                // Generar token
+                String token = UUID.randomUUID().toString();
+                TokenRecuperacion tokenRec = new TokenRecuperacion();
+                tokenRec.setToken(token);
+                tokenRec.setUsuario(usuario);
+                tokenRec.setExpiracion(LocalDateTime.now().plusMinutes(30));
+                tokenRec.setUsado(false);
+                tokenRecuperacionRepository.save(tokenRec);
+
+                // Enviar correo con EmailService
+                Map<String, Object> datos = new HashMap<>();
+                datos.put("nombre", usuario.getNombre() + " " + usuario.getApellido());
+                datos.put("enlace", appUrlBase + "/resetpassword?token=" + token);
+                System.out.println("Enlace: " + appUrlBase + "/resetpassword?token=" + token);
+
+
+                try {
+                    emailService.enviarEmail(
+                            correo,
+                            "Restablecer tu contraseña",
+                            "email/passwordrecovery",
+                            datos
+                    );
+                } catch (Exception e) {
+                    e.printStackTrace();  // También puedes usar un logger
+                }
+            }
+        }
+
+        attr.addFlashAttribute("mensaje", "Si el correo está registrado como vecino, se ha enviado un enlace.");
+        return "redirect:/recuperacion";
+    }
+
+    @GetMapping("/resetpassword")
+    public String mostrarFormularioReset(@RequestParam("token") String token, Model model) {
+        Optional<TokenRecuperacion> tokenRecuperacionOpt = tokenRecuperacionRepository.findByToken(token);
+
+        if (tokenRecuperacionOpt.isEmpty()) {
+            model.addAttribute("error", "El token no es válido.");
+            return "ErrorPages/500";
+        }
+
+        TokenRecuperacion tokenRecuperacion = tokenRecuperacionOpt.get();
+
+        if (tokenRecuperacion.isUsado() || tokenRecuperacion.getExpiracion().isBefore(LocalDateTime.now())) {
+            model.addAttribute("error", "El token ha expirado o ya fue utilizado.");
+            return "ErrorPages/500";
+        }
+
+        model.addAttribute("token", token); // para el campo oculto en el form
+        return "Acceso/resetpassword";
+    }
+
+
+
 
 }

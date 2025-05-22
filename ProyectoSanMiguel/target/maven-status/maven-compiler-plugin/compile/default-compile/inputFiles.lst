@@ -40,6 +40,7 @@ D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\exam
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Servicio.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Tarifa.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Tercerizado.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\TokenRecuperacion.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Usuario.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Validacion.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\ProyectoSanMiguelApplication.java
@@ -59,5 +60,6 @@ D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\exam
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\SectorRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\ServicioRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\TarifaRepository.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\TokenRecuperacionRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\UsuarioRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\service\EmailService.java

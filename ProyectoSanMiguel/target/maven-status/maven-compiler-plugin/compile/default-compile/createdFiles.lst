@@ -43,9 +43,11 @@ com\example\proyectosanmiguel\dto\ReporteFinancieroDto.class
 com\example\proyectosanmiguel\repository\HorarioSemanalRepository.class
 com\example\proyectosanmiguel\entity\Mantenimiento.class
 com\example\proyectosanmiguel\controller\CustomErrorController.class
+com\example\proyectosanmiguel\entity\TokenRecuperacion.class
 com\example\proyectosanmiguel\service\EmailService.class
 com\example\proyectosanmiguel\repository\ReservaRepository.class
 com\example\proyectosanmiguel\entity\Rol.class
+com\example\proyectosanmiguel\repository\TokenRecuperacionRepository.class
 com\example\proyectosanmiguel\dto\ComplejoDetalleDTO$TarifaDTO.class
 com\example\proyectosanmiguel\repository\UsuarioRepository.class
 com\example\proyectosanmiguel\dto\EventoHorarioDto.class
