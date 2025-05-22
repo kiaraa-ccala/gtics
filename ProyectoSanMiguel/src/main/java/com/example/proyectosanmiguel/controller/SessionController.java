@@ -134,7 +134,7 @@ public class SessionController {
 
                 // Enviar correo con EmailService
                 Map<String, Object> datos = new HashMap<>();
-                datos.put("nombre", usuario.getNombre() + " " + usuario.getApellido());
+                datos.put("nombreCompleto", usuario.getNombre() + " " + usuario.getApellido());
                 datos.put("enlace", appUrlBase + "/resetpassword?token=" + token);
                 System.out.println("Enlace: " + appUrlBase + "/resetpassword?token=" + token);
 
@@ -152,7 +152,7 @@ public class SessionController {
             }
         }
 
-        attr.addFlashAttribute("mensaje", "Si el correo está registrado como vecino, se ha enviado un enlace.");
+        attr.addFlashAttribute("mensaje", "Si el usuario está registrado en nuestro sistema, se ha enviado un enlace para restablecer la contraseña a su correo.");
         return "redirect:/recuperacion";
     }
 
@@ -161,15 +161,17 @@ public class SessionController {
         Optional<TokenRecuperacion> tokenRecuperacionOpt = tokenRecuperacionRepository.findByToken(token);
 
         if (tokenRecuperacionOpt.isEmpty()) {
-            model.addAttribute("error", "El token no es válido.");
-            return "ErrorPages/500";
+            model.addAttribute("titulo", "Token inválido");
+            model.addAttribute("mensaje", "El enlace proporcionado no es válido o no existe.");
+            return "ErrorPages/tokenerror";
         }
 
         TokenRecuperacion tokenRecuperacion = tokenRecuperacionOpt.get();
 
         if (tokenRecuperacion.isUsado() || tokenRecuperacion.getExpiracion().isBefore(LocalDateTime.now())) {
-            model.addAttribute("error", "El token ha expirado o ya fue utilizado.");
-            return "ErrorPages/500";
+            model.addAttribute("titulo", "Token expirado o ya usado");
+            model.addAttribute("mensaje", "Este enlace ya fue utilizado o ha expirado. Solicita uno nuevo.");
+            return "ErrorPages/tokenerror";
         }
 
         model.addAttribute("token", token); // para el campo oculto en el form
