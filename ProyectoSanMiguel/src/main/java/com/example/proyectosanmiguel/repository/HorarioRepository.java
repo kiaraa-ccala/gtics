@@ -109,7 +109,7 @@ WHERE h.idHorarioSemanal = :idHorarioSemanal
                                @Param("idsAExcluir") List<Integer> idsAExcluir);
     //usamos ids a excluir porque si te pones a pensar en el gudar horarios tambien habran eliminados y luego en la parctica no afectaran.
 
-
+    List<Horario> findAllByIdHorarioSemanalIn(List<Integer> ids);
 
 
 
