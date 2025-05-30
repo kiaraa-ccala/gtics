@@ -182,9 +182,10 @@
                           ¿Tienes un cupon de descuento?
                         </button>
                         <div class="input-group my-2">
-                          <input type="text" class="form-control" placeholder="Cupon de descuento aquí" />
-                          <button class="btn btn-outline-secondary" type="button">Aplicar</button>
+                          <input type="text" class="form-control" placeholder="Cupon de descuento aquí" id="inputCupon" />
+                          <button class="btn btn-outline-secondary" type="button" id="btnAplicarCupon">Aplicar</button>
                         </div>
+
                       </div>
                     </div>
                     <div class="card">
@@ -473,16 +474,19 @@
                           </div>
                           <div class="row">
                             <div class="col-12 mt-2">
+                              <!-- Número de tarjeta -->
                               <div class="mb-3 row">
                                 <label class="col-lg-4 col-form-label">
                                   Número de tarjeta:
                                   <small class="text-muted d-block">Ingresa los 16 dígitos que figuran en la tarjeta</small>
                                 </label>
                                 <div class="col-lg-8">
-                                  <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX" />
+                                  <input type="text" class="form-control" placeholder="XXXX XXXX XXXX XXXX"
+                                         pattern="\d{16}" maxlength="16" required title="Debe tener 16 dígitos numéricos"/>
                                 </div>
                               </div>
 
+                              <!-- Fecha de vencimiento -->
                               <div class="mb-3 row">
                                 <label class="col-lg-4 col-form-label">
                                   Fecha de vencimiento:
@@ -491,46 +495,51 @@
                                 <div class="col-lg-8">
                                   <div class="row">
                                     <div class="col-6">
-                                      <input type="text" class="form-control" placeholder="Mes (MM)" />
+                                      <input type="text" class="form-control" placeholder="Mes (MM)"
+                                             pattern="^(0[1-9]|1[0-2])$" maxlength="2" required title="Mes válido (01-12)"/>
                                     </div>
                                     <div class="col-6">
-                                      <input type="text" class="form-control" placeholder="Año (AA)" />
+                                      <input type="text" class="form-control" placeholder="Año (AA)"
+                                             pattern="^[0-9]{2}$" maxlength="2" required title="Año en formato de 2 dígitos"/>
                                     </div>
                                   </div>
                                 </div>
                               </div>
 
+                              <!-- CVV -->
                               <div class="mb-3 row">
                                 <label class="col-lg-4 col-form-label">
                                   Código CVV:
                                   <small class="text-muted d-block">Ingresa el código de 3 o 4 dígitos que aparece en tu tarjeta</small>
                                 </label>
                                 <div class="col-lg-8">
-                                  <input type="text" class="form-control" placeholder="CVV" />
+                                  <input type="text" class="form-control" placeholder="CVV"
+                                         pattern="^\d{3,4}$" maxlength="3" required title="Debe tener 3 o 4 dígitos numéricos"/>
                                 </div>
                               </div>
 
+                              <!-- Correo electrónico -->
                               <div class="mb-3 row">
                                 <label class="col-lg-4 col-form-label">
-                                  Correo electronico:
-                                  <small class="text-muted d-block">Ingresa su correo electronico</small>
+                                  Correo electrónico:
+                                  <small class="text-muted d-block">Ingresa tu correo electrónico</small>
                                 </label>
                                 <div class="col-lg-8">
-                                  <input type="email" class="form-control" placeholder="Correo electronico" />
+                                  <input type="email" class="form-control" placeholder="Correo electrónico" required />
                                 </div>
                               </div>
 
+                              <!-- Botones -->
                               <div class="text-end btn-page mb-0 mt-4">
-                                <button class="btn btn-outline-secondary">Cancelar</button>
+                                <button class="btn btn-outline-secondary" type="button">Cancelar</button>
                                 <div id="pagoEnProceso" class="alert alert-info d-none" role="alert">
                                   Procesando pago, por favor espere...
                                 </div>
-                                <button id="btnProcesarPago" class="btn btn-primary">Procesar pago</button>
+                                <button id="btnProcesarPago" class="btn btn-primary" type="submit">Procesar pago</button>
                               </div>
-
                             </div>
-
                           </div>
+
                         </div>
                       </div>
                       <div class="d-flex justify-content-end mb-3">
@@ -827,6 +836,41 @@
           }, 1500);
         }, 2000);
       });
+    </script>
+
+    <script>
+      document.getElementById('btnAplicarCupon').addEventListener('click', function() {
+        const codigoCupon = document.getElementById('inputCupon').value.trim();
+        if (!codigoCupon) {
+          alert('Por favor ingrese un código de cupón');
+          return;
+        }
+
+        // Asumiendo que totalReservas es un valor mostrado y accesible, si no, podrías obtenerlo del DOM o pasar desde backend con Thymeleaf.
+        let total = parseFloat(/* aquí pasa el total actual, ej: */ /*[[${totalReservas}]]*/);
+
+        fetch('/vecino/aplicarDescuento', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+          body: new URLSearchParams({codigo: codigoCupon, idServicio: 1, total: total}) // Cambia 1 por el id del servicio
+        })
+                .then(response => response.json())
+                .then(data => {
+                  if (data.valido) {
+                    alert(data.mensaje);
+                    // Actualiza el resumen de precios
+                    document.querySelector('#descuentoAplicado').textContent = 'S/.' + data.descuento.toFixed(2);
+                    document.querySelector('#totalConDescuento').textContent = 'S/.' + data.totalConDescuento.toFixed(2);
+                  } else {
+                    alert(data.mensaje);
+                  }
+                })
+                .catch(err => {
+                  alert('Error al aplicar el cupón');
+                  console.error(err);
+                });
+      });
+
     </script>
 
 
