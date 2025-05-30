@@ -1,10 +1,8 @@
 package com.example.proyectosanmiguel.controller;
 
+import com.example.proyectosanmiguel.dto.HorarioDTO;
 import com.example.proyectosanmiguel.entity.*;
-import com.example.proyectosanmiguel.repository.ComplejoRepository;
-import com.example.proyectosanmiguel.repository.FotoRepository;
-import com.example.proyectosanmiguel.repository.ReporteRepository;
-import com.example.proyectosanmiguel.repository.UsuarioRepository;
+import com.example.proyectosanmiguel.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,9 +19,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/coord")
@@ -40,6 +44,16 @@ public class CoordinadorController {
 
     @Autowired
     private FotoRepository fotoRepository;
+
+    @Autowired
+    private HorarioRepository horarioRepository;
+
+    @Autowired
+    private HorarioSemanalRepository horarioSemanalRepository;
+
+    @Autowired
+    private CredencialRepository credencialRepository;
+
 
     @GetMapping("/reportes/ver")
     public String verReportes(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -201,6 +215,97 @@ public class CoordinadorController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.IMAGE_PNG);
         return new ResponseEntity<>(foto.getFoto(), headers, HttpStatus.OK);
+    }
+
+    private static final Map<DayOfWeek, String> DIAS_ES = Map.of(
+            DayOfWeek.MONDAY, "Lunes",
+            DayOfWeek.TUESDAY, "Martes",
+            DayOfWeek.WEDNESDAY, "Miércoles",
+            DayOfWeek.THURSDAY, "Jueves",
+            DayOfWeek.FRIDAY, "Viernes",
+            DayOfWeek.SATURDAY, "Sábado",
+            DayOfWeek.SUNDAY, "Domingo"
+    );
+    @GetMapping("/horarios")
+    public String verHorariosCoordinador(Model model, Principal principal) {
+        // Buscar credencial por correo
+        Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+
+        if (credencial == null || credencial.getUsuario() == null) {
+            model.addAttribute("error", "No se encontró el usuario autenticado.");
+            return "error"; // o redirigir a login
+        }
+
+        Usuario coordinador = credencial.getUsuario();
+
+        // Verifica que sea un coordinador (rol con id = 3)
+        if (coordinador.getRol() == null || coordinador.getRol().getIdRol() != 3) {
+            model.addAttribute("error", "No tienes permiso para acceder a esta vista.");
+            return "error";
+        }
+
+        // Obtener todos los horarios semanales del coordinador
+        List<HorarioSemanal> horariosSemanales = horarioSemanalRepository.findByIdCoordinador(coordinador.getIdUsuario());
+
+        // Obtener horarios asociados a esos horarios semanales
+        List<Horario> horarios = horarioRepository.findAllByIdHorarioSemanalIn(
+                horariosSemanales.stream()
+                        .map(HorarioSemanal::getIdHorarioSemanal)
+                        .toList()
+        );
+
+        // Filtros para DataTable
+        List<LocalDate> semanas = horariosSemanales.stream()
+                .map(HorarioSemanal::getFechaInicio)
+                .distinct()
+                .sorted()
+                .toList();
+        model.addAttribute("semanas", semanas);
+
+        List<DayOfWeek> dias = horarios.stream()
+                .map(h -> h.getFecha().getDayOfWeek())
+                .distinct()
+                .sorted()
+                .toList();
+        model.addAttribute("dias", dias);
+
+        DateTimeFormatter formatoDia = DateTimeFormatter.ofPattern("dd");
+        DateTimeFormatter formatoMes = DateTimeFormatter.ofPattern("MMMM", new Locale("es"));
+
+        List<String> semanasTexto = horariosSemanales.stream()
+                .map(hs -> {
+                    String inicio = hs.getFechaInicio().format(formatoDia);
+                    String fin = hs.getFechaFin().format(formatoDia);
+                    String mes = hs.getFechaFin().format(formatoMes);
+                    return "Semana del " + inicio + " al " + fin + " de " + mes;
+                })
+                .distinct()
+                .toList();
+
+        model.addAttribute("semanas", semanasTexto);
+
+
+        List<HorarioDTO> horariosDTO = horarios.stream().map(h -> {
+            HorarioDTO dto = new HorarioDTO();
+            dto.setId(h.getIdHorario());
+            dto.setFecha(h.getFecha());
+            dto.setDiaSemana(DIAS_ES.get(h.getFecha().getDayOfWeek()));
+            dto.setHoraIngreso(h.getHoraIngreso());
+            dto.setHoraSalida(h.getHoraSalida());
+            dto.setComplejoNombre(h.getComplejoDeportivo().getNombre());
+            dto.setDireccionComplejo(h.getComplejoDeportivo().getDireccion());
+            String inicio = h.getHorarioSemanal().getFechaInicio().format(formatoDia);
+            String fin = h.getHorarioSemanal().getFechaFin().format(formatoDia);
+            String mes = h.getHorarioSemanal().getFechaFin().format(formatoMes);
+            dto.setSemanaTexto("Semana del " + inicio + " al " + fin + " de " + mes);
+            return dto;
+        }).toList();
+
+        model.addAttribute("listaHorarios", horariosDTO);
+        model.addAttribute("semanasTexto", semanasTexto);
+
+
+        return "Coordinador/coordinador_horario";
     }
 
 
