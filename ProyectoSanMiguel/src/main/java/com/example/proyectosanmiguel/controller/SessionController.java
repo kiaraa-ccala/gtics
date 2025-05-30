@@ -204,14 +204,12 @@ public class SessionController {
             model.addAttribute("error", "Las contraseñas no coinciden.");
             return "Acceso/resetpassword";
         }
-        // Validación de requisitos de contraseña (mínimo 1 mayúscula, 1 minúscula, 1 número)
         if (!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*")) {
             System.out.println("La contraseña no cumple con los requisitos.");
             model.addAttribute("token", token);
             model.addAttribute("error", "La contraseña debe tener al menos 1 mayúscula, 1 minúscula y 1 número.");
             return "Acceso/resetpassword";
         }
-        // Si todo está bien, se procede a cambiar la contraseña
         System.out.println("Restableciendo contraseña para el usuario: " + tokenRecuperacion.getUsuario().getNombre());
         Usuario usuario = tokenRecuperacion.getUsuario();
         Credencial credencial = usuario.getCredencial();
