@@ -1,7 +1,7 @@
 'use strict';
 (function () {
   var bouncer = new Bouncer('[data-validate]', {
-    disableSubmit: true,
+    disableSubmit: false, // Permite el envío normal del formulario
     customValidations: {
       valueMismatch: function (field) {
         var selector = field.getAttribute('data-bouncer-match');
@@ -27,12 +27,4 @@
     false
   );
 
-  document.addEventListener(
-    'bouncerFormValid',
-    function () {
-      alert('Form submitted successfully!');
-      window.location.reload();
-    },
-    false
-  );
 })();

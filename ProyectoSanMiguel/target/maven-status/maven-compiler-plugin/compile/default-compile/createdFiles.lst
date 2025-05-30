@@ -23,9 +23,11 @@ com\example\proyectosanmiguel\entity\Servicio.class
 com\example\proyectosanmiguel\entity\Validacion.class
 com\example\proyectosanmiguel\controller\SuperAdminController.class
 com\example\proyectosanmiguel\entity\Tercerizado.class
+com\example\proyectosanmiguel\controller\S3TestController.class
 com\example\proyectosanmiguel\dto\ReservaCostoDto.class
 com\example\proyectosanmiguel\repository\FotoRepository.class
 com\example\proyectosanmiguel\dto\ComplejoDetalleDTO$FotoDTO.class
+com\example\proyectosanmiguel\dto\HorarioDTO.class
 com\example\proyectosanmiguel\entity\Tarifa.class
 com\example\proyectosanmiguel\controller\VecinoController.class
 com\example\proyectosanmiguel\entity\HorarioSemanalId.class
@@ -60,6 +62,7 @@ com\example\proyectosanmiguel\dto\ComplejoDetalleDTO$ServicioDTO.class
 com\example\proyectosanmiguel\repository\HorarioRepository.class
 com\example\proyectosanmiguel\dto\ComplejoDetalleDTO.class
 com\example\proyectosanmiguel\dto\ReporteServiciosDto.class
+com\example\proyectosanmiguel\service\AmazonS3Service.class
 com\example\proyectosanmiguel\repository\MantenimientoRepository.class
 com\example\proyectosanmiguel\dto\HorarioTurnoDto.class
 com\example\proyectosanmiguel\entity\InstanciaServicioId.class

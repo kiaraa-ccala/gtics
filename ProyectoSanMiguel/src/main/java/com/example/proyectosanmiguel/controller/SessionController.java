@@ -178,7 +178,50 @@ public class SessionController {
         return "Acceso/resetpassword";
     }
 
-
-
+    @PostMapping("/resetpassword")
+    public String procesarResetPassword(@RequestParam("token") String token,
+                                        @RequestParam("password") String password,
+                                        @RequestParam("confirmPassword") String confirmPassword,
+                                        Model model, RedirectAttributes attr) {
+        System.out.println("Procesando reset de contraseña con token: " + token);
+        Optional<TokenRecuperacion> tokenRecuperacionOpt = tokenRecuperacionRepository.findByToken(token);
+        if (tokenRecuperacionOpt.isEmpty()) {
+            System.out.println("Token no encontrado o inválido: " + token);
+            model.addAttribute("titulo", "Token inválido");
+            model.addAttribute("mensaje", "El enlace proporcionado no es válido o no existe.");
+            return "ErrorPages/tokenerror";
+        }
+        TokenRecuperacion tokenRecuperacion = tokenRecuperacionOpt.get();
+        if (tokenRecuperacion.isUsado() || tokenRecuperacion.getExpiracion().isBefore(LocalDateTime.now())) {
+            System.out.println("Token expirado o ya usado: " + token);
+            model.addAttribute("titulo", "Token expirado o ya usado");
+            model.addAttribute("mensaje", "Este enlace ya fue utilizado o ha expirado. Solicita uno nuevo.");
+            return "ErrorPages/tokenerror";
+        }
+        if (!password.equals(confirmPassword)) {
+            System.out.println("Las contraseñas no coinciden.");
+            model.addAttribute("token", token);
+            model.addAttribute("error", "Las contraseñas no coinciden.");
+            return "Acceso/resetpassword";
+        }
+        // Validación de requisitos de contraseña (mínimo 1 mayúscula, 1 minúscula, 1 número)
+        if (!password.matches("(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\\s).*")) {
+            System.out.println("La contraseña no cumple con los requisitos.");
+            model.addAttribute("token", token);
+            model.addAttribute("error", "La contraseña debe tener al menos 1 mayúscula, 1 minúscula y 1 número.");
+            return "Acceso/resetpassword";
+        }
+        // Si todo está bien, se procede a cambiar la contraseña
+        System.out.println("Restableciendo contraseña para el usuario: " + tokenRecuperacion.getUsuario().getNombre());
+        Usuario usuario = tokenRecuperacion.getUsuario();
+        Credencial credencial = usuario.getCredencial();
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+        credencial.setPassword(encoder.encode(password));
+        credencialRepository.save(credencial);
+        tokenRecuperacion.setUsado(true);
+        tokenRecuperacionRepository.save(tokenRecuperacion);
+        attr.addFlashAttribute("mensaje", "Contraseña restablecida correctamente. Ya puedes iniciar sesión.");
+        return "redirect:/inicio";
+    }
 
 }

@@ -4,6 +4,7 @@ D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\exam
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ComplejoController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\CoordinadorController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\CustomErrorController.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\S3TestController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\SessionController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\SuperAdminController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\VecinoController.java
@@ -12,6 +13,7 @@ D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\exam
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\CoordinadorAgendaAdminDto.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\EventoHorarioDto.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\HorarioDiarioTurnoGuardarDto.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\HorarioDTO.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\HorarioEliminarDto.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\HorarioSemanalGuardarDto.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\HorarioTurnoDto.java
@@ -62,4 +64,5 @@ D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\exam
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\TarifaRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\TokenRecuperacionRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\UsuarioRepository.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\service\AmazonS3Service.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\service\EmailService.java
