@@ -32,9 +32,11 @@ public class S3Config {
     private AwsCredentialsProvider resolveCredentials() {
         if (!accessKeyId.isEmpty() && !secretAccessKey.isEmpty()) {
             logger.info("Usando credenciales estáticas AWS");
+            System.out.println("Usando credenciales estáticas AWS");
             return StaticCredentialsProvider.create(AwsBasicCredentials.create(accessKeyId, secretAccessKey));
         } else {
             logger.info("Usando DefaultCredentialsProvider AWS");
+            System.out.println("Usando DefaultCredentialsProvider AWS");
             return DefaultCredentialsProvider.create();
         }
     }
