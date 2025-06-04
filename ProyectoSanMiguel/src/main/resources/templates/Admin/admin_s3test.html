@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Prueba de Amazon S3</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Prueba de Amazon S3 con Carpetas</h1>
+        
+        <div th:if="${success}" class="alert alert-success" role="alert" th:text="${success}"></div>
+        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+        
+        <!-- Resultados de la prueba -->
+        <div th:if="${resultados}" class="card mb-4">
+            <div class="card-header bg-success text-white">
+                Resultados de la prueba
+            </div>
+            <div class="card-body">
+                <div th:if="${resultados.complejo}">
+                    <h5>Complejo:</h5>
+                    <p><a th:href="${resultados.complejo}" target="_blank" th:text="${resultados.complejo}"></a></p>
+                    <img th:src="${resultados.complejo}" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+                <div th:if="${resultados.reporte}">
+                    <h5>Reporte:</h5>
+                    <p><a th:href="${resultados.reporte}" target="_blank" th:text="${resultados.reporte}"></a></p>
+                    <img th:src="${resultados.reporte}" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+                <div th:if="${resultados.evidencia}">
+                    <h5>Evidencia:</h5>
+                    <p><a th:href="${resultados.evidencia}" target="_blank" th:text="${resultados.evidencia}"></a></p>
+                    <img th:src="${resultados.evidencia}" class="img-thumbnail" style="max-width: 200px;">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Formulario de prueba múltiple -->
+        
+        <!-- Formulario de prueba individual -->
+        <div class="card">
+            <div class="card-header">
+                Prueba de carpeta personalizada
+            </div>
+            <div class="card-body">
+                <form id="uploadForm">
+                    <div class="mb-3">
+                        <label for="carpeta" class="form-label">Nombre de carpeta</label>
+                        <input type="text" class="form-control" id="carpeta" name="carpeta" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="id" class="form-label">ID (opcional)</label>
+                        <input type="number" class="form-control" id="id" name="id">
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Archivo</label>
+                        <input type="file" class="form-control" id="file" name="file" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Subir archivo</button>
+                </form>
+                
+                <div id="resultadoIndividual" class="mt-3" style="display: none;">
+                    <h5>Resultado:</h5>
+                    <div id="mensajeResultado" class="alert" role="alert"></div>
+                    <div id="previewContainer" style="display: none;">
+                        <p>URL: <a id="urlArchivo" target="_blank"></a></p>
+                        <img id="previewImagen" class="img-thumbnail" style="max-width: 200px;">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById('uploadForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            formData.append('file', document.getElementById('file').files[0]);
+            formData.append('carpeta', document.getElementById('carpeta').value);
+            
+            const idInput = document.getElementById('id').value;
+            if (idInput) {
+                formData.append('id', idInput);
+            }
+            
+            fetch('/admin/s3test/upload-carpeta', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultadoDiv = document.getElementById('resultadoIndividual');
+                const mensajeDiv = document.getElementById('mensajeResultado');
+                const previewContainer = document.getElementById('previewContainer');
+                const urlArchivo = document.getElementById('urlArchivo');
+                const previewImagen = document.getElementById('previewImagen');
+                
+                resultadoDiv.style.display = 'block';
+                
+                if (data.status === 'success') {
+                    mensajeDiv.className = 'alert alert-success';
+                    mensajeDiv.textContent = data.message;
+                    
+                    urlArchivo.href = data.url;
+                    urlArchivo.textContent = data.url;
+                    previewImagen.src = data.url;
+                    previewContainer.style.display = 'block';
+                } else {
+                    mensajeDiv.className = 'alert alert-danger';
+                    mensajeDiv.textContent = data.message;
+                    previewContainer.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                const resultadoDiv = document.getElementById('resultadoIndividual');
+                const mensajeDiv = document.getElementById('mensajeResultado');
+                
+                resultadoDiv.style.display = 'block';
+                mensajeDiv.className = 'alert alert-danger';
+                mensajeDiv.textContent = 'Error en la comunicación con el servidor';
+                document.getElementById('previewContainer').style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>

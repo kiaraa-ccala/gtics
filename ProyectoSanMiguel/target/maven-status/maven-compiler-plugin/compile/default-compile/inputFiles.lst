@@ -1,9 +1,11 @@
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\S3Config.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\WebSecurityConfig.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\AdminController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ComplejoApiController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ComplejoController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\CoordinadorController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\CustomErrorController.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\LandingController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\S3TestController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\SessionController.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\SuperAdminController.java
@@ -49,6 +51,7 @@ D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\exam
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\ComentarioRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\ComplejoRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\CredencialRepository.java
+D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\DescuentoRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\EvidenciaRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\FotoRepository.java
 D:\2025-1\GTICS\proyectoSANMIGUEL\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\HorarioRepository.java
