@@ -26,7 +26,6 @@ public class Credencial implements Serializable {
     private String correo;
 
     @NotBlank(message = "La contraseña es obligatoria")
-    @Size(min = 8, max = 45, message = "La contraseña debe tener entre 8 y 45 caracteres")
     @Column(name = "password", nullable = false, length = 45)
     private String password;
 
