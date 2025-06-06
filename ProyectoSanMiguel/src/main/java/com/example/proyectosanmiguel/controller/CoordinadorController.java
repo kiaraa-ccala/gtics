@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
@@ -150,7 +151,15 @@ public class CoordinadorController {
     }
 
     @GetMapping("/inicio")
-    public String vistaInicio(Model model) {
+    public String vistaInicio(Model model, Principal principal) {
+        // Obtener el coordinador autenticado
+        Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+        if (credencial == null || credencial.getUsuario() == null) {
+            model.addAttribute("error", "No se encontró el usuario autenticado.");
+            return "error";
+        }
+        Usuario coordinador = credencial.getUsuario();
+
         // 1. Los 7 reportes más recientes
         List<Reporte> ultimosReportes = reporteRepository.findTop7ByOrderByFechaRecepcionDesc();
 
@@ -160,19 +169,43 @@ public class CoordinadorController {
         // 3. Reportes cerrados
         long cantidadCerrados = reporteRepository.countByEstado("Cerrado");
 
-        //4. Foto de perfil
-        Usuario coordinador = usuarioRepository.findFirstByRol_IdRol(3);
+        // 4. Foto de perfil
+        // Usuario coordinador ya obtenido
 
-        //5. Complejo asignado
-        ComplejoDeportivo complejo = complejoDeportivoRepository.findFirstBySector(coordinador.getSector());
-
+        // 5. Complejo actual según la hora de Perú
+        java.time.ZoneId zonaPeru = java.time.ZoneId.of("America/Lima");
+        java.time.ZonedDateTime ahoraPeru = java.time.ZonedDateTime.now(zonaPeru);
+        LocalTime ahora = ahoraPeru.toLocalTime();
+        LocalDate hoy = ahoraPeru.toLocalDate();
+        List<Horario> horariosHoy = horarioRepository.findByCoordinador(coordinador.getIdUsuario())
+                .stream()
+                .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
+                .toList();
+        Horario horarioActual = horariosHoy.stream()
+                .filter(h -> h.getHoraIngreso() != null && h.getHoraSalida() != null &&
+                        !ahora.isBefore(h.getHoraIngreso()) && ahora.isBefore(h.getHoraSalida()))
+                .findFirst()
+                .orElse(null);
+        String nombreComplejo = "No hay complejo asignado";
+        String direccionComplejo = "-";
+        String horaInicio = "";
+        String horaFin = "";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        if (horarioActual != null && horarioActual.getComplejoDeportivo() != null) {
+            nombreComplejo = horarioActual.getComplejoDeportivo().getNombre();
+            direccionComplejo = horarioActual.getComplejoDeportivo().getDireccion();
+            horaInicio = horarioActual.getHoraIngreso() != null ? horarioActual.getHoraIngreso().format(formatter) : "";
+            horaFin = horarioActual.getHoraSalida() != null ? horarioActual.getHoraSalida().format(formatter) : "";
+        }
         // Agregar al modelo
         model.addAttribute("ultimosReportes", ultimosReportes);
         model.addAttribute("cantidadReportes", cantidadReportes);
         model.addAttribute("cantidadCerrados", cantidadCerrados);
         model.addAttribute("usuario", coordinador);
-        model.addAttribute("complejo", complejo);
-
+        model.addAttribute("complejoActualNombre", nombreComplejo);
+        model.addAttribute("complejoActualDireccion", direccionComplejo);
+        model.addAttribute("complejoHoraInicio", horaInicio);
+        model.addAttribute("complejoHoraFin", horaFin);
         return "Coordinador/coordinador_inicio";
     }
 
@@ -228,26 +261,35 @@ public class CoordinadorController {
     );
     @GetMapping("/horarios")
     public String verHorariosCoordinador(Model model, Principal principal) {
-        // Buscar credencial por correo
         Credencial credencial = credencialRepository.findByCorreo(principal.getName());
 
         if (credencial == null || credencial.getUsuario() == null) {
             model.addAttribute("error", "No se encontró el usuario autenticado.");
-            return "error"; // o redirigir a login
+            return "error";
         }
 
         Usuario coordinador = credencial.getUsuario();
 
-        // Verifica que sea un coordinador (rol con id = 3)
         if (coordinador.getRol() == null || coordinador.getRol().getIdRol() != 3) {
             model.addAttribute("error", "No tienes permiso para acceder a esta vista.");
             return "error";
         }
 
-        // Obtener todos los horarios semanales del coordinador
-        List<HorarioSemanal> horariosSemanales = horarioSemanalRepository.findByIdCoordinador(coordinador.getIdUsuario());
+        // Calcular inicio y fin de la semana actual y la siguiente
+        LocalDate hoy = LocalDate.now();
+        LocalDate inicioSemanaActual = hoy.with(java.time.DayOfWeek.MONDAY);
+        LocalDate finSemanaActual = inicioSemanaActual.plusDays(6);
+        LocalDate inicioSemanaSiguiente = inicioSemanaActual.plusWeeks(1);
+        LocalDate finSemanaSiguiente = inicioSemanaSiguiente.plusDays(6);
 
-        // Obtener horarios asociados a esos horarios semanales
+        // Filtrar solo las semanas actual y siguiente
+        List<HorarioSemanal> horariosSemanales = horarioSemanalRepository.findByIdCoordinador(coordinador.getIdUsuario())
+                .stream()
+                .filter(hs ->
+                        ( !hs.getFechaInicio().isBefore(inicioSemanaActual) && !hs.getFechaFin().isAfter(finSemanaSiguiente) )
+                )
+                .toList();
+
         List<Horario> horarios = horarioRepository.findAllByIdHorarioSemanalIn(
                 horariosSemanales.stream()
                         .map(HorarioSemanal::getIdHorarioSemanal)
@@ -255,20 +297,6 @@ public class CoordinadorController {
         );
 
         // Filtros para DataTable
-        List<LocalDate> semanas = horariosSemanales.stream()
-                .map(HorarioSemanal::getFechaInicio)
-                .distinct()
-                .sorted()
-                .toList();
-        model.addAttribute("semanas", semanas);
-
-        List<DayOfWeek> dias = horarios.stream()
-                .map(h -> h.getFecha().getDayOfWeek())
-                .distinct()
-                .sorted()
-                .toList();
-        model.addAttribute("dias", dias);
-
         DateTimeFormatter formatoDia = DateTimeFormatter.ofPattern("dd");
         DateTimeFormatter formatoMes = DateTimeFormatter.ofPattern("MMMM", new Locale("es"));
 
@@ -283,7 +311,6 @@ public class CoordinadorController {
                 .toList();
 
         model.addAttribute("semanas", semanasTexto);
-
 
         List<HorarioDTO> horariosDTO = horarios.stream().map(h -> {
             HorarioDTO dto = new HorarioDTO();
@@ -304,9 +331,24 @@ public class CoordinadorController {
         model.addAttribute("listaHorarios", horariosDTO);
         model.addAttribute("semanasTexto", semanasTexto);
 
-
         return "Coordinador/coordinador_horario";
     }
 
+    @GetMapping("/reportes/estadisticas-estado")
+    @ResponseBody
+    public Map<String, Long> obtenerEstadisticasPorEstado(Principal principal) {
+        // Si quieres filtrar por coordinador, puedes obtener el usuario aquí
+        // Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+        // Usuario coordinador = credencial.getUsuario();
 
+        long abiertos = reporteRepository.countByEstadoIgnoreCase("Abierto");
+        long enProceso = reporteRepository.countByEstadoIgnoreCase("En Proceso");
+        long cerrados = reporteRepository.countByEstadoIgnoreCase("Cerrado");
+
+        Map<String, Long> data = new java.util.HashMap<>();
+        data.put("Abierto", abiertos);
+        data.put("En Proceso", enProceso);
+        data.put("Cerrado", cerrados);
+        return data;
+    }
 }

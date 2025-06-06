@@ -41,9 +41,6 @@ public class WebSecurityConfig {
 
         // Agregar soporte para Basic Auth
         http.httpBasic(Customizer.withDefaults());
-        http.csrf(csrf -> csrf
-                .ignoringRequestMatchers("/admin/s3test/upload") // Ignorar CSRF para este endpoint
-        );
 
         http.formLogin(form -> form
                         .loginPage("/inicio")
