@@ -72,6 +72,15 @@ public class AmazonS3Service {
         return presignedRequest.url().toString();
     }
 
+    //ahora listare los archivos de un bucket
+    public List<String> listarArchivos(String prefijo) {
+        return s3Client.listObjectsV2Paginator(b -> b.bucket(bucketName).prefix(prefijo))
+                .contents()
+                .stream()
+                .map(s3Object -> s3Object.key())
+                .toList();
+    }
+
 
     private String generarNombreUnico(String originalFilename) {
         String extension = "";
