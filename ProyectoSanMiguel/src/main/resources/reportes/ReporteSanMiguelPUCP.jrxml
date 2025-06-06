@@ -1,0 +1,89 @@
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 7.0.3-41034ca841d452f3305ba55b9042260aaa1ab5dd  -->
+<jasperReport name="Coffee" language="java" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<style name="Title" fontName="Times New Roman" fontSize="50.0" bold="true"/>
+	<style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18.0"/>
+	<style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12.0" isBold="true"/>
+	<style name="Detail" fontName="Arial" fontSize="12.0"/>
+	<style name="Row" mode="Transparent">
+		<conditionalStyle backcolor="#E6DAC3">
+			<conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+		</conditionalStyle>
+	</style>
+	<parameter name="logomuni" class="java.io.InputStream"/>
+	<parameter name="forma1" class="java.io.InputStream"/>
+	<parameter name="forma2" class="java.io.InputStream"/>
+	<parameter name="watermark" class="java.io.InputStream"/>
+	<background height="740" splitType="Stretch">
+		<element kind="image" uuid="075cceea-a26f-4c3d-bc05-66679a6d157a" x="97" y="240" width="360" height="370">
+			<expression><![CDATA[$P{watermark}]]></expression>
+		</element>
+		<property name="com.jaspersoft.studio.unit.height" value="px"/>
+	</background>
+	<title height="93" splitType="Stretch">
+		<element kind="image" uuid="0c69659a-86b0-4683-94e9-6cf04bd616a6" x="100" y="-90" width="640" height="175">
+			<expression><![CDATA[$P{forma1}]]></expression>
+		</element>
+		<element kind="staticText" uuid="1a652692-054a-40f3-ade5-68d8da36626d" x="293" y="-20" width="251" height="68" forecolor="#FFFFFF" fontName="Arial" bold="true" vTextAlign="Middle" style="Title">
+			<text><![CDATA[Reporte]]></text>
+		</element>
+		<element kind="image" uuid="249d0dc5-9df9-466e-bfce-9c9f018e291d" x="-110" y="-70" width="369" height="155">
+			<expression><![CDATA[$P{forma2}]]></expression>
+		</element>
+		<element kind="image" uuid="4edafe60-6f9c-46fd-a8ff-44d959fb3647" x="0" y="0" width="159" height="69">
+			<expression><![CDATA[$P{logomuni}]]></expression>
+		</element>
+		<element kind="staticText" uuid="43b30fb6-be78-4297-8aa5-e1fd9423e658" x="259" y="39" width="279" height="30" forecolor="#FFFFFF" style="SubTitle">
+			<text><![CDATA[Detalle de Reservas realizadas]]></text>
+		</element>
+	</title>
+	<pageHeader splitType="Stretch"/>
+	<columnHeader height="20">
+		<element kind="staticText" uuid="f4b55c10-a45a-459a-937c-719f2e68d9c5" x="0" y="0" width="60" height="20">
+			<text><![CDATA[ID]]></text>
+		</element>
+		<element kind="staticText" uuid="869ce6d0-927e-42f6-b5c4-42d3705971a6" x="60" y="0" width="80" height="20">
+			<text><![CDATA[Nombre]]></text>
+		</element>
+		<element kind="staticText" uuid="ff33837d-c277-4c96-8a6b-ca20626217b9" x="140" y="0" width="80" height="20">
+			<text><![CDATA[Apellido]]></text>
+		</element>
+		<element kind="staticText" uuid="6884020e-e13c-49d5-9537-d15d069b1337" x="220" y="0" width="90" height="20">
+			<text><![CDATA[Servicio]]></text>
+		</element>
+		<element kind="staticText" uuid="612a5115-8893-407a-a7e0-1a734d50f20d" x="310" y="0" width="90" height="20">
+			<text><![CDATA[Complejo]]></text>
+		</element>
+		<element kind="staticText" uuid="dcf72d25-4d0a-46f8-916b-043ceefe591a" x="400" y="0" width="70" height="20">
+			<text><![CDATA[Fecha]]></text>
+		</element>
+		<element kind="staticText" uuid="2fa281ad-3909-4b6b-b052-35a633f72dbb" x="470" y="0" width="85" height="20">
+			<text><![CDATA[Pago (S/.)]]></text>
+		</element>
+	</columnHeader>
+	<detail>
+		<band height="92" splitType="Stretch">
+			<element kind="frame" uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766" mode="Opaque" x="0" y="0" width="555" height="15" style="Row"/>
+		</band>
+	</detail>
+	<columnFooter height="46" splitType="Stretch">
+		<element kind="line" uuid="fa45a887-615a-4d84-a2d7-8a2219671b3c" positionType="FixRelativeToBottom" x="0" y="40" width="555" height="1">
+			<pen lineWidth="0.5" lineColor="#999999"/>
+		</element>
+	</columnFooter>
+	<pageFooter height="25" splitType="Stretch">
+		<element kind="frame" uuid="183682bc-d976-4756-83e0-6625a3f98ed1" mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#005BAD" backcolor="#005BAD">
+			<element kind="textField" uuid="0193f9b3-1559-491a-8580-b6988863b6a1" x="533" y="0" width="40" height="20" forecolor="#FFFFFF" fontSize="10.0" evaluationTime="Report" bold="false" vTextAlign="Middle" style="Column header">
+				<expression><![CDATA[" " + $V{PAGE_NUMBER}]]></expression>
+			</element>
+			<element kind="textField" uuid="d00b105e-494b-418b-8ac9-8b1b4824f4f0" x="453" y="0" width="80" height="20" forecolor="#FFFFFF" fontSize="10.0" bold="false" hTextAlign="Right" vTextAlign="Middle" style="Column header">
+				<expression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></expression>
+			</element>
+			<element kind="textField" uuid="0616f3fe-0354-456f-8911-ec30ec51a5ae" x="22" y="1" width="197" height="20" forecolor="#FFFFFF" fontSize="10.0" pattern="EEEEE dd MMMMM yyyy" bold="false" vTextAlign="Middle" style="Column header">
+				<expression><![CDATA[new java.util.Date()]]></expression>
+			</element>
+		</element>
+	</pageFooter>
+	<summary splitType="Stretch"/>
+</jasperReport>

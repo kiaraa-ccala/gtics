@@ -112,6 +112,21 @@
 			<version>4.9.3</version>
 		</dependency>
 
+		<!-- JasperReports -->
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.20.6</version> <!-- Usa una versión estable compatible -->
+		</dependency>
+
+		<!-- Recomendado para exportar a PDF -->
+		<dependency>
+			<groupId>com.lowagie</groupId>
+			<artifactId>itext</artifactId>
+			<version>2.1.7</version>
+		</dependency>
+
+
 
 	</dependencies>
 
