@@ -6,11 +6,13 @@ import com.example.proyectosanmiguel.entity.Usuario;
 import com.example.proyectosanmiguel.repository.*;
 import com.example.proyectosanmiguel.service.EmailService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 @Controller
 public class SessionController {
@@ -52,53 +55,55 @@ public class SessionController {
     }
 
     @GetMapping("/registrarse")
-    public String formularioRegistro(@ModelAttribute("usuario") Usuario usuario, Model model) {
-
+    public String formularioRegistro(@ModelAttribute("usuario") Usuario usuario, Model model, RedirectAttributes attr) {
         model.addAttribute("listaSectores", sectorRepository.findAll());
-
+        if(attr.getFlashAttributes().containsKey("error")) {
+            model.addAttribute("error", attr.getFlashAttributes().get("error"));
+        }
         return "Acceso/registro";
     }
 
     @PostMapping("/crear")
-    public String procesarRegistro(@ModelAttribute("usuario") Usuario usuario,
+    public String procesarRegistro(@Valid @ModelAttribute("usuario") Usuario usuario,
+                                   BindingResult bindingResult,
                                    @RequestParam("password2") String password2,
-                                   Model model){
-
-        // Valida que no existe usuario que haya registrado ese correo
+                                   Model model, RedirectAttributes attr) {
+        model.addAttribute("listaSectores", sectorRepository.findAll());
+        // Validación de Hibernate
+        if (bindingResult.hasErrors()) {
+            return "Acceso/registro";
+        }
+        // Validación de correo duplicado
         if (credencialRepository.existsByCorreo(usuario.getCredencial().getCorreo())) {
             model.addAttribute("error", "El correo ya está registrado");
             return "Acceso/registro";
         }
-
-        // Valida que las contraseñas coincidan
+        // Validación de formato de correo (backend)
+        String correo = usuario.getCredencial().getCorreo();
+        Pattern emailPattern = Pattern.compile("^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$");
+        if (correo == null || !emailPattern.matcher(correo).matches()) {
+            model.addAttribute("error", "El correo electrónico no tiene un formato válido.");
+            return "Acceso/registro";
+        }
+        // Validación de contraseñas
         if (!usuario.getCredencial().getPassword().equals(password2)) {
             model.addAttribute("error", "Las contraseñas no coinciden");
             return "Acceso/registro";
         }
-
-        //Se encripta la contraseña
-
+        // Encriptar contraseña
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
         String passwordHashed = encoder.encode(usuario.getCredencial().getPassword());
-
         usuario.getCredencial().setPassword(passwordHashed);
-
-        //Se asigna el rol de vecino
-
-        Rol rol = rolRepository.findRolByIdRol(4); //El formulario solo permitirá crear usuarios con rol de vecino
-
+        // Asignar rol vecino
+        Rol rol = rolRepository.findRolByIdRol(4);
         usuario.setRol(rol);
-
-        //Se asigna al usuario como activo y se crea su credencial
-
+        // Asignar usuario activo y crear credencial
         Credencial credencial = new Credencial();
         credencial.setCorreo(usuario.getCredencial().getCorreo());
         credencial.setPassword(usuario.getCredencial().getPassword());
         credencial.setUsuario(usuario);
         usuario.setCredencial(credencial);
         usuario.setActivo(1);
-
         usuarioRepository.save(usuario);
         return "redirect:/inicio";
     }

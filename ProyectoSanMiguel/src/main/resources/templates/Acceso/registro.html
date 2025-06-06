@@ -82,12 +82,14 @@
                                         type="text"
                                         class="form-control"
                                         th:field="*{dni}"
+                                        id="dni"
                                         placeholder="DNI"
                                         pattern="\d{8}"
                                         maxlength="8"
                                         title="El DNI debe tener exactamente 8 dígitos"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-                                <div class="invalid-feedback" th:errors="*{dni}"></div>
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                        th:classappend="${#fields.hasErrors('dni')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
                             </div>
                         </div>
                         <div class="row justify-content-center p-1">
@@ -100,8 +102,9 @@
                                         placeholder="Nombre"
                                         maxlength="45"
                                         pattern="[A-Za-z\s]+"
-                                        title="El nombre solo puede contener letras y espacios" />
-                                <div class="invalid-feedback" th:errors="*{nombre}"></div>
+                                        title="El nombre solo puede contener letras y espacios"
+                                        th:classappend="${#fields.hasErrors('nombre')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></div>
                             </div>
                             <div class="col-md-6 p-1">
                                 <input
@@ -112,8 +115,9 @@
                                         placeholder="Apellido"
                                         maxlength="45"
                                         pattern="[A-Za-z\s]+"
-                                        title="El apellido solo puede contener letras y espacios" />
-                                <div class="invalid-feedback" th:errors="*{apellido}"></div>
+                                        title="El apellido solo puede contener letras y espacios"
+                                        th:classappend="${#fields.hasErrors('apellido')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('apellido')}" th:errors="*{apellido}"></div>
                             </div>
                         </div>
                         <div class="row justify-content-center p-1">
@@ -124,8 +128,11 @@
                                         class="form-control"
                                         th:field="*{credencial.correo}"
                                         placeholder="Correo Electrónico"
-                                        maxlength="255" />
-                                <div class="invalid-feedback" th:errors="*{credencial.correo}"></div>
+                                        maxlength="255"
+                                        pattern="^[^@\s]+@[^@\s]+\.[^@\s]+$"
+                                        title="Ingrese un correo electrónico válido"
+                                        th:classappend="${#fields.hasErrors('credencial.correo')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('credencial.correo')}" th:errors="*{credencial.correo}"></div>
                             </div>
                         </div>
                         <div class="row justify-content-center p-1">
@@ -139,8 +146,9 @@
                                         placeholder="Contraseña"
                                         minlength="6"
                                         maxlength="128"
-                                        title="La contraseña debe tener al menos 6 caracteres" />
-                                <div class="invalid-feedback" th:errors="*{credencial.password}"></div>
+                                        title="La contraseña debe tener al menos 6 caracteres"
+                                        th:classappend="${#fields.hasErrors('credencial.password')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('credencial.password')}" th:errors="*{credencial.password}"></div>
                             </div>
                             <div class="col-md-6 p-1">
                                 <input
@@ -156,13 +164,13 @@
                             </div>
                         </div>
                         <div class="row justify-content-center p-1">
-                            <select th:field="*{sector}" class="form-select" required>
+                            <select th:field="*{sector}" class="form-select" required th:classappend="${#fields.hasErrors('sector')}? 'is-invalid' : ''">
                                 <option value="" disabled selected>Seleccione un sector</option>
                                 <option th:each="sector : ${listaSectores}"
                                         th:value="${sector.idSector}"
                                         th:text="${sector.nombre}"></option>
                             </select>
-                            <div class="invalid-feedback" th:errors="*{sector}"></div>
+                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('sector')}" th:errors="*{sector}"></div>
                         </div>
                         <div class="row justify-content-center p-1">
                             <div class="col-md-6 p-1">
@@ -172,8 +180,9 @@
                                         class="form-control"
                                         th:field="*{direccion}"
                                         placeholder="Dirección"
-                                        maxlength="45" />
-                                <div class="invalid-feedback" th:errors="*{direccion}"></div>
+                                        maxlength="45"
+                                        th:classappend="${#fields.hasErrors('direccion')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
                             </div>
                             <div class="col-md-6 p-1">
                                 <input
@@ -184,9 +193,10 @@
                                         placeholder="Teléfono"
                                         pattern="\d{9}"
                                         maxlength="9"
-                                        title="El teléfono debe tener exactamente 9 dígitos"
-                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
-                                <div class="invalid-feedback" th:errors="*{telefono}"></div>
+                                        title="El teléfono debe tener 9 dígitos"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                        th:classappend="${#fields.hasErrors('telefono')}? 'is-invalid' : ''" />
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></div>
                             </div>
                         </div>
                         <div class="d-flex mt-1 justify-content-between align-items-center">
@@ -204,7 +214,7 @@
                         </div>
                     </form>
 
-                    <div th:if="${error}" class="alert alert-danger">
+                    <div th:if="${error}" class="alert alert-danger mt-3">
                         <span th:text="${error}"></span>
                     </div>
 
@@ -216,46 +226,6 @@
     </div>
 </div>
 <!-- [ Main Content ] end -->
-
-<!-- Form validations -->
-
-<script>
-
-
-    function validateForm() {
-        const password = document.getElementById('password').value;
-        const password2 = document.getElementById('password2').value;
-        const password2Error = document.getElementById('password2-error');
-
-        // Reset error message
-        password2Error.textContent = '';
-
-        // Check if passwords match
-        if (password !== password2) {
-            password2Error.textContent = 'Las contraseñas no coinciden';
-            return false;
-        }
-
-        return true;
-    }
-
-    // Enable Bootstrap 5 validation styles
-    (function () {
-        'use strict';
-        const forms = document.querySelectorAll('#registroForm');
-        Array.from(forms).forEach(form => {
-            form.addEventListener('submit', event => {
-                if (!form.checkValidity() || !validateForm()) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-                form.classList.add('was-validated');
-            }, false);
-        });
-    })();
-
-</script>
-
 
 <!-- Required Js -->
 <script th:src="@{assets/js/plugins/popper.min.js}"></script>
@@ -286,18 +256,6 @@
 </script>
 <script>
     main_layout_change('vertical');
-</script>
-
-<script>
-    document.querySelector('form').addEventListener('submit', function(event) {
-        const password = document.querySelector('[name="credencial.password"]').value;
-        const password2 = document.querySelector('#password2').value;
-
-        if (password !== password2) {
-            event.preventDefault(); // Evita que se envíe el formulario
-            alert('Las contraseñas no coinciden. Por favor, verifica.');
-        }
-    });
 </script>
 
 <div class="offcanvas border-0 pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">
