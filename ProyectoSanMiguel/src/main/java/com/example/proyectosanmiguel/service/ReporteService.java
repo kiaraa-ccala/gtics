@@ -2,36 +2,44 @@ package com.example.proyectosanmiguel.service;
 
 
 import net.sf.jasperreports.engine.*;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.util.JRLoader;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 public class ReporteService {
 
-    public byte[] generarReporteSanMiguel() throws JRException {
-        // 1. Cargar el archivo .jrxml desde resources/reportes/
-        InputStream jrxmlStream = getClass().getResourceAsStream("/reportes/ReporteSanMiguelPUCP.jrxml");
+    public byte[] generarReporteSanMiguel(List<?> datos) {
+        try {
+            // Cargar el archivo .jasper precompilado desde resources
+            InputStream jasperStream = getClass().getResourceAsStream("/reportes/ReporteSanMiguelPUCP.jasper");
+            JasperReport jasperReport = (JasperReport) JRLoader.loadObject(jasperStream);
 
-        // 2. Compilar el .jrxml a JasperReport (esto puede hacerse en tiempo de ejecución o previamente a .jasper)
-        JasperReport jasperReport = JasperCompileManager.compileReport(jrxmlStream);
+            // Cargar imágenes desde /resources/imagenes/
+            Map<String, Object> parametros = new HashMap<>();
+            parametros.put("logomuni", getClass().getResourceAsStream("/imagenes/logo-muni-2023-responsive.png"));
+            parametros.put("forma1", getClass().getResourceAsStream("/imagenes/forma1.png"));
+            parametros.put("forma2", getClass().getResourceAsStream("/imagenes/forma2.png"));
+            parametros.put("watermark", getClass().getResourceAsStream("/imagenes/watermarkSANM.png"));
 
-        // 3. Cargar imágenes desde resources/imagenes/
-        Map<String, Object> params = new HashMap<>();
-        params.put("logomuni", getClass().getResourceAsStream("/imagenes/logo-muni-2023-responsive.png"));
-        params.put("forma1", getClass().getResourceAsStream("/imagenes/forma1.png"));
-        params.put("forma2", getClass().getResourceAsStream("/imagenes/forma2.png"));
-        params.put("watermark", getClass().getResourceAsStream("/imagenes/watermarkSANM.png"));
+            // Cargar datos del reporte
+            JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(datos);
 
-        // 4. Fuente de datos (puede ser vacía o una lista de objetos)
-        JRDataSource dataSource = new JREmptyDataSource(1);
+            // Llenar el reporte con los datos y parámetros
+            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parametros, dataSource);
 
-        // 5. Llenar el reporte
-        JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, params, dataSource);
+            // Exportar a PDF como arreglo de bytes
+            return JasperExportManager.exportReportToPdf(jasperPrint);
 
-        // 6. Exportar a PDF
-        return JasperExportManager.exportReportToPdf(jasperPrint);
+        } catch (Exception e) {
+            System.err.println("Error al generar el reporte San Miguel: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 }
