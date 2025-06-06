@@ -28,6 +28,68 @@ public class S3TestController {
         return "Admin/admin_s3test";
     }
 
+    //listar los archivos de un bucket como json
+    @GetMapping("/listar")
+    public ResponseEntity<Map<String, Object>> listarArchivos() {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            response.put("archivos", amazonS3Service.listarArchivos(null));
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            response.put("error", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // Subir un archivo a S3 y retornar un ok
+    @PostMapping("/upload")
+    public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
+        System.out.println("=== DEBUG UPLOAD ===");
+        System.out.println("Método llamado correctamente");
+        System.out.println("Archivo recibido: " + (file != null ? file.getOriginalFilename() : "NULL"));
+        System.out.println("Tamaño: " + (file != null ? file.getSize() : "N/A"));
+        System.out.println("Content Type: " + (file != null ? file.getContentType() : "N/A"));
+
+        Map<String, String> response = new HashMap<>();
+
+        // Validaciones básicas
+        if (file == null) {
+            System.out.println("ERROR: Archivo es null");
+            response.put("status", "error");
+            response.put("message", "No se recibió ningún archivo");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        if (file.isEmpty()) {
+            System.out.println("ERROR: Archivo está vacío");
+            response.put("status", "error");
+            response.put("message", "El archivo está vacío");
+            return ResponseEntity.badRequest().body(response);
+        }
+
+        try {
+            String url = amazonS3Service.subirArchivo(file, null);
+            System.out.println("Archivo subido exitosamente: " + url);
+            response.put("status", "success");
+            response.put("url", url);
+            return ResponseEntity.ok(response);
+        } catch (IOException e) {
+            System.out.println("ERROR IOException: " + e.getMessage());
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("message", "Error al subir archivo: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } catch (Exception e) {
+            System.out.println("ERROR Exception: " + e.getMessage());
+            e.printStackTrace();
+            response.put("status", "error");
+            response.put("message", "Error inesperado: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
+
 
     /*
     @PostMapping("/upload")
