@@ -242,18 +242,13 @@ public class SuperAdminController {
             LocalDate hoy = LocalDate.now();
             LocalDate inicioSemana = hoy.minusDays(hoy.getDayOfWeek().getValue() - 1);
             LocalDate finSemana = inicioSemana.plusDays(6);
-            
-            System.out.println("DEBUG: Fechas - Inicio: " + inicioSemana + ", Fin: " + finSemana);
-            
+
             Long totalPersonal = usuarioRepository.countPersonalActivo();
-            System.out.println("DEBUG: Total personal: " + totalPersonal);
-            
+
             Long horariosATiempo = usuarioRepository.countHorariosATiempoSemana(inicioSemana, finSemana);
-            System.out.println("DEBUG: Horarios a tiempo: " + horariosATiempo);
-            
+
             Long horariosAusentes = usuarioRepository.countHorariosAusentesSemana(inicioSemana, finSemana);
-            System.out.println("DEBUG: Horarios ausentes: " + horariosAusentes);
-            
+
             // Calcular porcentajes
             Long totalHorarios = horariosATiempo + horariosAusentes;
             Double porcentajeATiempo = totalHorarios > 0 ? (horariosATiempo * 100.0) / totalHorarios : 0.0;
