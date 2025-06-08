@@ -177,14 +177,24 @@
                   </div>
                   <div class="col-xl-4">
                     <div class="card">
-                      <div class="card-body">
-                        <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
+                      <div class="card-body">                        <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
                           ¿Tienes un cupon de descuento?
                         </button>
+                        <div class="mb-3" th:if="${#lists.size(reservasPendientes) > 1}">
+                          <label for="selectReserva" class="form-label text-muted">Selecciona la reserva para aplicar cupón:</label>
+                          <select class="form-select" id="selectReserva">
+                            <option value="">Selecciona una reserva</option>
+                            <option th:each="reserva : ${reservasPendientes}" 
+                                    th:value="${reserva.idReserva}" 
+                                    th:text="${reserva.instanciaServicio.servicio.nombre + ' - ' + #temporals.format(reserva.fecha, 'dd/MM/yyyy')}">
+                            </option>                          </select>
+                        </div>
                         <div class="input-group my-2">
                           <input type="text" class="form-control" placeholder="Cupon de descuento aquí" id="inputCupon" />
                           <button class="btn btn-outline-secondary" type="button" id="btnAplicarCupon">Aplicar</button>
+                          <button class="btn btn-outline-warning" type="button" id="btnLimpiarCupon" onclick="limpiarCupon()" style="display: none;">Quitar</button>
                         </div>
+                        <div id="mensajeCupon" class="mt-2" style="display: none;"></div>
 
                       </div>
                     </div>
@@ -193,38 +203,40 @@
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item px-0">
                             <h5 class="mb-0">Resumen de servicios</h5>
-                          </li>
-                          <li class="list-group-item px-0">
+                          </li>                          <li class="list-group-item px-0">
                             <div class="float-end">
-                              <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
+                              <h5 class="mb-0" id="subtotalResumen" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                             </div>
                             <span class="text-muted">Sub Total</span>
                           </li>
                           <li class="list-group-item px-0">
-                            <div class="float-end"><h5 class="mb-0">-</h5></div>
-                            <span class="text-muted">Descuento aplicado</span>
+                            <div class="float-end">
+                              <h5 class="mb-0 text-success" id="descuentoAplicado" th:text="${descuento != null and descuento > 0 ? '-S/.' + #numbers.formatDecimal(descuento, 0, 'POINT', 2, 'COMMA') : '-'}">-</h5>
+                            </div>                            <span class="text-muted">Descuento aplicado</span>
                           </li>
                         </ul>
                       </div>
                     </div>
-
                     <div class="card">
                       <div class="card-body py-2">
                         <ul class="list-group list-group-flush">
                           <li class="list-group-item px-0">
-                            <div class="float-end">
-                              <h5 class="mb-0" th:text="'S/.' + ${#numbers.formatDecimal(totalReservas, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
+                            <div th:with="totalFinal=${totalConDescuento != null} ? ${totalConDescuento} : ${totalReservas}">
+                              <h5 class="mb-0" id="totalConDescuento"
+                                  th:text="'S/.' + ${#numbers.formatDecimal(totalFinal, 0, 'POINT', 2, 'COMMA')}">S/.0.00</h5>
                             </div>
-                            <h5 class="mb-0 d-inline-block">Total</h5>
-                          </li>
+
+                            <h5 class="mb-0 d-inline-block">Total a Pagar</h5>                          </li>
                         </ul>
                       </div>
                     </div>
-
-
-                    <div class="d-grid mb-3">
-                      <button class="btn btn-primary">Procesar pago</button>
-                    </div>
+                    <form id="formPago" action="/vecino/guardarPago" method="post">
+                      <input type="hidden" id="idReservaPago" name="idReserva" th:value="${reservasPendientes[0]?.idReserva}">
+                      <input type="hidden" id="codigoCuponPago" name="codigoCupon" value="">
+                      <div class="d-grid mb-3">
+                        <button type="submit" class="btn btn-primary" id="btnProcesarPago">Procesar pago</button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -312,17 +324,29 @@
                   </div>
 
                   <!-- Columna derecha -->
-                  <div class="col-xl-4">
-                    <!-- Cupon -->
+                  <div class="col-xl-4">                    <!-- Cupon -->
                     <div class="card">
                       <div class="card-body">
                         <button type="button" class="btn btn-sm btn-link-secondary" data-bs-toggle="modal" data-bs-target="#couponModal">
                           ¿Tienes un cupón de descuento?
                         </button>
-                        <div class="input-group my-2">
-                          <input type="text" class="form-control" placeholder="Cupón de descuento aquí" />
-                          <button class="btn btn-outline-secondary" type="button">Aplicar</button>
+                        <!-- Selector de reserva para múltiples reservas -->
+                        <div class="mb-3" th:if="${#lists.size(reservasPendientes) > 1}">
+                          <label for="selectReserva2" class="form-label text-muted">Selecciona la reserva para aplicar cupón:</label>
+                          <select class="form-select" id="selectReserva2">
+                            <option value="">Selecciona una reserva</option>
+                            <option th:each="reserva : ${reservasPendientes}" 
+                                    th:value="${reserva.idReserva}" 
+                                    th:text="${reserva.instanciaServicio.servicio.nombre + ' - ' + #temporals.format(reserva.fecha, 'dd/MM/yyyy')}">
+                            </option>
+                          </select>
                         </div>
+                        <div class="input-group my-2">
+                          <input type="text" class="form-control" placeholder="Cupón de descuento aquí" id="inputCupon2" />
+                          <button class="btn btn-outline-secondary" type="button" id="btnAplicarCupon2">Aplicar</button>
+                          <button class="btn btn-outline-warning" type="button" id="btnLimpiarCupon2" onclick="limpiarCupon('2')" style="display: none;">Quitar</button>
+                        </div>
+                        <div id="mensajeCupon2" class="mt-2" style="display: none;"></div>
                       </div>
                     </div>
 
@@ -530,12 +554,11 @@
                               </div>
 
                               <!-- Botones -->
-                              <div class="text-end btn-page mb-0 mt-4">
-                                <button class="btn btn-outline-secondary" type="button">Cancelar</button>
+                              <div class="text-end btn-page mb-0 mt-4">                                <button class="btn btn-outline-secondary" type="button">Cancelar</button>
                                 <div id="pagoEnProceso" class="alert alert-info d-none" role="alert">
                                   Procesando pago, por favor espere...
                                 </div>
-                                <button id="btnProcesarPago" class="btn btn-primary" type="submit">Procesar pago</button>
+                                <button id="btnProcesarPagoTab3" class="btn btn-primary" type="submit">Procesar pago</button>
                               </div>
                             </div>
                           </div>
@@ -729,23 +752,23 @@
     <script>
   layout_change('light');
 </script>
-  
+
 <script>
   change_box_container('false');
 </script>
- 
+
 <script>
   layout_caption_change('true');
 </script>
- 
+
 <script>
   layout_rtl_change('false');
 </script>
- 
+
 <script>
   preset_change('preset-1');
 </script>
- 
+
 <script>
   main_layout_change('vertical');
 </script>
@@ -836,44 +859,254 @@
           }, 1500);
         }, 2000);
       });
-    </script>
-
-    <script>
-      document.getElementById('btnAplicarCupon').addEventListener('click', function() {
-        const codigoCupon = document.getElementById('inputCupon').value.trim();
+    </script>    <script th:inline="javascript">
+      // Variables globales
+      let descuentoAplicadoActual = 0;
+      let totalOriginal = [[${totalReservas}]] || 0;
+      let reservaConDescuento = null;
+      let reservasPendientesData = [[${reservasPendientes}]] || [];
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        // Configurar eventos para ambas pestañas
+        const btnAplicarCupon = document.getElementById('btnAplicarCupon');
+        const btnAplicarCupon2 = document.getElementById('btnAplicarCupon2');
+        
+        if (btnAplicarCupon) {
+          btnAplicarCupon.addEventListener('click', () => aplicarCuponHandler(''));
+        }
+        
+        if (btnAplicarCupon2) {
+          btnAplicarCupon2.addEventListener('click', () => aplicarCuponHandler('2'));
+        }
+        
+        const formPago = document.getElementById('formPago');
+        if (formPago) {
+          formPago.addEventListener('submit', function(e) {
+            const btnPago = document.getElementById('btnProcesarPago');
+            if (btnPago) {
+              btnPago.disabled = true;
+              btnPago.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Procesando...';
+            }
+          });
+        }
+      });
+      
+      function aplicarCuponHandler(sufijo = '') {
+        const codigoCupon = document.getElementById('inputCupon' + sufijo).value.trim();
+        const selectReserva = document.getElementById('selectReserva' + sufijo);
+        let idReserva = null;
+        
+        // Si hay selector de reserva, obtener la seleccionada
+        if (selectReserva && selectReserva.style.display !== 'none') {
+          idReserva = selectReserva.value;
+          if (!idReserva) {
+            mostrarMensaje('Por favor selecciona una reserva para aplicar el cupón.', 'warning', sufijo);
+            return;
+          }
+        } else {
+          // Si solo hay una reserva, usar la primera
+          if (reservasPendientesData && reservasPendientesData.length > 0) {
+            idReserva = reservasPendientesData[0].idReserva;
+          }
+        }
+        
         if (!codigoCupon) {
-          alert('Por favor ingrese un código de cupón');
+          document.getElementById("inputCupon" + sufijo).classList.add("is-invalid");
+          mostrarMensaje('Por favor ingresa un código de cupón válido.', 'warning', sufijo);
+          return;
+        } else {
+          document.getElementById("inputCupon" + sufijo).classList.remove("is-invalid");
+        }
+        
+        if (!idReserva) {
+          mostrarMensaje('No se pudo determinar la reserva para aplicar el cupón.', 'error', sufijo);
           return;
         }
-
-        // Asumiendo que totalReservas es un valor mostrado y accesible, si no, podrías obtenerlo del DOM o pasar desde backend con Thymeleaf.
-        let total = parseFloat(/* aquí pasa el total actual, ej: */ /*[[${totalReservas}]]*/);
-
+        
+        // Deshabilitar botón mientras se procesa
+        const btnAplicar = document.getElementById('btnAplicarCupon' + sufijo);
+        btnAplicar.disabled = true;
+        btnAplicar.textContent = 'Validando...';
+        
         fetch('/vecino/aplicarDescuento', {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-          body: new URLSearchParams({codigo: codigoCupon, idServicio: 1, total: total}) // Cambia 1 por el id del servicio
+          body: new URLSearchParams({
+            codigo: codigoCupon, 
+            idReserva: idReserva
+          })
         })
-                .then(response => response.json())
-                .then(data => {
-                  if (data.valido) {
-                    alert(data.mensaje);
-                    // Actualiza el resumen de precios
-                    document.querySelector('#descuentoAplicado').textContent = 'S/.' + data.descuento.toFixed(2);
-                    document.querySelector('#totalConDescuento').textContent = 'S/.' + data.totalConDescuento.toFixed(2);
-                  } else {
-                    alert(data.mensaje);
-                  }
-                })
-                .catch(err => {
-                  alert('Error al aplicar el cupón');
-                  console.error(err);
-                });
-      });
-
+        .then(response => response.json())
+        .then(data => {
+          if (data.valido) {
+            // Aplicar descuento exitosamente
+            descuentoAplicadoActual = data.descuento;
+            reservaConDescuento = idReserva;
+            
+            // Actualizar interfaz - buscar en ambas pestañas
+            const descuentoElements = document.querySelectorAll('#descuentoAplicado');
+            const totalElements = document.querySelectorAll('#totalConDescuento');
+            
+            descuentoElements.forEach(el => {
+              if (el) {
+                el.textContent = '-S/.' + data.descuento.toFixed(2);
+                el.classList.add('text-success');
+              }
+            });
+            
+            totalElements.forEach(el => {
+              if (el) {
+                el.textContent = 'S/.' + data.totalConDescuento.toFixed(2);
+              }
+            });
+            
+            // Actualizar campos ocultos del formulario
+            const codigoCuponPago = document.getElementById('codigoCuponPago');
+            const idReservaPago = document.getElementById('idReservaPago');
+            
+            if (codigoCuponPago) codigoCuponPago.value = codigoCupon;
+            if (idReservaPago) idReservaPago.value = idReserva;
+            
+            mostrarMensaje(data.mensaje, 'success', sufijo);
+            
+            // Deshabilitar el input y botón para evitar múltiples aplicaciones
+            document.getElementById('inputCupon' + sufijo).disabled = true;
+            btnAplicar.textContent = 'Aplicado ✓';
+            btnAplicar.classList.remove('btn-outline-secondary');
+            btnAplicar.classList.add('btn-success');
+            
+            // Mostrar botón para quitar cupón
+            const btnLimpiar = document.getElementById('btnLimpiarCupon' + sufijo);
+            if (btnLimpiar) {
+              btnLimpiar.style.display = 'block';
+            }
+            
+            // Sincronizar ambas pestañas si existen
+            sincronizarCupones(codigoCupon, sufijo);
+            
+          } else {
+            mostrarMensaje(data.mensaje || 'Cupón inválido', 'error', sufijo);
+            btnAplicar.disabled = false;
+            btnAplicar.textContent = 'Aplicar';
+          }
+        })
+        .catch(err => {
+          console.error('Error:', err);
+          mostrarMensaje('Error al aplicar el cupón. Inténtalo de nuevo.', 'error', sufijo);
+          btnAplicar.disabled = false;
+          btnAplicar.textContent = 'Aplicar';
+        });
+      }
+      
+      // Función para sincronizar cupones entre pestañas
+      function sincronizarCupones(codigoCupon, sufijoOrigen) {
+        const sufijos = ['', '2'];
+        sufijos.forEach(sufijo => {
+          if (sufijo !== sufijoOrigen) {
+            const inputOtro = document.getElementById('inputCupon' + sufijo);
+            const btnOtro = document.getElementById('btnAplicarCupon' + sufijo);
+            const btnLimpiarOtro = document.getElementById('btnLimpiarCupon' + sufijo);
+            
+            if (inputOtro && btnOtro) {
+              inputOtro.value = codigoCupon;
+              inputOtro.disabled = true;
+              btnOtro.textContent = 'Aplicado ✓';
+              btnOtro.classList.remove('btn-outline-secondary');
+              btnOtro.classList.add('btn-success');
+              btnOtro.disabled = true;
+              
+              if (btnLimpiarOtro) {
+                btnLimpiarOtro.style.display = 'block';
+              }
+            }
+          }
+        });
+      }
+      
+      // Función para mostrar mensajes
+      function mostrarMensaje(mensaje, tipo, sufijo = '') {
+        const mensajeDiv = document.getElementById('mensajeCupon' + sufijo);
+        if (!mensajeDiv) return;
+        
+        mensajeDiv.style.display = 'block';
+        
+        // Limpiar clases previas
+        mensajeDiv.className = 'mt-2 alert alert-dismissible fade show';
+        
+        // Agregar clase según tipo
+        switch(tipo) {
+          case 'success':
+            mensajeDiv.classList.add('alert-success');
+            break;
+          case 'error':
+            mensajeDiv.classList.add('alert-danger');
+            break;
+          case 'warning':
+            mensajeDiv.classList.add('alert-warning');
+            break;
+          default:
+            mensajeDiv.classList.add('alert-info');
+        }
+        
+        mensajeDiv.innerHTML = mensaje + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>';
+        
+        // Auto-ocultar después de 5 segundos para mensajes de éxito
+        if (tipo === 'success') {
+          setTimeout(() => {
+            mensajeDiv.style.display = 'none';
+          }, 5000);
+        }
+      }
+      
+      // Función para limpiar cupón aplicado
+      function limpiarCupon(sufijo = '') {
+        descuentoAplicadoActual = 0;
+        reservaConDescuento = null;
+        
+        // Limpiar todos los sufijos
+        const sufijos = ['', '2'];
+        sufijos.forEach(s => {
+          const inputCupon = document.getElementById('inputCupon' + s);
+          const btnAplicar = document.getElementById('btnAplicarCupon' + s);
+          const btnLimpiar = document.getElementById('btnLimpiarCupon' + s);
+          const mensajeDiv = document.getElementById('mensajeCupon' + s);
+          
+          if (inputCupon) {
+            inputCupon.value = '';
+            inputCupon.disabled = false;
+          }
+          
+          if (btnAplicar) {
+            btnAplicar.disabled = false;
+            btnAplicar.textContent = 'Aplicar';
+            btnAplicar.classList.remove('btn-success');
+            btnAplicar.classList.add('btn-outline-secondary');
+          }
+          
+          if (btnLimpiar) btnLimpiar.style.display = 'none';
+          if (mensajeDiv) mensajeDiv.style.display = 'none';
+        });
+        
+        const codigoCuponPago = document.getElementById('codigoCuponPago');
+        const descuentoElements = document.querySelectorAll('#descuentoAplicado');
+        const totalElements = document.querySelectorAll('#totalConDescuento');
+        
+        if (codigoCuponPago) codigoCuponPago.value = '';
+        
+        descuentoElements.forEach(el => {
+          if (el) {
+            el.textContent = '-';
+            el.classList.remove('text-success');
+          }
+        });
+        
+        totalElements.forEach(el => {
+          if (el) {
+            el.textContent = 'S/.' + totalOriginal.toFixed(2);
+          }
+        });
+      }
     </script>
-
-
 
 
     <style>

@@ -1,7 +1,6 @@
 package com.example.proyectosanmiguel.repository;
 
 import com.example.proyectosanmiguel.entity.InstanciaServicio;
-import com.example.proyectosanmiguel.entity.Servicio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
