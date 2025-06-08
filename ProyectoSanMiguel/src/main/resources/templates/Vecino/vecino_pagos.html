@@ -864,7 +864,16 @@
       let descuentoAplicadoActual = 0;
       let totalOriginal = [[${totalReservas}]] || 0;
       let reservaConDescuento = null;
-      let reservasPendientesData = [[${reservasPendientes}]] || [];
+      // Solo incluir los datos necesarios para evitar referencias circulares
+      let reservasPendientesData = [
+        /*[# th:each="reserva : ${reservasPendientes}"]*/
+        {
+          idReserva: /*[[${reserva.idReserva}]]*/ 0,
+          servicioNombre: /*[[${reserva.instanciaServicio.servicio.nombre}]]*/ '',
+          fecha: /*[[${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}]]*/ ''
+        }/*[# th:if="${!reservaStat.last}"]*/,/*[/]*/
+        /*[/]*/
+      ];
       
       document.addEventListener('DOMContentLoaded', function() {
         // Configurar eventos para ambas pestañas
@@ -890,15 +899,19 @@
           });
         }
       });
-      
-      function aplicarCuponHandler(sufijo = '') {
+        function aplicarCuponHandler(sufijo = '') {
         const codigoCupon = document.getElementById('inputCupon' + sufijo).value.trim();
         const selectReserva = document.getElementById('selectReserva' + sufijo);
         let idReserva = null;
         
+        console.log('=== APLICAR CUPÓN FRONTEND ===');
+        console.log('Código cupón:', codigoCupon);
+        console.log('Sufijo:', sufijo);
+        
         // Si hay selector de reserva, obtener la seleccionada
         if (selectReserva && selectReserva.style.display !== 'none') {
           idReserva = selectReserva.value;
+          console.log('ID Reserva del selector:', idReserva);
           if (!idReserva) {
             mostrarMensaje('Por favor selecciona una reserva para aplicar el cupón.', 'warning', sufijo);
             return;
@@ -907,6 +920,7 @@
           // Si solo hay una reserva, usar la primera
           if (reservasPendientesData && reservasPendientesData.length > 0) {
             idReserva = reservasPendientesData[0].idReserva;
+            console.log('ID Reserva automática:', idReserva);
           }
         }
         
@@ -923,6 +937,8 @@
           return;
         }
         
+        console.log('Enviando petición con:', {codigo: codigoCupon, idReserva: idReserva});
+        
         // Deshabilitar botón mientras se procesa
         const btnAplicar = document.getElementById('btnAplicarCupon' + sufijo);
         btnAplicar.disabled = true;
@@ -936,8 +952,12 @@
             idReserva: idReserva
           })
         })
-        .then(response => response.json())
+        .then(response => {
+          console.log('Status de respuesta:', response.status);
+          return response.json();
+        })
         .then(data => {
+          console.log('Respuesta del servidor:', data);
           if (data.valido) {
             // Aplicar descuento exitosamente
             descuentoAplicadoActual = data.descuento;
@@ -983,15 +1003,15 @@
             
             // Sincronizar ambas pestañas si existen
             sincronizarCupones(codigoCupon, sufijo);
-            
-          } else {
+              } else {
+            console.log('Error del servidor:', data.mensaje);
             mostrarMensaje(data.mensaje || 'Cupón inválido', 'error', sufijo);
             btnAplicar.disabled = false;
             btnAplicar.textContent = 'Aplicar';
           }
         })
         .catch(err => {
-          console.error('Error:', err);
+          console.error('Error de conexión:', err);
           mostrarMensaje('Error al aplicar el cupón. Inténtalo de nuevo.', 'error', sufijo);
           btnAplicar.disabled = false;
           btnAplicar.textContent = 'Aplicar';

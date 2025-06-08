@@ -1,12 +1,14 @@
 package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.repository.InformacionPagoRepository;
 import java.math.BigDecimal;
+import java.util.stream.Collectors;
 
 import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +23,8 @@ import java.time.format.TextStyle;
 import java.util.*;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/vecino")
@@ -132,11 +136,9 @@ public class VecinoController {
                 .sum();
 
         double descuentoAplicado = 0;
-        double totalConDescuento = total;
-
-        if (codigoCupon != null && !codigoCupon.isEmpty()) {
+        double totalConDescuento = total;        if (codigoCupon != null && !codigoCupon.isEmpty()) {
             // Validar el cupón solo una vez
-            Map<String, Object> descuentoData = aplicarDescuento(codigoCupon, reservasPendientes.get(0).getIdReserva());
+            Map<String, Object> descuentoData = validarCupon(codigoCupon, reservasPendientes.get(0).getIdReserva());
 
             if ((boolean) descuentoData.get("valido")) {
                 descuentoAplicado = (double) descuentoData.get("descuento");
@@ -234,11 +236,9 @@ public class VecinoController {
         if (reserva.getEstado() != 0) {
             redirectAttributes.addFlashAttribute("error", "La reserva no está pendiente de pago.");
             return "redirect:/vecino/pagos";        }        InformacionPago pago = reserva.getInformacionPago();
-        BigDecimal totalFinal = BigDecimal.valueOf(pago.getTotal());
-
-        // Si hay cupón, aplicar descuento
+        BigDecimal totalFinal = BigDecimal.valueOf(pago.getTotal());        // Si hay cupón, aplicar descuento
         if (codigoCupon != null && !codigoCupon.trim().isEmpty()) {
-            Map<String, Object> descuentoData = aplicarDescuento(codigoCupon, idReserva);
+            Map<String, Object> descuentoData = validarCupon(codigoCupon, idReserva);
             
             if ((boolean) descuentoData.get("valido")) {
                 totalFinal = (BigDecimal) descuentoData.get("totalConDescuento");
@@ -248,7 +248,7 @@ public class VecinoController {
                 redirectAttributes.addFlashAttribute("error", descuentoData.get("mensaje"));
                 return "redirect:/vecino/pagos";
             }
-        }        // Actualizar el pago
+        }// Actualizar el pago
         pago.setTotal(totalFinal.doubleValue());
         pago.setEstado("Pagado");
         informacionPagoRepository.save(pago);
@@ -326,100 +326,293 @@ public class VecinoController {
     private String obtenerDia(LocalDate fecha) {
         return fecha.getDayOfWeek()
                 .getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
+    }    @PostMapping("/aplicarDescuento")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> aplicarDescuento(@RequestParam("codigo") String codigo,
+                                                @RequestParam("idReserva") Integer idReserva) {
+        try {
+            Map<String, Object> resultado = validarCupon(codigo, idReserva);
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("valido", false);
+            resp.put("mensaje", "Error interno del servidor: " + e.getMessage());
+            System.out.println("ERROR EXCEPTION en aplicarDescuento: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(resp);
+        }
     }
 
-    @PostMapping("/aplicarDescuento")
-    @ResponseBody
-    public Map<String, Object> aplicarDescuento(@RequestParam("codigo") String codigo,
-                                                @RequestParam("idReserva") Integer idReserva) {
+    // Método privado para validar cupones (usado tanto por el endpoint REST como por métodos internos)
+    private Map<String, Object> validarCupon(String codigo, Integer idReserva) {
         Map<String, Object> resp = new HashMap<>();
 
-        // Imprimir los datos recibidos
-        System.out.println("Código de cupón recibido: " + codigo);
-        System.out.println("ID de reserva recibido: " + idReserva);
+        try {
+            // Imprimir los datos recibidos
+            System.out.println("=== INICIO VALIDAR CUPON ===");
+            System.out.println("Código de cupón recibido: '" + codigo + "'");
+            System.out.println("ID de reserva recibido: " + idReserva);
 
-        // Verificar que el parámetro idReserva no sea null
-        if (idReserva == null) {
+            // Verificar que el parámetro idReserva no sea null
+            if (idReserva == null) {
+                resp.put("valido", false);
+                resp.put("mensaje", "El ID de reserva no puede ser nulo.");
+                System.out.println("ERROR: ID de reserva es null");
+                return resp;
+            }
+
+            LocalDate hoy = LocalDate.now();
+            System.out.println("Fecha actual: " + hoy);
+            
+            // Primero verificar si existe el cupón en general
+            System.out.println("Buscando cupón con código: '" + codigo.trim() + "'");
+            Optional<Descuento> descSimple = descuentoRepository.findByCodigo(codigo.trim());
+            System.out.println("Resultado de búsqueda por código: " + (descSimple.isPresent() ? "ENCONTRADO" : "NO ENCONTRADO"));
+            
+            if (descSimple.isEmpty()) {
+                resp.put("valido", false);
+                resp.put("mensaje", "Código de descuento no existe.");
+                System.out.println("ERROR: Cupón '" + codigo + "' no existe en la base de datos");
+                
+                // Debug adicional: verificar todos los cupones existentes
+                System.out.println("=== LISTANDO TODOS LOS CUPONES EXISTENTES ===");
+                descuentoRepository.findAll().forEach(d -> {
+                    System.out.println("Cupón DB: '" + d.getCodigo() + "' - Servicio ID: " + d.getServicio().getIdServicio());
+                });
+                System.out.println("=== FIN LISTA CUPONES ===");
+                
+                return resp;
+            }
+
+            Descuento descSimpleValue = descSimple.get();
+            System.out.println("Cupón encontrado en BD: " + descSimpleValue.getCodigo());
+            System.out.println("Fecha inicio: " + descSimpleValue.getFechaInicio());
+            System.out.println("Fecha final: " + descSimpleValue.getFechaFinal());
+            System.out.println("ID Servicio del cupón: " + descSimpleValue.getServicio().getIdServicio());
+            
+            // Buscar el descuento válido por código y fecha
+            Optional<Descuento> descOpt = descuentoRepository.findValidDescuentoByCodigoAndFecha(codigo.trim(), hoy);
+
+            if (descOpt.isEmpty()) {
+                resp.put("valido", false);
+                resp.put("mensaje", "Código de descuento inválido o expirado.");
+                System.out.println("ERROR: Cupón expirado o fuera de rango de fechas");
+                System.out.println("Hoy: " + hoy + ", Inicio: " + descSimpleValue.getFechaInicio() + ", Final: " + descSimpleValue.getFechaFinal());
+                return resp;
+            }
+
+            Descuento descuento = descOpt.get();
+            System.out.println("Descuento encontrado: " + descuento.getCodigo());
+
+            // Obtener la reserva desde idReserva
+            Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
+            if (reservaOpt.isEmpty()) {
+                resp.put("valido", false);
+                resp.put("mensaje", "Reserva no encontrada.");
+                System.out.println("ERROR: Reserva no encontrada con ID " + idReserva);
+                return resp;
+            }
+
+            Reserva reserva = reservaOpt.get();
+            System.out.println("Reserva encontrada: " + reserva.getIdReserva());
+
+            // Obtener idServicio desde la InstanciaServicio de la reserva
+            Integer idServicioReserva = reserva.getInstanciaServicio().getServicio().getIdServicio();
+            System.out.println("ID del servicio en la reserva: " + idServicioReserva);
+            System.out.println("ID del servicio del cupón: " + descuento.getServicio().getIdServicio());
+
+            // Verificar si el descuento aplica para el servicio de la reserva
+            if (!descuento.getServicio().getIdServicio().equals(idServicioReserva)) {
+                resp.put("valido", false);
+                resp.put("mensaje", "El descuento no aplica para este servicio.");
+                System.out.println("ERROR: El descuento no aplica para el servicio con ID " + idServicioReserva);
+                return resp;
+            }
+
+            // Usar el total de la información de pago de la reserva
+            if (reserva.getInformacionPago() == null) {
+                resp.put("valido", false);
+                resp.put("mensaje", "La reserva no tiene información de pago asociada.");
+                System.out.println("ERROR: La reserva no tiene información de pago.");
+                return resp;
+            }
+
+            BigDecimal total = BigDecimal.valueOf(reserva.getInformacionPago().getTotal());
+            System.out.println("Total de la reserva: " + total);
+
+            // Calcular el descuento
+            BigDecimal descuentoAplicado = BigDecimal.ZERO;
+            if ("PORCENTAJE".equalsIgnoreCase(descuento.getTipoDescuento())) {
+                descuentoAplicado = total.multiply(BigDecimal.valueOf(descuento.getValor() / 100.0));
+                System.out.println("Descuento por porcentaje: " + descuento.getValor() + "%");
+            } else if ("FIJO".equalsIgnoreCase(descuento.getTipoDescuento())) {
+                descuentoAplicado = BigDecimal.valueOf(descuento.getValor());
+                System.out.println("Descuento fijo: S/." + descuento.getValor());
+            }
+
+            // Verificar que el descuento no sea mayor al monto de la tarifa
+            if (descuentoAplicado.compareTo(total) > 0) {
+                descuentoAplicado = total; // No puede ser mayor al total
+            }
+
+            // Calcular el total con descuento
+            BigDecimal totalConDescuento = total.subtract(descuentoAplicado);
+            if (totalConDescuento.compareTo(BigDecimal.ZERO) < 0) {
+                totalConDescuento = BigDecimal.ZERO;
+            }
+
+            // Respuesta exitosa con el descuento aplicado
+            resp.put("valido", true);
+            resp.put("descuento", descuentoAplicado);
+            resp.put("totalConDescuento", totalConDescuento);
+            resp.put("mensaje", "Descuento aplicado correctamente.");
+            System.out.println("SUCCESS: Descuento aplicado: " + descuentoAplicado + ", Total con descuento: " + totalConDescuento);
+            System.out.println("=== FIN VALIDAR CUPON ===");
+
+            return resp;
+
+        } catch (Exception e) {
+            System.out.println("ERROR EXCEPTION en validarCupon: " + e.getMessage());
+            e.printStackTrace();
             resp.put("valido", false);
-            resp.put("mensaje", "El ID de reserva no puede ser nulo.");
+            resp.put("mensaje", "Error interno del servidor: " + e.getMessage());
             return resp;
         }
-
-        LocalDate hoy = LocalDate.now();
-        System.out.println("Fecha actual: " + hoy);
-
-        // Buscar el descuento en la base de datos
-        Optional<Descuento> descOpt = descuentoRepository.findByCodigoAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(
-                codigo.trim(), hoy, hoy);
-
-        if (descOpt.isEmpty()) {
-            resp.put("valido", false);
-            resp.put("mensaje", "Código de descuento inválido o expirado.");
-            System.out.println("Cupón no encontrado o expirado.");
-            return resp;
+    }// Endpoint de diagnóstico para probar cupones (público para testing)
+    @GetMapping("/diagnosticar-cupon/{codigo}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> diagnosticarCupon(@PathVariable String codigo) {
+        Map<String, Object> resp = new HashMap<>();
+        
+        try {
+            System.out.println("=== DIAGNÓSTICO DE CUPÓN ===");
+            System.out.println("Código a diagnosticar: '" + codigo + "'");
+            
+            // Verificar si existe el cupón
+            Optional<Descuento> descOpt = descuentoRepository.findByCodigo(codigo.trim());
+            
+            if (descOpt.isEmpty()) {
+                resp.put("existe", false);
+                resp.put("mensaje", "Cupón no encontrado en la base de datos");
+                
+                // Listar todos los cupones
+                List<String> cupones = descuentoRepository.findAll().stream()
+                    .map(Descuento::getCodigo)
+                    .collect(Collectors.toList());
+                resp.put("cuponesExistentes", cupones);
+                
+                return ResponseEntity.ok(resp);
+            }
+            
+            Descuento descuento = descOpt.get();
+            resp.put("existe", true);
+            resp.put("codigo", descuento.getCodigo());
+            resp.put("tipoDescuento", descuento.getTipoDescuento());
+            resp.put("valor", descuento.getValor());
+            resp.put("fechaInicio", descuento.getFechaInicio().toString());
+            resp.put("fechaFinal", descuento.getFechaFinal().toString());
+            resp.put("idServicio", descuento.getServicio().getIdServicio());
+            resp.put("nombreServicio", descuento.getServicio().getNombre());
+            
+            // Verificar validez de fecha
+            LocalDate hoy = LocalDate.now();
+            boolean fechaValida = !hoy.isBefore(descuento.getFechaInicio()) && !hoy.isAfter(descuento.getFechaFinal());
+            resp.put("fechaValida", fechaValida);
+            resp.put("fechaActual", hoy.toString());
+              // Verificar reservas compatibles con diferentes estados
+            List<Reserva> todasLasReservas = reservaRepository.findAll().stream()
+                .filter(r -> r.getInstanciaServicio().getServicio().getIdServicio().equals(descuento.getServicio().getIdServicio()))
+                .collect(Collectors.toList());
+            
+            List<Reserva> reservasPendientes = todasLasReservas.stream()
+                .filter(r -> r.getEstado().equals(0))  // Estado 0 = Pendiente
+                .collect(Collectors.toList());
+                
+            resp.put("totalReservasServicio", todasLasReservas.size());
+            resp.put("reservasPendientes", reservasPendientes.size());
+            
+            // Información detallada de estados
+            Map<Integer, Long> estadosReservas = todasLasReservas.stream()
+                .collect(Collectors.groupingBy(Reserva::getEstado, Collectors.counting()));
+            resp.put("estadosReservas", estadosReservas);
+            
+            System.out.println("Diagnóstico completado para: " + codigo);
+            
+            return ResponseEntity.ok(resp);
+            
+        } catch (Exception e) {
+            System.out.println("ERROR en diagnóstico: " + e.getMessage());
+            e.printStackTrace();
+            resp.put("error", true);
+            resp.put("mensaje", "Error en diagnóstico: " + e.getMessage());
+            return ResponseEntity.status(500).body(resp);
         }
-
-        Descuento descuento = descOpt.get();
-        System.out.println("Descuento encontrado: " + descuento.getCodigo());
-
-        // Obtener la reserva desde idReserva
-        Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
-        if (reservaOpt.isEmpty()) {
-            resp.put("valido", false);
-            resp.put("mensaje", "Reserva no encontrada.");
-            System.out.println("Reserva no encontrada con ID " + idReserva);
-            return resp;
-        }
-
-        Reserva reserva = reservaOpt.get();
-        System.out.println("Reserva encontrada: " + reserva.getIdReserva());
-
-        // Obtener idServicio desde la InstanciaServicio de la reserva
-        Integer idServicioReserva = reserva.getInstanciaServicio().getServicio().getIdServicio();
-        System.out.println("ID del servicio en la reserva: " + idServicioReserva);        // Verificar si el descuento aplica para el servicio de la reserva
-        if (!descuento.getServicio().getIdServicio().equals(idServicioReserva)) {
-            resp.put("valido", false);
-            resp.put("mensaje", "El descuento no aplica para este servicio.");
-            System.out.println("El descuento no aplica para el servicio con ID " + idServicioReserva);
-            return resp;
-        }
-
-        // Usar el total de la información de pago de la reserva
-        if (reserva.getInformacionPago() == null) {
-            resp.put("valido", false);
-            resp.put("mensaje", "La reserva no tiene información de pago asociada.");
-            System.out.println("La reserva no tiene información de pago.");
-            return resp;        }        BigDecimal total = BigDecimal.valueOf(reserva.getInformacionPago().getTotal());
-        System.out.println("Total de la reserva: " + total);
-
-        // Calcular el descuento
-        BigDecimal descuentoAplicado = BigDecimal.ZERO;
-        if ("PORCENTAJE".equalsIgnoreCase(descuento.getTipoDescuento())) {
-            descuentoAplicado = total.multiply(BigDecimal.valueOf(descuento.getValor() / 100.0));
-        } else if ("FIJO".equalsIgnoreCase(descuento.getTipoDescuento())) {
-            descuentoAplicado = BigDecimal.valueOf(descuento.getValor());
-        }
-
-        // Verificar que el descuento no sea mayor al monto de la tarifa
-        if (descuentoAplicado.compareTo(total) > 0) {
-            descuentoAplicado = total; // No puede ser mayor al total
-        }
-
-        // Calcular el total con descuento
-        BigDecimal totalConDescuento = total.subtract(descuentoAplicado);
-        if (totalConDescuento.compareTo(BigDecimal.ZERO) < 0) {
-            totalConDescuento = BigDecimal.ZERO;
-        }
-
-        // Respuesta exitosa con el descuento aplicado
-        resp.put("valido", true);
-        resp.put("descuento", descuentoAplicado);
-        resp.put("totalConDescuento", totalConDescuento);
-        resp.put("mensaje", "Descuento aplicado correctamente.");
-        System.out.println("Descuento aplicado: " + descuentoAplicado + ", Total con descuento: " + totalConDescuento);
-
-        return resp;
+    }    // Endpoint de prueba para verificar conectividad AJAX
+    @PostMapping("/test-ajax")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> testAjax() {
+        Map<String, Object> resp = new HashMap<>();
+        resp.put("status", "success");
+        resp.put("message", "AJAX funciona correctamente");
+        resp.put("timestamp", LocalDateTime.now().toString());
+        
+        System.out.println("Test AJAX ejecutado correctamente");
+        return ResponseEntity.ok(resp);
     }
 
-
+    // Endpoint público para diagnóstico de cupones (sin autenticación para testing)
+    @GetMapping("/public/diagnosticar-cupon/{codigo}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> diagnosticarCuponPublico(@PathVariable String codigo) {
+        Map<String, Object> resp = new HashMap<>();
+        
+        try {
+            System.out.println("=== DIAGNÓSTICO PÚBLICO DE CUPÓN ===");
+            System.out.println("Código a diagnosticar: '" + codigo + "'");
+            
+            // Verificar si existe el cupón
+            Optional<Descuento> descOpt = descuentoRepository.findByCodigo(codigo.trim());
+            
+            if (descOpt.isEmpty()) {
+                resp.put("existe", false);
+                resp.put("mensaje", "Cupón no encontrado en la base de datos");
+                
+                // Listar todos los cupones
+                List<String> cupones = descuentoRepository.findAll().stream()
+                    .map(Descuento::getCodigo)
+                    .collect(Collectors.toList());
+                resp.put("cuponesExistentes", cupones);
+                
+                return ResponseEntity.ok(resp);
+            }
+            
+            Descuento descuento = descOpt.get();
+            resp.put("existe", true);
+            resp.put("codigo", descuento.getCodigo());
+            resp.put("tipoDescuento", descuento.getTipoDescuento());
+            resp.put("valor", descuento.getValor());
+            resp.put("fechaInicio", descuento.getFechaInicio().toString());
+            resp.put("fechaFinal", descuento.getFechaFinal().toString());
+            resp.put("idServicio", descuento.getServicio().getIdServicio());
+            resp.put("nombreServicio", descuento.getServicio().getNombre());
+            
+            // Verificar validez de fecha
+            LocalDate hoy = LocalDate.now();
+            boolean fechaValida = !hoy.isBefore(descuento.getFechaInicio()) && !hoy.isAfter(descuento.getFechaFinal());
+            resp.put("fechaValida", fechaValida);
+            resp.put("fechaActual", hoy.toString());
+            
+            System.out.println("Diagnóstico público completado para: " + codigo);
+            
+            return ResponseEntity.ok(resp);
+            
+        } catch (Exception e) {
+            System.out.println("ERROR en diagnóstico público: " + e.getMessage());
+            e.printStackTrace();
+            resp.put("error", true);
+            resp.put("mensaje", "Error en diagnóstico: " + e.getMessage());
+            return ResponseEntity.status(500).body(resp);
+        }
+    }
+    
 }
