@@ -141,8 +141,6 @@ public class AdminController {
     }
 
 
-
-
     @PostMapping("/agenda/guardarHorarios")
     @ResponseBody
     @Transactional  // Asegura que las operaciones de la base de datos sean atómicas
@@ -341,14 +339,15 @@ public class AdminController {
         Map<String, Integer> diasSemana = Map.of(
                 "Lunes", 0,
                 "Martes", 1,
-                "Miércoles", 2,
+                "Miercoles", 2,
                 "Jueves", 3,
                 "Viernes", 4,
-                "Sábado", 5,
+                "Sabado", 5,
                 "Domingo", 6
         );
 
         // obtener el número del día de la semana basado en la cadena
+
         Integer diaNumero = diasSemana.get(diaSemana);
 
         // sumar el número de días a la fecha de inicio para obtener la fecha correcta

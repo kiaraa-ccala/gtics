@@ -1,4 +1,7 @@
 package com.example.proyectosanmiguel.controller;
+import com.example.proyectosanmiguel.dto.AsistenciaSemanalDto;
+import com.example.proyectosanmiguel.dto.ComparativaAsistenciaDto;
+import com.example.proyectosanmiguel.dto.EstadisticasPersonalDto;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.ComplejoRepository;
 import com.example.proyectosanmiguel.repository.RolRepository;
@@ -6,16 +9,18 @@ import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 @Controller
@@ -228,6 +233,125 @@ public class SuperAdminController {
         model.addAttribute("reportes", complejoRepository.getReporteHorarios());
 
         return "SuperAdmin/superadmin_asistencia";
+    }
+
+    @GetMapping("/superadmin/api/estadisticas/personal")
+    @ResponseBody
+    public ResponseEntity<EstadisticasPersonalDto> getEstadisticasPersonal() {
+        try {
+            LocalDate hoy = LocalDate.now();
+            LocalDate inicioSemana = hoy.minusDays(hoy.getDayOfWeek().getValue() - 1);
+            LocalDate finSemana = inicioSemana.plusDays(6);
+
+            Long totalPersonal = usuarioRepository.countPersonalActivo();
+
+            Long horariosATiempo = usuarioRepository.countHorariosATiempoSemana(inicioSemana, finSemana);
+
+            Long horariosAusentes = usuarioRepository.countHorariosAusentesSemana(inicioSemana, finSemana);
+
+            // Calcular porcentajes
+            Long totalHorarios = horariosATiempo + horariosAusentes;
+            Double porcentajeATiempo = totalHorarios > 0 ? (horariosATiempo * 100.0) / totalHorarios : 0.0;
+            Double porcentajeAusente = totalHorarios > 0 ? (horariosAusentes * 100.0) / totalHorarios : 0.0;
+            
+            EstadisticasPersonalDto estadisticas = new EstadisticasPersonalDto(
+                totalPersonal.intValue(),
+                horariosATiempo.intValue(),
+                horariosAusentes.intValue(),
+                porcentajeATiempo,
+                porcentajeAusente
+            );
+            
+            System.out.println("DEBUG: Estadísticas creadas correctamente");
+            return ResponseEntity.ok(estadisticas);
+        } catch (Exception e) {
+            System.err.println("ERROR en getEstadisticasPersonal: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/superadmin/api/asistencia/semanal")
+    @ResponseBody
+    public ResponseEntity<AsistenciaSemanalDto> getAsistenciaSemanal() {
+        try {
+            LocalDate hoy = LocalDate.now();
+            LocalDate inicioSemana = hoy.minusDays(hoy.getDayOfWeek().getValue() - 1);
+            LocalDate finSemana = inicioSemana.plusDays(6);
+            
+            List<Object[]> resultados = usuarioRepository.getAsistenciaSemanal(inicioSemana, finSemana);
+            
+            List<String> dias = Arrays.asList("Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom");
+            List<Integer> asistencias = new ArrayList<>();
+            List<Integer> tardanzas = new ArrayList<>();
+            List<Integer> ausencias = new ArrayList<>();
+            
+            // Inicializar con ceros
+            for (int i = 0; i < 7; i++) {
+                asistencias.add(0);
+                tardanzas.add(0);
+                ausencias.add(0);
+            }
+              // Llenar con datos reales
+            for (Object[] resultado : resultados) {
+                int dayOfWeek = ((Number) resultado[0]).intValue(); // DAYOFWEEK(h.fecha)
+                int diaIndex = dayOfWeek - 2; // MySQL DAYOFWEEK: 1=Domingo, 2=Lunes, etc.
+                if (diaIndex < 0) diaIndex = 6; // Domingo al final
+                
+                asistencias.set(diaIndex, ((Number) resultado[2]).intValue()); // aTiempo
+                tardanzas.set(diaIndex, ((Number) resultado[3]).intValue());   // tardanza
+                ausencias.set(diaIndex, ((Number) resultado[4]).intValue());   // ausente
+            }
+            
+            AsistenciaSemanalDto asistenciaSemanal = new AsistenciaSemanalDto();
+            asistenciaSemanal.setDias(dias);
+            asistenciaSemanal.setAsistencias(asistencias);
+            asistenciaSemanal.setTardanzas(tardanzas);
+            asistenciaSemanal.setAusencias(ausencias);
+            
+            return ResponseEntity.ok(asistenciaSemanal);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @GetMapping("/superadmin/api/asistencia/comparativa")
+    @ResponseBody
+    public ResponseEntity<ComparativaAsistenciaDto> getComparativaAsistencia() {
+        try {
+            LocalDate hoy = LocalDate.now();
+            LocalDate inicioMeses = hoy.minusMonths(3).withDayOfMonth(1);
+            
+            List<Object[]> resultados = usuarioRepository.getPorcentajeAsistenciaMensual(inicioMeses);
+            
+            List<String> meses = new ArrayList<>();
+            List<Double> porcentajes = new ArrayList<>();
+            
+            for (Object[] resultado : resultados) {
+                String mesAno = (String) resultado[0];      // CONCAT(MONTHNAME(...), ' ', YEAR(...))
+                Double porcentaje = ((Number) resultado[3]).doubleValue(); // porcentajeAsistencia
+                
+                meses.add(mesAno);
+                porcentajes.add(porcentaje);
+            }
+            
+            // Calcular cambio porcentual respecto al mes anterior
+            Double cambioPercentual = 0.0;
+            if (porcentajes.size() >= 2) {
+                Double mesAnterior = porcentajes.get(porcentajes.size() - 2);
+                Double mesActual = porcentajes.get(porcentajes.size() - 1);
+                cambioPercentual = mesActual - mesAnterior;
+            }
+            
+            ComparativaAsistenciaDto comparativa = new ComparativaAsistenciaDto();
+            comparativa.setMeses(meses);
+            comparativa.setPorcentajesAsistencia(porcentajes);
+            comparativa.setCambioPercentual(cambioPercentual);
+            
+            return ResponseEntity.ok(comparativa);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
 }

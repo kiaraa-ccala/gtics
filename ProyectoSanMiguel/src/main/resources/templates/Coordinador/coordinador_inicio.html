@@ -91,7 +91,7 @@
                       <h5 class="mb-1" th:text="${cantidadReportes} + ' enviados'">0 sent</h5>
                       <p class="text-primary mb-0">
                         <i class="ti ti-check"></i>
-                        <span th:text="${cantidadCerrados}+' recibidos'">0</span>
+                        <span th:text="${cantidadCerrados}+' cerrados'">0</span>
                       </p>
                     </div>
                   </div>
@@ -170,9 +170,8 @@
               <div class="card-body">
                 <div class="d-flex align-items-center">
                   <div class="flex-grow-1 ms-3">
-                    <h5 class="mb-0">Complejo asignado</h5>
+                    <h5 class="mb-0">Complejo actual</h5>
                   </div>
-                  
                 </div>
                 <div class="bg-body p-3 mt-3 rounded">
                   <div class="row align-items-center">
@@ -224,9 +223,9 @@
                   
                     <!-- Texto -->
                     <div class="col-6">
-                      <strong class="mb-1" th:text="${complejo.nombre}">Nombre del complejo</strong>
+                      <strong class="mb-1" th:text="${complejoActualNombre}">No hay complejo asignado</strong>
                       <p class="text-success mb-0 small">
-                        <i class="ti ti-map-pin"></i> <span th:text="${complejo.direccion}">Dirección</span>
+                        <i class="ti ti-map-pin"></i> <span th:text="${complejoActualDireccion}">-</span>
                       </p>
                     </div>
                   </div>
@@ -280,58 +279,39 @@
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
-            <div class="card h-100">
+          <div class="col-lg-5">
+            <div class="card h-100 mb-0">
               <div class="card-header">
-                <h4 class="mb-0">Registra tu entrada</h4>
+                <h4 class="mb-0">Registra tu entrada o salida</h4>
               </div>
-              <div class="card-body d-flex flex-column">
-                <div class="d-flex justify-content-center" style="margin-top: 15%"> <!-- Cambiado a justify-content-center -->
-                  <style>
-                    .circle-button {
-                      width: 40vw;
-                      max-width: 300px;
-                      aspect-ratio: 1/1;
-                      border-radius: 50%;
-                      background-color: #fbbebe;
-                      border: 2px solid black;
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                      cursor: pointer;
-                      padding: 0;
-                      transition: background-color 0.3s ease;
-                      margin-bottom: 4%;
-                    }
-                    .circle-button:hover {
-                      background-color: #c85858;
-                    }
-                  </style>
-
-                  <button class="circle-button" id="geoButton">
-                    <!-- Icono SVG estilo reloj + marcador -->
-                    <img src="../assets/images/reloj_gps.png" alt="geo" style="width: 60%">
-                  </button>
-                </div>
+              <div class="card-body d-flex flex-column align-items-center justify-content-center">
+                <!-- Botón Registrar Entrada -->
+                <button class="btn btn-danger w-100 mb-3 d-flex align-items-center justify-content-between" id="geoButton" style="font-size: 1.2rem; font-weight: bold;">
+                  Registrar entrada
+                  <i class="ti ti-login"></i>
+                </button>
+                <!-- Botón Registrar Salida -->
+                <button class="btn btn-warning w-100 d-flex align-items-center justify-content-between" id="salidaButton" style="font-size: 1.2rem; font-weight: bold; color: #333;">
+                  Registrar salida
+                  <i class="ti ti-logout"></i>
+                </button>
                 <div class="overlay" id="overlay"></div>
-                <br>
                 <div style="margin-top: 5%">
-                  <h5 class="" style="font-size: 110%; margin-top: 5%"><b>NOTA:</b></h5>
-                  <p class="" style="font-size: 110%">Al presionar el botón se activará la geolocalización, asegurese de estar dentro del complejo</p>
+                  <p class="" style="font-size: 95%; margin-top: 5%"><strong>NOTA:</strong></p>
+                  <p class="" style="font-size: 95%">Al presionar el botón de entrada se activará la geolocalización, asegúrese de estar dentro del complejo</p>
                 </div>
-
               </div>
             </div>
           </div>
-          <div class="col-lg-4">
+          <div class="col-lg-7">
             <div class="card h-100">
               <div class="card-header">
                 <h4 class="mb-0">Tus reportes</h4>
               </div>
               <div class="card-body">
-                <div class="d-grid gap-2" style="margin-top: 7%;">
+                <div class="d-grid gap-2" style="margin-top: 3%;">
 
-                    <a th:each="reporte : ${ultimosReportes}" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2" style="margin-bottom: 3%">
+                    <a th:each="reporte, iterStat : ${ultimosReportes}" th:if="${iterStat.index} < 3" th:href="@{/coord/reportes/detalle/{id}(id=${reporte.idReporte})}" class="btn btn-link-secondary py-2" style="margin-bottom: 3%">
                       <div class="d-flex align-items-center">
                         <div class="flex-shrink-0">
                             <span class="p-1 d-block rounded-circle"
@@ -356,27 +336,7 @@
                   <a th:href="@{/coord/reportes/mostrar}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
                     <i class="ti ti-external-link"></i> Ir a reportes
                   </a>
-                  
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4">
-            <div class="card h-100">
-              <div class="card-header">
-                <h4 class="mb-0">Ingresa a tu perfil</h4>
-              </div>
-              <div class="card-body ">
-                <div class="text-center d-grid gap-3">
-                  <!-- Imagen centrada con borde -->
-                  <img th:src="@{${usuario.foto.urlFoto}}" alt="img" class="img-bordered mx-auto"
-                       style="width: 80%; border:3px solid black; border-radius:4px;margin-top: 20%;margin-bottom: 21%">
-                  <br>
-                  <!-- Botón centrado -->
-                  <a th:href="@{/coord/perfil}" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
-                    <i class="ti ti-user-circle"></i> Ve a tu perfil
-                  </a>
-                  
+
                 </div>
               </div>
             </div>
@@ -508,7 +468,7 @@
         const confirmButton = document.getElementById('confirmButton');
         const closeSuccessButton = document.getElementById('closeSuccessButton');
         
-        // Mostrar popup azul al hacer clic en el botón circular
+        // Mostrar popup azul al hacer clic en el botón de entrada
         geoButton.addEventListener('click', function() {
             overlay.style.display = 'block';
             initialPopup.style.display = 'block';
@@ -531,6 +491,12 @@
             initialPopup.style.display = 'none';
             successPopup.style.display = 'none';
             overlay.style.display = 'none';
+        });
+
+        // Botón de salida (solo muestra alerta por ahora)
+        const salidaButton = document.getElementById('salidaButton');
+        salidaButton.addEventListener('click', function() {
+            alert('Funcionalidad de registrar salida próximamente.');
         });
     });
 </script>

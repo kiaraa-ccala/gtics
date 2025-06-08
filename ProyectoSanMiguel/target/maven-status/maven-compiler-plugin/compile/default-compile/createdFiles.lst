@@ -1,6 +1,8 @@
 com\example\proyectosanmiguel\entity\Descuento.class
 com\example\proyectosanmiguel\entity\Foto.class
 com\example\proyectosanmiguel\repository\ReporteRepository.class
+com\example\proyectosanmiguel\dto\EstadisticasPersonalDto.class
+com\example\proyectosanmiguel\controller\LandingController.class
 com\example\proyectosanmiguel\controller\ComplejoController.class
 com\example\proyectosanmiguel\dto\ComplejoAgendaAdminDto.class
 com\example\proyectosanmiguel\repository\ServicioRepository.class
@@ -14,9 +16,11 @@ com\example\proyectosanmiguel\entity\Horario.class
 com\example\proyectosanmiguel\entity\Usuario.class
 com\example\proyectosanmiguel\entity\Sector.class
 com\example\proyectosanmiguel\entity\Reserva.class
+com\example\proyectosanmiguel\dto\ComparativaAsistenciaDto.class
 com\example\proyectosanmiguel\dto\HorarioSemanalGuardarDto.class
 com\example\proyectosanmiguel\repository\ComentarioRepository.class
 com\example\proyectosanmiguel\repository\SectorRepository.class
+com\example\proyectosanmiguel\dto\AsistenciaSemanalDto.class
 com\example\proyectosanmiguel\entity\Evidencia.class
 com\example\proyectosanmiguel\controller\CoordinadorController.class
 com\example\proyectosanmiguel\entity\Servicio.class
@@ -32,12 +36,14 @@ com\example\proyectosanmiguel\entity\Tarifa.class
 com\example\proyectosanmiguel\controller\VecinoController.class
 com\example\proyectosanmiguel\entity\HorarioSemanalId.class
 com\example\proyectosanmiguel\entity\Reporte.class
+com\example\proyectosanmiguel\config\S3Config.class
 com\example\proyectosanmiguel\dto\ReporteHorarioDto.class
 com\example\proyectosanmiguel\controller\ComplejoApiController.class
 com\example\proyectosanmiguel\entity\HorarioSemanal.class
 com\example\proyectosanmiguel\entity\ComplejoDeportivo.class
 com\example\proyectosanmiguel\config\WebSecurityConfig.class
 com\example\proyectosanmiguel\entity\HorarioId.class
+com\example\proyectosanmiguel\repository\DescuentoRepository.class
 com\example\proyectosanmiguel\dto\HorarioEliminarDto.class
 com\example\proyectosanmiguel\controller\AdminController$1.class
 com\example\proyectosanmiguel\ProyectoSanMiguelApplication.class
@@ -46,6 +52,7 @@ com\example\proyectosanmiguel\repository\HorarioSemanalRepository.class
 com\example\proyectosanmiguel\entity\Mantenimiento.class
 com\example\proyectosanmiguel\controller\CustomErrorController.class
 com\example\proyectosanmiguel\entity\TokenRecuperacion.class
+com\example\proyectosanmiguel\service\ReporteService.class
 com\example\proyectosanmiguel\service\EmailService.class
 com\example\proyectosanmiguel\repository\ReservaRepository.class
 com\example\proyectosanmiguel\entity\Rol.class
@@ -66,6 +73,7 @@ com\example\proyectosanmiguel\service\AmazonS3Service.class
 com\example\proyectosanmiguel\repository\MantenimientoRepository.class
 com\example\proyectosanmiguel\dto\HorarioTurnoDto.class
 com\example\proyectosanmiguel\entity\InstanciaServicioId.class
+com\example\proyectosanmiguel\controller\ReportesTestinfController.class
 com\example\proyectosanmiguel\dto\HorarioDiarioTurnoGuardarDto.class
 com\example\proyectosanmiguel\entity\Credencial.class
 com\example\proyectosanmiguel\entity\InformacionPago.class

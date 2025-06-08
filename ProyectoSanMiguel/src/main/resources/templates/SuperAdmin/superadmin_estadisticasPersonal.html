@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head_superadmin :: head('Estadisticas Financieras')"></head>
-
+  <head th:replace="fragments/head_superadmin :: head('Estadisticas Personal')"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
     <!-- [ Pre-loader ] start -->
@@ -36,7 +35,6 @@
           </div>
         </div>
 
-
         <!-- [ Main Content ] start -->
         <div class="row">
           <div class="col-lg-3 col-md-6">
@@ -51,8 +49,8 @@
                   <div class="flex-grow-1 ms-3">
                     <p class="mb-1">Total del personal</p>
                     <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">45</h4>
-                      <span class="text-success fw-medium"> 2+ </span>
+                      <h4 class="mb-0" id="totalPersonal">-</h4>
+                      <span class="text-success fw-medium" id="variacionTotalPersonal">-</span>
                     </div>
                   </div>
                 </div>
@@ -67,39 +65,17 @@
                     <div class="avtar bg-light-warning">
                       <i class="ti ti-notebook f-24"></i>
                     </div>
-                  </div>
-                  <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Personal a tiempo</p>
+                  </div>                  <div class="flex-grow-1 ms-3">
+                    <p class="mb-1">Horarios a tiempo (semanal)</p>
                     <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">40</h4>
-                      <span class="text-warning fw-medium">30.6%</span>
+                      <h4 class="mb-0" id="personalATiempo">-</h4>
+                      <span class="text-warning fw-medium" id="porcentajeATiempo">-%</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="flex-shrink-0">
-                    <div class="avtar bg-light-success">
-                      <i class="ti ti-eye f-24"></i>
-                    </div>
-                  </div>
-                  <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Nuevo personal</p>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">2+</h4>
-                      <span class="text-success fw-medium">30.6%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
+          </div>          <div class="col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -109,10 +85,10 @@
                     </div>
                   </div>
                   <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Personal ausente</p>
+                    <p class="mb-1">Horarios ausentes (semanal)</p>
                     <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0">5</h4>
-                      <span class="text-danger fw-medium">30.6%</span>
+                      <h4 class="mb-0" id="personalAusente">-</h4>
+                      <span class="text-danger fw-medium" id="porcentajeAusente">-%</span>
                     </div>
                   </div>
                 </div>
@@ -161,10 +137,9 @@
                       aria-expanded="false"
                     >
                     </a>
-
                   </div>
                 </div>
-                <h5 class="text-end my-2">5.44% <span class="badge bg-success">+2.6%</span> </h5>
+                <h5 class="text-end my-2" id="cambioComparativo">-% <span class="badge bg-success" id="badgeCambio">-%</span> </h5>
                 <div id="customer-rate-graph"></div>
               </div>
             </div>
@@ -173,78 +148,232 @@
       </div>
     </div>
 
-
     <div th:replace="fragments/footer_superadmin :: footer"></div>
 
     <!-- Required JS -->
     <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
     <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
     <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
-
     <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
     <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
-
     <script th:src="@{/assets/js/icon/custom-font.js}"></script>
     <script th:src="@{/assets/js/script.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/multi-lang.js}"></script>
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 
-
-<script>
-  layout_change('light');
-</script>
-  
-<script>
-  change_box_container('false');
-</script>
- 
-<script>
-  layout_caption_change('true');
-</script>
- 
-<script>
-  layout_rtl_change('false');
-</script>
- 
-<script>
-  preset_change('preset-1');
-</script>
- 
-<script>
-  main_layout_change('vertical');
-</script>
-
+    <script>
+      layout_change('light');
+      change_box_container('false');
+      layout_caption_change('true');
+      layout_rtl_change('false');
+      preset_change('preset-1');
+      main_layout_change('vertical');
+    </script>
 
     <!-- [Page Specific JS] start -->
-    <!-- bootstrap-datepicker -->
     <script th:src="@{/assets/js/plugins/datepicker-full.min.js}"></script>
     <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
     <script th:src="@{/assets/js/plugins/peity-vanilla.min.js}"></script>
 
-    <!-- custom widgets js -->
-    <script th:src="@{/assets/js/widgets/revenue-sales-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/invites-goal-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/course-report-bar-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/total-revenue-line-1-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/total-revenue-line-2-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/student-states-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/activity-line-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/widget-calender.js}"></script>
-    <script th:src="@{/assets/js/widgets/visitors-bar-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/earning-courses-line-chart.js}"></script>
-    <script th:src="@{/assets/js/widgets/table-donut.js}"></script>
-    <script th:src="@{/assets/js/widgets/customer-rate-graph.js}"></script>
-    <!-- [Page Specific JS] end -->
-
-
+    <!-- AJAX Scripts para Estadísticas Personales -->
     <script>
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      }
+        // Variables globales para los gráficos
+        let visitorsBarChart;
+        let customerRateGraph;
 
+        // Función para cargar estadísticas generales
+        function cargarEstadisticasPersonal() {
+            fetch('/superadmin/api/estadisticas/personal')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('totalPersonal').textContent = data.totalPersonal;
+                    document.getElementById('personalATiempo').textContent = data.horariosATiempo;
+                    document.getElementById('personalAusente').textContent = data.horariosAusentes;
+                    
+                    document.getElementById('porcentajeATiempo').textContent = data.porcentajeATiempo.toFixed(1) + '%';
+                    document.getElementById('porcentajeAusente').textContent = data.porcentajeAusente.toFixed(1) + '%';
+                })
+                .catch(error => {
+                    console.error('Error al cargar estadísticas:', error);
+                });
+        }
+
+        // Función para cargar gráfico de asistencia semanal
+        function cargarAsistenciaSemanal() {
+            fetch('/superadmin/api/asistencia/semanal')
+                .then(response => response.json())
+                .then(data => {
+                    const options = {
+                        chart: {
+                            type: 'bar',
+                            height: 365,
+                            stacked: true,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#4680ff', '#ffba57', '#ff5757'],
+                        plotOptions: {
+                            bar: {
+                                horizontal: false,
+                                columnWidth: '50%',
+                                endingShape: 'rounded'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            show: true,
+                            width: 2,
+                            colors: ['transparent']
+                        },
+                        series: [
+                            {
+                                name: 'A tiempo',
+                                data: data.asistencias
+                            },
+                            {
+                                name: 'Tardanzas',
+                                data: data.tardanzas
+                            },
+                            {
+                                name: 'Ausencias',
+                                data: data.ausencias
+                            }
+                        ],
+                        xaxis: {
+                            categories: data.dias
+                        },
+                        yaxis: {
+                            title: {
+                                text: 'Personal'
+                            }
+                        },
+                        fill: {
+                            opacity: 1
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function(val) {
+                                    return val + " personas"
+                                }
+                            }
+                        },
+                        legend: {
+                            position: 'top',
+                            horizontalAlign: 'center'
+                        }
+                    };
+
+                    if (visitorsBarChart) {
+                        visitorsBarChart.destroy();
+                    }
+                    visitorsBarChart = new ApexCharts(document.querySelector("#visitors-bar-chart"), options);
+                    visitorsBarChart.render();
+                })
+                .catch(error => {
+                    console.error('Error al cargar asistencia semanal:', error);
+                });
+        }
+
+        // Función para cargar gráfico comparativo
+        function cargarComparativaAsistencia() {
+            fetch('/superadmin/api/asistencia/comparativa')
+                .then(response => response.json())
+                .then(data => {
+                    const options = {
+                        chart: {
+                            type: 'line',
+                            height: 365,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#4680ff'],
+                        stroke: {
+                            width: 3,
+                            curve: 'smooth'
+                        },
+                        series: [{
+                            name: 'Asistencia',
+                            data: data.porcentajesAsistencia
+                        }],
+                        xaxis: {
+                            categories: data.meses
+                        },
+                        yaxis: {
+                            title: {
+                                text: 'Porcentaje (%)'
+                            },
+                            min: 0,
+                            max: 100
+                        },
+                        markers: {
+                            size: 6,
+                            strokeWidth: 3,
+                            fillOpacity: 1,
+                            strokeOpacity: 1
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: function(val) {
+                                    return val.toFixed(1) + "%"
+                                }
+                            }
+                        },
+                        grid: {
+                            borderColor: '#e0e6ed',
+                            strokeDashArray: 5,
+                            xaxis: {
+                                lines: {
+                                    show: true
+                                }
+                            },
+                            yaxis: {
+                                lines: {
+                                    show: true
+                                }
+                            }
+                        }
+                    };
+
+                    if (customerRateGraph) {
+                        customerRateGraph.destroy();
+                    }
+                    customerRateGraph = new ApexCharts(document.querySelector("#customer-rate-graph"), options);
+                    customerRateGraph.render();
+
+                    // Actualizar indicador de cambio
+                    const ultimoPorcentaje = data.porcentajesAsistencia[data.porcentajesAsistencia.length - 1];
+                    const cambio = data.cambioPercentual;
+                    
+                    document.getElementById('cambioComparativo').innerHTML = 
+                        ultimoPorcentaje.toFixed(1) + '% <span class="badge ' + 
+                        (cambio >= 0 ? 'bg-success' : 'bg-danger') + '" id="badgeCambio">' + 
+                        (cambio >= 0 ? '+' : '') + cambio.toFixed(1) + '%</span>';
+                })
+                .catch(error => {
+                    console.error('Error al cargar comparativa de asistencia:', error);
+                });
+        }
+
+        // Cargar datos al inicializar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cargarEstadisticasPersonal();
+            cargarAsistenciaSemanal();
+            cargarComparativaAsistencia();
+
+            // Actualizar datos cada 5 minutos
+            setInterval(function() {
+                cargarEstadisticasPersonal();
+                cargarAsistenciaSemanal();
+                cargarComparativaAsistencia();
+            }, 300000); // 5 minutos
+        });
     </script>
-
+    <!-- [Page Specific JS] end -->
 
     <style>
       /* Ítems del menú: blanco */
@@ -263,6 +392,7 @@
         text-transform: uppercase;
         font-size: 12px;
       }
+      
       /* Hover: cambia el texto a celeste claro */
       .pc-sidebar .pc-link:hover,
       .pc-sidebar .pc-link:focus {
@@ -271,7 +401,5 @@
       }
     </style>
 
-
   </body>
-  <!-- [Body] end -->
 </html>
