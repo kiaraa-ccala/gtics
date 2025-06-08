@@ -114,7 +114,6 @@ public class WebSecurityConfig {
                 );
 
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("Superadministrador")
                 .requestMatchers("/admin", "/admin/**").hasAnyAuthority("Administrador")
                 .requestMatchers("/coord", "/coord/**").hasAnyAuthority("Coordinador")
                 .requestMatchers("/vecino", "/vecino/**").hasAnyAuthority("Vecino")
