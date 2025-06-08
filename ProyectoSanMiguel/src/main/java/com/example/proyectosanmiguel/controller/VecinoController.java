@@ -135,26 +135,18 @@ public class VecinoController {
         double totalConDescuento = total;
 
         if (codigoCupon != null && !codigoCupon.isEmpty()) {
-            // Buscar una reserva donde el cupón sea válido
-            for (Reserva reserva : reservasPendientes) {
-                Map<String, Object> descuentoData = aplicarDescuento(codigoCupon, reserva.getIdReserva());
+            // Validar el cupón solo una vez
+            Map<String, Object> descuentoData = aplicarDescuento(codigoCupon, reservasPendientes.get(0).getIdReserva());
 
-                if ((boolean) descuentoData.get("valido")) {
-                    descuentoAplicado = (double) descuentoData.get("descuento");
-                    totalConDescuento = total - descuentoAplicado;
+            if ((boolean) descuentoData.get("valido")) {
+                descuentoAplicado = (double) descuentoData.get("descuento");
+                totalConDescuento = total - descuentoAplicado;
 
-                    model.addAttribute("descuento", descuentoAplicado);
-                    model.addAttribute("totalConDescuento", totalConDescuento);
-                    model.addAttribute("mensajeDescuento", descuentoData.get("mensaje"));
-                    break; // ✅ Aplicar solo una vez al primer válido
-                }
-            }
-
-            // Si no se aplicó a ninguna reserva
-            if (descuentoAplicado == 0) {
-                model.addAttribute("mensajeDescuento", "El cupón no aplica a ninguno de los servicios.");
+                model.addAttribute("descuento", descuentoAplicado);
+                model.addAttribute("totalConDescuento", totalConDescuento);
+                model.addAttribute("mensajeDescuento", descuentoData.get("mensaje"));
             } else {
-                total = totalConDescuento;
+                model.addAttribute("mensajeDescuento", "El cupón no aplica a ninguno de los servicios.");
             }
         }
 
@@ -163,7 +155,7 @@ public class VecinoController {
         model.addAttribute("usuario", usuario);
         model.addAttribute("credencial", credencial);
         model.addAttribute("reservasPendientes", reservasPendientes);
-        model.addAttribute("totalReservas", total);
+        model.addAttribute("totalReservas", totalConDescuento);
 
         return "Vecino/vecino_pagos";
     }
@@ -189,7 +181,6 @@ public class VecinoController {
         System.out.println("Usuario encontrado: " + credencial.getUsuario().getNombre());
         return credencial.getUsuario();
     }
-
 
 
     @GetMapping("/crearReserva")
@@ -221,11 +212,9 @@ public class VecinoController {
         } else {
             return "redirect:/vecino/listarComplejos";
         }
-    }
-
-    @PostMapping("/guardarPago")
+    }    @PostMapping("/guardarPago")
     public String guardarPago(@RequestParam("idReserva") Integer idReserva,
-                              @RequestParam("codigoCupon") String codigoCupon,
+                              @RequestParam(value = "codigoCupon", required = false) String codigoCupon,
                               RedirectAttributes redirectAttributes) {
 
         Optional<Reserva> optReserva = reservaRepository.findById(idReserva);
@@ -240,31 +229,36 @@ public class VecinoController {
             redirectAttributes.addFlashAttribute("error", "La reserva no tiene información de pago asociada.");
             return "redirect:/vecino/pagos";
         }
+        
+        // Verificamos que la reserva esté pendiente
+        if (reserva.getEstado() != 0) {
+            redirectAttributes.addFlashAttribute("error", "La reserva no está pendiente de pago.");
+            return "redirect:/vecino/pagos";        }        InformacionPago pago = reserva.getInformacionPago();
+        BigDecimal totalFinal = BigDecimal.valueOf(pago.getTotal());
 
-        double total = reserva.getInformacionPago().getTotal().doubleValue();
+        // Si hay cupón, aplicar descuento
+        if (codigoCupon != null && !codigoCupon.trim().isEmpty()) {
+            Map<String, Object> descuentoData = aplicarDescuento(codigoCupon, idReserva);
+            
+            if ((boolean) descuentoData.get("valido")) {
+                totalFinal = (BigDecimal) descuentoData.get("totalConDescuento");
+                redirectAttributes.addFlashAttribute("mensajeDescuento", 
+                    "Descuento de S/." + String.format("%.2f", ((BigDecimal) descuentoData.get("descuento")).doubleValue()) + " aplicado correctamente.");
+            } else {
+                redirectAttributes.addFlashAttribute("error", descuentoData.get("mensaje"));
+                return "redirect:/vecino/pagos";
+            }
+        }        // Actualizar el pago
+        pago.setTotal(totalFinal.doubleValue());
+        pago.setEstado("Pagado");
+        informacionPagoRepository.save(pago);
 
-        // Usamos aplicarDescuento que solo necesita el ID de la reserva
-        Map<String, Object> descuentoData = aplicarDescuento(codigoCupon, idReserva);
+        // Actualizar la reserva
+        reserva.setEstado(1); // Pagado
+        reservaRepository.save(reserva);
 
-        if ((boolean) descuentoData.get("valido")) {
-            double descuentoAplicado = (double) descuentoData.get("descuento");
-            double totalConDescuento = (double) descuentoData.get("totalConDescuento");
-
-            InformacionPago pago = reserva.getInformacionPago();
-            pago.setTotal(totalConDescuento);
-            pago.setEstado("Pagado");
-
-            informacionPagoRepository.save(pago);
-
-            reserva.setEstado(1); // Pagado
-            reservaRepository.save(reserva);
-
-            redirectAttributes.addFlashAttribute("mensajeExito", "Pago realizado correctamente.");
-            return "redirect:/vecino/misReservas";
-        } else {
-            redirectAttributes.addFlashAttribute("error", "El cupón no es válido.");
-            return "redirect:/vecino/pagos";
-        }
+        redirectAttributes.addFlashAttribute("mensajeExito", "Pago realizado correctamente.");
+        return "redirect:/vecino/misReservas";
     }
 
 
@@ -334,12 +328,15 @@ public class VecinoController {
                 .getDisplayName(TextStyle.FULL, new Locale("es", "ES"));
     }
 
-
     @PostMapping("/aplicarDescuento")
     @ResponseBody
     public Map<String, Object> aplicarDescuento(@RequestParam("codigo") String codigo,
                                                 @RequestParam("idReserva") Integer idReserva) {
         Map<String, Object> resp = new HashMap<>();
+
+        // Imprimir los datos recibidos
+        System.out.println("Código de cupón recibido: " + codigo);
+        System.out.println("ID de reserva recibido: " + idReserva);
 
         // Verificar que el parámetro idReserva no sea null
         if (idReserva == null) {
@@ -349,6 +346,7 @@ public class VecinoController {
         }
 
         LocalDate hoy = LocalDate.now();
+        System.out.println("Fecha actual: " + hoy);
 
         // Buscar el descuento en la base de datos
         Optional<Descuento> descOpt = descuentoRepository.findByCodigoAndFechaInicioLessThanEqualAndFechaFinalGreaterThanEqual(
@@ -357,63 +355,68 @@ public class VecinoController {
         if (descOpt.isEmpty()) {
             resp.put("valido", false);
             resp.put("mensaje", "Código de descuento inválido o expirado.");
+            System.out.println("Cupón no encontrado o expirado.");
             return resp;
         }
 
         Descuento descuento = descOpt.get();
+        System.out.println("Descuento encontrado: " + descuento.getCodigo());
 
         // Obtener la reserva desde idReserva
         Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
         if (reservaOpt.isEmpty()) {
             resp.put("valido", false);
             resp.put("mensaje", "Reserva no encontrada.");
+            System.out.println("Reserva no encontrada con ID " + idReserva);
             return resp;
         }
 
         Reserva reserva = reservaOpt.get();
+        System.out.println("Reserva encontrada: " + reserva.getIdReserva());
 
         // Obtener idServicio desde la InstanciaServicio de la reserva
         Integer idServicioReserva = reserva.getInstanciaServicio().getServicio().getIdServicio();
-
-        // Verificar si el descuento aplica para el servicio de la reserva
+        System.out.println("ID del servicio en la reserva: " + idServicioReserva);        // Verificar si el descuento aplica para el servicio de la reserva
         if (!descuento.getServicio().getIdServicio().equals(idServicioReserva)) {
             resp.put("valido", false);
             resp.put("mensaje", "El descuento no aplica para este servicio.");
+            System.out.println("El descuento no aplica para el servicio con ID " + idServicioReserva);
             return resp;
         }
 
-        // Obtener el monto de la tarifa
-        Optional<Tarifa> tarifaOpt = tarifaRepository.findTarifaAplicable(
-                reserva.getInstanciaServicio().getServicio().getIdServicio(),
-                reserva.getFecha().getDayOfWeek().getDisplayName(TextStyle.FULL, new Locale("es", "ES")),
-                reserva.getHoraInicio(),
-                reserva.getHoraFin());
-
-        if (tarifaOpt.isEmpty()) {
+        // Usar el total de la información de pago de la reserva
+        if (reserva.getInformacionPago() == null) {
             resp.put("valido", false);
-            resp.put("mensaje", "No se encontró tarifa para el servicio en este horario.");
-            return resp;
-        }
-
-        Tarifa tarifa = tarifaOpt.get();  // Obtener la Tarifa
-
-        double total = tarifa.getMonto(); // Monto de la tarifa
+            resp.put("mensaje", "La reserva no tiene información de pago asociada.");
+            System.out.println("La reserva no tiene información de pago.");
+            return resp;        }        BigDecimal total = BigDecimal.valueOf(reserva.getInformacionPago().getTotal());
+        System.out.println("Total de la reserva: " + total);
 
         // Calcular el descuento
-        double descuentoAplicado = 0.0;
+        BigDecimal descuentoAplicado = BigDecimal.ZERO;
         if ("PORCENTAJE".equalsIgnoreCase(descuento.getTipoDescuento())) {
-            descuentoAplicado = total * (descuento.getValor() / 100.0);
+            descuentoAplicado = total.multiply(BigDecimal.valueOf(descuento.getValor() / 100.0));
         } else if ("FIJO".equalsIgnoreCase(descuento.getTipoDescuento())) {
-            descuentoAplicado = descuento.getValor();
+            descuentoAplicado = BigDecimal.valueOf(descuento.getValor());
+        }
+
+        // Verificar que el descuento no sea mayor al monto de la tarifa
+        if (descuentoAplicado.compareTo(total) > 0) {
+            descuentoAplicado = total; // No puede ser mayor al total
         }
 
         // Calcular el total con descuento
-        double totalConDescuento = Math.max(0, total - descuentoAplicado);
+        BigDecimal totalConDescuento = total.subtract(descuentoAplicado);
+        if (totalConDescuento.compareTo(BigDecimal.ZERO) < 0) {
+            totalConDescuento = BigDecimal.ZERO;
+        }
 
+        // Respuesta exitosa con el descuento aplicado
         resp.put("valido", true);
         resp.put("descuento", descuentoAplicado);
         resp.put("totalConDescuento", totalConDescuento);
         resp.put("mensaje", "Descuento aplicado correctamente.");
+        System.out.println("Descuento aplicado: " + descuentoAplicado + ", Total con descuento: " + totalConDescuento);
 
         return resp;
     }
