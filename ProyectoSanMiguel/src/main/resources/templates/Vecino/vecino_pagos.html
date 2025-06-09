@@ -128,12 +128,11 @@
                             <i class="ti ti-calendar-off f-32"></i>
                           </div>
                           <h5 class="mb-2">No hay reservas pendientes de pago</h5>
-                          <p class="text-muted mb-3">Actualmente no tienes reservas que requieran pago.</p>
-                          <div class="d-flex justify-content-center gap-2">
-                            <a href="/vecino/listarComplejos" class="btn btn-primary">
+                          <p class="text-muted mb-3">Actualmente no tienes reservas que requieran pago.</p>                          <div class="d-flex justify-content-center gap-2">
+                            <a th:href="@{/vecino/listarComplejos}" class="btn btn-primary">
                               <i class="ti ti-plus me-1"></i>Hacer nueva reserva
                             </a>
-                            <a href="/vecino/misReservas" class="btn btn-outline-primary">
+                            <a th:href="@{/vecino/misReservas}" class="btn btn-outline-primary">
                               <i class="ti ti-calendar me-1"></i>Ver mis reservas
                             </a>
                           </div>
@@ -184,9 +183,8 @@
                           </table>
                         </div>
                       </div>
-                    </div>
-                    <div class="text-end">
-                      <a href="../application/ecom_product.html" class="btn btn-link-secondary d-inline-flex align-items-center"
+                    </div>                    <div class="text-end">
+                      <a th:href="@{/vecino/listarComplejos}" class="btn btn-link-secondary d-inline-flex align-items-center"
                         ><i class="ti ti-chevron-left me-2"></i> Regresar a servicios</a
                       >
                     </div>

@@ -1,63 +1,19 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-  <title>Historial de Pagos - San Miguel</title>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Tabler Icons -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/icons-sprite.svg">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/icons.min.css">
-  <!-- DataTables CSS -->
-  <link href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-  <!-- Custom CSS -->
-  <style>
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; }
-    .pc-container { padding: 20px; }
-    .pc-content { max-width: 1200px; margin: 0 auto; }
-    .page-header { margin-bottom: 30px; }
-    .avtar { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-    .avtar-s { width: 32px; height: 32px; }
-    .avtar-xl { width: 60px; height: 60px; }
-    .bg-light-primary { background-color: rgba(0, 123, 255, 0.1); color: #007bff; }
-    .bg-light-success { background-color: rgba(40, 167, 69, 0.1); color: #28a745; }
-    .bg-light-warning { background-color: rgba(255, 193, 7, 0.1); color: #ffc107; }
-    .bg-light-info { background-color: rgba(23, 162, 184, 0.1); color: #17a2b8; }
-    .bg-light-danger { background-color: rgba(220, 53, 69, 0.1); color: #dc3545; }
-    .bg-light-secondary { background-color: rgba(108, 117, 125, 0.1); color: #6c757d; }
-    .f-36 { font-size: 36px; }
-    .f-32 { font-size: 32px; }
-    .text-white-75 { color: rgba(255, 255, 255, 0.75) !important; }
-    .text-white-50 { color: rgba(255, 255, 255, 0.5) !important; }
-    .card { border: none; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-radius: 10px; }
-    .table th { background-color: #343a40; color: white; border: none; }
-    .badge { font-size: 0.75em; }
-    .loader-bg { display: none; }
-  </style>
-</head>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<body>
-<!-- Contenido simplificado sin fragmentos problemáticos -->
-<div class="container-fluid">
-  <!-- Navegación simple -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-primary mb-4">
-    <div class="container">
-      <a class="navbar-brand" href="/vecino">
-        <i class="ti ti-home me-2"></i>San Miguel - Vecino
-      </a>
-      <div class="navbar-nav ms-auto">
-        <a class="nav-link" href="/vecino/listarComplejos">
-          <i class="ti ti-building me-1"></i>Complejos
-        </a>
-        <a class="nav-link" href="/vecino/pagos">
-          <i class="ti ti-credit-card me-1"></i>Pagos
-        </a>
+  <head th:replace="~{fragments/head_vecino :: head('Historial de Pagos')}"></head>
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
       </div>
     </div>
-  </nav>
-</div>
+
+    <div th:replace="~{fragments/Sidebar_vecino :: sidebar}"></div>
+
+    <div th:replace="~{fragments/navbar_vecino :: header}"></div>
 
 <!-- [ Main Content ] start -->
 <div class="pc-container">
@@ -382,7 +338,6 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
 <!-- [ Main Content ] end -->
@@ -408,9 +363,51 @@
   </div>
 </div>
 
-<!-- Bootstrap JS -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- jQuery y DataTables -->
+</div> <!-- pc-content -->
+</div> <!-- pc-container -->
+
+<!-- [ Main Content ] end -->
+<div th:replace="~{fragments/Footer_vecino :: footer}"></div>
+
+<!-- Required Js -->
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+<script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+<script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+<script th:src="@{/assets/js/icon/custom-font.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+<script th:src="@{/assets/js/theme.js}"></script>
+<script th:src="@{/assets/js/multi-lang.js}"></script>
+<script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+<script>
+  layout_change('light');
+</script>
+
+<script>
+  change_box_container('false');
+</script>
+
+<script>
+  layout_caption_change('true');
+</script>
+
+<script>
+  layout_rtl_change('false');
+</script>
+
+<script>
+  preset_change('preset-1');
+</script>
+
+<script>
+  main_layout_change('vertical');
+</script>
+
+<!-- DataTables Scripts -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
@@ -465,15 +462,41 @@ function descargarComprobante(idReserva) {
   document.body.removeChild(link);
 }
 </script>
-  </div> <!-- pc-content -->
-</div> <!-- pc-container -->
 
-<!-- Footer simple -->
-<footer class="bg-light text-center py-3 mt-5">
-  <div class="container">
-    <p class="mb-0 text-muted">&copy; 2024 San Miguel - Sistema de Gestión Deportiva</p>
-  </div>
-</footer>
+<style>
+#basic-btn_info {
+  display: none !important;
+}
+
+/* Ítems del menú: blanco */
+.pc-sidebar .pc-link,
+.pc-sidebar .pc-mtext,
+.pc-sidebar .pc-micon {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Títulos de secciones del menú */
+.pc-sidebar .menu-caption,
+.pc-sidebar .pc-caption {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+/* Hover: cambia el texto a celeste claro */
+.pc-sidebar .pc-link:hover,
+.pc-sidebar .pc-link:focus {
+  color: #87ceeb !important;
+}
+
+/* Activo: mantiene color blanco pero con fondo */
+.pc-sidebar .pc-link.active {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+</style>
 
 </body>
 </html>
