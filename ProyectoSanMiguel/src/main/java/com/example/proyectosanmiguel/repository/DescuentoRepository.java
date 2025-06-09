@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 import java.time.LocalDate;
-import java.util.List;
 
 
 public interface DescuentoRepository extends JpaRepository<Descuento, Integer> {

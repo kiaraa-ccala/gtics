@@ -28,9 +28,10 @@ public class InformacionPago {
     private String tipo;
 
     @Column(name = "total", nullable = false)
-    private Double total;
-
-    @Column(name = "estado", nullable = false, length = 45)
+    private Double total;    @Column(name = "estado", nullable = false, length = 45)
     private String estado;
+
+    @Transient
+    private String comprobanteUrl;
 
 }
