@@ -1,0 +1,735 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+  <!-- [Head] start -->
+  <head th:replace="fragments/head_superadmin :: head('Generación de Reportes')"></head>
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+    <!-- [ Pre-loader ] start -->
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+
+    <div th:replace="fragments/Sidebar_superadmin :: sidebar"></div>
+    <div th:replace="fragments/navbar_superadmin :: header"></div>
+
+    <div class="pc-container" style="background: #e0f6ff">
+      <div class="pc-content">
+        <!-- [ breadcrumb ] start -->
+        <div class="page-header">
+          <div class="page-block">
+            <div class="row align-items-center">
+              <div class="col-md-12">
+                <ul class="breadcrumb">
+                  <li class="breadcrumb-item"><a href="../dashboard/index.html">Inicio</a></li>
+                  <li class="breadcrumb-item"><a href="javascript: void(0)">Reportes</a></li>
+                  <li class="breadcrumb-item" aria-current="page">Generación</li>
+                </ul>
+              </div>
+              <div class="col-md-12">
+                <div class="page-header-title">
+                  <h2 class="mb-0">Generación de reportes</h2>
+                  <p class="text-muted mt-2">Configura los datos que deseas que aparezcan en tu reporte</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ breadcrumb ] end -->
+
+        <!-- [ Main Content ] start -->
+        <div class="row justify-content-center">
+          <div class="col-lg-12">
+            <div class="card">
+              <div class="card-body">
+                <form id="formGenerarReporte">
+                  
+                  <!-- Tipo de Reporte -->
+                  <div class="row mb-3">
+                    <div class="col-12">
+                      <h5 class="mb-3">Tipo de Reporte</h5>
+                      <div class="row">
+                        <div class="col-md-6 mb-3">
+                          <div class="card border tipo-reporte-card" data-tipo="reservas">
+                            <div class="card-body text-center p-4">
+                              <div class="avtar avtar-xl bg-light-primary rounded-circle mx-auto mb-3">
+                                <i class="ph-duotone ph-calendar-check f-32"></i>
+                              </div>
+                              <h6 class="mb-2">Reservas</h6>
+                              <p class="text-muted mb-0">Genera reportes sobre reservas, ocupación y uso de instalaciones deportivas</p>
+                              <input type="radio" name="tipoReporte" value="reservas" class="d-none">
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                          <div class="card border tipo-reporte-card" data-tipo="financiero">
+                            <div class="card-body text-center p-4">
+                              <div class="avtar avtar-xl bg-light-success rounded-circle mx-auto mb-3">
+                                <i class="ph-duotone ph-chart-line f-32"></i>
+                              </div>
+                              <h6 class="mb-2">Financiero</h6>
+                              <p class="text-muted mb-0">Genera reportes sobre ingresos, pagos y análisis financiero de los servicios</p>
+                              <input type="radio" name="tipoReporte" value="financiero" class="d-none">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Rango de Fechas -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="mb-3">Rango de Fechas</h5>
+                      <div class="row">
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="hoy">
+                            <i class="ph-duotone ph-calendar me-2"></i>Hoy
+                          </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="ultima_semana">
+                            <i class="ph-duotone ph-calendar-dots me-2"></i>Última semana
+                          </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="ultimo_mes">
+                            <i class="ph-duotone ph-calendar-blank me-2"></i>Último mes
+                          </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="personalizado">
+                            <i class="ph-duotone ph-calendar-plus me-2"></i>Personalizado
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Input oculto para almacenar el valor seleccionado -->
+                      <input type="hidden" name="rangoFecha" id="rangoFechaHidden">
+                      
+                      <!-- Campos de fecha personalizada -->
+                      <div id="fechasPersonalizadas" class="row mt-3 d-none">
+                        <div class="col-md-6">
+                          <label for="fechaInicio" class="form-label">Fecha de inicio</label>
+                          <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="fechaFin" class="form-label">Fecha de fin</label>
+                          <input type="date" class="form-control" id="fechaFin" name="fechaFin">
+                        </div>
+                      </div>
+                      
+                      <!-- Mostrar período seleccionado -->
+                      <div class="mt-3">
+                        <div class="alert alert-info">
+                          <strong>Período seleccionado:</strong> <span id="periodoSeleccionado">Seleccione un rango de fechas</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Instalaciones -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="mb-3">Instalaciones</h5>
+                      <label for="instalaciones" class="form-label">Seleccionar instalación</label>
+                      <select class="form-select" id="instalaciones" name="instalaciones">
+                        <option value="todas" selected>Todas las instalaciones</option>
+                        <option th:each="complejo : ${complejos}"
+                                th:value="${complejo.idComplejoDeportivo}"
+                                th:text="${complejo.nombre}"></option>
+                      </select>
+                      <div class="form-text">Seleccione una instalación específica o mantenga "Todas" para incluir todas las instalaciones</div>
+                    </div>
+                  </div>
+
+                  <!-- Filtros Adicionales -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="mb-3">Filtros Adicionales</h5>
+                      <div id="filtrosContainer">
+                        <!-- Los filtros se agregarán dinámicamente aquí -->
+                      </div>
+                      <button type="button" class="btn btn-outline-primary" id="btnAgregarFiltro">
+                        <i class="ph-duotone ph-plus me-2"></i>Agregar filtro adicional
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Botón Generar Reporte -->
+                  <div class="row">
+                    <div class="col-12 text-center">
+                      <button type="submit" class="btn btn-primary btn-lg">
+                        <i class="ph-duotone ph-file-pdf me-2"></i>Generar Reporte
+                      </button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- [ Main Content ] end -->
+      </div>
+    </div>
+
+    <div th:replace="fragments/footer_superadmin :: footer"></div>
+
+    <!-- Required JS -->
+    <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+    <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+    <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+    <script th:src="@{/assets/js/icon/custom-font.js}"></script>
+    <script th:src="@{/assets/js/script.js}"></script>
+    <script th:src="@{/assets/js/theme.js}"></script>
+    <script th:src="@{/assets/js/multi-lang.js}"></script>
+    <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+    <!-- Layout Scripts -->
+    <script>
+      layout_change('light');
+    </script>
+    <script>
+      change_box_container('false');
+    </script>
+    <script>
+      layout_caption_change('true');
+    </script>
+    <script>
+      layout_rtl_change('false');
+    </script>
+    <script>
+      preset_change('preset-1');
+    </script>
+    <script>
+      main_layout_change('vertical');
+    </script>
+
+    <!-- Custom JavaScript -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        let contadorFiltros = 0;
+
+        // Manejo de selección de tipo de reporte
+        const tipoReporteCards = document.querySelectorAll('.tipo-reporte-card');
+        tipoReporteCards.forEach(card => {
+          card.addEventListener('click', function() {
+            // Remover selección anterior
+            tipoReporteCards.forEach(c => {
+              c.classList.remove('border-primary', 'bg-light-primary');
+              c.querySelector('input[type="radio"]').checked = false;
+            });
+
+            // Agregar selección actual
+            this.classList.add('border-primary', 'bg-light-primary');
+            this.querySelector('input[type="radio"]').checked = true;
+          });
+        });
+
+        // Manejo de rango de fechas con botones
+        const rangoFechaBtns = document.querySelectorAll('.rango-fecha-btn');
+        const fechasPersonalizadas = document.getElementById('fechasPersonalizadas');
+        const periodoSeleccionado = document.getElementById('periodoSeleccionado');
+        const rangoFechaHidden = document.getElementById('rangoFechaHidden');
+
+        rangoFechaBtns.forEach(btn => {
+          btn.addEventListener('click', function() {
+            // Remover selección anterior
+            rangoFechaBtns.forEach(b => {
+              b.classList.remove('btn-primary');
+              b.classList.add('btn-outline-primary');
+            });
+
+            // Agregar selección actual
+            this.classList.remove('btn-outline-primary');
+            this.classList.add('btn-primary');
+
+            // Actualizar valor oculto
+            const rangoValue = this.dataset.rango;
+            rangoFechaHidden.value = rangoValue;
+
+            // Mostrar/ocultar campos personalizados
+            if (rangoValue === 'personalizado') {
+              fechasPersonalizadas.classList.remove('d-none');
+            } else {
+              fechasPersonalizadas.classList.add('d-none');
+            }
+
+            actualizarPeriodoSeleccionado();
+          });
+        });
+
+        // Actualizar período seleccionado
+        function actualizarPeriodoSeleccionado() {
+          const rangoValue = rangoFechaHidden.value;
+          if (!rangoValue) {
+            periodoSeleccionado.textContent = 'Seleccione un rango de fechas';
+            return;
+          }
+
+          const hoy = new Date();
+          let texto = '';
+
+          switch (rangoValue) {
+            case 'hoy':
+              texto = hoy.toLocaleDateString('es-ES', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              });
+              break;
+            case 'ultima_semana':
+              const semanaAtras = new Date(hoy);
+              semanaAtras.setDate(hoy.getDate() - 7);
+              texto = `Desde ${semanaAtras.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })} hasta ${hoy.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}`;
+              break;
+            case 'ultimo_mes':
+              const mesAtras = new Date(hoy);
+              mesAtras.setMonth(hoy.getMonth() - 1);
+              texto = `Desde ${mesAtras.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })} hasta ${hoy.toLocaleDateString('es-ES', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+              })}`;
+              break;
+            case 'personalizado':
+              const fechaInicio = document.getElementById('fechaInicio').value;
+              const fechaFin = document.getElementById('fechaFin').value;
+              if (fechaInicio && fechaFin) {
+                const inicio = new Date(fechaInicio);
+                const fin = new Date(fechaFin);
+                texto = `Desde ${inicio.toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })} hasta ${fin.toLocaleDateString('es-ES', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}`;
+              } else {
+                texto = 'Seleccione las fechas de inicio y fin';
+              }
+              break;
+          }
+
+          periodoSeleccionado.textContent = texto;
+        }
+
+        // Escuchar cambios en fechas personalizadas
+        document.getElementById('fechaInicio').addEventListener('change', actualizarPeriodoSeleccionado);
+        document.getElementById('fechaFin').addEventListener('change', actualizarPeriodoSeleccionado);
+
+        // Obtener filtros ya seleccionados
+        function getFiltrosSeleccionados() {
+          const filtrosSeleccionados = [];
+          document.querySelectorAll('.filtro-tipo').forEach(select => {
+            if (select.value) {
+              filtrosSeleccionados.push(select.value);
+            }
+          });
+          return filtrosSeleccionados;
+        }
+
+        // Generar opciones de filtro disponibles
+        function generarOpcionesFiltro(filtrosSeleccionados) {
+          const todosLosFiltros = [
+            { value: 'servicio', text: 'Servicio' },
+            /*{ value: 'estado_pago', text: 'Estado de Pago' },
+            { value: 'metodo_pago', text: 'Método de Pago' },
+            { value: 'usuario', text: 'Usuario' },
+            { value: 'horario', text: 'Horario' }*/
+          ];
+
+          let opciones = '<option value="">Seleccionar filtro</option>';
+          todosLosFiltros.forEach(filtro => {
+            if (!filtrosSeleccionados.includes(filtro.value)) {
+              opciones += `<option value="${filtro.value}">${filtro.text}</option>`;
+            }
+          });
+          return opciones;
+        }
+
+        // Agregar filtro adicional
+        document.getElementById('btnAgregarFiltro').addEventListener('click', function() {
+          const filtrosSeleccionados = getFiltrosSeleccionados();
+
+          // Verificar si ya se seleccionaron todos los filtros
+          if (filtrosSeleccionados.length >= 5) {
+            alert('Ya se han agregado todos los filtros disponibles');
+            return;
+          }
+
+          contadorFiltros++;
+          const opcionesFiltro = generarOpcionesFiltro(filtrosSeleccionados);
+
+          const filtroHtml = `
+            <div class="row mb-3 filtro-adicional" id="filtro-${contadorFiltros}">
+              <div class="col-md-4">
+                <label class="form-label">Tipo de filtro</label>
+                <select class="form-select filtro-tipo" data-filtro="${contadorFiltros}">
+                  ${opcionesFiltro}
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Valor del filtro</label>
+                <div class="filtro-valor-container" id="valor-container-${contadorFiltros}">
+                  <input type="text" class="form-control" placeholder="Seleccione primero el tipo de filtro" disabled>
+                </div>
+              </div>
+              <div class="col-md-2 d-flex align-items-end">
+                <button type="button" class="btn btn-outline-danger" onclick="eliminarFiltro(${contadorFiltros})">
+                  <i class="ph-duotone ph-trash"></i>
+                </button>
+              </div>
+            </div>
+          `;
+          document.getElementById('filtrosContainer').insertAdjacentHTML('beforeend', filtroHtml);
+        });
+
+        // Manejar cambio de tipo de filtro
+        document.addEventListener('change', function(e) {
+          if (e.target.classList.contains('filtro-tipo')) {
+            const filtroId = e.target.dataset.filtro;
+            const valorContainer = document.getElementById(`valor-container-${filtroId}`);
+            const tipoFiltro = e.target.value;
+
+            let inputHtml = '';
+            switch (tipoFiltro) {
+              case 'servicio':
+                // Cargar servicios desde el backend
+                cargarServicios(filtroId);
+                return; // Salir aquí porque cargarServicios manejará el HTML
+              case 'estado_pago':
+                inputHtml = `
+                  <select class="form-select" name="filtro_estado_pago_${filtroId}">
+                    <option value="">Todos los estados</option>
+                    <option value="pagado">Pagado</option>
+                    <option value="pendiente">Pendiente</option>
+                    <option value="vencido">Vencido</option>
+                  </select>
+                `;
+                break;
+              case 'metodo_pago':
+                inputHtml = `
+                  <select class="form-select" name="filtro_metodo_pago_${filtroId}">
+                    <option value="">Todos los métodos</option>
+                    <option value="transferencia">Transferencia</option>
+                    <option value="tarjeta">Tarjeta</option>
+                    <option value="efectivo">Efectivo</option>
+                  </select>
+                `;
+                break;
+              case 'usuario':
+                inputHtml = `
+                  <input type="text" class="form-control" name="filtro_usuario_${filtroId}" placeholder="Nombre o DNI del usuario">
+                `;
+                break;
+              case 'horario':
+                inputHtml = `
+                  <div class="row">
+                    <div class="col-6">
+                      <input type="time" class="form-control" name="filtro_hora_inicio_${filtroId}" placeholder="Hora inicio">
+                    </div>
+                    <div class="col-6">
+                      <input type="time" class="form-control" name="filtro_hora_fin_${filtroId}" placeholder="Hora fin">
+                    </div>
+                  </div>
+                `;
+                break;
+              default:
+                inputHtml = '<input type="text" class="form-control" placeholder="Seleccione primero el tipo de filtro" disabled>';
+            }
+
+            valorContainer.innerHTML = inputHtml;
+          }
+        });
+
+        // Manejo del formulario
+        document.getElementById('formGenerarReporte').addEventListener('submit', function(e) {
+          e.preventDefault();
+
+          // Validar que se haya seleccionado un tipo de reporte
+          const tipoReporte = document.querySelector('input[name="tipoReporte"]:checked');
+          if (!tipoReporte) {
+            alert('Por favor seleccione un tipo de reporte');
+            return;
+          }
+
+          // Validar que se haya seleccionado un rango de fechas
+          const rangoFecha = rangoFechaHidden.value;
+          if (!rangoFecha) {
+            alert('Por favor seleccione un rango de fechas');
+            return;
+          }
+
+          // Si es personalizado, validar fechas
+          if (rangoFecha === 'personalizado') {
+            const fechaInicio = document.getElementById('fechaInicio').value;
+            const fechaFin = document.getElementById('fechaFin').value;
+            if (!fechaInicio || !fechaFin) {
+              alert('Por favor complete las fechas de inicio y fin');
+              return;
+            }
+            if (new Date(fechaInicio) > new Date(fechaFin)) {
+              alert('La fecha de inicio no puede ser mayor que la fecha de fin');
+              return;
+            }
+          }
+
+          // Recopilar datos del formulario
+          console.log('=== ENVIANDO REPORTE ===');
+          console.log('Tipo reporte:', tipoReporte.value);
+          console.log('Rango fecha:', rangoFecha);
+
+          // Agregar fechas si es personalizado
+          if (rangoFecha === 'personalizado') {
+            console.log('Fecha inicio:', document.getElementById('fechaInicio').value);
+            console.log('Fecha fin:', document.getElementById('fechaFin').value);
+          }
+
+          const formData = new FormData();
+          formData.append('tipoReporte', tipoReporte.value);
+          formData.append('rangoFecha', rangoFecha);
+
+          // Agregar fechas si es personalizado
+          if (rangoFecha === 'personalizado') {
+            formData.append('fechaInicio', document.getElementById('fechaInicio').value);
+            formData.append('fechaFin', document.getElementById('fechaFin').value);
+          }
+
+          // Agregar instalación seleccionada
+          const instalacion = document.getElementById('instalaciones').value;
+          console.log('Instalación seleccionada:', instalacion);
+          if (instalacion && instalacion !== 'todas') {
+            formData.append('instalaciones', instalacion);
+          }
+
+          // Agregar filtros adicionales
+          const filtros = {};
+          document.querySelectorAll('.filtro-adicional').forEach(filtro => {
+            const tipoFiltro = filtro.querySelector('.filtro-tipo').value;
+            const valorElement = filtro.querySelector('.filtro-valor-container select, .filtro-valor-container input');
+            const valorFiltro = valorElement ? valorElement.value : '';
+            if (tipoFiltro && valorFiltro) {
+              filtros[tipoFiltro] = valorFiltro;
+            }
+          });
+
+          console.log('Filtros adicionales:', filtros);
+
+          // Agregar filtros como parámetros individuales
+          Object.keys(filtros).forEach(key => {
+            formData.append(`filtros[${key}]`, filtros[key]);
+          });
+
+          // Log de todos los datos del FormData
+          console.log('=== DATOS DEL FORMULARIO ===');
+          for (let [key, value] of formData.entries()) {
+            console.log(key + ':', value);
+          }
+
+          // Mostrar indicador de carga
+          const submitBtn = document.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="ph-duotone ph-spinner me-2"></i>Generando...';
+
+          // Enviar solicitud al servidor
+          fetch('/superadmin/reportes/generar', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            console.log('Response status:', response.status);
+            if (response.ok) {
+              return response.blob();
+            } else {
+              return response.text().then(text => {
+                throw new Error(`Error ${response.status}: ${text}`);
+              });
+            }
+          })
+          .then(blob => {
+            // Crear URL para descargar el PDF
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `reporte_${tipoReporte.value}_${rangoFecha}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            // Mostrar mensaje de éxito
+            alert('Reporte generado exitosamente');
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Error al generar el reporte. Por favor, inténtelo de nuevo.');
+          })
+          .finally(() => {
+            // Restaurar botón
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          });
+        });
+      });
+
+      // Función para cargar servicios desde el backend
+      function cargarServicios(filtroId) {
+        const valorContainer = document.getElementById(`valor-container-${filtroId}`);
+
+        // Mostrar loading
+        valorContainer.innerHTML = `
+          <select class="form-select" disabled>
+            <option>Cargando servicios...</option>
+          </select>
+        `;
+
+        // Hacer petición al backend para obtener servicios
+        fetch('/superadmin/api/servicios')
+          .then(response => response.json())
+          .then(servicios => {
+            let opcionesServicios = '<option value="">Todos los servicios</option>';
+            servicios.forEach(servicio => {
+              opcionesServicios += `<option value="${servicio.id}">${servicio.nombre}</option>`;
+            });
+
+            valorContainer.innerHTML = `
+              <select class="form-select" name="filtro_servicio_${filtroId}">
+                ${opcionesServicios}
+              </select>
+            `;
+          })
+          .catch(error => {
+            console.error('Error al cargar servicios:', error);
+            // Fallback con servicios estáticos
+            valorContainer.innerHTML = `
+              <select class="form-select" name="filtro_servicio_${filtroId}">
+                <option value="">Todos los servicios</option>
+                <option value="gimnasio">Gimnasio</option>
+                <option value="piscina">Piscina</option>
+                <option value="loza_deportiva">Loza Deportiva</option>
+                <option value="salon_eventos">Salón de Eventos</option>
+              </select>
+            `;
+          });
+      }
+
+      // Función para eliminar filtro
+      function eliminarFiltro(filtroId) {
+        const filtro = document.getElementById(`filtro-${filtroId}`);
+        if (filtro) {
+          filtro.remove();
+          // Actualizar opciones disponibles en otros filtros
+          actualizarOpcionesFiltros();
+        }
+      }
+
+      // Función para actualizar opciones de filtros después de eliminar uno
+      function actualizarOpcionesFiltros() {
+        const filtrosSeleccionados = getFiltrosSeleccionados();
+        document.querySelectorAll('.filtro-tipo').forEach(select => {
+          if (!select.value) { // Solo actualizar los que no tienen valor seleccionado
+            const opcionesActualizadas = generarOpcionesFiltro(filtrosSeleccionados);
+            select.innerHTML = opcionesActualizadas;
+          }
+        });
+      }
+    </script>
+
+    <!-- Custom Styles -->
+    <style>
+      .tipo-reporte-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .tipo-reporte-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      }
+
+      .tipo-reporte-card.border-primary {
+        border-color: #0d6efd !important;
+        background-color: rgba(13, 110, 253, 0.05) !important;
+      }
+
+      .filtro-adicional {
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background-color: #f8f9fa;
+      }
+
+      .rango-fecha-btn {
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-weight: 500;
+      }
+
+      .rango-fecha-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .rango-fecha-btn.btn-primary {
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        color: white;
+      }
+
+      .rango-fecha-btn.btn-outline-primary {
+        border-color: #0d6efd;
+        color: #0d6efd;
+      }
+
+      /* Ítems del menú: blanco */
+      .pc-sidebar .pc-link,
+      .pc-sidebar .pc-mtext,
+      .pc-sidebar .pc-micon {
+        color: #ffffff !important;
+        opacity: 1 !important;
+      }
+
+      /* Títulos de secciones del menú */
+      .pc-sidebar .menu-caption,
+      .pc-sidebar .pc-caption {
+        color: rgba(255, 255, 255, 0.6) !important;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 12px;
+      }
+
+      /* Hover: cambia el texto a celeste claro */
+      .pc-sidebar .pc-link:hover,
+      .pc-sidebar .pc-link:focus {
+        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
+        transition: all 0.2s ease-in-out;
+      }
+    </style>
+
+  </body>
+  <!-- [Body] end -->
+</html>

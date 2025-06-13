@@ -40,31 +40,58 @@
 	</title>
 	<pageHeader splitType="Stretch"/>
 	<columnHeader height="20">
-		<element kind="staticText" uuid="f4b55c10-a45a-459a-937c-719f2e68d9c5" x="0" y="0" width="60" height="20">
+		<element kind="staticText" uuid="f4b55c10-a45a-459a-937c-719f2e68d9c5" x="0" y="0" width="40" height="20" style="Column header">
 			<text><![CDATA[ID]]></text>
 		</element>
-		<element kind="staticText" uuid="869ce6d0-927e-42f6-b5c4-42d3705971a6" x="60" y="0" width="80" height="20">
+		<element kind="staticText" uuid="869ce6d0-927e-42f6-b5c4-42d3705971a6" x="40" y="0" width="70" height="20" style="Column header">
 			<text><![CDATA[Nombre]]></text>
 		</element>
-		<element kind="staticText" uuid="ff33837d-c277-4c96-8a6b-ca20626217b9" x="140" y="0" width="80" height="20">
+		<element kind="staticText" uuid="ff33837d-c277-4c96-8a6b-ca20626217b9" x="110" y="0" width="70" height="20" style="Column header">
 			<text><![CDATA[Apellido]]></text>
 		</element>
-		<element kind="staticText" uuid="6884020e-e13c-49d5-9537-d15d069b1337" x="220" y="0" width="90" height="20">
+		<element kind="staticText" uuid="6884020e-e13c-49d5-9537-d15d069b1337" x="180" y="0" width="80" height="20" style="Column header">
 			<text><![CDATA[Servicio]]></text>
 		</element>
-		<element kind="staticText" uuid="612a5115-8893-407a-a7e0-1a734d50f20d" x="310" y="0" width="90" height="20">
+		<element kind="staticText" uuid="612a5115-8893-407a-a7e0-1a734d50f20d" x="260" y="0" width="80" height="20" style="Column header">
 			<text><![CDATA[Complejo]]></text>
 		</element>
-		<element kind="staticText" uuid="dcf72d25-4d0a-46f8-916b-043ceefe591a" x="400" y="0" width="70" height="20">
+		<element kind="staticText" uuid="dcf72d25-4d0a-46f8-916b-043ceefe591a" x="340" y="0" width="70" height="20" style="Column header">
 			<text><![CDATA[Fecha]]></text>
 		</element>
-		<element kind="staticText" uuid="2fa281ad-3909-4b6b-b052-35a633f72dbb" x="470" y="0" width="85" height="20">
+		<element kind="staticText" uuid="2fa281ad-3909-4b6b-b052-35a633f72dbb" x="410" y="0" width="60" height="20" style="Column header">
 			<text><![CDATA[Pago (S/.)]]></text>
+		</element>
+		<element kind="staticText" uuid="3fa281ad-3909-4b6b-b052-35a633f72dbb" x="470" y="0" width="85" height="20" style="Column header">
+			<text><![CDATA[Estado]]></text>
 		</element>
 	</columnHeader>
 	<detail>
-		<band height="92" splitType="Stretch">
-			<element kind="frame" uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766" mode="Opaque" x="0" y="0" width="555" height="15" style="Row"/>
+		<band height="20" splitType="Stretch">
+			<element kind="frame" uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766" mode="Opaque" x="0" y="0" width="555" height="20" style="Row"/>
+			<element kind="textField" uuid="b98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="0" y="0" width="40" height="20" style="Detail">
+				<expression><![CDATA[$F{idReserva}]]></expression>
+			</element>
+			<element kind="textField" uuid="c98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="40" y="0" width="70" height="20" style="Detail">
+				<expression><![CDATA[$F{nombreUsuario}]]></expression>
+			</element>
+			<element kind="textField" uuid="d98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="110" y="0" width="70" height="20" style="Detail">
+				<expression><![CDATA[$F{apellidoUsuario}]]></expression>
+			</element>
+			<element kind="textField" uuid="e98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="180" y="0" width="80" height="20" style="Detail">
+				<expression><![CDATA[$F{nombreServicio}]]></expression>
+			</element>
+			<element kind="textField" uuid="f98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="260" y="0" width="80" height="20" style="Detail">
+				<expression><![CDATA[$F{nombreComplejo}]]></expression>
+			</element>
+			<element kind="textField" uuid="g98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="340" y="0" width="70" height="20" pattern="dd/MM/yyyy" style="Detail">
+				<expression><![CDATA[$F{fechaReserva}]]></expression>
+			</element>
+			<element kind="textField" uuid="h98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="410" y="0" width="60" height="20" pattern="S/. #,##0.00" style="Detail">
+				<expression><![CDATA[$F{montoTotal}]]></expression>
+			</element>
+			<element kind="textField" uuid="i98495d8-3c8d-4fa0-81f5-30c3efc2f766" x="470" y="0" width="85" height="20" style="Detail">
+				<expression><![CDATA[$F{estadoReserva}]]></expression>
+			</element>
 		</band>
 	</detail>
 	<columnFooter height="46" splitType="Stretch">
