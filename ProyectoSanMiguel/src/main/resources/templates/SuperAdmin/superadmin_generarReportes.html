@@ -495,8 +495,102 @@
             }
           }
 
-          // Aquí se enviaría el formulario al servidor
-          alert('Generando reporte... (Funcionalidad pendiente de implementar en el backend)');
+          // Recopilar datos del formulario
+          console.log('=== ENVIANDO REPORTE ===');
+          console.log('Tipo reporte:', tipoReporte.value);
+          console.log('Rango fecha:', rangoFecha);
+
+          // Agregar fechas si es personalizado
+          if (rangoFecha === 'personalizado') {
+            console.log('Fecha inicio:', document.getElementById('fechaInicio').value);
+            console.log('Fecha fin:', document.getElementById('fechaFin').value);
+          }
+
+          const formData = new FormData();
+          formData.append('tipoReporte', tipoReporte.value);
+          formData.append('rangoFecha', rangoFecha);
+
+          // Agregar fechas si es personalizado
+          if (rangoFecha === 'personalizado') {
+            formData.append('fechaInicio', document.getElementById('fechaInicio').value);
+            formData.append('fechaFin', document.getElementById('fechaFin').value);
+          }
+
+          // Agregar instalación seleccionada
+          const instalacion = document.getElementById('instalaciones').value;
+          console.log('Instalación seleccionada:', instalacion);
+          if (instalacion && instalacion !== 'todas') {
+            formData.append('instalaciones', instalacion);
+          }
+
+          // Agregar filtros adicionales
+          const filtros = {};
+          document.querySelectorAll('.filtro-adicional').forEach(filtro => {
+            const tipoFiltro = filtro.querySelector('.filtro-tipo').value;
+            const valorElement = filtro.querySelector('.filtro-valor-container select, .filtro-valor-container input');
+            const valorFiltro = valorElement ? valorElement.value : '';
+            if (tipoFiltro && valorFiltro) {
+              filtros[tipoFiltro] = valorFiltro;
+            }
+          });
+
+          console.log('Filtros adicionales:', filtros);
+
+          // Agregar filtros como parámetros individuales
+          Object.keys(filtros).forEach(key => {
+            formData.append(`filtros[${key}]`, filtros[key]);
+          });
+
+          // Log de todos los datos del FormData
+          console.log('=== DATOS DEL FORMULARIO ===');
+          for (let [key, value] of formData.entries()) {
+            console.log(key + ':', value);
+          }
+
+          // Mostrar indicador de carga
+          const submitBtn = document.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.disabled = true;
+          submitBtn.innerHTML = '<i class="ph-duotone ph-spinner me-2"></i>Generando...';
+
+          // Enviar solicitud al servidor
+          fetch('/superadmin/reportes/generar', {
+            method: 'POST',
+            body: formData
+          })
+          .then(response => {
+            console.log('Response status:', response.status);
+            if (response.ok) {
+              return response.blob();
+            } else {
+              return response.text().then(text => {
+                throw new Error(`Error ${response.status}: ${text}`);
+              });
+            }
+          })
+          .then(blob => {
+            // Crear URL para descargar el PDF
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.style.display = 'none';
+            a.href = url;
+            a.download = `reporte_${tipoReporte.value}_${rangoFecha}.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+
+            // Mostrar mensaje de éxito
+            alert('Reporte generado exitosamente');
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            alert('Error al generar el reporte. Por favor, inténtelo de nuevo.');
+          })
+          .finally(() => {
+            // Restaurar botón
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          });
         });
       });
 
