@@ -1,432 +1,1341 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
     <head>
-        <title>Able Pro Dashboard Template</title>
+        <title>San Miguel - Portal Deportivo | Municipalidad de San Miguel</title>
         <!-- [Meta] -->
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description"
-              content="Able Pro is a trending dashboard template built with the Bootstrap 5 design framework. It is available in multiple technologies, including Bootstrap, React, Vue, CodeIgniter, Angular, .NET, and more." />
+              content="Portal oficial de servicios deportivos de la Municipalidad de San Miguel. Reserva canchas, gimnasios, piscinas y más. ¡Una gestión diferente!" />
         <meta name="keywords"
-              content="Bootstrap admin template, Dashboard UI Kit, Dashboard Template, Backend Panel, react dashboard, angular dashboard" />
-        <meta name="author" content="Phoenixcoded" />
-
-        <!-- [Favicon] icon -->
-        <link rel="icon" href="assets/images/favicon.svg" type="image/x-icon" />
-        <!-- [Page specific CSS] start -->
-        <link href="assets/css/plugins/animate.min.css" rel="stylesheet" type="text/css" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" rel="stylesheet" />
-        <!-- [Page specific CSS] end -->
-        <!-- [Font] Family -->
-        <link rel="stylesheet" href="assets/fonts/inter/inter.css" id="main-font-link" />
-        <!-- [phosphor Icons] https://phosphoricons.com/ -->
-        <link rel="stylesheet" href="assets/fonts/phosphor/duotone/style.css" />
-        <!-- [Tabler Icons] https://tablericons.com -->
-        <link rel="stylesheet" href="assets/fonts/tabler-icons.min.css" />
-        <!-- [Feather Icons] https://feathericons.com -->
-        <link rel="stylesheet" href="assets/fonts/feather.css" />
-        <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
-        <link rel="stylesheet" href="assets/fonts/fontawesome.css" />
-        <!-- [Material Icons] https://fonts.google.com/icons -->
-        <link rel="stylesheet" href="assets/fonts/material.css" />
-        <!-- [Template CSS Files] -->
-        <link rel="stylesheet" href="assets/css/style.css" id="main-style-link" />
-        <link rel="stylesheet" href="assets/css/style-preset.css" />
-        <script src="assets/js/tech-stack.js"></script>
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-W9Z0W379ZN"></script>
-        <script>window.dataLayer = window.dataLayer || []; function gtag() { dataLayer.push(arguments); } gtag('js', new Date()); gtag('config', 'G-W9Z0W379ZN'); </script>
-        <script
-                type="text/javascript">     (function (c, l, a, r, i, t, y) { c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) }; t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i; y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y); })(window, document, "clarity", "script", "o2g7pzyzyz"); </script>
-        <script defer src="https://phpstack-207002-5085356.cloudwaysapps.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
-        <!-- END Pixel Code -->
-
-        <link rel="stylesheet" href="assets/css/landing.css" />
-
-        <!-- Asegúrate de incluir Bootstrap Icons en tu <head> -->
+              content="San Miguel, deportes, reservas, canchas, gimnasio, piscina, municipalidad, servicios deportivos" />
+        <meta name="author" content="Municipalidad de San Miguel" />        <!-- [Favicon] icon -->
+  <link rel="icon" th:href="@{/assets/images/logo-circular.png}" type="image/x-icon" />
+        
+        <!-- [Bootstrap] CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <!-- [Bootstrap Icons] -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+        
+        <!-- [Font] Family -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+        
+        <!-- [Custom] CSS -->
+        <style>            :root {
+                --primary-blue:rgb(81, 205, 254);
+                --secondary-blue:rgb(43, 79, 186);
+                --light-blue: #e6f3ff;
+                --accent-orange: #ff6b35;
+                --text-dark: #2c3e50;
+                --text-light: #6c757d;
+                --white: #ffffff;
+                --light-gray: #f8f9fa;
+                --border-light: #e9ecef;
+                --logo-bg: rgba(255, 255, 255, 0.15);
+            }
 
-    </head>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
 
-    <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-direction="ltr" data-pc-theme_contrast=""
+            body {
+                font-family: 'Poppins', sans-serif;
+                line-height: 1.6;
+                color: var(--text-dark);
+                overflow-x: hidden;
+            }
+
+            /* Navbar Styles */
+            .custom-navbar {
+                background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+                backdrop-filter: blur(10px);
+                box-shadow: 0 4px 20px rgba(26, 53, 112, 0.1);
+                transition: all 0.3s ease;
+            }            .custom-navbar.scrolled {
+                background: rgba(94, 209, 255, 0.95);
+                backdrop-filter: blur(15px);
+            }
+
+            .navbar-brand {
+                background: var(--logo-bg);
+                padding: 0.5rem 1rem;
+                border-radius: 15px;
+                backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            .navbar-brand:hover {
+                background: rgba(255, 255, 255, 0.25);
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar-brand img {
+                height: 45px;
+                transition: transform 0.3s ease;
+                filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+            }
+
+            .navbar-brand:hover img {
+                transform: scale(1.05);
+            }            .navbar-nav .nav-link {
+                color: var(--white) !important;
+                font-weight: 600;
+                padding: 0.75rem 1rem !important;
+                border-radius: 8px;
+                transition: all 0.3s ease;
+                position: relative;
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+            }
+
+            .navbar-nav .nav-link:hover {
+                background: rgba(255, 255, 255, 0.2);
+                transform: translateY(-2px);
+                text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            }
+
+            .navbar-nav .nav-link::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                width: 0;
+                height: 2px;
+                background: var(--accent-orange);
+                transition: all 0.3s ease;
+                transform: translateX(-50%);
+            }
+
+            .navbar-nav .nav-link:hover::after {
+                width: 80%;
+            }
+
+            .dropdown-menu {
+                border: none;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+                border-radius: 12px;
+                padding: 0.5rem 0;
+                margin-top: 0.5rem;
+            }
+
+            .dropdown-item {
+                padding: 0.75rem 1.5rem;
+                transition: all 0.3s ease;
+                border-radius: 8px;
+                margin: 0 0.5rem;
+            }
+
+            .dropdown-item:hover {
+                background: var(--light-blue);
+                color: var(--primary-blue);
+                transform: translateX(5px);
+            }            .btn-custom-primary {
+                background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8a65 100%);
+                border: none;
+                color: var(--white);
+                font-weight: 700;
+                padding: 0.75rem 2rem;
+                border-radius: 25px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-block;
+                box-shadow: 0 4px 15px rgba(255, 107, 53, 0.3);
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-custom-primary:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(255, 107, 53, 0.4);
+                color: var(--white);
+            }
+
+            .btn-custom-outline {
+                border: 2px solid var(--white);
+                color: var(--white);
+                background: rgba(255, 255, 255, 0.1);
+                font-weight: 700;
+                padding: 0.75rem 2rem;
+                border-radius: 25px;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-block;
+                backdrop-filter: blur(10px);
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+            }
+
+            .btn-custom-outline:hover {
+                background: var(--white);
+                color: var(--primary-blue);
+                transform: translateY(-3px);
+                box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+                text-shadow: none;
+            }            /* Hero Section */
+            .hero-section {
+                background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                position: relative;
+                overflow: hidden;
+                padding: 2rem 0;
+            }
+
+            .hero-section::before {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="2" fill="rgba(255,255,255,0.1)"/></svg>') repeat;
+                opacity: 0.3;
+            }
+
+            .hero-content {
+                position: relative;
+                z-index: 2;
+                color: var(--white);
+                padding: 1rem 0;
+            }
+
+            .hero-title {
+                font-size: clamp(1.8rem, 5vw, 3.5rem);
+                font-weight: 800;
+                margin-bottom: 1.5rem;
+                line-height: 1.2;
+                word-wrap: break-word;
+                hyphens: auto;
+            }
+
+            .hero-subtitle {
+                font-size: clamp(0.95rem, 2.5vw, 1.3rem);
+                font-weight: 400;
+                margin-bottom: 2rem;
+                opacity: 0.9;
+                line-height: 1.6;
+                max-width: 90%;
+            }
+
+            .hero-carousel {
+                position: relative;
+                border-radius: 20px;
+                overflow: hidden;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                transform: perspective(1000px) rotateY(-5deg);
+                transition: all 0.3s ease;
+            }
+
+            .hero-carousel:hover {
+                transform: perspective(1000px) rotateY(0deg);
+            }
+
+            .carousel-item img {
+                height: 500px;
+                object-fit: cover;
+                width: 100%;
+            }
+
+            .carousel-indicators {
+                bottom: 20px;
+            }
+
+            .carousel-indicators [data-bs-target] {
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                border: none;
+                background: rgba(255, 255, 255, 0.5);
+                margin: 0 5px;
+            }
+
+            .carousel-indicators .active {
+                background: var(--accent-orange);
+            }
+
+            /* Services Section */
+            .services-section {
+                padding: 100px 0;
+                background: var(--light-gray);
+                position: relative;
+            }
+
+            .section-title {
+                text-align: center;
+                margin-bottom: 4rem;
+            }
+
+            .section-title h2 {
+                font-size: 2.5rem;
+                font-weight: 700;
+                color: var(--primary-blue);
+                margin-bottom: 1rem;
+            }
+
+            .section-title p {
+                font-size: 1.1rem;
+                color: var(--text-light);
+                max-width: 600px;
+                margin: 0 auto;
+            }
+
+            .service-card {
+                background: var(--white);
+                border-radius: 20px;
+                padding: 2.5rem 2rem;
+                text-align: center;
+                transition: all 0.3s ease;
+                border: none;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+                height: 100%;
+            }
+
+            .service-card:hover {
+                transform: translateY(-10px);
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            }
+
+            .service-icon {
+                width: 80px;
+                height: 80px;
+                background: linear-gradient(135deg, var(--accent-orange) 0%, #ff8a65 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1.5rem;
+                color: var(--white);
+                font-size: 2rem;
+            }
+
+            .service-card h5 {
+                font-size: 1.3rem;
+                font-weight: 600;
+                color: var(--primary-blue);
+                margin-bottom: 1rem;
+            }
+
+            .service-card p {
+                color: var(--text-light);
+                margin-bottom: 1.5rem;
+            }
+
+            .service-card .btn {
+                background: var(--primary-blue);
+                color: var(--white);
+                border: none;
+                padding: 0.75rem 2rem;
+                border-radius: 25px;
+                font-weight: 600;
+                transition: all 0.3s ease;
+                text-decoration: none;
+            }
+
+            .service-card .btn:hover {
+                background: var(--secondary-blue);
+                transform: translateY(-2px);
+            }
+
+            /* Features Section */
+            .features-section {
+                padding: 100px 0;
+                background: var(--white);
+            }
+
+            .feature-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 2rem;
+                padding: 1.5rem;
+                border-radius: 15px;
+                transition: all 0.3s ease;
+            }
+
+            .feature-item:hover {
+                background: var(--light-blue);
+                transform: translateX(10px);
+            }
+
+            .feature-icon {
+                width: 60px;
+                height: 60px;
+                background: linear-gradient(135deg, var(--primary-blue) 0%, var(--secondary-blue) 100%);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--white);
+                font-size: 1.5rem;
+                margin-right: 1.5rem;
+                flex-shrink: 0;
+            }
+
+            .feature-content h6 {
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: var(--primary-blue);
+                margin-bottom: 0.5rem;
+            }
+
+            .feature-content p {
+                color: var(--text-light);
+                margin: 0;
+                font-size: 0.95rem;
+            }
+
+            /* CTA Section */
+            .cta-section {
+                background: linear-gradient(135deg, var(--accent-orange) 0%,rgb(255, 221, 50) 100%);
+                padding: 80px 0;
+                text-align: center;
+                color: var(--white);
+            }
+
+            .cta-section h3 {
+                font-size: 2.2rem;
+                font-weight: 700;
+                margin-bottom: 1rem;
+            }
+
+            .cta-section p {
+                font-size: 1.1rem;
+                margin-bottom: 2rem;
+                opacity: 0.9;
+            }
+
+            .cta-section .btn {
+                background: var(--white);
+                color: var(--accent-orange);
+                border: none;
+                padding: 1rem 3rem;
+                border-radius: 30px;
+                font-weight: 700;
+                font-size: 1.1rem;
+                transition: all 0.3s ease;
+                text-decoration: none;
+                display: inline-block;
+            }
+
+            .cta-section .btn:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+                color: var(--accent-orange);
+            }
+
+            /* Footer */
+            .custom-footer {
+                background: var(--primary-blue);
+                color: var(--white);
+                padding: 60px 0 30px;
+            }
+
+            .footer-content {
+                text-align: center;
+            }
+
+            .footer-logo {
+                margin-bottom: 2rem;
+            }
+
+            .footer-logo img {
+                height: 60px;
+                margin-bottom: 1rem;
+            }
+
+            .footer-text {
+                font-size: 1.1rem;
+                margin-bottom: 2rem;
+                opacity: 0.9;
+            }
+
+            .footer-links {
+                display: flex;
+                justify-content: center;
+                gap: 2rem;
+                margin-bottom: 2rem;
+                flex-wrap: wrap;
+            }
+
+            .footer-links a {
+                color: var(--white);
+                text-decoration: none;
+                transition: all 0.3s ease;
+                font-weight: 500;
+            }
+
+            .footer-links a:hover {
+                color: var(--accent-orange);
+                transform: translateY(-2px);
+            }
+
+            .footer-bottom {
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                padding-top: 1.5rem;
+                margin-top: 2rem;
+                text-align: center;
+                opacity: 0.8;
+            }            /* Responsive */
+            /* Extra small devices (phones, less than 576px) */
+            @media (max-width: 575.98px) {
+                .hero-title {
+                    font-size: 1.8rem;
+                    line-height: 1.3;
+                    margin-bottom: 1rem;
+                }
+
+                .hero-subtitle {
+                    font-size: 0.95rem;
+                    margin-bottom: 1.5rem;
+                }
+
+                .carousel-item img {
+                    height: 250px;
+                }
+
+                .hero-carousel {
+                    transform: none;
+                    margin-top: 2rem;
+                }
+
+                .navbar-brand {
+                    padding: 0.3rem 0.8rem;
+                }
+
+                .navbar-brand img {
+                    height: 35px;
+                }
+
+                .btn-custom-primary,
+                .btn-custom-outline {
+                    padding: 0.6rem 1.5rem;
+                    font-size: 0.9rem;
+                }
+
+                .d-flex.gap-3 {
+                    flex-direction: column;
+                    gap: 1rem !important;
+                }
+
+                .section-title h2 {
+                    font-size: 1.8rem;
+                }
+
+                .service-card {
+                    padding: 2rem 1.5rem;
+                }
+
+                .social-fixed {
+                    right: 10px;
+                    gap: 10px;
+                }
+
+                .social-item {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1rem;
+                }
+            }
+
+            /* Small devices (landscape phones, 576px and up) */
+            @media (min-width: 576px) and (max-width: 767.98px) {
+                .hero-title {
+                    font-size: 2.2rem;
+                    line-height: 1.3;
+                }
+
+                .hero-subtitle {
+                    font-size: 1rem;
+                }
+
+                .carousel-item img {
+                    height: 280px;
+                }
+
+                .hero-carousel {
+                    transform: none;
+                }
+            }
+
+            /* Medium devices (tablets, 768px and up) */
+            @media (min-width: 768px) and (max-width: 991.98px) {
+                .hero-title {
+                    font-size: 2.8rem;
+                }
+
+                .hero-subtitle {
+                    font-size: 1.2rem;
+                }
+
+                .carousel-item img {
+                    height: 350px;
+                }
+
+                .hero-carousel {
+                    transform: perspective(1000px) rotateY(-3deg);
+                }
+            }
+
+            /* General mobile styles */
+            @media (max-width: 768px) {
+                .navbar-nav {
+                    padding: 1rem 0;
+                }
+
+                .navbar-nav .nav-link {
+                    padding: 0.5rem 1rem !important;
+                }
+
+                .feature-item {
+                    flex-direction: column;
+                    text-align: center;
+                }
+
+                .feature-icon {
+                    margin-right: 0;
+                    margin-bottom: 1rem;
+                }
+
+                .footer-links {
+                    flex-direction: column;
+                    gap: 1rem;
+                }
+
+                .hero-section {
+                    min-height: 80vh;
+                    padding: 2rem 0;
+                }
+
+                .services-section,
+                .features-section {
+                    padding: 60px 0;
+                }
+
+                .cta-section {
+                    padding: 60px 0;
+                }
+
+                .cta-section h3 {
+                    font-size: 1.8rem;
+                }
+
+                .news-section {
+                    padding: 60px 0;
+                }
+            }
+
+            /* Large devices (desktops, 992px and up) */
+            @media (min-width: 992px) and (max-width: 1199.98px) {
+                .hero-title {
+                    font-size: 3.2rem;
+                }
+
+                .carousel-item img {
+                    height: 450px;
+                }
+            }
+
+            /* Extra large devices (large desktops, 1200px and up) */
+            @media (min-width: 1200px) {
+                .hero-title {
+                    font-size: 3.5rem;
+                }
+
+                .carousel-item img {
+                    height: 500px;
+                }
+            }
+
+            /* Animations */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .fade-in-up {
+                animation: fadeInUp 0.8s ease forwards;
+            }            .animate-delay-1 { animation-delay: 0.2s; }
+            .animate-delay-2 { animation-delay: 0.4s; }
+            .animate-delay-3 { animation-delay: 0.6s; }
+
+            /* News Section */
+            .news-section {
+                padding: 100px 0;
+                background: linear-gradient(135deg, #f8f9ff 0%, #e6f3ff 100%);
+                position: relative;
+            }
+
+            .news-card {
+                background: var(--white);
+                border-radius: 15px;
+                padding: 2rem;
+                height: 100%;
+                transition: all 0.3s ease;
+                border: 1px solid var(--border-light);
+                box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+            }
+
+            .news-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            }
+
+            .news-badge {
+                display: inline-block;
+                padding: 0.4rem 1rem;
+                border-radius: 20px;
+                font-size: 0.85rem;
+                font-weight: 600;
+                margin-bottom: 1rem;
+            }
+
+            .news-badge.discount {
+                background: linear-gradient(135deg, #ff6b35, #ff8a65);
+                color: white;
+            }
+
+            .news-badge.inauguration {
+                background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
+                color: white;
+            }
+
+            .news-date {
+                color: var(--text-light);
+                font-size: 0.9rem;
+                margin-bottom: 0.5rem;
+            }
+
+            .news-title {
+                font-size: 1.2rem;
+                font-weight: 600;
+                color: var(--text-dark);
+                margin-bottom: 1rem;
+                line-height: 1.4;
+            }
+
+            .news-description {
+                color: var(--text-light);
+                line-height: 1.6;
+                margin-bottom: 1.5rem;
+            }
+
+            .news-link {
+                color: var(--primary-blue);
+                text-decoration: none;
+                font-weight: 600;
+                font-size: 0.9rem;
+                transition: all 0.3s ease;
+            }
+
+            .news-link:hover {
+                color: var(--secondary-blue);
+                transform: translateX(5px);
+            }            /* Social Media Fixed */
+            .social-fixed {
+                position: fixed;
+                right: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+                z-index: 1000;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .social-item {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: var(--white);
+                text-decoration: none;
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(10px);
+            }
+
+            .social-item.facebook {
+                background: linear-gradient(135deg, #1877f2 0%, #42a5f5 100%);
+            }
+
+            .social-item.instagram {
+                background: linear-gradient(135deg, #e4405f 0%, #f77737 50%, #fccc63 100%);
+            }
+
+            .social-item.twitter {
+                background: linear-gradient(135deg, #1da1f2 0%, #0d8bd9 100%);
+            }
+
+            .social-item:hover {
+                transform: translateX(-5px) scale(1.1);
+                box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Hide social media on very small screens */
+            @media (max-width: 480px) {
+                .social-fixed {
+                    display: none;
+                }
+            }
+
+            /* Adjust position on medium screens */
+            @media (max-width: 768px) {
+                .social-fixed {
+                    right: 10px;
+                    gap: 10px;
+                }
+
+                .social-item {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1rem;
+                }
+            }
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: white;
+                font-size: 1.2rem;
+                transition: all 0.3s ease;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                text-decoration: none;
+            }
+
+            .social-item:hover {
+                transform: scale(1.1);
+                color: white;
+            }
+
+            .social-item.facebook {
+                background: linear-gradient(135deg, #3b5998, #4c70ba);
+            }
+
+            .social-item.facebook:hover {
+                box-shadow: 0 8px 25px rgba(59, 89, 152, 0.4);
+            }
+
+            .social-item.instagram {
+                background: linear-gradient(135deg, #e4405f, #fd1d1d, #fcb045);
+            }
+
+            .social-item.instagram:hover {
+                box-shadow: 0 8px 25px rgba(228, 64, 95, 0.4);
+            }
+
+            .social-item.twitter {
+                background: linear-gradient(135deg, #1da1f2, #0d8bd9);
+            }
+
+            .social-item.twitter:hover {
+                box-shadow: 0 8px 25px rgba(29, 161, 242, 0.4);
+            }
+
+            /* Responsive for social media */
+            @media (max-width: 768px) {
+                .social-fixed {
+                    right: 10px;
+                    gap: 10px;
+                }
+
+                .social-item {
+                    width: 40px;
+                    height: 40px;
+                    font-size: 1rem;
+                }
+            }
+        </style>
+
+    </head>    <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-direction="ltr" data-pc-theme_contrast=""
           data-pc-theme="light" class="landing-page">
-        <!-- [ Pre-loader ] start -->
-        <div class="loader-bg">
-            <div class="loader-track">
-                <div class="loader-fill"></div>
-            </div>
-        </div>
-        <!-- [ Pre-loader ] End -->
 
-        <!-- [ Header ] start -->
-        <header id="home" style="background-image: url('/assets/images/landing/img-headerbg.jpg')">
-            <nav class="navbar navbar-expand-md navbar-light default py-2 shadow-sm">
-                <div class="container">
-                    <a class="b-brand text-primary">
-                        <img src="/assets/images/logo-sanM.png" class="img-fluid" style="height: 40px;" alt="logoSM">
-                    </a>
-
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                            data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-
-                    <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
-                        <ul class="navbar-nav ms-auto align-items-center gap-3">
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Calendario</a>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Reservas</a>
-                            </li>
-
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
-                                   data-bs-toggle="dropdown" aria-expanded="false">
-                                    Complejos Deportivos <i class="bi bi-chevron-down ms-1"></i>
-                                </a>
-                                <ul class="dropdown-menu dropdown-menu-end shadow">
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                                            <i class="bi bi-grid-fill"></i> Losas
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                                            <i class="bi bi-tree-fill"></i> Grass sintético
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                                            <i class="bi bi-droplet-fill"></i> Piscina
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item d-flex align-items-center gap-2" href="#">
-                                            <i class="bi bi-dumbbell"></i> Gimnasio
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="btn btn-outline-primary" href="/registro">Regístrate</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="btn btn-primary" href="/login">Inicia sesión</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
+        <!-- [ Navigation ] start -->
+        <nav class="navbar navbar-expand-lg custom-navbar fixed-top">
             <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-8 col-lg-6">
+                <a class="navbar-brand" href="#home">
+                    <img src="/assets/images/logo-sanM.png" alt="San Miguel Logo" height="45">
+                </a>
 
-                        <div id="carouselExampleIndicators" class="carousel slide shadow rounded" data-bs-ride="carousel" style="max-width: 450px; margin: auto;">
-                            <ol class="carousel-indicators">
-                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"></li>
-                                <li data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"></li>
-                            </ol>
-                            <div class="carousel-inner rounded">
-                                <div class="carousel-item active">
-                                    <img class="img-fluid d-block rounded" src="../assets/images/taller1.png" alt="First slide">
-                                </div>
-                                <div class="carousel-item">
-                                    <img class="img-fluid d-block rounded" src="../assets/images/taller3.png" alt="Second slide">
-                                </div>
-                            </div>
-                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-bs-slide="prev" style="width: 5%;">
-                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Previous</span>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="#servicios">Servicios</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                                Complejos Deportivos
                             </a>
-                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-bs-slide="next" style="width: 5%;">
-                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                                <span class="visually-hidden">Next</span>
-                            </a>
-                        </div>
-
-                    </div>
+                            <ul class="dropdown-menu">                                <li><a class="dropdown-item" href="/inicio"><i class="bi bi-grid-fill me-2"></i>Losas Deportivas</a></li>
+                                <li><a class="dropdown-item" href="/inicio"><i class="bi bi-tree-fill me-2"></i>Grass Sintético</a></li>
+                                <li><a class="dropdown-item" href="/inicio"><i class="bi bi-droplet-fill me-2"></i>Piscina Municipal</a></li>
+                                <li><a class="dropdown-item" href="/inicio"><i class="bi bi-dumbbell me-2"></i>Gimnasio</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/inicio">Reservas</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-custom-outline me-2" href="/registrarse">Regístrate</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-custom-primary" href="/inicio">Iniciar Sesión</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
+        </nav>
+        <!-- [ Navigation ] end -->
 
-        </header>
-        <!-- [ Header ] End -->
-        <!-- [ Technologies ] start -->
-
-        <section>
-            <div class="container title">
-                <div class="row justify-content-center text-center wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="col-md-8 col-xl-6">
-                        <h2 class="mb-3">Complete Combo</h2>
-                        <p class="mb-0"> Able Pro caters to the needs of both developers and designers, whether they are beginners or
-                            experts. </p>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row g-4">
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 mb-0">
-                            <div class="card-body mt-2">
-                                <h5 class="mb-3">Explore Components</h5>
-                                <p class="text-muted"> Access all components of Able Pro in one place to make your development work
-                                    easier. </p>
-                                <img class="pt-2" src="assets/images/landing/feature-components.png" width="100%" />
-                                <div class="tech-link">
-                                    <a class="btn btn-light-dark mt-3" href="elements/bc_alert.html" target="_blank">View All Components <i
-                                            class="ti ti-external-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 mb-0">
-                            <div class="card-body mt-2">
-                                <h5 class="mb-3">Documentation</h5>
-                                <p class="text-muted"> Find solutions and navigate through our helper guide with ease. </p>
-                                <img class="pt-2" src="assets/images/landing/feature-documentation.png" width="100%" />
-                                <a class="btn btn-light-dark mt-3" href="https://phoenixcoded.gitbook.io/able-pro/" target="_blank">Check
-                                    Documentation <i class="ti ti-external-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 mb-0">
-                            <div class="card-body mt-2">
-                                <h5 class="mb-3">Explore Components</h5>
-                                <p class="text-muted"> Access all components of Able Pro in one place to make your development work
-                                    easier. </p>
-                                <img class="pt-2" src="assets/images/landing/feature-components.png" width="100%" />
-                                <div class="tech-link">
-                                    <a class="btn btn-light-dark mt-3" href="elements/bc_alert.html" target="_blank">View All Components <i
-                                            class="ti ti-external-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 mb-0">
-                            <div class="card-body mt-2">
-                                <h5 class="mb-3">Explore Components</h5>
-                                <p class="text-muted"> Access all components of Able Pro in one place to make your development work
-                                    easier. </p>
-                                <img class="pt-2" src="assets/images/landing/feature-components.png" width="100%" />
-                                <div class="tech-link">
-                                    <a class="btn btn-light-dark mt-3" href="elements/bc_alert.html" target="_blank">View All Components <i
-                                            class="ti ti-external-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 mb-0">
-                            <div class="card-body mt-2">
-                                <h5 class="mb-3">Documentation</h5>
-                                <p class="text-muted"> Find solutions and navigate through our helper guide with ease. </p>
-                                <img class="pt-2" src="assets/images/landing/feature-documentation.png" width="100%" />
-                                <a class="btn btn-light-dark mt-3" href="https://phoenixcoded.gitbook.io/able-pro/" target="_blank">Check
-                                    Documentation <i class="ti ti-external-link"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 mb-0">
-                            <div class="card-body mt-2">
-                                <h5 class="mb-3">Explore Components</h5>
-                                <p class="text-muted"> Access all components of Able Pro in one place to make your development work
-                                    easier. </p>
-                                <img class="pt-2" src="assets/images/landing/feature-components.png" width="100%" />
-                                <div class="tech-link">
-                                    <a class="btn btn-light-dark mt-3" href="elements/bc_alert.html" target="_blank">View All Components <i
-                                            class="ti ti-external-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <!-- [ Top Features ] End -->
-        <!-- [ figma Features ] Start -->
-
-        <!-- [ figma Features ] End -->
-        <!-- [ working apps ] start -->
-        <section class="bg-primary overflow-hidden">
-            <div class="container title">
-                <div class="row justify-content-center text-center wow fadeInUp" data-wow-delay="0.2s">
-                    <div class="col-md-8 col-xl-6">
-                        <h2 class="mb-3 text-white">Working Conceptual Apps</h2>
-                        <p class="mb-0 text-white text-opacity-75">
-                            Each App is carefully crafted to achieve the best feature rich working concept for your project.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <!-- [ Hero Section ] start -->
+        <section id="home" class="hero-section">
             <div class="container">
                 <div class="row align-items-center">
-                    <div class="col-md-6 app_dotsContainer">
-                        <a class="app-link wow fadeInUp" data-wow-delay="0.2s" href="#app_1">
-                            <h4 class="text-white f-w-500">Chat</h4>
-                            <p class="mb-0 text-white text-opacity-75">
-                                Power your web apps with the conceptual chat app of able pro dashboard template.
-                            </p>
-                        </a>
-                        <a class="app-link wow fadeInUp" data-wow-delay="0.2s" href="#app_2">
-                            <h4 class="text-white f-w-500">E-commerce</h4>
-                            <p class="mb-0 text-white text-opacity-75">
-                                Collection, filter, product detail, add new product, and checkout pages makes your e-commerce app complete.
-                            </p>
-                        </a>
-                        <a class="app-link wow fadeInUp" data-wow-delay="0.4s" href="#app_3">
-                            <h4 class="text-white f-w-500">Inbox</h4>
-                            <p class="mb-0 text-white text-opacity-75">
-                                Compose message, list message (email), detailed inbox pages well suited for any conversation based web apps.
-                            </p>
-                        </a>
-                        <a class="app-link wow fadeInUp" data-wow-delay="0.6s" href="#app_4">
-                            <h4 class="text-white f-w-500">User Management</h4>
-                            <p class="mb-0 text-white text-opacity-75">
-                                Detailed pages for user management like profile settings, role, account settings, social profile and more to explore.
-                            </p>
-                        </a>
+                    <div class="col-lg-6">
+                        <div class="hero-content fade-in-up">
+                            <h1 class="hero-title">
+                                Deportes San Miguel
+                                <span class="text-warning">Una Gestión Diferente</span>
+                            </h1>
+                            <p class="hero-subtitle">
+                                Reserva fácilmente nuestros modernos complejos deportivos. Losas, canchas de grass sintético, 
+                                piscina municipal y gimnasio. ¡Tu deporte, nuestra pasión!
+                            </p>                            <div class="d-flex gap-3 flex-wrap">
+                                <a href="/inicio" class="btn btn-custom-primary animate-delay-1">
+                                    <i class="bi bi-calendar-plus me-2"></i>Reservar Ahora
+                                </a>
+                                <a href="#servicios" class="btn btn-custom-outline animate-delay-2">
+                                    <i class="bi bi-info-circle me-2"></i>Conocer Más
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-md-6 position-relative wow fadeInRight" data-wow-delay="0.4s">
-                        <div class="owl-carousel owl-theme screen-slide img-app-moke">
-                            <div class="item" data-hash="app_1">
-                                <img src="assets/images/landing/chat.png" alt="img" class="img-fluid rounded" />
-                            </div>
-                            <div class="item" data-hash="app_2">
-                                <img src="assets/images/landing/e-commerce.png" alt="img" class="img-fluid rounded" />
-                            </div>
-                            <div class="item" data-hash="app_3">
-                                <img src="assets/images/landing/mail.png" alt="img" class="img-fluid rounded" />
-                            </div>
-                            <div class="item" data-hash="app_4">
-                                <img src="assets/images/landing/social.png" alt="img" class="img-fluid rounded" />
+                    <div class="col-lg-6">
+                        <div class="hero-carousel fade-in-up animate-delay-3">
+                            <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+                                <div class="carousel-indicators">
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+                                    <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="3"></button>
+                                </div>
+                                <div class="carousel-inner">
+                                    <div class="carousel-item active">
+                                        <img src="/assets/images/taller1.png" class="d-block w-100" alt="Losas Deportivas">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="/assets/images/taller3.png" class="d-block w-100" alt="Grass Sintético">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="/assets/images/taller1.png" class="d-block w-100" alt="Piscina Municipal">
+                                    </div>
+                                    <div class="carousel-item">
+                                        <img src="/assets/images/taller3.png" class="d-block w-100" alt="Gimnasio">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-        <!-- [ working apps ] End -->
-        <!-- [ Applications apps ] start -->
-        <!-- [ Applications apps ] End -->
-        <!-- [ support team apps ] start -->
-        <!-- [ support team apps ] End -->
-        <!-- [ companies apps ] start -->
-        <!-- [ companies apps ] End -->
+        <!-- [ Hero Section ] end -->        <!-- [ Services Section ] start -->
+        <section id="servicios" class="services-section">
+            <div class="container">
+                <div class="section-title fade-in-up">
+                    <h2>Nuestros Complejos Deportivos</h2>
+                    <p>Instalaciones modernas y equipadas para toda la familia sanmiguelina. 
+                       Espacios diseñados para promover la actividad física y el deporte comunitario.</p>
+                </div>
 
-        <!-- [ footer apps ] start -->
-        <footer class="pc-footer" style="background: #e0f6ff">
-            <div class="footer-wrapper container-fluid">
-                <div class="row">
-                    <p class="m-0">
-                            © Copyright 2025 | Municipalidad de San Miguel. Una gestión diferente</p>
+                <div class="row g-4">
+                    <div class="col-lg-3 col-md-6">
+                        <div class="service-card fade-in-up animate-delay-1">
+                            <div class="service-icon">
+                                <i class="bi bi-grid-fill"></i>
+                            </div>                            <h5>Losas Deportivas</h5>                            <p>Canchas multiuso para fútbol, básquet y vóley. Superficie de concreto de alta calidad para una experiencia deportiva óptima.</p>
+                            <a href="/inicio" class="btn">Reservar</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="service-card fade-in-up animate-delay-2">
+                            <div class="service-icon">
+                                <i class="bi bi-tree-fill"></i>
+                            </div>                            <h5>Grass Sintético</h5>
+                            <p>Canchas profesionales de fútbol con césped sintético de última generación. Perfectas para entrenamientos y partidos.</p>
+                            <a href="/inicio" class="btn">Reservar</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="service-card fade-in-up animate-delay-3">
+                            <div class="service-icon">
+                                <i class="bi bi-droplet-fill"></i>
+                            </div>                            <h5>Piscina Municipal</h5>
+                            <p>Piscina olímpica climatizada para natación recreativa y competitiva. Incluye área para niños y clases de aquaeróbicos.</p>
+                            <a href="/inicio" class="btn">Reservar</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6">
+                        <div class="service-card fade-in-up">
+                            <div class="service-icon">
+                                <i class="bi bi-dumbbell"></i>
+                            </div>                            <h5>Gimnasio Municipal</h5>
+                            <p>Equipamiento completo de musculación y cardio. Espacios para clases grupales de aeróbicos, yoga y spinning.</p>
+                            <a href="/inicio" class="btn">Reservar</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </footer>
-        <!-- [ footer apps ] End -->
+        </section>
+        <!-- [ Services Section ] end -->
 
-        <!-- [ Main Content ] end -->
-        <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-        <!-- Required Js -->
-        <script src="assets/js/plugins/popper.min.js"></script>
-        <script src="assets/js/plugins/simplebar.min.js"></script>
-        <script src="assets/js/plugins/bootstrap.min.js"></script>
-        <script src="assets/js/icon/custom-font.js"></script>
-        <script src="assets/js/script.js"></script>
-        <script src="assets/js/theme.js"></script>
-        <script src="assets/js/plugins/feather.min.js"></script>
+        <!-- [ Features Section ] start -->
+        <section id="reservas" class="features-section">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="fade-in-up">
+                            <h2 class="mb-4">¿Por qué elegir San Miguel Deportes?</h2>
+                            <p class="lead mb-4">Facilitamos el acceso al deporte para todos los vecinos de San Miguel con instalaciones modernas y un sistema de reservas fácil de usar.</p>
+                        </div>
+
+                        <div class="feature-item fade-in-up animate-delay-1">
+                            <div class="feature-icon">
+                                <i class="bi bi-calendar-check"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h6>Reservas Online 24/7</h6>
+                                <p>Sistema de reservas disponible las 24 horas del día, los 7 días de la semana. Reserva desde tu celular o computadora.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item fade-in-up animate-delay-2">
+                            <div class="feature-icon">
+                                <i class="bi bi-shield-check"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h6>Instalaciones Seguras</h6>
+                                <p>Todas nuestras instalaciones cumplen con los estándares de seguridad más altos y están constantemente monitoreadas.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item fade-in-up animate-delay-3">
+                            <div class="feature-icon">
+                                <i class="bi bi-people-fill"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h6>Para Toda la Familia</h6>
+                                <p>Espacios diseñados para todas las edades. Desde actividades para niños hasta programas para adultos mayores.</p>
+                            </div>
+                        </div>
+
+                        <div class="feature-item fade-in-up">
+                            <div class="feature-icon">
+                                <i class="bi bi-credit-card"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h6>Pagos Flexibles</h6>
+                                <p>Múltiples opciones de pago: tarjeta, efectivo en ventanilla o pago contra entrega. Adaptamos a tus necesidades.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="text-center fade-in-up animate-delay-1">
+                            <img src="/assets/images/taller1.png" alt="Instalaciones San Miguel" class="img-fluid rounded shadow" style="max-width: 500px;">
+                        </div>
+                    </div>
+                </div>
+            </div>        </section>
+        <!-- [ Features Section ] end -->
+
+        <!-- [ News Section ] start -->
+        <section class="news-section">
+            <div class="container">
+                <div class="section-title fade-in-up">
+                    <h2>Noticias y Eventos Deportivos</h2>
+                    <p>Mantente informado sobre los descuentos especiales, inauguraciones de nuevos complejos y eventos deportivos en San Miguel.</p>
+                </div>
+
+                <div class="row g-4">
+                    <!-- Descuentos Activos -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="news-card fade-in-up animate-delay-1">
+                            <span class="news-badge discount">
+                                <i class="bi bi-percent me-1"></i>Descuento Especial
+                            </span>
+                            <div class="news-date">
+                                <i class="bi bi-calendar3 me-1"></i>Vigente hasta Julio 2025
+                            </div>
+                            <h5 class="news-title">¡Descuento de Temporada Invernal!</h5>
+                            <p class="news-description">
+                                Aprovecha el 25% de descuento en todas las reservas de piscina climatizada durante los meses de invierno. 
+                                Perfecto para mantener tu rutina de natación sin importar el clima.
+                            </p>                            <a href="/inicio" class="news-link">
+                                Aprovechar descuento <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Inauguración -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="news-card fade-in-up animate-delay-2">
+                            <span class="news-badge inauguration">
+                                <i class="bi bi-ribbon me-1"></i>Inauguración
+                            </span>
+                            <div class="news-date">
+                                <i class="bi bi-calendar3 me-1"></i>Próximamente - Agosto 2025
+                            </div>
+                            <h5 class="news-title">Nueva Cancha de Grass Sintético</h5>
+                            <p class="news-description">
+                                Estamos construyendo una moderna cancha de fútbol con césped sintético de última generación. 
+                                Contará con iluminación LED y graderías para 200 espectadores.
+                            </p>
+                            <a href="#" class="news-link">
+                                Conocer más <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Evento Especial -->
+                    <div class="col-lg-4 col-md-6">
+                        <div class="news-card fade-in-up animate-delay-3">
+                            <span class="news-badge discount">
+                                <i class="bi bi-star me-1"></i>Evento Especial
+                            </span>
+                            <div class="news-date">
+                                <i class="bi bi-calendar3 me-1"></i>28 de Julio - Fiestas Patrias
+                            </div>
+                            <h5 class="news-title">Torneo Deportivo Municipal</h5>
+                            <p class="news-description">
+                                Celebra las Fiestas Patrias participando en nuestro gran torneo deportivo. 
+                                Categorías para todas las edades con premios especiales y acceso gratuito a las instalaciones.
+                            </p>
+                            <a href="#" class="news-link">
+                                Inscribirse <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Segunda fila de noticias -->
+                <div class="row g-4 mt-4">
+                    <!-- Descuento Gimnasio -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="news-card fade-in-up">
+                            <span class="news-badge discount">
+                                <i class="bi bi-percent me-1"></i>Promo Fitness
+                            </span>
+                            <div class="news-date">
+                                <i class="bi bi-calendar3 me-1"></i>Todo el año 2025
+                            </div>
+                            <h5 class="news-title">Membresía Anual Gimnasio - 30% OFF</h5>
+                            <p class="news-description">
+                                Adquiere tu membresía anual del gimnasio municipal con un 30% de descuento. 
+                                Incluye acceso ilimitado, clases grupales y asesoría nutricional básica.
+                            </p>                            <a href="/inicio" class="news-link">
+                                Ver membresías <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Nueva Infraestructura -->
+                    <div class="col-lg-6 col-md-6">
+                        <div class="news-card fade-in-up">
+                            <span class="news-badge inauguration">
+                                <i class="bi bi-tools me-1"></i>Mejoras
+                            </span>
+                            <div class="news-date">
+                                <i class="bi bi-calendar3 me-1"></i>En proceso - 2025
+                            </div>
+                            <h5 class="news-title">Renovación de Vestuarios y Duchas</h5>
+                            <p class="news-description">
+                                Estamos renovando completamente los vestuarios con casilleros nuevos, duchas modernas 
+                                y sistemas de ventilación mejorados para tu mayor comodidad.
+                            </p>
+                            <a href="#" class="news-link">
+                                Ver avances <i class="bi bi-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- [ News Section ] end -->
+
+        <!-- [ CTA Section ] start -->
+        <section class="cta-section">
+            <div class="container text-center">
+                <div class="fade-in-up">
+                    <h3>¡Comienza tu Aventura Deportiva Hoy!</h3>
+                    <p>Únete a la comunidad deportiva de San Miguel. Regístrate ahora y disfruta de nuestras instalaciones de primer nivel.</p>                    <a href="/registrarse" class="btn btn-lg">
+                        <i class="bi bi-person-plus me-2"></i>Registrarse Gratis
+                    </a>
+                </div>
+            </div>
+        </section>
+        <!-- [ CTA Section ] end -->        <!-- [ Footer ] start -->
+        <footer class="custom-footer">
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-logo fade-in-up">
+                        <img src="/assets/images/logo-sanM.png" alt="San Miguel Logo">
+                        <h4 class="text-white mt-2">Municipalidad de San Miguel</h4>
+                    </div>
+                    
+                    <div class="footer-text fade-in-up animate-delay-1">
+                        <p>Promoviendo el deporte y la recreación para una comunidad más saludable y unida. 
+                           Instalaciones modernas al servicio de todos los sanmiguelinos.</p>
+                    </div>
+
+                    <div class="footer-links fade-in-up animate-delay-2">
+                        <a href="#home">Inicio</a>
+                        <a href="#servicios">Servicios</a>
+                        <a href="#reservas">Reservas</a>
+                        <a href="/registrarse">Registro</a>
+                        <a href="/inicio">Acceso</a>
+                    </div>
+
+                    <div class="footer-bottom fade-in-up animate-delay-3">
+                        <p>&copy; 2025 Municipalidad de San Miguel - Una Gestión Diferente | Todos los derechos reservados</p>
+                    </div>
+                </div>
+            </div>        </footer>
+        <!-- [ Footer ] end -->
+
+        <!-- [ Social Media Fixed ] start -->
+        <div class="social-fixed">
+            <a href="https://www.facebook.com/MunicipalidadSanMiguel" target="_blank" class="social-item facebook" data-bs-toggle="tooltip" title="Síguenos en Facebook">
+                <i class="bi bi-facebook"></i>
+            </a>            <a href="https://www.instagram.com/municipalidadsanmiguel/?hl=es" target="_blank" class="social-item instagram" data-bs-toggle="tooltip" title="Síguenos en Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a href="https://twitter.com/munisanmiguel" target="_blank" class="social-item twitter" data-bs-toggle="tooltip" title="Síguenos en X (Twitter)">
+                <i class="bi bi-twitter-x"></i>
+            </a>
+        </div>
+        <!-- [ Social Media Fixed ] end -->
+
+        <!-- [ Scripts ] start -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+        
         <script>
-            layout_change('light');
-        </script>
-        <script>
-            layout_theme_contrast_change('false');
-        </script>
-        <script>
-            change_box_container('false');
-        </script>
-        <script>
-            layout_caption_change('true');
-        </script>
-        <script>
-            layout_rtl_change('false');
-        </script>
-        <script>
-            preset_change('preset-1');
-        </script>
-        <!-- [Page Specific JS] start -->
-        <script src="assets/js/plugins/wow.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/jquery.marquee/1.4.0/jquery.marquee.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
-        <script src="assets/js/plugins/Jarallax.js"></script>
-        <script>
-            // Start [ Menu hide/show on scroll ]
-            let ost = 0;
-            document.addEventListener('scroll', function () {
-                let cOst = document.documentElement.scrollTop;
-                if (cOst == 0) {
-                    document.querySelector('.navbar').classList.add('top-nav-collapse');
-                } else if (cOst > ost) {
-                    document.querySelector('.navbar').classList.add('top-nav-collapse');
-                    document.querySelector('.navbar').classList.remove('default');
+            // Navbar scroll effect
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.custom-navbar');
+                if (window.scrollY > 50) {
+                    navbar.classList.add('scrolled');
                 } else {
-                    document.querySelector('.navbar').classList.add('default');
-                    document.querySelector('.navbar').classList.remove('top-nav-collapse');
+                    navbar.classList.remove('scrolled');
                 }
-                ost = cOst;
             });
-            // End [ Menu hide/show on scroll ]
-            //
-            new SimpleBar(document.querySelector('.scrollble-tech-block'));
-            var wow = new WOW({
-                animateClass: 'animated'
-            });
-            wow.init();
 
-            // slider start
-            $('.screen-slide').owlCarousel({
-                loop: true,
-                margin: 30,
-                center: true,
-                nav: false,
-                dotsContainer: '.app_dotsContainer',
-                URLhashListener: true,
-                items: 1
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
             });
-            $('.workspace-slider').owlCarousel({
-                loop: true,
-                margin: 30,
-                center: true,
-                nav: false,
-                dotsContainer: '.workspace-card-block',
-                URLhashListener: true,
-                items: 1.5
+
+            // Animation on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all fade-in-up elements
+            document.addEventListener('DOMContentLoaded', function() {
+                const fadeElements = document.querySelectorAll('.fade-in-up');
+                fadeElements.forEach(el => {
+                    el.style.opacity = '0';
+                    el.style.transform = 'translateY(30px)';
+                    el.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
+                    observer.observe(el);
+                });
+
+                // Initialize hero animations
+                setTimeout(() => {
+                    document.querySelector('.hero-content').style.opacity = '1';
+                    document.querySelector('.hero-content').style.transform = 'translateY(0)';
+                }, 300);
+
+                setTimeout(() => {
+                    document.querySelector('.hero-carousel').style.opacity = '1';
+                    document.querySelector('.hero-carousel').style.transform = 'translateY(0)';
+                }, 600);
             });
-            // slider end
-            // marquee start
-            $('.marquee').marquee({
-                duration: 500000,
-                pauseOnHover: true,
-                startVisible: true,
-                duplicated: true
+
+            // Service card hover effects
+            document.querySelectorAll('.service-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-10px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });            // Feature item hover effects
+            document.querySelectorAll('.feature-item').forEach(item => {
+                item.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateX(10px)';
+                });
+                
+                item.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateX(0)';
+                });
             });
-            $('.marquee-1').marquee({
-                duration: 500000,
-                pauseOnHover: true,
-                startVisible: true,
-                duplicated: true,
-                direction: 'right'
+
+            // Initialize tooltips for social media
+            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl);
             });
-            // marquee end
+
+            // News card hover effects
+            document.querySelectorAll('.news-card').forEach(card => {
+                card.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-5px)';
+                });
+                
+                card.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
         </script>
-        <!-- [Page Specific JS] end -->
+        <!-- [ Scripts ] end -->
 
     </body>
 

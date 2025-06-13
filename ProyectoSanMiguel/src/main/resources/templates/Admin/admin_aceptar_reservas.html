@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head_admin :: head('Gestión de Reservas')}"></head>
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+  <!-- Loader -->
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <nav th:replace="~{fragments/Sidebar_Admin :: sidebar}"></nav>
+
+  <!-- Header -->
+  <header th:replace="~{fragments/navbar :: header}"></header>
+
+  <!-- [ Main Content ] start -->
+  <div class="pc-container">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h2 class="mb-0">Gestión de Reservas</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ breadcrumb ] end -->
+
+      <!-- [ Main Content ] start -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">Reservas Pendientes de Aprobación</h5>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-warning me-2" th:text="${#lists.size(reservasPendientes)} + ' pendientes'">0 pendientes</span>
+                <button class="btn btn-sm btn-outline-primary" onclick="location.reload()">
+                  <i class="ti ti-refresh me-1"></i>Actualizar
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              
+              <!-- Alertas -->
+              <div class="alert alert-info border-0 mb-4" th:if="${#lists.isEmpty(reservasPendientes)}">
+                <div class="d-flex align-items-center">
+                  <i class="ti ti-info-circle me-2"></i>
+                  <div>
+                    <h6 class="mb-1">No hay reservas pendientes</h6>
+                    <p class="mb-0">Todas las reservas han sido procesadas.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabla de reservas pendientes -->
+              <div th:unless="${#lists.isEmpty(reservasPendientes)}">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle" id="reservasTable">
+                    <thead class="table-light">
+                      <tr>
+                        <th>#</th>                        <th>Usuario</th>
+                        <th>Servicio</th>
+                        <th>Complejo</th>
+                        <th>Fecha</th>
+                        <th>Horario</th>
+                        <th>Monto</th>
+                        <th>Estado Pago</th>
+                        <th>Comprobante</th>
+                        <th>Registro</th>
+                        <th class="text-center">Acciones</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="reserva, iterStat : ${reservasPendientes}">
+                        <td>
+                          <span class="badge bg-light-primary" th:text="${iterStat.count}">1</span>
+                        </td>
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <div class="avtar avtar-s bg-light-success me-2">
+                              <i class="ti ti-user"></i>
+                            </div>
+                            <div>
+                              <h6 class="mb-0" th:text="${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}">Usuario</h6>
+                              <small class="text-muted" th:text="${reserva.usuario.credencial.correo}">email@correo.com</small>
+                            </div>
+                          </div>
+                        </td>
+                        <td>
+                          <div>
+                            <h6 class="mb-0" th:text="${reserva.instanciaServicio.servicio.nombre}">Servicio</h6>
+                            <small class="text-muted" th:text="'Cap: ' + ${reserva.instanciaServicio.capacidadMaxima}">Cap: 20</small>
+                          </div>
+                        </td>
+                        <td>
+                          <div>
+                            <h6 class="mb-0" th:text="${reserva.instanciaServicio.complejoDeportivo.nombre}">Complejo</h6>
+                            <small class="text-muted" th:text="${reserva.instanciaServicio.complejoDeportivo.sector.nombre}">Sector</small>
+                          </div>
+                        </td>
+                        <td>
+                          <strong th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}">01/01/2024</strong>
+                          <br>
+                          <small class="text-muted" th:text="${#temporals.dayOfWeekName(reserva.fecha)}">Lunes</small>
+                        </td>
+                        <td>
+                          <span class="badge bg-light-info" 
+                                th:text="${#temporals.format(reserva.horaInicio, 'HH:mm')} + ' - ' + ${#temporals.format(reserva.horaFin, 'HH:mm')}">
+                            09:00 - 10:00
+                          </span>
+                        </td>
+                        <td>
+                          <strong class="text-success" th:text="'S/ ' + ${#numbers.formatDecimal(reserva.informacionPago.total, 1, 2)}">S/ 0.00</strong>
+                        </td>                        <td>
+                          <span class="badge" 
+                                th:classappend="${reserva.informacionPago.estado == 'Pagado'} ? 'bg-success' : 
+                                               (${reserva.informacionPago.estado == 'Pendiente_Verificacion'} ? 'bg-warning' : 'bg-info')"
+                                th:text="${reserva.informacionPago.estado == 'Pagado'} ? 'Pagado' :
+                                         (${reserva.informacionPago.estado == 'Pendiente_Verificacion'} ? 'Verificando' : 
+                                         ${reserva.informacionPago.estado})">
+                            Estado
+                          </span>
+                        </td>
+                        <td class="text-center">
+                          <!-- Mostrar comprobante si es pago en efectivo y tiene archivo -->
+                          <div th:if="${reserva.informacionPago.tipo == 'Efectivo'}">
+                            <button class="btn btn-sm btn-outline-primary" 
+                                    onclick="verComprobante(event)"
+                                    th:attr="data-reserva-id=${reserva.idReserva},
+                                             data-usuario=${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}"
+                                    data-bs-toggle="tooltip" 
+                                    title="Ver comprobante de pago">
+                              <i class="ti ti-file-text"></i>
+                            </button>
+                          </div>
+                          <div th:unless="${reserva.informacionPago.tipo == 'Efectivo'}">
+                            <span class="text-muted">-</span>
+                          </div>
+                        </td>
+                        <td>
+                          <small th:text="${#temporals.format(reserva.fechaHoraRegistro, 'dd/MM HH:mm')}">01/01 09:00</small>
+                        </td>
+                        <td class="text-center">
+                          <div class="btn-group" role="group">
+                            <button class="btn btn-sm btn-outline-success" 
+                                    onclick="aceptarReserva(event)"
+                                    th:attr="data-id=${reserva.idReserva}, 
+                                             data-usuario=${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}, 
+                                             data-servicio=${reserva.instanciaServicio.servicio.nombre}, 
+                                             data-fecha=${#temporals.format(reserva.fecha, 'dd/MM/yyyy')},
+                                             data-horario=${#temporals.format(reserva.horaInicio, 'HH:mm')} + ' - ' + ${#temporals.format(reserva.horaFin, 'HH:mm')},
+                                             data-monto=${reserva.informacionPago.total}"
+                                    data-bs-toggle="tooltip" 
+                                    title="Aceptar reserva">
+                              <i class="ti ti-check"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" 
+                                    onclick="rechazarReserva(event)"
+                                    th:attr="data-id=${reserva.idReserva}, 
+                                             data-usuario=${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}, 
+                                             data-servicio=${reserva.instanciaServicio.servicio.nombre},
+                                             data-fecha=${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}"
+                                    data-bs-toggle="tooltip" 
+                                    title="Rechazar reserva">
+                              <i class="ti ti-x"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" 
+                                    onclick="verDetalles(event)"
+                                    th:attr="data-id=${reserva.idReserva}"
+                                    data-bs-toggle="tooltip" 
+                                    title="Ver detalles">
+                              <i class="ti ti-eye"></i>
+                            </button>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ Main Content ] end -->
+    </div>
+  </div>
+
+  <!-- Modal para aceptar reserva -->
+  <div class="modal fade" id="modalAceptar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0 bg-success text-white">
+          <h5 class="modal-title">
+            <i class="ti ti-check-circle me-2"></i>Aceptar Reserva
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <div class="avtar avtar-xl bg-light-success mx-auto mb-3">
+              <i class="ti ti-check f-24"></i>
+            </div>
+            <h6 class="mb-2">¿Confirmar aceptación de la reserva?</h6>
+            <p class="text-muted mb-0">Esta acción activará inmediatamente la reserva y notificará al usuario.</p>
+          </div>
+          
+          <div class="alert alert-light-success border-success">
+            <div class="row">
+              <div class="col-6">
+                <p class="mb-1"><strong>Usuario:</strong></p>
+                <p class="mb-1"><strong>Servicio:</strong></p>
+                <p class="mb-1"><strong>Fecha:</strong></p>
+                <p class="mb-1"><strong>Horario:</strong></p>
+                <p class="mb-0"><strong>Monto:</strong></p>
+              </div>
+              <div class="col-6">
+                <p class="mb-1" id="aceptar-usuario">-</p>
+                <p class="mb-1" id="aceptar-servicio">-</p>
+                <p class="mb-1" id="aceptar-fecha">-</p>
+                <p class="mb-1" id="aceptar-horario">-</p>
+                <p class="mb-0" id="aceptar-monto">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btnConfirmarAceptacion">
+            <i class="ti ti-check me-1"></i>Aceptar Reserva
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para rechazar reserva -->
+  <div class="modal fade" id="modalRechazar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0 bg-danger text-white">
+          <h5 class="modal-title">
+            <i class="ti ti-x-circle me-2"></i>Rechazar Reserva
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <div class="avtar avtar-xl bg-light-danger mx-auto mb-3">
+              <i class="ti ti-x f-24"></i>
+            </div>
+            <h6 class="mb-2">¿Rechazar esta reserva?</h6>
+            <p class="text-muted mb-0">El usuario será notificado y la reserva será cancelada.</p>
+          </div>
+          
+          <div class="alert alert-light-danger border-danger mb-3">
+            <div class="row">
+              <div class="col-6">
+                <p class="mb-1"><strong>Usuario:</strong></p>
+                <p class="mb-1"><strong>Servicio:</strong></p>
+                <p class="mb-0"><strong>Fecha:</strong></p>
+              </div>
+              <div class="col-6">
+                <p class="mb-1" id="rechazar-usuario">-</p>
+                <p class="mb-1" id="rechazar-servicio">-</p>
+                <p class="mb-0" id="rechazar-fecha">-</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Motivo del rechazo *</label>
+            <textarea class="form-control" id="motivoRechazo" rows="3" 
+                      placeholder="Explica por qué se rechaza la reserva (ej: horario no disponible, mantenimiento programado, etc.)"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmarRechazo">
+            <i class="ti ti-x me-1"></i>Rechazar Reserva
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal para ver detalles -->
+  <div class="modal fade" id="modalDetalles" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">
+            <i class="ti ti-info-circle me-2"></i>Detalles de la Reserva
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="modalDetallesContent">
+          <div class="text-center">
+            <i class="ti ti-loader-2 fa-spin"></i> Cargando detalles...
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver comprobante de pago -->
+  <div class="modal fade" id="modalComprobante" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header border-0 bg-light">
+          <h5 class="modal-title">
+            <i class="ti ti-file-text me-2"></i>Comprobante de Pago
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <!-- Información del usuario -->
+              <div class="alert alert-light-info border-info mb-3">
+                <div class="d-flex align-items-center">
+                  <i class="ti ti-user me-2"></i>
+                  <div>
+                    <h6 class="mb-0">Usuario: <span id="comprobante-usuario">-</span></h6>
+                    <small class="text-muted">Reserva ID: <span id="comprobante-reserva-id">-</span></small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Vista previa del comprobante -->
+              <div class="text-center">
+                <div id="comprobante-loading" class="py-5">
+                  <i class="ti ti-loader-2 fa-spin f-24"></i>
+                  <p class="mt-2 text-muted">Cargando comprobante...</p>
+                </div>
+                
+                <div id="comprobante-content" style="display: none;">
+                  <!-- Para imágenes -->
+                  <img id="comprobante-imagen" 
+                       class="img-fluid rounded border" 
+                       style="max-height: 500px; display: none;" 
+                       alt="Comprobante de pago">
+                  
+                  <!-- Para PDFs -->
+                  <div id="comprobante-pdf" style="display: none;">
+                    <iframe id="comprobante-iframe" 
+                            width="100%" 
+                            height="500" 
+                            frameborder="0">
+                    </iframe>
+                  </div>
+                  
+                  <!-- Si no se puede mostrar el archivo -->
+                  <div id="comprobante-no-preview" style="display: none;">
+                    <div class="alert alert-warning">
+                      <i class="ti ti-alert-triangle me-2"></i>
+                      <strong>Vista previa no disponible</strong>
+                      <p class="mb-2">No se puede mostrar una vista previa de este archivo.</p>
+                      <a id="comprobante-descargar" 
+                         href="#" 
+                         class="btn btn-sm btn-primary" 
+                         target="_blank">
+                        <i class="ti ti-download me-1"></i>Descargar archivo
+                      </a>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Error al cargar -->
+                <div id="comprobante-error" style="display: none;">
+                  <div class="alert alert-danger">
+                    <i class="ti ti-alert-circle me-2"></i>
+                    <strong>Error al cargar el comprobante</strong>
+                    <p class="mb-0">No se pudo cargar el archivo del comprobante. Es posible que el archivo no exista o haya sido eliminado.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cerrar</button>
+          <a id="comprobante-descargar-footer" 
+             href="#" 
+             class="btn btn-primary" 
+             target="_blank" 
+             style="display: none;">
+            <i class="ti ti-download me-1"></i>Descargar
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer th:replace="~{fragments/footer_superadmin :: footer}"></footer>
+
+  <!-- Scripts -->
+  <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+  <script th:src="@{/assets/js/reservas-datatable.js}"></script>
+
+  <script>
+    let currentReservaId = null;
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Inicializar DataTable si hay datos
+      if (document.querySelector('#reservasTable tbody tr')) {
+        $('#reservasTable').DataTable({
+          responsive: true,
+          language: {
+            "decimal": "",
+            "emptyTable": "No hay datos disponibles",
+            "info": "Mostrando _START_ a _END_ de _TOTAL_ registros",
+            "infoEmpty": "Mostrando 0 a 0 de 0 registros",
+            "infoFiltered": "(filtrado de _MAX_ registros totales)",
+            "lengthMenu": "Mostrar _MENU_ registros",
+            "loadingRecords": "Cargando...",
+            "processing": "Procesando...",
+            "search": "Buscar:",
+            "zeroRecords": "No se encontraron coincidencias",
+            "paginate": {
+              "first": "Primero",
+              "last": "Último",
+              "next": "Siguiente",
+              "previous": "Anterior"
+            }
+          },          order: [[9, 'desc']], // Ordenar por fecha de registro descendente (nueva posición)
+          columnDefs: [
+            { targets: [0, 6, 7, 8, 10], className: 'text-center' }, // Ajustado para nueva columna
+            { targets: [10], orderable: false } // Ajustado para nueva columna
+          ],
+          pageLength: 10,
+          lengthMenu: [[5, 10, 25, 50], [5, 10, 25, 50]]
+        });
+      }
+
+      // Inicializar tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+
+    // Función para aceptar reserva
+    function aceptarReserva(event) {
+      const btn = event.currentTarget;
+      currentReservaId = btn.getAttribute('data-id');
+      
+      // Llenar datos del modal
+      document.getElementById('aceptar-usuario').textContent = btn.getAttribute('data-usuario');
+      document.getElementById('aceptar-servicio').textContent = btn.getAttribute('data-servicio');
+      document.getElementById('aceptar-fecha').textContent = btn.getAttribute('data-fecha');
+      document.getElementById('aceptar-horario').textContent = btn.getAttribute('data-horario');
+      document.getElementById('aceptar-monto').textContent = 'S/ ' + parseFloat(btn.getAttribute('data-monto')).toFixed(2);
+      
+      const modal = new bootstrap.Modal(document.getElementById('modalAceptar'));
+      modal.show();
+    }
+
+    // Función para rechazar reserva
+    function rechazarReserva(event) {
+      const btn = event.currentTarget;
+      currentReservaId = btn.getAttribute('data-id');
+      
+      // Llenar datos del modal
+      document.getElementById('rechazar-usuario').textContent = btn.getAttribute('data-usuario');
+      document.getElementById('rechazar-servicio').textContent = btn.getAttribute('data-servicio');
+      document.getElementById('rechazar-fecha').textContent = btn.getAttribute('data-fecha');
+      
+      // Limpiar motivo
+      document.getElementById('motivoRechazo').value = '';
+      
+      const modal = new bootstrap.Modal(document.getElementById('modalRechazar'));
+      modal.show();
+    }
+
+    // Confirmar aceptación
+    document.getElementById('btnConfirmarAceptacion').addEventListener('click', function() {
+      if (!currentReservaId) return;
+      
+      procesarGestionReserva(currentReservaId, 'aceptar');
+    });
+
+    // Confirmar rechazo
+    document.getElementById('btnConfirmarRechazo').addEventListener('click', function() {
+      if (!currentReservaId) return;
+      
+      const motivo = document.getElementById('motivoRechazo').value.trim();
+      if (!motivo) {
+        alert('Por favor ingresa un motivo para el rechazo.');
+        return;
+      }
+      
+      procesarGestionReserva(currentReservaId, 'rechazar', motivo);
+    });
+
+    // Función para procesar la gestión de reserva
+    function procesarGestionReserva(idReserva, accion, motivo = null) {
+      const formData = new FormData();
+      formData.append('idReserva', idReserva);
+      formData.append('accion', accion);
+      if (motivo) formData.append('motivo', motivo);
+
+      // Deshabilitar botón
+      const btn = accion === 'aceptar' ? 
+        document.getElementById('btnConfirmarAceptacion') : 
+        document.getElementById('btnConfirmarRechazo');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="ti ti-loader"></i> Procesando...';
+
+      fetch('/admin/gestionar-reserva', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Cerrar modal
+          bootstrap.Modal.getInstance(document.getElementById(accion === 'aceptar' ? 'modalAceptar' : 'modalRechazar')).hide();
+          
+          // Mostrar mensaje de éxito
+          showAlert('success', data.message);
+          
+          // Recargar página después de un breve delay
+          setTimeout(() => {
+            location.reload();
+          }, 1500);
+        } else {
+          showAlert('danger', data.message || 'Error al procesar la gestión de reserva');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showAlert('danger', 'Error de conexión. Inténtalo de nuevo.');
+      })
+      .finally(() => {
+        // Restaurar botón
+        btn.disabled = false;
+        if (accion === 'aceptar') {
+          btn.innerHTML = '<i class="ti ti-check me-1"></i>Aceptar Reserva';
+        } else {
+          btn.innerHTML = '<i class="ti ti-x me-1"></i>Rechazar Reserva';
+        }
+      });
+    }
+
+    // Función para mostrar alertas
+    function showAlert(type, message) {
+      const alertHtml = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+          <i class="ti ti-${type === 'success' ? 'check' : 'alert-triangle'} me-2"></i>
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      `;
+      
+      // Insertar al inicio del contenido principal
+      const content = document.querySelector('.pc-content');
+      content.insertAdjacentHTML('afterbegin', alertHtml);
+      
+      // Auto-eliminar después de 5 segundos
+      setTimeout(() => {
+        const alert = content.querySelector('.alert');
+        if (alert) {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }
+      }, 5000);
+    }    // Función para ver detalles (expandible)
+    function verDetalles(event) {
+      const idReserva = event.currentTarget.getAttribute('data-id');
+      
+      // Mostrar modal con contenido de carga
+      const modal = new bootstrap.Modal(document.getElementById('modalDetalles'));
+      modal.show();
+      
+      // Aquí se puede implementar una llamada AJAX para obtener más detalles
+      // Por ahora mostramos información básica
+      document.getElementById('modalDetallesContent').innerHTML = `
+        <div class="alert alert-info">
+          <h6>Información de la Reserva #${idReserva}</h6>
+          <p>Los detalles completos de la reserva se pueden cargar aquí mediante una llamada AJAX al backend.</p>
+          <p class="mb-0"><strong>Funcionalidad por implementar:</strong> Carga de información detallada, historial de cambios, etc.</p>
+        </div>
+      `;
+    }
+
+    // Función para ver comprobante de pago
+    function verComprobante(event) {
+      const idReserva = event.currentTarget.getAttribute('data-reserva-id');
+      const usuario = event.currentTarget.getAttribute('data-usuario');
+      
+      // Mostrar modal
+      const modal = new bootstrap.Modal(document.getElementById('modalComprobante'));
+      modal.show();
+      
+      // Llenar información básica
+      document.getElementById('comprobante-usuario').textContent = usuario;
+      document.getElementById('comprobante-reserva-id').textContent = idReserva;
+      
+      // Mostrar estado de carga
+      showComprobanteLoading();
+      
+      // Cargar comprobante mediante AJAX
+      fetch(`/admin/obtener-comprobante/${idReserva}`)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('No se pudo cargar el comprobante');
+          }
+          return response.json();
+        })
+        .then(data => {
+          if (data.success && data.comprobanteUrl) {
+            mostrarComprobante(data.comprobanteUrl, data.tipoArchivo || 'imagen');
+          } else {
+            showComprobanteError('No se encontró el comprobante de pago');
+          }
+        })
+        .catch(error => {
+          console.error('Error al cargar comprobante:', error);
+          showComprobanteError('Error al cargar el comprobante de pago');
+        });
+    }
+
+    // Función para mostrar estado de carga del comprobante
+    function showComprobanteLoading() {
+      document.getElementById('comprobante-loading').style.display = 'block';
+      document.getElementById('comprobante-content').style.display = 'none';
+      document.getElementById('comprobante-error').style.display = 'none';
+    }
+
+    // Función para mostrar el comprobante según su tipo
+    function mostrarComprobante(url, tipo) {
+      document.getElementById('comprobante-loading').style.display = 'none';
+      document.getElementById('comprobante-content').style.display = 'block';
+      document.getElementById('comprobante-error').style.display = 'none';
+      
+      // Ocultar todos los elementos de vista previa
+      document.getElementById('comprobante-imagen').style.display = 'none';
+      document.getElementById('comprobante-pdf').style.display = 'none';
+      document.getElementById('comprobante-no-preview').style.display = 'none';
+      
+      const extension = url.split('.').pop().toLowerCase();
+      const downloadLink = `/admin/descargar-comprobante/${url.split('/').pop()}`;
+      
+      // Configurar enlaces de descarga
+      document.getElementById('comprobante-descargar').href = downloadLink;
+      document.getElementById('comprobante-descargar-footer').href = downloadLink;
+      document.getElementById('comprobante-descargar-footer').style.display = 'inline-block';
+      
+      if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+        // Mostrar imagen
+        const img = document.getElementById('comprobante-imagen');
+        img.src = url;
+        img.style.display = 'block';
+        
+        // Manejar error de carga de imagen
+        img.onerror = function() {
+          document.getElementById('comprobante-imagen').style.display = 'none';
+          document.getElementById('comprobante-no-preview').style.display = 'block';
+        };
+        
+      } else if (extension === 'pdf') {
+        // Mostrar PDF
+        const iframe = document.getElementById('comprobante-iframe');
+        iframe.src = url;
+        document.getElementById('comprobante-pdf').style.display = 'block';
+        
+      } else {
+        // Archivo no soportado para vista previa
+        document.getElementById('comprobante-no-preview').style.display = 'block';
+      }
+    }
+
+    // Función para mostrar error al cargar comprobante
+    function showComprobanteError(mensaje) {
+      document.getElementById('comprobante-loading').style.display = 'none';
+      document.getElementById('comprobante-content').style.display = 'none';
+      document.getElementById('comprobante-error').style.display = 'block';
+      document.getElementById('comprobante-error').querySelector('.alert p').textContent = mensaje;
+    }
+  </script>
+
+</body>
+</html>
