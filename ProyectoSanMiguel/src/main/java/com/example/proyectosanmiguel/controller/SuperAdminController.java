@@ -7,6 +7,7 @@ import com.example.proyectosanmiguel.repository.ComplejoRepository;
 import com.example.proyectosanmiguel.repository.RolRepository;
 import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
+import com.example.proyectosanmiguel.repository.ServicioRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +20,10 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -38,6 +41,9 @@ public class SuperAdminController {
 
     @Autowired
     private ComplejoRepository complejoRepository;
+
+    @Autowired
+    private ServicioRepository servicioRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -233,6 +239,40 @@ public class SuperAdminController {
         model.addAttribute("reportes", complejoRepository.getReporteHorarios());
 
         return "SuperAdmin/superadmin_asistencia";
+    }
+
+    // Página de generación de reportes
+
+    @GetMapping("/superadmin/reportes/generar")
+    public String generarReportes(Model model) {
+
+        // Cargar todos los complejos deportivos para el selector de instalaciones
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+        model.addAttribute("complejos", complejos);
+
+        return "SuperAdmin/superadmin_generarReportes";
+    }
+
+    // API endpoint para obtener servicios para filtros
+    @GetMapping("/superadmin/api/servicios")
+    @ResponseBody
+    public ResponseEntity<List<Map<String, Object>>> obtenerServicios() {
+        try {
+            List<Servicio> servicios = servicioRepository.findAll();
+            List<Map<String, Object>> serviciosDto = new ArrayList<>();
+
+            for (Servicio servicio : servicios) {
+                Map<String, Object> servicioMap = new HashMap<>();
+                servicioMap.put("id", servicio.getIdServicio());
+                servicioMap.put("nombre", servicio.getNombre());
+                serviciosDto.add(servicioMap);
+            }
+
+            return ResponseEntity.ok(serviciosDto);
+        } catch (Exception e) {
+            System.err.println("Error al obtener servicios: " + e.getMessage());
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @GetMapping("/superadmin/api/estadisticas/personal")
