@@ -19,7 +19,6 @@ import java.util.Map;
 @Service
 public class DNIService {
 
-
     @Value("${api.token.reniec}")
     private String token;
 
