@@ -38,14 +38,21 @@
           <div class="col-sm-12">
             <div class="card table-card">
               <div class="card-body">
-                <div class="table-responsive">
-                  <div th:if="${msg}" class="alert alert-info" role="alert" style="border-radius: 10px;">
+                <div class="table-responsive">                  <div th:if="${msg}" class="alert alert-info" role="alert" style="border-radius: 10px;">
                     <i class="ti ti-info-circle me-2"></i>
                     <span th:text="${msg}">Reserva cancelada correctamente.</span>
                   </div>
                   <div th:if="${error}" class="alert alert-danger" role="alert" style="border-radius: 10px;">
                     <i class="ti ti-alert-triangle me-2"></i>
                     <span th:text="${error}">Hubo un problema al cancelar la reserva.</span>
+                  </div>
+                  <div th:if="${mensajeExito}" class="alert alert-success" role="alert" style="border-radius: 10px;">
+                    <i class="ti ti-check-circle me-2"></i>
+                    <span th:text="${mensajeExito}">Operación realizada exitosamente.</span>
+                  </div>
+                  <div th:if="${mensajeDescuento}" class="alert alert-success" role="alert" style="border-radius: 10px;">
+                    <i class="ti ti-discount-2 me-2"></i>
+                    <span th:text="${mensajeDescuento}">Descuento aplicado correctamente.</span>
                   </div>
 
 
@@ -91,15 +98,15 @@
                         <td th:text="${dto.reserva.horaInicio}">09:00</td>
 
                         <!-- Hora fin -->
-                        <td th:text="${dto.reserva.horaFin}">10:00</td>
-
-                        <!-- Estado -->
+                        <td th:text="${dto.reserva.horaFin}">10:00</td>                        <!-- Estado -->
                         <td>
-      <span class="badge f-12"
-            th:classappend="${dto.reserva.estado == 1} ? 'bg-light-success' : 'bg-light-danger'"
-            th:text="${dto.reserva.estado == 1} ? 'Activo' : 'Inactivo'">
-        Estado
-      </span>
+                          <span class="badge f-12"
+                                th:classappend="${dto.reserva.estado == 1} ? 'bg-success text-white' : 
+                                               (${dto.reserva.estado == 2} ? 'bg-warning text-dark' : 'bg-secondary text-white')"
+                                th:text="${dto.reserva.estado == 1} ? 'Activo' :
+                                         (${dto.reserva.estado == 2} ? 'Pendiente Verificación' : 'Pendiente')">
+                            Estado
+                          </span>
                         </td>
 
                         <!-- Fecha de registro -->

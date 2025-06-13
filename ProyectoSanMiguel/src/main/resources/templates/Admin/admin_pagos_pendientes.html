@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Pagos Pendientes de Verificación</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  
+  <!-- [Favicon] icon -->
+  <link rel="icon" href="../assets/images/favicon.svg" type="image/x-icon" />
+  
+  <!-- [Font] Family -->
+  <link rel="stylesheet" href="../assets/fonts/inter/inter.css" id="main-font-link" />
+  
+  <!-- [phosphor Icons] https://phosphoricons.com/ -->
+  <link rel="stylesheet" href="../assets/fonts/phosphor/duotone/style.css" />
+  
+  <!-- [Tabler Icons] https://tablericons.com -->
+  <link rel="stylesheet" href="../assets/fonts/tabler-icons.min.css" />
+  
+  <!-- [Feather Icons] https://feathericons.com -->
+  <link rel="stylesheet" href="../assets/fonts/feather.css" />
+  
+  <!-- [Font Awesome Icons] https://fontawesome.com/icons -->
+  <link rel="stylesheet" href="../assets/fonts/fontawesome.css" />
+  
+  <!-- [Material Icons] https://fonts.google.com/icons -->
+  <link rel="stylesheet" href="../assets/fonts/material.css" />
+  
+  <!-- [Template CSS Files] -->
+  <link rel="stylesheet" href="../assets/css/style.css" id="main-style-link" />
+  <link rel="stylesheet" href="../assets/css/style-preset.css" />
+</head>
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+  <!-- [ Pre-loader ] start -->
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+  <!-- [ Pre-loader ] End -->
+
+  <div th:replace="~{fragments/sidebar_admin :: sidebar}"></div>
+  <div th:replace="~{fragments/header_admin :: header}"></div>
+
+  <!-- [ Main Content ] start -->
+  <div class="pc-container">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h2 class="mb-0">Pagos Pendientes de Verificación</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ breadcrumb ] end -->
+
+      <!-- [ Main Content ] start -->
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">Gestión de Pagos en Efectivo</h5>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-warning me-2" th:text="${#lists.size(pagosPendientes)} + ' pendientes'">0 pendientes</span>
+                <button class="btn btn-sm btn-outline-primary" onclick="location.reload()">
+                  <i class="ti ti-refresh me-1"></i>Actualizar
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              
+              <!-- Alertas -->
+              <div class="alert alert-info border-0 mb-4" th:if="${#lists.isEmpty(pagosPendientes)}">
+                <div class="d-flex align-items-center">
+                  <i class="ti ti-info-circle me-2"></i>
+                  <div>
+                    <h6 class="mb-1">No hay pagos pendientes</h6>
+                    <p class="mb-0">Todos los pagos en efectivo han sido procesados.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tabla de pagos pendientes -->
+              <div class="table-responsive" th:unless="${#lists.isEmpty(pagosPendientes)}">
+                <table class="table table-hover" id="tablaPagesPendientes">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Usuario</th>
+                      <th>Servicio</th>
+                      <th>Fecha/Hora</th>
+                      <th>Monto</th>
+                      <th>Fecha de Pago</th>
+                      <th>Estado</th>
+                      <th>Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="reserva, iterStat : ${pagosPendientes}">
+                      <td th:text="${iterStat.count}">1</td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="avtar avtar-s bg-light-primary flex-shrink-0 me-3">
+                            <i class="ti ti-user"></i>
+                          </div>
+                          <div>
+                            <h6 class="mb-0" th:text="${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}">Juan Pérez</h6>
+                            <p class="text-muted f-12 mb-0" th:text="${reserva.usuario.credencial.correo}">juan@email.com</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          <h6 class="mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Cancha de Fútbol</h6>
+                          <p class="text-muted f-12 mb-0" th:text="${reserva.instanciaServicio.complejoDeportivo.nombre}">Complejo Deportivo</p>
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          <h6 class="mb-1" th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}">08/06/2025</h6>
+                          <p class="text-muted f-12 mb-0" th:text="${reserva.horaInicio + ' - ' + reserva.horaFin}">10:00 - 11:00</p>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge bg-light-success" th:text="'S/ ' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}">S/ 25.00</span>
+                      </td>
+                      <td th:text="${#temporals.format(reserva.informacionPago.fecha, 'dd/MM/yyyy')} + ' ' + ${#temporals.format(reserva.informacionPago.hora, 'HH:mm')}">08/06/2025 14:30</td>
+                      <td>
+                        <span class="badge bg-warning">
+                          <i class="ti ti-clock me-1"></i>Pendiente Verificación
+                        </span>
+                      </td>
+                      <td>
+                        <div class="d-flex gap-2">
+                          <button class="btn btn-sm btn-outline-success" 
+                                  onclick="aprobarPago(event)"
+                                  th:attr="data-id=${reserva.idReserva}, data-usuario=${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}, data-servicio=${reserva.instanciaServicio.servicio.nombre}, data-monto=${reserva.informacionPago.total}"
+                                  data-bs-toggle="tooltip" 
+                                  title="Aprobar pago">
+                            <i class="ti ti-check"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-danger" 
+                                  onclick="rechazarPago(event)"
+                                  th:attr="data-id=${reserva.idReserva}, data-usuario=${reserva.usuario.nombre + ' ' + reserva.usuario.apellido}, data-servicio=${reserva.instanciaServicio.servicio.nombre}"
+                                  data-bs-toggle="tooltip" 
+                                  title="Rechazar pago">
+                            <i class="ti ti-x"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-info" 
+                                  onclick="verDetalles(event)"
+                                  th:attr="data-id=${reserva.idReserva}"
+                                  data-bs-toggle="tooltip" 
+                                  title="Ver detalles">
+                            <i class="ti ti-eye"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ Main Content ] end -->
+    </div>
+  </div>
+
+  <!-- Modal para aprobar pago -->
+  <div class="modal fade" id="modalAprobar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0 bg-success text-white">
+          <h5 class="modal-title">
+            <i class="ti ti-check-circle me-2"></i>Aprobar Pago
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <div class="avtar avtar-xl bg-light-success mx-auto mb-3">
+              <i class="ti ti-check f-24"></i>
+            </div>
+            <h6 class="mb-2">¿Confirmar aprobación del pago?</h6>
+            <p class="text-muted mb-0">Esta acción activará inmediatamente la reserva y notificará al usuario.</p>
+          </div>
+          
+          <div class="alert alert-light-success border-success">
+            <div class="row">
+              <div class="col-6">
+                <p class="mb-1"><strong>Usuario:</strong></p>
+                <p class="mb-1"><strong>Servicio:</strong></p>
+                <p class="mb-0"><strong>Monto:</strong></p>
+              </div>
+              <div class="col-6">
+                <p class="mb-1" id="aprobar-usuario">-</p>
+                <p class="mb-1" id="aprobar-servicio">-</p>
+                <p class="mb-0" id="aprobar-monto">-</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-success" id="btnConfirmarAprobacion">
+            <i class="ti ti-check me-1"></i>Aprobar Pago
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para rechazar pago -->
+  <div class="modal fade" id="modalRechazar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0 bg-danger text-white">
+          <h5 class="modal-title">
+            <i class="ti ti-x-circle me-2"></i>Rechazar Pago
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <div class="avtar avtar-xl bg-light-danger mx-auto mb-3">
+              <i class="ti ti-x f-24"></i>
+            </div>
+            <h6 class="mb-2">¿Rechazar este pago?</h6>
+            <p class="text-muted mb-0">El usuario será notificado y deberá volver a subir el comprobante.</p>
+          </div>
+          
+          <div class="alert alert-light-danger border-danger mb-3">
+            <div class="row">
+              <div class="col-6">
+                <p class="mb-1"><strong>Usuario:</strong></p>
+                <p class="mb-0"><strong>Servicio:</strong></p>
+              </div>
+              <div class="col-6">
+                <p class="mb-1" id="rechazar-usuario">-</p>
+                <p class="mb-0" id="rechazar-servicio">-</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Motivo del rechazo *</label>
+            <textarea class="form-control" id="motivoRechazo" rows="3" 
+                      placeholder="Explica por qué se rechaza el pago (ej: comprobante ilegible, monto incorrecto, etc.)"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmarRechazo">
+            <i class="ti ti-x me-1"></i>Rechazar Pago
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- [ Footer ] start -->
+  <div th:replace="~{fragments/footer_superadmin :: footer}"></div>
+  <!-- [ Footer ] end -->
+
+  <!-- Required Js -->
+  <script src="../assets/js/plugins/popper.min.js"></script>
+  <script src="../assets/js/plugins/simplebar.min.js"></script>
+  <script src="../assets/js/plugins/bootstrap.min.js"></script>
+  <script src="../assets/js/fonts/custom-font.js"></script>
+  <script src="../assets/js/pcoded.js"></script>
+  <script src="../assets/js/plugins/feather.min.js"></script>
+
+  <!-- DataTables -->
+  <script src="../assets/js/plugins/simple-datatables.js"></script>
+
+  <script>
+    // Variables globales
+    let currentReservaId = null;
+
+    // Inicializar DataTable
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabla = document.getElementById('tablaPagesPendientes');
+      if (tabla) {
+        new simpleDatatables.DataTable(tabla, {
+          searchable: true,
+          perPageSelect: [5, 10, 25, 50],
+          perPage: 10,
+          labels: {
+            placeholder: "Buscar...",
+            perPage: "Registros por página:",
+            noRows: "No se encontraron registros",
+            info: "Mostrando {start} a {end} de {rows} registros"
+          }
+        });
+      }
+
+      // Inicializar tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+
+    // Función para aprobar pago
+    function aprobarPago(event) {
+      const btn = event.currentTarget;
+      currentReservaId = btn.getAttribute('data-id');
+      
+      // Llenar datos del modal
+      document.getElementById('aprobar-usuario').textContent = btn.getAttribute('data-usuario');
+      document.getElementById('aprobar-servicio').textContent = btn.getAttribute('data-servicio');
+      document.getElementById('aprobar-monto').textContent = 'S/ ' + parseFloat(btn.getAttribute('data-monto')).toFixed(2);
+      
+      const modal = new bootstrap.Modal(document.getElementById('modalAprobar'));
+      modal.show();
+    }
+
+    // Función para rechazar pago
+    function rechazarPago(event) {
+      const btn = event.currentTarget;
+      currentReservaId = btn.getAttribute('data-id');
+      
+      // Llenar datos del modal
+      document.getElementById('rechazar-usuario').textContent = btn.getAttribute('data-usuario');
+      document.getElementById('rechazar-servicio').textContent = btn.getAttribute('data-servicio');
+      
+      // Limpiar motivo
+      document.getElementById('motivoRechazo').value = '';
+      
+      const modal = new bootstrap.Modal(document.getElementById('modalRechazar'));
+      modal.show();
+    }
+
+    // Confirmar aprobación
+    document.getElementById('btnConfirmarAprobacion').addEventListener('click', function() {
+      if (!currentReservaId) return;
+      
+      procesarVerificacion(currentReservaId, 'aprobar');
+    });
+
+    // Confirmar rechazo
+    document.getElementById('btnConfirmarRechazo').addEventListener('click', function() {
+      if (!currentReservaId) return;
+      
+      const motivo = document.getElementById('motivoRechazo').value.trim();
+      if (!motivo) {
+        alert('Por favor ingresa un motivo para el rechazo.');
+        return;
+      }
+      
+      procesarVerificacion(currentReservaId, 'rechazar', motivo);
+    });
+
+    // Función para procesar la verificación
+    function procesarVerificacion(idReserva, accion, motivo = null) {
+      const formData = new FormData();
+      formData.append('idReserva', idReserva);
+      formData.append('accion', accion);
+      if (motivo) formData.append('motivo', motivo);
+
+      // Deshabilitar botón
+      const btn = accion === 'aprobar' ? 
+        document.getElementById('btnConfirmarAprobacion') : 
+        document.getElementById('btnConfirmarRechazo');
+      
+      btn.disabled = true;
+      btn.innerHTML = '<i class="ti ti-loader"></i> Procesando...';
+
+      fetch('/admin/verificar-pago', {
+        method: 'POST',
+        body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          // Cerrar modal
+          bootstrap.Modal.getInstance(document.getElementById(accion === 'aprobar' ? 'modalAprobar' : 'modalRechazar')).hide();
+          
+          // Mostrar mensaje de éxito
+          showAlert('success', data.message);
+          
+          // Recargar página después de un breve delay
+          setTimeout(() => {
+            location.reload();
+          }, 1500);
+        } else {
+          showAlert('danger', data.message || 'Error al procesar la verificación');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showAlert('danger', 'Error de conexión. Inténtalo de nuevo.');
+      })
+      .finally(() => {
+        // Restaurar botón
+        btn.disabled = false;
+        if (accion === 'aprobar') {
+          btn.innerHTML = '<i class="ti ti-check me-1"></i>Aprobar Pago';
+        } else {
+          btn.innerHTML = '<i class="ti ti-x me-1"></i>Rechazar Pago';
+        }
+      });
+    }
+
+    // Función para mostrar alertas
+    function showAlert(type, message) {
+      const alertHtml = `
+        <div class="alert alert-${type} alert-dismissible fade show" role="alert">
+          <i class="ti ti-${type === 'success' ? 'check' : 'alert-triangle'} me-2"></i>
+          ${message}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      `;
+      
+      // Insertar al inicio del contenido principal
+      const content = document.querySelector('.pc-content');
+      content.insertAdjacentHTML('afterbegin', alertHtml);
+      
+      // Auto-eliminar después de 5 segundos
+      setTimeout(() => {
+        const alert = content.querySelector('.alert');
+        if (alert) {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }
+      }, 5000);
+    }
+
+    // Placeholder para ver detalles (puedes expandir esta función)
+    function verDetalles(event) {
+      const idReserva = event.currentTarget.getAttribute('data-id');
+      // Aquí puedes implementar un modal con más detalles de la reserva
+      console.log('Ver detalles de reserva:', idReserva);
+    }
+  </script>
+</body>
+</html>

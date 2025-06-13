@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+  <head th:replace="~{fragments/head_vecino :: head('Historial de Pagos')}"></head>
+
+  <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+
+    <div class="loader-bg">
+      <div class="loader-track">
+        <div class="loader-fill"></div>
+      </div>
+    </div>
+
+    <div th:replace="~{fragments/Sidebar_vecino :: sidebar}"></div>
+
+    <div th:replace="~{fragments/navbar_vecino :: header}"></div>
+
+<!-- [ Main Content ] start -->
+<div class="pc-container">
+  <div class="pc-content">
+    <!-- [ breadcrumb ] start -->
+    <div class="page-header">
+      <div class="page-block">
+        <div class="row align-items-center">
+          <div class="col-md-12">
+            <div class="page-header-title">
+              <h2 class="mb-0">
+                <i class="ti ti-receipt-2 me-2"></i>
+                Historial de Pagos
+              </h2>
+              <p class="text-muted mb-0">Consulta todos tus pagos y transacciones realizadas</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- [ breadcrumb ] end -->
+
+    <!-- Mensajes -->
+    <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+      <i class="ti ti-check-circle me-2"></i>
+      <span th:text="${mensajeExito}">Operación realizada exitosamente.</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+    
+    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+      <i class="ti ti-alert-triangle me-2"></i>
+      <span th:text="${error}">Hubo un error.</span>
+      <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <!-- Estadísticas Dashboard -->
+    <div class="row mb-4">
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card bg-primary text-white">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-white-75 mb-1">Total Pagos</h6>
+                <h4 class="mb-0 text-white" th:text="${totalPagos ?: 0}">0</h4>
+              </div>
+              <div class="col-auto">
+                <i class="ti ti-receipt-2 f-36 text-white-50"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card bg-success text-white">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-white-75 mb-1">Completados</h6>
+                <h4 class="mb-0 text-white" th:text="${pagosCompletados ?: 0}">0</h4>
+              </div>
+              <div class="col-auto">
+                <i class="ti ti-check-circle f-36 text-white-50"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card bg-warning text-white">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-white-75 mb-1">Pendientes</h6>
+                <h4 class="mb-0 text-white" th:text="${pagosPendientes ?: 0}">0</h4>
+              </div>
+              <div class="col-auto">
+                <i class="ti ti-clock f-36 text-white-50"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3 col-md-6 col-sm-12 mb-3">
+        <div class="card bg-info text-white">
+          <div class="card-body">
+            <div class="row align-items-center">
+              <div class="col">
+                <h6 class="text-white-75 mb-1">Total Gastado</h6>                <div th:with="monto=${totalGastado != null ? totalGastado : 0}">
+                  <h4 class="mb-0 text-white"
+                      th:text="'S/ ' + ${#numbers.formatDecimal(monto, 1, 'POINT', 2, 'COMMA')}">
+                    S/ 0.00
+                  </h4>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="ti ti-coins f-36 text-white-50"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Historial de pagos -->
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header d-flex align-items-center justify-content-between">
+            <h5 class="mb-0">
+              <i class="ti ti-history me-2"></i>
+              Historial Detallado de Pagos
+            </h5>
+            <div class="d-flex gap-2">
+              <a href="/vecino/pagos" class="btn btn-sm btn-primary">
+                <i class="ti ti-plus me-1"></i>Realizar Pago
+              </a>
+              <button class="btn btn-sm btn-outline-secondary" onclick="location.reload()">
+                <i class="ti ti-refresh me-1"></i>Actualizar
+              </button>
+            </div>
+          </div>
+
+          <div class="card-body">
+            <!-- Mensaje cuando no hay datos -->
+            <div th:if="${!hayHistorialPagos}" class="text-center py-5">
+              <div class="avtar avtar-xl bg-light-primary mx-auto mb-3">
+                <i class="ti ti-receipt-off f-32"></i>
+              </div>
+              <h5 class="mb-2">No hay pagos registrados</h5>
+              <p class="text-muted mb-3">Aún no tienes reservas con información de pago.</p>
+              
+              <!-- Debug información cuando esté habilitado -->
+              <div th:if="${debug}" class="alert alert-info text-start mb-3">
+                <h6><i class="ti ti-bug me-1"></i>Información de debug:</h6>                <ul class="mb-0">
+                  <li>Total reservas con pago: <span th:text="${pagosPagados != null ? #lists.size(pagosPagados) : 0}">0</span></li>
+                  <li>Hay historial: <span th:text="${hayHistorialPagos ?: false}">false</span></li>
+                  <li>Total pagos: <span th:text="${totalPagos ?: 0}">0</span></li>
+                  <li>Usuario autenticado: <span th:text="${#authentication.name}">N/A</span></li>
+                </ul>
+              </div>
+              
+              <div class="d-flex justify-content-center gap-2">
+                <a href="/vecino/listarComplejos" class="btn btn-primary">
+                  <i class="ti ti-plus me-1"></i>Hacer mi primera reserva
+                </a>
+                <a href="/vecino/pagos" class="btn btn-outline-primary">
+                  <i class="ti ti-credit-card me-1"></i>Ver página de pagos
+                </a>
+              </div>
+            </div>
+
+            <!-- DataTable cuando hay datos -->
+            <div th:if="${hayHistorialPagos}">
+              <div class="table-responsive">
+                <table class="table table-hover table-striped" id="tablaHistorialPagos">
+                  <thead class="table-dark">
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th>Reserva</th>
+                      <th>Servicio/Zona</th>
+                      <th class="text-center">Fecha Reserva</th>
+                      <th class="text-center">Horario</th>
+                      <th class="text-end">Monto</th>
+                      <th class="text-center">Método Pago</th>
+                      <th class="text-center">Estado</th>
+                      <th class="text-center">Fecha Pago</th>
+                      <th class="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="reserva, iterStat : ${pagosPagados}">
+                      <td class="text-center">
+                        <span class="badge bg-light-primary" th:text="${iterStat.count}">1</span>
+                      </td>
+                      
+                      <!-- Información de la reserva -->
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="avtar avtar-s bg-light-primary me-2">
+                            <i class="ti ti-calendar-event"></i>
+                          </div>
+                          <div>
+                            <h6 class="mb-0" th:text="'#' + ${reserva.idReserva}">Reserva #123</h6>
+                            <small class="text-muted" th:text="${reserva.instanciaServicio.complejoDeportivo.nombre}">Complejo</small>
+                          </div>
+                        </div>
+                      </td>
+                      
+                      <!-- Servicio y zona -->
+                      <td>
+                        <div>
+                          <span class="badge bg-light-success mb-1" th:text="${reserva.instanciaServicio.servicio.nombre}">Servicio</span>
+                          <br>
+                          <small class="text-muted" th:text="${reserva.instanciaServicio.complejoDeportivo.sector.nombre ?: 'Zona principal'}">Zona</small>                        </div>
+                      </td>
+                      
+                      <!-- Fecha de la reserva -->
+                      <td class="text-center">
+                        <strong th:text="${#temporals.format(reserva.fecha, 'dd/MM/yyyy')}">01/01/2024</strong>
+                        <br>
+                        <small class="text-muted" 
+                               th:text="${#temporals.dayOfWeekName(reserva.fecha)}">
+                          Lunes                        </small>
+                      </td>
+                      
+                      <!-- Horario -->
+                      <td class="text-center">
+                        <span class="badge bg-light-info" 
+                              th:text="|${#temporals.format(reserva.horaInicio, 'HH:mm')} - ${#temporals.format(reserva.horaFin, 'HH:mm')}|">
+                          09:00 - 10:00
+                        </span>
+                      </td>
+
+                      <!-- Monto -->
+                      <td class="text-end">
+                        <h6 class="mb-0 text-primary" 
+                            th:text="'S/ ' + ${#numbers.formatDecimal(reserva.informacionPago.total, 0, 'POINT', 2, 'COMMA')}">
+                          S/ 50.00                        </h6>
+                      </td>
+                      
+                      <!-- Método de pago -->
+                      <td class="text-center">
+                        <span class="badge" 
+                              th:classappend="${reserva.informacionPago.tipo == 'Tarjeta'} ? 'bg-primary' : (${reserva.informacionPago.tipo == 'Efectivo'} ? 'bg-success' : (${reserva.informacionPago.tipo == 'PayPal'} ? 'bg-info' : 'bg-secondary'))"
+                              th:text="${reserva.informacionPago.tipo ?: 'No especificado'}">
+                          Tarjeta                        </span>
+                      </td>
+                      
+                      <!-- Estado del pago -->
+                      <td class="text-center">
+                        <span class="badge" 
+                              th:classappend="${reserva.informacionPago.estado == 'Pagado'} ? 'bg-success' : (${reserva.informacionPago.estado == 'Pendiente'} ? 'bg-warning' : (${reserva.informacionPago.estado == 'Pendiente_Verificacion'} ? 'bg-info' : (${reserva.informacionPago.estado == 'Rechazado'} ? 'bg-danger' : 'bg-secondary')))"
+                              th:text="${reserva.informacionPago.estado}">
+                          Pagado
+                        </span>
+                      </td>
+
+                      <!-- Fecha del pago -->
+                      <td class="text-center">
+                        <span th:if="${reserva.informacionPago.fecha != null}" 
+                              th:text="${#temporals.format(reserva.informacionPago.fecha, 'dd/MM/yyyy')}">
+                          01/01/2024
+                        </span>
+                        <span th:unless="${reserva.informacionPago.fecha != null}" class="text-muted">-</span>
+                        <br>
+                        <small class="text-muted" 
+                               th:if="${reserva.informacionPago.hora != null}"
+                               th:text="${#temporals.format(reserva.informacionPago.hora, 'HH:mm')}">
+                          09:30
+                        </small>
+                      </td>
+
+                      <!-- Acciones -->
+                      <td class="text-center">
+                        <div class="dropdown">
+                          <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" 
+                                  th:id="'dropdown' + ${reserva.idReserva}" data-bs-toggle="dropdown">
+                            <i class="ti ti-dots-vertical"></i>
+                          </button>
+                          <ul class="dropdown-menu" th:aria-labelledby="'dropdown' + ${reserva.idReserva}">
+                            <li>
+                              <a class="dropdown-item" href="#" 
+                                 th:onclick="'verDetalleReserva(' + ${reserva.idReserva} + ')'">
+                                <i class="ti ti-eye me-2"></i>Ver detalles
+                              </a>
+                            </li>
+                            <li th:if="${reserva.informacionPago.estado == 'Rechazado'}">
+                              <a class="dropdown-item" 
+                                 th:href="@{/vecino/reenviar-comprobante/{id}(id=${reserva.idReserva})}">
+                                <i class="ti ti-upload me-2"></i>Reenviar comprobante
+                              </a>
+                            </li>
+                            <li th:if="${reserva.informacionPago.estado == 'Pagado'}">
+                              <a class="dropdown-item" href="#" 
+                                 th:onclick="'descargarComprobante(' + ${reserva.idReserva} + ')'">
+                                <i class="ti ti-download me-2"></i>Descargar comprobante
+                              </a>
+                            </li>
+                          </ul>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Métodos de pago estadísticas -->
+    <div class="row mt-4" th:if="${hayHistorialPagos and !#maps.isEmpty(pagosPorMetodo)}">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="ti ti-chart-pie me-2"></i>
+              Métodos de Pago Utilizados
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">              <div th:each="metodo : ${pagosPorMetodo}" class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                <div class="d-flex align-items-center p-3 border rounded">
+                  <div class="avtar avtar-s me-3" 
+                       th:classappend="${metodo.key == 'Tarjeta'} ? 'bg-light-primary' : (${metodo.key == 'Efectivo'} ? 'bg-light-success' : (${metodo.key == 'PayPal'} ? 'bg-light-info' : 'bg-light-secondary'))">
+                    <i class="ti ti-credit-card" th:if="${metodo.key == 'Tarjeta'}"></i>
+                    <i class="ti ti-cash" th:if="${metodo.key == 'Efectivo'}"></i>
+                    <i class="ti ti-brand-paypal" th:if="${metodo.key == 'PayPal'}"></i>
+                    <i class="ti ti-wallet" th:if="${metodo.key == 'Yape'}"></i>
+                    <i class="ti ti-wallet" th:if="${metodo.key == 'Plin'}"></i>
+                    <i class="ti ti-help-circle" th:unless="${metodo.key == 'Tarjeta' or metodo.key == 'Efectivo' or metodo.key == 'PayPal' or metodo.key == 'Yape' or metodo.key == 'Plin'}"></i>
+                  </div>
+                  <div>
+                    <h6 class="mb-0" th:text="${metodo.key}">Método</h6>
+                    <small class="text-muted" th:text="${metodo.value} + ' uso(s)'">0 usos</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [ Main Content ] end -->
+
+<!-- Modal para detalles de reserva -->
+<div class="modal fade" id="modalDetalleReserva" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="ti ti-receipt me-2"></i>
+          Detalle de Reserva y Pago
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="modalContent">
+        <!-- Contenido cargado dinámicamente -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div> <!-- pc-content -->
+</div> <!-- pc-container -->
+
+<!-- [ Main Content ] end -->
+<div th:replace="~{fragments/Footer_vecino :: footer}"></div>
+
+<!-- Required Js -->
+<script th:src="@{/assets/js/plugins/popper.min.js}"></script>
+<script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
+<script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+
+<script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
+<script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
+
+<script th:src="@{/assets/js/icon/custom-font.js}"></script>
+<script th:src="@{/assets/js/script.js}"></script>
+<script th:src="@{/assets/js/theme.js}"></script>
+<script th:src="@{/assets/js/multi-lang.js}"></script>
+<script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+
+<script>
+  layout_change('light');
+</script>
+
+<script>
+  change_box_container('false');
+</script>
+
+<script>
+  layout_caption_change('true');
+</script>
+
+<script>
+  layout_rtl_change('false');
+</script>
+
+<script>
+  preset_change('preset-1');
+</script>
+
+<script>
+  main_layout_change('vertical');
+</script>
+
+<!-- DataTables Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+<script th:inline="none">
+$(document).ready(function() {
+  // Inicializar DataTable si existe la tabla
+  if ($('#tablaHistorialPagos').length) {
+    var table = $('#tablaHistorialPagos').DataTable({
+      language: {
+        url: 'https://cdn.datatables.net/plug-ins/1.11.5/i18n/es-ES.json'
+      },
+      order: [[8, 'desc']], // Ordenar por fecha de pago descendente
+      pageLength: 10,
+      responsive: true,
+      columnDefs: [
+        { targets: [0, 3, 4, 6, 7, 8, 9], className: 'text-center' },
+        { targets: [5], className: 'text-end' },
+        { targets: [9], orderable: false }
+      ]
+    });
+  }
+});
+
+// Función para ver detalles de reserva
+function verDetalleReserva(idReserva) {
+  $('#modalContent').html('<div class="text-center"><i class="ti ti-loader-2 fa-spin"></i> Cargando...</div>');
+  $('#modalDetalleReserva').modal('show');
+  
+  // Aquí podrías hacer una llamada AJAX para obtener más detalles
+  // Por ahora, mostramos información básica
+  setTimeout(() => {
+    $('#modalContent').html(`
+      <div class="alert alert-info">
+        <h6>Información de la Reserva #${idReserva}</h6>
+        <p>Los detalles completos de la reserva se cargarán aquí.</p>
+        <p>Esta funcionalidad puede expandirse para mostrar más información específica.</p>
+      </div>
+    `);
+  }, 500);
+}
+
+// Función para descargar comprobante
+function descargarComprobante(idReserva) {
+  // Crear enlace temporal para descargar PDF
+  const link = document.createElement('a');
+  link.href = '/vecino/generar-comprobante-pdf/' + idReserva;
+  link.target = '_blank';
+  link.download = 'comprobante-reserva-' + idReserva + '.html';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
+
+<style>
+#basic-btn_info {
+  display: none !important;
+}
+
+/* Ítems del menú: blanco */
+.pc-sidebar .pc-link,
+.pc-sidebar .pc-mtext,
+.pc-sidebar .pc-micon {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+/* Títulos de secciones del menú */
+.pc-sidebar .menu-caption,
+.pc-sidebar .pc-caption {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+/* Hover: cambia el texto a celeste claro */
+.pc-sidebar .pc-link:hover,
+.pc-sidebar .pc-link:focus {
+  color: #87ceeb !important;
+}
+
+/* Activo: mantiene color blanco pero con fondo */
+.pc-sidebar .pc-link.active {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+}
+</style>
+
+</body>
+</html>

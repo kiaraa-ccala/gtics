@@ -1,8 +1,7 @@
 <!doctype html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-  <head th:replace="fragments/head_superadmin :: head('Estadisticas Financieras')"></head>
-
+  <head th:replace="fragments/head_superadmin :: head('Estadisticas Personal')"></head>
 
   <body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
     <!-- [ Pre-loader ] start -->
@@ -36,7 +35,6 @@
           </div>
         </div>
 
-
         <!-- [ Main Content ] start -->
         <div class="row">
           <div class="col-lg-3 col-md-6">
@@ -47,7 +45,8 @@
                     <div class="avtar bg-light-primary">
                       <i class="ti ti-users f-24"></i>
                     </div>
-                  </div>                  <div class="flex-grow-1 ms-3">
+                  </div>
+                  <div class="flex-grow-1 ms-3">
                     <p class="mb-1">Total del personal</p>
                     <div class="d-flex align-items-center justify-content-between">
                       <h4 class="mb-0" id="totalPersonal">-</h4>
@@ -67,7 +66,7 @@
                       <i class="ti ti-notebook f-24"></i>
                     </div>
                   </div>                  <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Personal a tiempo</p>
+                    <p class="mb-1">Horarios a tiempo (semanal)</p>
                     <div class="d-flex align-items-center justify-content-between">
                       <h4 class="mb-0" id="personalATiempo">-</h4>
                       <span class="text-warning fw-medium" id="porcentajeATiempo">-%</span>
@@ -76,27 +75,7 @@
                 </div>
               </div>
             </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
-            <div class="card">
-              <div class="card-body">
-                <div class="d-flex align-items-center">
-                  <div class="flex-shrink-0">
-                    <div class="avtar bg-light-success">
-                      <i class="ti ti-eye f-24"></i>
-                    </div>
-                  </div>                  <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Nuevo personal</p>
-                    <div class="d-flex align-items-center justify-content-between">
-                      <h4 class="mb-0" id="nuevoPersonal">-</h4>
-                      <span class="text-success fw-medium" id="porcentajeNuevo">-%</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-3 col-md-6">
+          </div>          <div class="col-lg-3 col-md-6">
             <div class="card">
               <div class="card-body">
                 <div class="d-flex align-items-center">
@@ -104,8 +83,9 @@
                     <div class="avtar bg-light-danger">
                       <i class="ti ti-credit-card f-24"></i>
                     </div>
-                  </div>                  <div class="flex-grow-1 ms-3">
-                    <p class="mb-1">Personal ausente</p>
+                  </div>
+                  <div class="flex-grow-1 ms-3">
+                    <p class="mb-1">Horarios ausentes (semanal)</p>
                     <div class="d-flex align-items-center justify-content-between">
                       <h4 class="mb-0" id="personalAusente">-</h4>
                       <span class="text-danger fw-medium" id="porcentajeAusente">-%</span>
@@ -157,7 +137,6 @@
                       aria-expanded="false"
                     >
                     </a>
-
                   </div>
                 </div>
                 <h5 class="text-end my-2" id="cambioComparativo">-% <span class="badge bg-success" id="badgeCambio">-%</span> </h5>
@@ -169,49 +148,30 @@
       </div>
     </div>
 
-
     <div th:replace="fragments/footer_superadmin :: footer"></div>
 
     <!-- Required JS -->
     <script th:src="@{/assets/js/plugins/popper.min.js}"></script>
     <script th:src="@{/assets/js/plugins/simplebar.min.js}"></script>
     <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
-
     <script th:src="@{/assets/js/plugins/i18next.min.js}"></script>
     <script th:src="@{/assets/js/plugins/i18nextHttpBackend.min.js}"></script>
-
     <script th:src="@{/assets/js/icon/custom-font.js}"></script>
     <script th:src="@{/assets/js/script.js}"></script>
     <script th:src="@{/assets/js/theme.js}"></script>
     <script th:src="@{/assets/js/multi-lang.js}"></script>
     <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 
+    <script>
+      layout_change('light');
+      change_box_container('false');
+      layout_caption_change('true');
+      layout_rtl_change('false');
+      preset_change('preset-1');
+      main_layout_change('vertical');
+    </script>
 
-<script>
-  layout_change('light');
-</script>
-  
-<script>
-  change_box_container('false');
-</script>
- 
-<script>
-  layout_caption_change('true');
-</script>
- 
-<script>
-  layout_rtl_change('false');
-</script>
- 
-<script>
-  preset_change('preset-1');
-</script>
- 
-<script>
-  main_layout_change('vertical');
-</script>
     <!-- [Page Specific JS] start -->
-    <!-- bootstrap-datepicker -->
     <script th:src="@{/assets/js/plugins/datepicker-full.min.js}"></script>
     <script th:src="@{/assets/js/plugins/apexcharts.min.js}"></script>
     <script th:src="@{/assets/js/plugins/peity-vanilla.min.js}"></script>
@@ -228,12 +188,10 @@
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById('totalPersonal').textContent = data.totalPersonal;
-                    document.getElementById('personalATiempo').textContent = data.personalATiempo;
-                    document.getElementById('nuevoPersonal').textContent = data.nuevoPersonal;
-                    document.getElementById('personalAusente').textContent = data.personalAusente;
+                    document.getElementById('personalATiempo').textContent = data.horariosATiempo;
+                    document.getElementById('personalAusente').textContent = data.horariosAusentes;
                     
                     document.getElementById('porcentajeATiempo').textContent = data.porcentajeATiempo.toFixed(1) + '%';
-                    document.getElementById('porcentajeNuevo').textContent = data.porcentajeNuevo.toFixed(1) + '%';
                     document.getElementById('porcentajeAusente').textContent = data.porcentajeAusente.toFixed(1) + '%';
                 })
                 .catch(error => {
@@ -417,7 +375,6 @@
     </script>
     <!-- [Page Specific JS] end -->
 
-
     <style>
       /* Ítems del menú: blanco */
       .pc-sidebar .pc-link,
@@ -435,6 +392,7 @@
         text-transform: uppercase;
         font-size: 12px;
       }
+      
       /* Hover: cambia el texto a celeste claro */
       .pc-sidebar .pc-link:hover,
       .pc-sidebar .pc-link:focus {
@@ -443,7 +401,5 @@
       }
     </style>
 
-
   </body>
-  <!-- [Body] end -->
 </html>

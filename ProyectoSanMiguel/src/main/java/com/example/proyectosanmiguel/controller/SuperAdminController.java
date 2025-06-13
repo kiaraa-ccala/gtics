@@ -235,38 +235,38 @@ public class SuperAdminController {
         return "SuperAdmin/superadmin_asistencia";
     }
 
-    // ENDPOINTS AJAX PARA ESTADÍSTICAS PERSONALES
-
     @GetMapping("/superadmin/api/estadisticas/personal")
     @ResponseBody
     public ResponseEntity<EstadisticasPersonalDto> getEstadisticasPersonal() {
         try {
             LocalDate hoy = LocalDate.now();
-            
+            LocalDate inicioSemana = hoy.minusDays(hoy.getDayOfWeek().getValue() - 1);
+            LocalDate finSemana = inicioSemana.plusDays(6);
+
             Long totalPersonal = usuarioRepository.countPersonalActivo();
-            Long nuevoPersonal = usuarioRepository.countNuevoPersonal();
-            Long personalConHorario = usuarioRepository.countPersonalConHorarioHoy(hoy);
-            Long personalPresente = usuarioRepository.countPersonalPresenteHoy(hoy);
+
+            Long horariosATiempo = usuarioRepository.countHorariosATiempoSemana(inicioSemana, finSemana);
+
+            Long horariosAusentes = usuarioRepository.countHorariosAusentesSemana(inicioSemana, finSemana);
+
+            // Calcular porcentajes
+            Long totalHorarios = horariosATiempo + horariosAusentes;
+            Double porcentajeATiempo = totalHorarios > 0 ? (horariosATiempo * 100.0) / totalHorarios : 0.0;
+            Double porcentajeAusente = totalHorarios > 0 ? (horariosAusentes * 100.0) / totalHorarios : 0.0;
             
-            Long personalAusente = personalConHorario - personalPresente;
+            EstadisticasPersonalDto estadisticas = new EstadisticasPersonalDto(
+                totalPersonal.intValue(),
+                horariosATiempo.intValue(),
+                horariosAusentes.intValue(),
+                porcentajeATiempo,
+                porcentajeAusente
+            );
             
-            Double porcentajeATiempo = personalConHorario > 0 ? 
-                (personalPresente.doubleValue() / personalConHorario.doubleValue()) * 100 : 0.0;
-            Double porcentajeNuevo = totalPersonal > 0 ? 
-                (nuevoPersonal.doubleValue() / totalPersonal.doubleValue()) * 100 : 0.0;
-            Double porcentajeAusente = personalConHorario > 0 ? 
-                (personalAusente.doubleValue() / personalConHorario.doubleValue()) * 100 : 0.0;
-              EstadisticasPersonalDto estadisticas = new EstadisticasPersonalDto();
-            estadisticas.setTotalPersonal(totalPersonal.intValue());
-            estadisticas.setPersonalATiempo(personalPresente.intValue());
-            estadisticas.setNuevoPersonal(nuevoPersonal.intValue());
-            estadisticas.setPersonalAusente(personalAusente.intValue());
-            estadisticas.setPorcentajeATiempo(porcentajeATiempo);
-            estadisticas.setPorcentajeNuevo(porcentajeNuevo);
-            estadisticas.setPorcentajeAusente(porcentajeAusente);
-            
+            System.out.println("DEBUG: Estadísticas creadas correctamente");
             return ResponseEntity.ok(estadisticas);
         } catch (Exception e) {
+            System.err.println("ERROR en getEstadisticasPersonal: " + e.getMessage());
+            e.printStackTrace();
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -292,15 +292,15 @@ public class SuperAdminController {
                 tardanzas.add(0);
                 ausencias.add(0);
             }
-            
-            // Llenar con datos reales
+              // Llenar con datos reales
             for (Object[] resultado : resultados) {
-                int diaIndex = ((Number) resultado[0]).intValue() - 2; // MySQL DAYOFWEEK empieza en 1 (Domingo)
+                int dayOfWeek = ((Number) resultado[0]).intValue(); // DAYOFWEEK(h.fecha)
+                int diaIndex = dayOfWeek - 2; // MySQL DAYOFWEEK: 1=Domingo, 2=Lunes, etc.
                 if (diaIndex < 0) diaIndex = 6; // Domingo al final
                 
-                asistencias.set(diaIndex, ((Number) resultado[1]).intValue());
-                tardanzas.set(diaIndex, ((Number) resultado[2]).intValue());
-                ausencias.set(diaIndex, ((Number) resultado[3]).intValue());
+                asistencias.set(diaIndex, ((Number) resultado[2]).intValue()); // aTiempo
+                tardanzas.set(diaIndex, ((Number) resultado[3]).intValue());   // tardanza
+                ausencias.set(diaIndex, ((Number) resultado[4]).intValue());   // ausente
             }
             
             AsistenciaSemanalDto asistenciaSemanal = new AsistenciaSemanalDto();
@@ -320,7 +320,7 @@ public class SuperAdminController {
     public ResponseEntity<ComparativaAsistenciaDto> getComparativaAsistencia() {
         try {
             LocalDate hoy = LocalDate.now();
-            LocalDate inicioMeses = hoy.minusMonths(5).withDayOfMonth(1);
+            LocalDate inicioMeses = hoy.minusMonths(3).withDayOfMonth(1);
             
             List<Object[]> resultados = usuarioRepository.getPorcentajeAsistenciaMensual(inicioMeses);
             
@@ -328,19 +328,14 @@ public class SuperAdminController {
             List<Double> porcentajes = new ArrayList<>();
             
             for (Object[] resultado : resultados) {
-                int mes = ((Number) resultado[0]).intValue();
-                int año = ((Number) resultado[1]).intValue();
-                Double porcentaje = ((Number) resultado[2]).doubleValue();
+                String mesAno = (String) resultado[0];      // CONCAT(MONTHNAME(...), ' ', YEAR(...))
+                Double porcentaje = ((Number) resultado[3]).doubleValue(); // porcentajeAsistencia
                 
-                String nombreMes = LocalDate.of(año, mes, 1)
-                    .getMonth()
-                    .getDisplayName(TextStyle.SHORT, new Locale("es", "ES"));
-                    
-                meses.add(nombreMes);
+                meses.add(mesAno);
                 porcentajes.add(porcentaje);
             }
             
-            // Calcular cambio porcentual
+            // Calcular cambio porcentual respecto al mes anterior
             Double cambioPercentual = 0.0;
             if (porcentajes.size() >= 2) {
                 Double mesAnterior = porcentajes.get(porcentajes.size() - 2);
