@@ -118,6 +118,7 @@ public class WebSecurityConfig {
                 .requestMatchers("/admin", "/admin/**").hasAnyAuthority("Administrador")
                 .requestMatchers("/coord", "/coord/**").hasAnyAuthority("Coordinador")
                 .requestMatchers("/vecino", "/vecino/**").hasAnyAuthority("Vecino")
+                .requestMatchers("/api/dni/**").permitAll()
                 .anyRequest().permitAll());
 
 
