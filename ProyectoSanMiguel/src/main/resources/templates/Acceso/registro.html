@@ -12,6 +12,7 @@
     <meta name="author" content="Phoenixcoded" />
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
     <!-- [Favicon] icon -->
     <link rel="icon" th:href="@{/assets/images/logo-circular.png}" type="image/x-icon" />
@@ -76,6 +77,27 @@
 
                     <form method="post" th:action="@{'/crear'}" th:object="${usuario}" id="registroForm" onsubmit="return validateForm()">
                         <div class="row justify-content-center p-1">
+                            <div class="col-md-8 p-1 input-group ">
+                                <input
+                                            type="text"
+                                            class="form-control"
+                                            id="dniBusqueda"
+                                            placeholder="Ingresa tu DNI para buscar tus datos"
+                                            aria-label="Ingresa tu DNI"
+                                            aria-describedby="button-addon2"
+                                            pattern="\d{8}"
+                                            maxlength="8"
+                                            oninput="this.value = this.value.replace(/[^0-9]/g, '')"
+                                    >
+                                <button class="btn btn-outline-secondary" type="button" id="btnBuscarDni">
+                                    <span id="btnText">Buscar</span>
+                                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Campo DNI oculto inicialmente -->
+                        <div class="row justify-content-center p-1" id="filaDni" style="display: none;">
                             <div class="col-md-6 p-1">
                                 <input
                                         required
@@ -92,13 +114,16 @@
                                 <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('dni')}" th:errors="*{dni}"></div>
                             </div>
                         </div>
-                        <div class="row justify-content-center p-1">
+
+                        <!-- Campos de nombre y apellido ocultos inicialmente -->
+                        <div class="row justify-content-center p-1" id="filaNombreApellido" style="display: none;">
                             <div class="col-md-6 p-1">
                                 <input
                                         required
                                         type="text"
                                         class="form-control"
                                         th:field="*{nombre}"
+                                        id="nombreUsuario"
                                         placeholder="Nombre"
                                         maxlength="45"
                                         pattern="[A-Za-z\s]+"
@@ -112,6 +137,7 @@
                                         type="text"
                                         class="form-control"
                                         th:field="*{apellido}"
+                                        id="apellidoUsuario"
                                         placeholder="Apellido"
                                         maxlength="45"
                                         pattern="[A-Za-z\s]+"
@@ -164,13 +190,17 @@
                             </div>
                         </div>
                         <div class="row justify-content-center p-1">
-                            <select th:field="*{sector}" class="form-select" required th:classappend="${#fields.hasErrors('sector')}? 'is-invalid' : ''">
-                                <option value="" disabled selected>Seleccione un sector</option>
-                                <option th:each="sector : ${listaSectores}"
-                                        th:value="${sector.idSector}"
-                                        th:text="${sector.nombre}"></option>
-                            </select>
-                            <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('sector')}" th:errors="*{sector}"></div>
+                            <div class="col-md-12 p-1">
+                                <select th:field="*{sector}" class="form-select" required th:classappend="${#fields.hasErrors('sector')}? 'is-invalid' : ''">
+                                    <option value="" disabled selected>Seleccione un sector</option>
+                                    <option th:each="sector : ${listaSectores}"
+                                            th:value="${sector.idSector}"
+                                            th:text="${sector.nombre}"></option>
+                                </select>
+                                <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('sector')}" th:errors="*{sector}"></div>
+
+                            </div>
+
                         </div>
                         <div class="row justify-content-center p-1">
                             <div class="col-md-6 p-1">
@@ -227,6 +257,20 @@
 </div>
 <!-- [ Main Content ] end -->
 
+<!-- Toast Container para notificaciones -->
+<div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 9999;">
+    <div id="toastNotificacion" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i id="toastIcon" class="me-2"></i>
+            <strong id="toastTitle" class="me-auto">Notificación</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastMessage">
+            Mensaje de notificación
+        </div>
+    </div>
+</div>
+
 <!-- Required Js -->
 <script th:src="@{assets/js/plugins/popper.min.js}"></script>
 <script th:src="@{assets/js/plugins/simplebar.min.js}"></script>
@@ -256,6 +300,327 @@
 </script>
 <script>
     main_layout_change('vertical');
+</script>
+
+<!-- Script para búsqueda de DNI -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const btnBuscarDni = document.getElementById('btnBuscarDni');
+        const btnRegistroManual = document.getElementById('btnRegistroManual');
+        const dniBusqueda = document.getElementById('dniBusqueda');
+        const nombreUsuario = document.getElementById('nombreUsuario');
+        const apellidoUsuario = document.getElementById('apellidoUsuario');
+        const dniFormulario = document.getElementById('dni');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        // Elementos de las filas
+        const filaBusqueda = dniBusqueda.closest('.row');
+        const filaDni = document.getElementById('filaDni');
+        const filaNombreApellido = document.getElementById('filaNombreApellido');
+
+        // Elementos del toast
+        const toastElement = document.getElementById('toastNotificacion');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 4000
+        });
+
+        btnBuscarDni.addEventListener('click', function() {
+            const dni = dniBusqueda.value.trim();
+
+            // Validar DNI
+            if (dni.length !== 8 || !/^\d{8}$/.test(dni)) {
+                mostrarToast('Error de validación', 'Por favor, ingrese un DNI válido de 8 dígitos.', 'danger');
+                return;
+            }
+
+            // Remover cualquier botón de edición existente antes de nueva búsqueda
+            removerBotonEdicion();
+
+            // Mostrar loading
+            btnText.classList.add('d-none');
+            btnSpinner.classList.remove('d-none');
+            btnBuscarDni.disabled = true;
+
+            // Realizar petición AJAX
+            fetch(`/api/dni/nombres/${dni}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Error en la consulta');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.error) {
+                        mostrarToast('Error en la consulta', data.error, 'danger');
+                    } else {
+                        // Llenar los campos con los datos obtenidos
+                        const nombres = data.nombres || '';
+                        const apellidoCompleto = `${data.apellidoPaterno || ''} ${data.apellidoMaterno || ''}`.trim();
+
+                        nombreUsuario.value = nombres;
+                        apellidoUsuario.value = apellidoCompleto;
+                        dniFormulario.value = dni;
+
+                        // Hacer los campos de solo lectura
+                        nombreUsuario.readOnly = true;
+                        apellidoUsuario.readOnly = true;
+                        dniFormulario.readOnly = true;
+
+                        // Agregar estilo visual para indicar que son de solo lectura
+                        nombreUsuario.classList.add('bg-light');
+                        apellidoUsuario.classList.add('bg-light');
+                        dniFormulario.classList.add('bg-light');
+
+                        // Mostrar los campos de datos
+                        filaDni.style.display = 'flex';
+                        filaNombreApellido.style.display = 'flex';
+
+                        // Ocultar el campo de búsqueda
+                        filaBusqueda.style.display = 'none';
+
+                        mostrarToast('¡Éxito!', 'Datos encontrados y cargados correctamente.', 'success');
+
+                        // Remover clases de error si las hay
+                        nombreUsuario.classList.remove('is-invalid');
+                        apellidoUsuario.classList.remove('is-invalid');
+                        dniFormulario.classList.remove('is-invalid');
+
+                        // Agregar botón para permitir edición si es necesario
+                        agregarBotonEdicion();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    mostrarToast('Error de conexión', 'No se pudieron obtener los datos. Verifique el DNI e intente nuevamente.', 'danger');
+                })
+                .finally(() => {
+                    // Ocultar loading
+                    btnText.classList.remove('d-none');
+                    btnSpinner.classList.add('d-none');
+                    btnBuscarDni.disabled = false;
+                });
+        });
+
+        // Permitir búsqueda con Enter
+        dniBusqueda.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                btnBuscarDni.click();
+            }
+        });
+
+        // Evento para registro manual
+        btnRegistroManual.addEventListener('click', function() {
+            // Remover cualquier botón de edición existente
+            removerBotonEdicion();
+
+            // Ocultar campo de búsqueda
+            filaBusqueda.style.display = 'none';
+
+            // Mostrar campos de datos para edición manual
+            filaDni.style.display = 'flex';
+            filaNombreApellido.style.display = 'flex';
+
+            // Asegurar que los campos sean editables
+            nombreUsuario.readOnly = false;
+            apellidoUsuario.readOnly = false;
+            dniFormulario.readOnly = false;
+
+            // Remover estilos de solo lectura
+            nombreUsuario.classList.remove('bg-light');
+            apellidoUsuario.classList.remove('bg-light');
+            dniFormulario.classList.remove('bg-light');
+
+            // Limpiar campos
+            nombreUsuario.value = '';
+            apellidoUsuario.value = '';
+            dniFormulario.value = '';
+
+            mostrarToast('Registro manual', 'Ahora puede llenar los datos manualmente.', 'info');
+        });
+
+        // Función para mostrar toast
+        function mostrarToast(titulo, mensaje, tipo) {
+            // Configurar el icono según el tipo
+            let iconClass = '';
+            let headerClass = '';
+
+            switch(tipo) {
+                case 'success':
+                    iconClass = 'bi bi-check-circle-fill text-success';
+                    headerClass = 'bg-success text-white';
+                    break;
+                case 'danger':
+                    iconClass = 'bi bi-exclamation-triangle-fill text-danger';
+                    headerClass = 'bg-danger text-white';
+                    break;
+                case 'warning':
+                    iconClass = 'bi bi-exclamation-circle-fill text-warning';
+                    headerClass = 'bg-warning text-dark';
+                    break;
+                case 'info':
+                    iconClass = 'bi bi-info-circle-fill text-info';
+                    headerClass = 'bg-info text-white';
+                    break;
+                default:
+                    iconClass = 'bi bi-info-circle-fill text-info';
+                    headerClass = 'bg-info text-white';
+            }
+
+            // Configurar el toast
+            toastIcon.className = iconClass;
+            toastTitle.textContent = titulo;
+            toastMessage.textContent = mensaje;
+            toastElement.querySelector('.toast-header').className = `toast-header ${headerClass}`;
+
+            // Mostrar el toast
+            toast.show();
+        }
+
+        // Función para remover botón de edición si existe
+        function removerBotonEdicion() {
+            const btnExistente = document.getElementById('btnEditarDatos');
+            if (btnExistente) {
+                btnExistente.closest('.row').remove();
+            }
+        }
+
+        // Agregar botón para permitir edición manual si es necesario
+        function agregarBotonEdicion() {
+            console.log('Intentando agregar botón de editar datos...');
+            // Primero remover cualquier botón existente
+            removerBotonEdicion();
+
+            if (!document.getElementById('btnEditarDatos')) {
+                console.log('Creando botón de editar datos...');
+                const btnContainer = document.createElement('div');
+                btnContainer.className = 'row justify-content-center p-1';
+                btnContainer.innerHTML = `
+                    <div class="col-md-12 text-center">
+                        <button id="btnEditarDatos" type="button" class="btn btn-sm btn-outline-warning">
+                            <i class="bi bi-pencil"></i> Editar datos
+                        </button>
+                    </div>
+                `;
+
+                // Insertar después de la fila de nombre y apellido
+                filaNombreApellido.insertAdjacentElement('afterend', btnContainer);
+
+                // Agregar evento al botón
+                document.getElementById('btnEditarDatos').onclick = function() {
+                    // Habilitar edición
+                    nombreUsuario.readOnly = false;
+                    apellidoUsuario.readOnly = false;
+                    dniFormulario.readOnly = false;
+
+                    // Remover estilos de solo lectura
+                    nombreUsuario.classList.remove('bg-light');
+                    apellidoUsuario.classList.remove('bg-light');
+                    dniFormulario.classList.remove('bg-light');
+
+                    // LIMPIAR TODOS los campos de datos básicos para forzar nueva entrada
+                    dniBusqueda.value = '';
+                    nombreUsuario.value = '';
+                    apellidoUsuario.value = '';
+                    dniFormulario.value = '';
+
+                    // Mostrar campo de búsqueda y ocultar campos de datos
+                    filaBusqueda.style.display = 'flex';
+                    filaDni.style.display = 'none';
+                    filaNombreApellido.style.display = 'none';
+
+                    // Remover el botón INMEDIATAMENTE
+                    console.log('Eliminando botón de editar datos...');
+                    btnContainer.remove();
+                    console.log('Botón eliminado');
+
+                    mostrarToast('Datos básicos borrados', 'Debe volver a buscar por DNI o llenar manualmente para continuar.', 'warning');
+                };
+            }
+        }
+    });
+
+    // Función de validación del formulario
+    function validateForm() {
+        const dni = document.getElementById('dni').value.trim();
+        const nombre = document.getElementById('nombreUsuario').value.trim();
+        const apellido = document.getElementById('apellidoUsuario').value.trim();
+        const correo = document.querySelector('input[name="credencial.correo"]').value.trim();
+        const password = document.getElementById('password').value.trim();
+        const password2 = document.getElementById('password2').value.trim();
+
+        // Validar que los campos básicos estén llenos
+        if (!dni || !nombre || !apellido) {
+            let camposFaltantes = [];
+            if (!dni) camposFaltantes.push('DNI');
+            if (!nombre) camposFaltantes.push('Nombre');
+            if (!apellido) camposFaltantes.push('Apellido');
+
+            mostrarToastValidacion('Datos incompletos',
+                `Faltan los siguientes campos: ${camposFaltantes.join(', ')}. Use la búsqueda por DNI o llene manualmente.`,
+                'danger');
+            return false;
+        }
+
+        // Validar DNI
+        if (dni.length !== 8 || !/^\d{8}$/.test(dni)) {
+            mostrarToastValidacion('DNI inválido', 'El DNI debe tener exactamente 8 dígitos.', 'danger');
+            return false;
+        }
+
+        // Validar contraseñas
+        if (password !== password2) {
+            mostrarToastValidacion('Contraseñas no coinciden', 'Las contraseñas ingresadas no son iguales.', 'danger');
+            return false;
+        }
+
+        return true;
+    }
+
+    // Función auxiliar para mostrar toast de validación
+    function mostrarToastValidacion(titulo, mensaje, tipo) {
+        const toastElement = document.getElementById('toastNotificacion');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastMessage = document.getElementById('toastMessage');
+        const toastIcon = document.getElementById('toastIcon');
+
+        let iconClass = '';
+        let headerClass = '';
+
+        switch(tipo) {
+            case 'success':
+                iconClass = 'bi bi-check-circle-fill text-success';
+                headerClass = 'bg-success text-white';
+                break;
+            case 'danger':
+                iconClass = 'bi bi-exclamation-triangle-fill text-danger';
+                headerClass = 'bg-danger text-white';
+                break;
+            case 'warning':
+                iconClass = 'bi bi-exclamation-circle-fill text-warning';
+                headerClass = 'bg-warning text-dark';
+                break;
+            default:
+                iconClass = 'bi bi-info-circle-fill text-info';
+                headerClass = 'bg-info text-white';
+        }
+
+        toastIcon.className = iconClass;
+        toastTitle.textContent = titulo;
+        toastMessage.textContent = mensaje;
+        toastElement.querySelector('.toast-header').className = `toast-header ${headerClass}`;
+
+        const toast = new bootstrap.Toast(toastElement, {
+            autohide: true,
+            delay: 5000
+        });
+        toast.show();
+    }
 </script>
 
 <div class="offcanvas border-0 pct-offcanvas offcanvas-end" tabindex="-1" id="offcanvas_pc_layout">

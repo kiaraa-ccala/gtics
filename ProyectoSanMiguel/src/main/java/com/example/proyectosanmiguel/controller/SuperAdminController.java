@@ -2,11 +2,15 @@ package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.dto.AsistenciaSemanalDto;
 import com.example.proyectosanmiguel.dto.ComparativaAsistenciaDto;
 import com.example.proyectosanmiguel.dto.EstadisticasPersonalDto;
+import com.example.proyectosanmiguel.dto.IngresosMensualesDto;
+import com.example.proyectosanmiguel.dto.ReservasMensualesDto;
+import com.example.proyectosanmiguel.dto.IngresosDetalleMesDto;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.ComplejoRepository;
 import com.example.proyectosanmiguel.repository.RolRepository;
 import com.example.proyectosanmiguel.repository.SectorRepository;
 import com.example.proyectosanmiguel.repository.UsuarioRepository;
+import com.example.proyectosanmiguel.repository.FinanzasRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +23,7 @@ import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -41,6 +46,9 @@ public class SuperAdminController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private FinanzasRepository finanzasRepository;
 
     //Lista de Usuarios
 
@@ -352,6 +360,46 @@ public class SuperAdminController {
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    // --- API: Ingresos mensuales para un mes específico ---
+    @GetMapping("/superadmin/api/finanzas/ingresos-mensuales")
+    @ResponseBody
+    public ResponseEntity<IngresosMensualesDto> getIngresosMensuales(@RequestParam("mes") int mes) {
+        Double ingresos = finanzasRepository.obtenerIngresosMensuales(mes);
+        if (ingresos == null) ingresos = 0.0;
+        return ResponseEntity.ok(new IngresosMensualesDto(mes, ingresos));
+    }
+
+    // --- API: Reservas creadas y totales para un mes específico ---
+    @GetMapping("/superadmin/api/finanzas/reservas-mensuales")
+    @ResponseBody
+    public ResponseEntity<ReservasMensualesDto> getReservasMensuales(@RequestParam("mes") int mes) {
+        Object[] result = finanzasRepository.obtenerReservasMensuales(mes);
+        long totales = 0;
+        if (result != null && result.length == 1) {
+            totales = result[0] != null ? ((Number) result[0]).longValue() : 0;
+        }
+        return ResponseEntity.ok(new ReservasMensualesDto(mes,totales));
+    }
+
+    // --- API: Ingresos totales últimos 6 meses (actual + 5 anteriores) ---
+    @GetMapping("/superadmin/api/finanzas/ingresos-ultimos-meses")
+    @ResponseBody
+    public ResponseEntity<List<IngresosDetalleMesDto>> getIngresosUltimosMeses() {
+        List<Object[]> lista = finanzasRepository.obtenerIngresosUltimosMeses();
+        List<IngresosDetalleMesDto> datos = new ArrayList<>();
+        for (Object[] fila : lista) {
+            int anio = fila[0] != null ? ((Number) fila[0]).intValue() : 0;
+            int mes = fila[1] != null ? ((Number) fila[1]).intValue() : 0;
+            String nombreMes = fila[2] != null ? fila[2].toString() : "";
+            double tarjeta = fila[3] != null ? ((Number) fila[3]).doubleValue() : 0.0;
+            double transferencia = fila[4] != null ? ((Number) fila[4]).doubleValue() : 0.0;
+            double total = fila[5] != null ? ((Number) fila[5]).doubleValue() : 0.0;
+            long transacciones = fila[6] != null ? ((Number) fila[6]).longValue() : 0;
+            datos.add(new IngresosDetalleMesDto(anio, mes, nombreMes, tarjeta, transferencia, total, transacciones));
+        }
+        return ResponseEntity.ok(datos);
     }
 
 }

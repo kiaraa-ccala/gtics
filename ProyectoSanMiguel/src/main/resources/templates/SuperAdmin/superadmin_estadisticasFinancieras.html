@@ -48,8 +48,7 @@
                 <div class="d-flex align-items-center">
                   <div class="flex-grow-1 me-3">
                     <p class="mb-1 fw-medium text-muted">Ingreso mensual</p>
-                    <h4 class="mb-1">10980+</h4>
-                    <p class="mb-0 text-sm">Abril 01 - Mayo 01 (2025)</p>
+                    <h4 class="mb-1" id="ingresoMensual">10980+</h4>
                   </div>
                   <div class="flex-shrink-0">
                     <div class="avtar avtar-l bg-light-primary rounded-circle">
@@ -66,8 +65,7 @@
                 <div class="d-flex align-items-center">
                   <div class="flex-grow-1 me-3">
                     <p class="mb-1 fw-medium text-muted">Reservas</p>
-                    <h4 class="mb-1">1,563</h4>
-                    <p class="mb-0 text-sm">Abril 01 - Mayo 01 (2025)</p>
+                    <h4 class="mb-1" id="reservas">1,563</h4>
                   </div>
                   <div class="flex-shrink-0">
                     <div class="avtar avtar-l bg-light-success rounded-circle">
@@ -103,82 +101,41 @@
               <div class="card">
                 <div class="card-body">
                   <div class="row g-3 mb-3">
-                    <div class="col-md-6 col-xxl-3">
+                    <div class="col-md-4">
                       <div class="card border mb-0">
                         <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between gap-1">
                             <h6 class="mb-0">Monto total</h6>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-1">
-                              <svg class="pc-icon text-warning wid-15 hei-15">
-                                <use xlink:href="#custom-arrow-down"></use>
-                              </svg>
-                              20.3%</p
-                            >
                           </div>
-                          <h5 class="mb-2 mt-3">S/.10678.09</h5>
+                          <h5 class="mb-2 mt-3" id="ingresoTotal">S/.0.00</h5>
                           <div class="d-flex align-items-center gap-1">
-                            <h5 class="mb-0">20</h5>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-2">PAGOS REGISTRADOS</p>
+                            <span id="transaccionesTotales" class="mb-0 text-muted d-flex align-items-center gap-2">0 PAGOS REGISTRADOS</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6 col-xxl-3">
+                    <div class="col-md-4">
                       <div class="card border mb-0">
                         <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between gap-1">
-                            <h6 class="mb-0">Pagado</h6>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-1">
-                              <svg class="pc-icon text-danger wid-15 hei-15">
-                                <use xlink:href="#custom-arrow-down"></use>
-                              </svg>
-                              -8.73%</p
-                            >
+                            <h6 class="mb-0">Ingresos por tarjeta</h6>
                           </div>
-                          <h5 class="mb-2 mt-3">S/.6000.00</h5>
+                          <h5 class="mb-2 mt-3" id="ingresosTarjeta">S/.0.00</h5>
                           <div class="d-flex align-items-center gap-1">
-                            <h5 class="mb-0">12</h5>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-2">PAGOS CONFIRMADOS</p>
+                            <span id="transaccionesTarjeta" class="mb-0 text-muted d-flex align-items-center gap-2">0 PAGOS TARJETA</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div class="col-md-6 col-xxl-3">
+                    <div class="col-md-4">
                       <div class="card border mb-0">
                         <div class="card-body p-3">
                           <div class="d-flex align-items-center justify-content-between gap-1">
-                            <h6 class="mb-0">Pendientes</h6>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-1">
-                              <svg class="pc-icon text-success wid-15 hei-15">
-                                <use xlink:href="#custom-arrow-up"></use>
-                              </svg>
-                              10.73%</p
-                            >
+                            <h6 class="mb-0">Ingresos por transferencia</h6>
                           </div>
-                          <h5 class="mb-2 mt-3">S/. 3000.00</h5>
+                          <h5 class="mb-2 mt-3" id="ingresosTransferencia">S/.0.00</h5>
                           <div class="d-flex align-items-center gap-1">
-                            <h5 class="mb-0">6</h5>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-2">PAGOS POR VALIDAR</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-6 col-xxl-3">
-                      <div class="card border mb-0">
-                        <div class="card-body p-3">
-                          <div class="d-flex align-items-center justify-content-between gap-1">
-                            <h6 class="mb-0">Vencido</h6>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-1">
-                              <svg class="pc-icon text-primary wid-15 hei-15">
-                                <use xlink:href="#custom-arrow-down"></use>
-                              </svg>
-                              -4.73%</p
-                            >
-                          </div>
-                          <h5 class="mb-2 mt-3">S/.1000.00</h5>
-                          <div class="d-flex align-items-center gap-1">
-                            <h5 class="mb-0">2</h5>
-                            <p class="mb-0 text-muted d-flex align-items-center gap-2">PAGOS VENCIDOS</p>
+                            <span id="transaccionesTransferencia" class="mb-0 text-muted d-flex align-items-center gap-2">0 PAGOS TRANSFERENCIA</span>
                           </div>
                         </div>
                       </div>
@@ -314,6 +271,86 @@
       return texto.charAt(0).toUpperCase() + texto.slice(1);
     }
   </script>
+
+    <script>
+// Función principal para cargar y actualizar datos financieros
+function cargarDatosFinancieros() {
+    // Obtener mes seleccionado o mes actual
+    let inputFecha = document.getElementById('fecha');
+    let fechaSeleccionada = inputFecha && inputFecha.value ? new Date(inputFecha.value) : new Date();
+    let mes = fechaSeleccionada.getMonth() + 1; // getMonth() es 0-indexado
+
+    // 1. Ingreso mensual
+    fetch(`/superadmin/api/finanzas/ingresos-mensuales?mes=${mes}`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('ingresoMensual').innerText = `S/.${data.ingresos.toLocaleString('es-PE', {minimumFractionDigits:2})}`;
+        });
+
+    // 2. Reservas mensuales
+    fetch(`/superadmin/api/finanzas/reservas-mensuales?mes=${mes}`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('reservas').innerText = data.reservasTotales ? data.reservasTotales : 0;
+        });
+
+    // 3. Ingresos últimos meses (para gráfica y KPIs)
+    fetch('/superadmin/api/finanzas/ingresos-ultimos-meses')
+        .then(r => r.json())
+        .then(datos => {
+            if (!Array.isArray(datos) || datos.length === 0) return;
+            // Ordenar por año y mes ascendente
+            datos.sort((a, b) => a.anio !== b.anio ? a.anio - b.anio : a.mes - b.mes);
+            // Eje X: nombre_mes, Eje Y: ingresos_totales
+            let categorias = datos.map(d => d.mes);
+            let ingresosTotales = datos.map(d => d.ingresosTotales);
+
+            // Buscar el mes con mayor número de mes (el más reciente)
+            let actual = datos.reduce((acc, curr) => {
+                if (!acc) return curr;
+                if (curr.anio > acc.anio) return curr;
+                if (curr.anio === acc.anio && curr.mes > acc.mes) return curr;
+                return acc;
+            }, null);
+
+            // Actualizar KPIs
+            document.getElementById('ingresoTotal').innerText = `S/.${(actual.ingresosTotales || 0).toLocaleString('es-PE', {minimumFractionDigits:2})}`;
+            document.getElementById('ingresosTarjeta').innerText = `S/.${(actual.ingresosTarjetaCredito || 0).toLocaleString('es-PE', {minimumFractionDigits:2})}`;
+            document.getElementById('ingresosTransferencia').innerText = `S/.${(actual.ingresosTransferencia || 0).toLocaleString('es-PE', {minimumFractionDigits:2})}`;
+            document.getElementById('transaccionesTotales').innerText = `${actual.totalTransacciones || 0} PAGOS REGISTRADOS`;
+
+            // Graficar con ApexCharts en el div correcto
+            let chartDiv = document.getElementById('invoice-chart');
+            if (chartDiv) {
+                if (window.ingresosChart) { window.ingresosChart.destroy(); }
+                let chartOptions = {
+                    chart: { type: 'line', height: 300 },
+                    series: [{ name: 'Ingresos Totales', data: ingresosTotales }],
+                    xaxis: { categories: categorias },
+                    yaxis: { labels: { formatter: val => `S/.${val}` } },
+                    colors: ['#0d6efd'],
+                    stroke: { width: 3 },
+                    markers: { size: 5 },
+                    grid: { borderColor: '#e0e6ed' }
+                };
+                window.ingresosChart = new ApexCharts(chartDiv, chartOptions);
+                window.ingresosChart.render();
+            }
+        });
+}
+
+// Ejecutar al cargar la página y al cambiar la fecha
+window.addEventListener('DOMContentLoaded', () => {
+    cargarDatosFinancieros();
+    let inputFecha = document.getElementById('fecha');
+    if (inputFecha) {
+        inputFecha.addEventListener('change', () => {
+            actualizarFecha(); // para actualizar el texto del mes
+            cargarDatosFinancieros(); // para actualizar los datos y la gráfica
+        });
+    }
+});
+</script>
 
     <style>
       /* Ítems del menú: blanco */
