@@ -76,8 +76,14 @@
                         <div class="mb-3">
                             <input required type="email" class="form-control" id="username" name="username" placeholder="Usuario" />
                         </div>
-                        <div class="mb-3">
-                            <input required type="password" class="form-control" id="password" name = "password" placeholder="Contraseña" />
+                        <div class="mb-3 position-relative">
+                            <input required type="password" class="form-control pe-5" id="password" name="password" placeholder="Contraseña" />
+                            <button type="button"
+                                    class="btn btn-outline-secondary btn-sm position-absolute end-0 top-50 translate-middle-y me-2"
+                                    style="z-index: 2;"
+                                    onclick="togglePassword()">
+                                <i id="togglePasswordIcon" class="feather icon-eye"></i>
+                            </button>
                         </div>
                         <div class="d-flex mt-1 justify-content-between align-items-center">
                             <div class="form-check">
@@ -383,6 +389,21 @@
     </div>
 </div>
 
+<script>
+function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const icon = document.getElementById('togglePasswordIcon');
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        icon.classList.remove('icon-eye');
+        icon.classList.add('icon-eye-off');
+    } else {
+        passwordInput.type = 'password';
+        icon.classList.remove('icon-eye-off');
+        icon.classList.add('icon-eye');
+    }
+}
+</script>
 </body>
 <!-- [Body] end -->
 </html>
