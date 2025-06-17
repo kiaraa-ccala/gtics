@@ -153,8 +153,8 @@ CREATE TABLE IF NOT EXISTS `gestiondeportiva`.`complejodeportivo` (
   `direccion` VARCHAR(45) NULL DEFAULT NULL,
   `idSector` INT NOT NULL,
   `numeroSoporte` VARCHAR(45) NULL DEFAULT NULL,
-  `latitud` DECIMAL(10,0) NULL DEFAULT NULL,
-  `longitud` DECIMAL(10,0) NULL DEFAULT NULL,
+  `latitud` DECIMAL(20,10) NULL DEFAULT NULL,
+  `longitud` DECIMAL(20,10) NULL DEFAULT NULL,
   PRIMARY KEY (`idComplejoDeportivo`),
   INDEX `idSector` (`idSector` ASC) VISIBLE,
   CONSTRAINT `complejodeportivo_ibfk_1`

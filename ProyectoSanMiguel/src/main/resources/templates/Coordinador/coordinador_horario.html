@@ -67,11 +67,11 @@
                   <tr>
                     <th>#</th>
                     <th>Complejo Deportivo</th>
-                    <th>Dirección</th>
-                    <th>Fecha</th>
+                    <th>Dirección</th>                    <th>Fecha</th>
                     <th>Día</th>
                     <th>Hora Ingreso</th>
                     <th>Hora Salida</th>
+                    <th>Acciones</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -81,10 +81,20 @@
                     <td th:text="${iter.count}">1</td>
                     <td th:text="${h.complejoNombre}">Complejo A</td>
                     <td th:text="${h.direccionComplejo}">Dirección</td>
-                    <td th:text="${h.fecha}">2025-06-01</td>
-                    <td th:text="${h.diaSemana}">Lunes</td>
+                    <td th:text="${h.fecha}">2025-06-01</td>                    <td th:text="${h.diaSemana}">Lunes</td>
                     <td th:text="${h.horaIngreso}">08:00</td>
                     <td th:text="${h.horaSalida}">10:00</td>
+                    <td>
+                      <button type="button" class="btn btn-sm btn-primary ver-horario-btn"
+                              th:data-complejo="${h.complejoNombre}"
+                              th:data-direccion="${h.direccionComplejo}"
+                              th:data-fecha="${h.fecha}"
+                              th:data-dia="${h.diaSemana}"
+                              th:data-ingreso="${h.horaIngreso}"
+                              th:data-salida="${h.horaSalida}">
+                        <i class="ti ti-eye me-1"></i> Ver detalles
+                      </button>
+                    </td>
                   </tr>
                   </tbody>
                 </table>
@@ -97,6 +107,68 @@
 
   </div>
 
+</div>
+
+<!-- Modal para detalles de horario con mapa -->
+<div class="modal fade" id="horarioModal" tabindex="-1" aria-labelledby="horarioModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header bg-primary text-white">
+        <h5 class="modal-title fw-bold" id="horarioModalLabel">Detalles del Horario</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="row g-0">
+          <!-- Detalles del horario -->
+          <div class="col-md-6 p-4">
+            <h4 id="modalComplejoNombre" class="fw-bold text-primary mb-3">Complejo Deportivo</h4>
+            
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <i class="ti ti-map-pin text-danger me-2 fs-5"></i>
+                <span class="fw-medium">Dirección:</span>
+              </div>
+              <p id="modalComplejoDir" class="ms-4">Dirección del complejo</p>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <i class="ti ti-calendar text-primary me-2 fs-5"></i>
+                <span class="fw-medium">Fecha y Día:</span>
+              </div>
+              <p class="ms-4"><span id="modalFecha">2023-06-15</span> (<span id="modalDia">Lunes</span>)</p>
+            </div>
+            
+            <div class="mb-3">
+              <div class="d-flex align-items-center mb-2">
+                <i class="ti ti-clock text-success me-2 fs-5"></i>
+                <span class="fw-medium">Horario:</span>
+              </div>
+              <p class="ms-4">De <span id="modalHoraIngreso">08:00</span> a <span id="modalHoraSalida">10:00</span></p>
+            </div>
+          </div>
+          
+          <!-- Mapa del complejo -->
+          <div class="col-md-6 border-start">
+            <div class="d-flex flex-column h-100">
+              <div class="p-3 bg-light border-bottom">
+                <h5 class="mb-0 d-flex align-items-center">
+                  <i class="ti ti-map text-primary me-2"></i>
+                  Ubicación del Complejo
+                </h5>
+              </div>
+              <div class="flex-grow-1">
+                <div id="mapaComplejo" class="h-100" style="min-height: 300px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div th:replace="~{fragments/footer_superadmin :: footer}"></div>
@@ -121,6 +193,104 @@
 <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
 <script th:src="@{/assets/js/horario-coord-datatable.js}"></script>
 
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCikiZ1OzBpLugnxT5s1aZLMDB0szjyybA&callback=initMap" async defer></script>
+
+<script>
+  let map;
+  let marker;
+  
+  // Inicializa el mapa con una ubicación por defecto (Lima, Perú)
+  function initMap() {
+    const defaultLocation = { lat: -12.0464, lng: -77.0428 };
+    
+    map = new google.maps.Map(document.getElementById("mapaComplejo"), {
+      center: defaultLocation,
+      zoom: 15,
+      styles: [
+        {
+          "featureType": "poi",
+          "stylers": [{ "visibility": "off" }]
+        }
+      ]
+    });
+    
+    marker = new google.maps.Marker({
+      position: defaultLocation,
+      map: map,
+      animation: google.maps.Animation.DROP,
+      icon: {
+        url: 'https://maps.google.com/mapfiles/ms/icons/red-dot.png'
+      }
+    });
+  }
+  
+  // Geocodifica la dirección para obtener coordenadas
+  function geocodeDireccion(direccion) {
+    const geocoder = new google.maps.Geocoder();
+    geocoder.geocode({ address: direccion }, (results, status) => {
+      if (status === "OK" && results[0]) {
+        const location = results[0].geometry.location;
+        map.setCenter(location);
+        marker.setPosition(location);
+        
+        // Añadir un círculo alrededor del marcador
+        new google.maps.Circle({
+          strokeColor: "#1E88E5",
+          strokeOpacity: 0.8,
+          strokeWeight: 2,
+          fillColor: "#1E88E5",
+          fillOpacity: 0.15,
+          map: map,
+          center: location,
+          radius: 150 // metros
+        });
+      } else {
+        console.error("Error en geocodificación:", status);
+      }
+    });
+  }
+
+  // Maneja la apertura del modal de horario
+  document.addEventListener('DOMContentLoaded', function() {
+    const horarioModal = new bootstrap.Modal(document.getElementById('horarioModal'));
+    
+    document.querySelectorAll('.ver-horario-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // Obtener datos del botón
+        const complejo = this.getAttribute('data-complejo');
+        const direccion = this.getAttribute('data-direccion');
+        const fecha = this.getAttribute('data-fecha');
+        const dia = this.getAttribute('data-dia');
+        const horaIngreso = this.getAttribute('data-ingreso');
+        const horaSalida = this.getAttribute('data-salida');
+        
+        // Actualizar contenido del modal
+        document.getElementById('modalComplejoNombre').textContent = complejo;
+        document.getElementById('modalComplejoDir').textContent = direccion;
+        document.getElementById('modalFecha').textContent = fecha;
+        document.getElementById('modalDia').textContent = dia;
+        document.getElementById('modalHoraIngreso').textContent = horaIngreso;
+        document.getElementById('modalHoraSalida').textContent = horaSalida;
+        
+        // Abrir el modal
+        horarioModal.show();
+        
+        // Pequeña demora para asegurar que el mapa se renderice correctamente
+        setTimeout(() => {
+          google.maps.event.trigger(map, 'resize');
+          geocodeDireccion(direccion + ', Lima, Perú');
+        }, 500);
+      });
+    });
+    
+    // Vuelve a renderizar el mapa cuando el modal se abre
+    document.getElementById('horarioModal').addEventListener('shown.bs.modal', function() {
+      google.maps.event.trigger(map, 'resize');
+    });
+  });
+</script>
+
 <script>
   layout_change('light');
 </script>
@@ -143,17 +313,6 @@
 
 <script>
   main_layout_change('vertical');
-</script>
-
-
-<script>
-  const modalCancelar = document.getElementById('modalCancelarReserva');
-  modalCancelar.addEventListener('show.bs.modal', function (event) {
-    const button = event.relatedTarget;
-    const idReserva = button.getAttribute('data-id');
-    const form = modalCancelar.querySelector('#formCancelarReserva');
-    form.setAttribute('action', `/vecino/reserva/eliminar/${idReserva}`);
-  });
 </script>
 
 <style>
@@ -397,8 +556,7 @@
         row.style.display = mostrar ? "" : "none";
       });
     }
-  </script>
-  <style>
+  </script>  <style>
     /* Estiliza el contenedor de los filtros */
     .filtros-container {
       margin: 20px 30px;
@@ -435,6 +593,42 @@
       font-size: 14px;
       width: 100%;
       max-width: 250px;
+    }
+  </style>
+
+  <style>
+    /* Estilo para los botones de acción en la tabla */
+    .ver-horario-btn {
+      padding: 5px 10px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+    }
+    
+    .ver-horario-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Estilos para el modal de horarios */
+    .modal-header.bg-primary {
+      background-color: #5d87ff !important;
+    }
+    
+    #horarioModal .modal-content {
+      border-radius: 8px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+    }
+    
+    #mapaComplejo {
+      border-radius: 0;
+    }
+
+    /* Estilo para iconos en el modal */
+    #horarioModal i.ti {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 

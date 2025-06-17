@@ -3,6 +3,7 @@ package com.example.proyectosanmiguel.controller;
 import com.example.proyectosanmiguel.dto.HorarioDTO;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,13 +23,20 @@ import java.io.IOException;
 import java.security.Principal;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import com.example.proyectosanmiguel.dto.RegistroAsistenciaRequest;
+import com.example.proyectosanmiguel.entity.RegistroAsistencia;
+
 
 @Controller
 @RequestMapping("/coord")
@@ -55,6 +63,131 @@ public class CoordinadorController {
     @Autowired
     private CredencialRepository credencialRepository;
 
+    @Autowired
+    private RegistroAsistenciaRepository registroAsistenciaRepository;
+
+    @Autowired
+    private ComplejoRepository complejoRepository;
+
+
+    private static final int TOLERANCIA_MINUTOS = 10; // Changed to 10 minutes
+    private static final double RADIO_PERMITIDO = 10000.0; // 100 meters
+
+    /**
+     * Endpoint para obtener las coordenadas de todos los complejos deportivos
+     */
+    @GetMapping("/asistencia/complejos/coordenadas")
+    @ResponseBody
+    public List<Map<String, Object>> obtenerCoordenadasComplejos() {
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+        return complejos.stream()
+                .filter(c -> c.getLatitud() != null && c.getLongitud() != null)
+                .map(c -> {
+                    Map<String, Object> coordenadas = new HashMap<>();
+                    coordenadas.put("id", c.getIdComplejoDeportivo());
+                    coordenadas.put("nombre", c.getNombre());
+                    coordenadas.put("lat", c.getLatitud());
+                    coordenadas.put("lng", c.getLongitud());
+                    return coordenadas;
+                })
+                .toList();
+    }
+
+    /**
+     * Endpoint para obtener los horarios del coordinador para el día actual
+     */
+    @GetMapping("/asistencia/horarios/hoy")
+    @ResponseBody
+    public List<Map<String, Object>> obtenerHorariosHoy(Principal principal) {
+        if (principal == null) {
+            return List.of();
+        }
+        Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+        if (credencial == null || credencial.getUsuario() == null) {
+            return List.of();
+        }
+        Usuario coordinador = credencial.getUsuario();
+        LocalDate hoy = LocalDate.now(ZoneId.of("America/Lima"));
+        List<Horario> horariosHoy = horarioRepository.findByCoordinador(coordinador.getIdUsuario())
+                .stream()
+                .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
+                .toList();
+        return horariosHoy.stream().map(h -> {
+            Map<String, Object> horario = new HashMap<>();
+            horario.put("idHorario", h.getIdHorario());
+            horario.put("idComplejo", h.getComplejoDeportivo().getIdComplejoDeportivo());
+            horario.put("nombreComplejo", h.getComplejoDeportivo().getNombre());
+            horario.put("horaInicio", h.getHoraIngreso().toString());
+            horario.put("horaFin", h.getHoraSalida().toString());
+            return horario;
+        }).toList();
+    }
+
+    /**
+     * Endpoint para verificar si es hora de registrar entrada o salida
+     */
+    @GetMapping("/asistencia/verificar-horario")
+    @ResponseBody
+    public Map<String, Object> verificarHorario(Principal principal) {
+        Map<String, Object> response = new HashMap<>();
+        if (principal == null) {
+            response.put("error", "No autenticado");
+            return response;
+        }
+        try {
+            Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+            if (credencial == null || credencial.getUsuario() == null) {
+                response.put("error", "Usuario no encontrado");
+                return response;
+            }
+            Usuario coordinador = credencial.getUsuario();
+            LocalDate hoy = LocalDate.now(ZoneId.of("America/Lima"));
+            LocalTime ahora = LocalTime.now(ZoneId.of("America/Lima"));
+            List<Horario> horariosHoy = horarioRepository.findByCoordinador(coordinador.getIdUsuario())
+                    .stream()
+                    .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
+                    .toList();
+            Optional<Horario> horarioEntrada = horariosHoy.stream()
+                    .filter(h -> h.getHoraIngreso() != null &&
+                            !ahora.isBefore(h.getHoraIngreso()) &&
+                            ahora.isBefore(h.getHoraIngreso().plusMinutes(TOLERANCIA_MINUTOS)))
+                    .findFirst();
+            Optional<Horario> horarioSalida = horariosHoy.stream()
+                    .filter(h -> h.getHoraSalida() != null &&
+                            !ahora.isBefore(h.getHoraSalida()) &&
+                            ahora.isBefore(h.getHoraSalida().plusMinutes(TOLERANCIA_MINUTOS)))
+                    .findFirst();
+            Optional<RegistroAsistencia> entradaHoy = registroAsistenciaRepository
+                    .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "entrada", hoy);
+            Optional<RegistroAsistencia> salidaHoy = registroAsistenciaRepository
+                    .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "salida", hoy);
+            response.put("puedeRegistrarEntrada", horarioEntrada.isPresent() && entradaHoy.isEmpty());
+            response.put("puedeRegistrarSalida", horarioSalida.isPresent() && salidaHoy.isEmpty() && entradaHoy.isPresent());
+            if (horarioEntrada.isPresent()) {
+                Horario horario = horarioEntrada.get();
+                response.put("horarioEntrada", Map.of(
+                        "idHorario", horario.getIdHorario(),
+                        "horaInicio", horario.getHoraIngreso().toString(),
+                        "horaTope", horario.getHoraIngreso().plusMinutes(TOLERANCIA_MINUTOS).toString(),
+                        "idComplejo", horario.getComplejoDeportivo().getIdComplejoDeportivo(),
+                        "nombreComplejo", horario.getComplejoDeportivo().getNombre()
+                ));
+            }
+            if (horarioSalida.isPresent()) {
+                Horario horario = horarioSalida.get();
+                response.put("horarioSalida", Map.of(
+                        "idHorario", horario.getIdHorario(),
+                        "horaFin", horario.getHoraSalida().toString(),
+                        "horaTope", horario.getHoraSalida().plusMinutes(TOLERANCIA_MINUTOS).toString(),
+                        "idComplejo", horario.getComplejoDeportivo().getIdComplejoDeportivo(),
+                        "nombreComplejo", horario.getComplejoDeportivo().getNombre()
+                ));
+            }
+        } catch (Exception e) {
+            response.put("error", "Error al verificar horario: " + e.getMessage());
+        }
+        return response;
+    }
 
     @GetMapping("/reportes/ver")
     public String verReportes(@RequestParam(defaultValue = "0") int page, Model model) {
@@ -171,7 +304,6 @@ public class CoordinadorController {
 
         // 4. Foto de perfil
         // Usuario coordinador ya obtenido
-
         // 5. Complejo actual según la hora de Perú
         java.time.ZoneId zonaPeru = java.time.ZoneId.of("America/Lima");
         java.time.ZonedDateTime ahoraPeru = java.time.ZonedDateTime.now(zonaPeru);
@@ -181,19 +313,48 @@ public class CoordinadorController {
                 .stream()
                 .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
                 .toList();
+
+        // Primero chequeamos si hay un horario activo ahora mismo
         Horario horarioActual = horariosHoy.stream()
                 .filter(h -> h.getHoraIngreso() != null && h.getHoraSalida() != null &&
                         !ahora.isBefore(h.getHoraIngreso()) && ahora.isBefore(h.getHoraSalida()))
                 .findFirst()
                 .orElse(null);
+
+        // Si no hay horario activo ahora, buscamos el próximo horario del día
+        if (horarioActual == null) {
+            horarioActual = horariosHoy.stream()
+                    .filter(h -> h.getHoraIngreso() != null && ahora.isBefore(h.getHoraIngreso()))
+                    .min((h1, h2) -> h1.getHoraIngreso().compareTo(h2.getHoraIngreso()))
+                    .orElse(null);
+        }
+
+        // Si no hay próximo horario, usamos el último que acaba de pasar (para registrar salida)
+        if (horarioActual == null) {
+            horarioActual = horariosHoy.stream()
+                    .filter(h -> h.getHoraSalida() != null)
+                    .max((h1, h2) -> h1.getHoraSalida().compareTo(h2.getHoraSalida()))
+                    .orElse(null);
+        }
+
         String nombreComplejo = "No hay complejo asignado";
         String direccionComplejo = "-";
         String horaInicio = "";
         String horaFin = "";
+        Double latitudComplejo = null;
+        Double longitudComplejo = null;
+        Integer idComplejoActual = null;
+        Integer idHorarioActual = null;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
         if (horarioActual != null && horarioActual.getComplejoDeportivo() != null) {
-            nombreComplejo = horarioActual.getComplejoDeportivo().getNombre();
-            direccionComplejo = horarioActual.getComplejoDeportivo().getDireccion();
+            ComplejoDeportivo complejo = horarioActual.getComplejoDeportivo();
+            nombreComplejo = complejo.getNombre();
+            direccionComplejo = complejo.getDireccion();
+            latitudComplejo = complejo.getLatitud();
+            longitudComplejo = complejo.getLongitud();
+            idComplejoActual = complejo.getIdComplejoDeportivo();
+            idHorarioActual = horarioActual.getIdHorario();
             horaInicio = horarioActual.getHoraIngreso() != null ? horarioActual.getHoraIngreso().format(formatter) : "";
             horaFin = horarioActual.getHoraSalida() != null ? horarioActual.getHoraSalida().format(formatter) : "";
         }
@@ -206,6 +367,44 @@ public class CoordinadorController {
         model.addAttribute("complejoActualDireccion", direccionComplejo);
         model.addAttribute("complejoHoraInicio", horaInicio);
         model.addAttribute("complejoHoraFin", horaFin);
+        model.addAttribute("complejoLatitud", latitudComplejo);
+        model.addAttribute("complejoLongitud", longitudComplejo);
+        model.addAttribute("complejoId", idComplejoActual);
+        model.addAttribute("horarioId", idHorarioActual);
+
+        // Comprobar si ya registró entrada o salida hoy
+        Optional<RegistroAsistencia> entradaHoy = registroAsistenciaRepository
+                .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "entrada", hoy);
+
+        Optional<RegistroAsistencia> salidaHoy = registroAsistenciaRepository
+                .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "salida", hoy);
+
+        model.addAttribute("entradaRegistrada", entradaHoy.isPresent());
+        model.addAttribute("salidaRegistrada", salidaHoy.isPresent());
+
+        // Verificar si está en horario de entrada o salida (con tolerancia)
+        boolean puedeRegistrarEntrada = false;
+        boolean puedeRegistrarSalida = false;
+
+        if (horarioActual != null) {
+            if (horarioActual.getHoraIngreso() != null) {
+                LocalTime horaLimiteEntrada = horarioActual.getHoraIngreso().plusMinutes(TOLERANCIA_MINUTOS);
+                puedeRegistrarEntrada = !ahora.isBefore(horarioActual.getHoraIngreso()) &&
+                        ahora.isBefore(horaLimiteEntrada) &&
+                        entradaHoy.isEmpty();
+            }
+
+            if (horarioActual.getHoraSalida() != null) {
+                LocalTime horaLimiteSalida = horarioActual.getHoraSalida().plusMinutes(TOLERANCIA_MINUTOS);
+                puedeRegistrarSalida = !ahora.isBefore(horarioActual.getHoraSalida()) &&
+                        ahora.isBefore(horaLimiteSalida) &&
+                        salidaHoy.isEmpty();
+            }
+        }
+
+        model.addAttribute("puedeRegistrarEntrada", puedeRegistrarEntrada);
+        model.addAttribute("puedeRegistrarSalida", puedeRegistrarSalida);
+
         return "Coordinador/coordinador_inicio";
     }
 
@@ -350,5 +549,288 @@ public class CoordinadorController {
         data.put("En Proceso", enProceso);
         data.put("Cerrado", cerrados);
         return data;
+    }
+
+
+    @PostMapping("/asistencia/registrar")
+    public String registrarAsistencia(
+            @RequestParam("tipoRegistro") String tipoRegistro,
+            @RequestParam("latitud") Double latitud,
+            @RequestParam("longitud") Double longitud,
+            @RequestParam("precision") Double precision,
+            @RequestParam("idComplejo") Integer idComplejo,
+            @RequestParam("idHorario") Integer idHorario,
+            Principal principal,
+            Model model) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("success", false);
+        response.put("message", "Error desconocido");
+        Usuario coordinador = null;
+        try {
+            System.out.println("POST /asistencia/registrar - tipoRegistro: " + tipoRegistro + " at " + LocalDateTime.now(ZoneId.of("America/Lima")));
+            if (principal == null) {
+                response.put("message", "No hay usuario autenticado");
+                model.addAttribute("response", response);
+                model.addAttribute("complejoId", idComplejo);
+                model.addAttribute("horarioId", idHorario);
+                model.addAttribute("usuario", null);
+                // Botones deshabilitados
+                model.addAttribute("puedeRegistrarEntrada", false);
+                model.addAttribute("puedeRegistrarSalida", false);
+                return "Coordinador/coordinador_inicio";
+            }
+            Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+            if (credencial == null || credencial.getUsuario() == null) {
+                response.put("message", "Usuario no autenticado");
+                model.addAttribute("response", response);
+                model.addAttribute("complejoId", idComplejo);
+                model.addAttribute("horarioId", idHorario);
+                model.addAttribute("usuario", null);
+                model.addAttribute("puedeRegistrarEntrada", false);
+                model.addAttribute("puedeRegistrarSalida", false);
+                return "Coordinador/coordinador_inicio";
+            }
+            coordinador = credencial.getUsuario();
+            LocalDate hoy = LocalDate.now(ZoneId.of("America/Lima"));
+            LocalTime ahora = LocalTime.now(ZoneId.of("America/Lima"));
+            Optional<RegistroAsistencia> registroExistente = registroAsistenciaRepository
+                    .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), tipoRegistro, hoy);
+            if (registroExistente.isPresent()) {
+                response.put("message", "Ya has registrado tu " + tipoRegistro + " el día de hoy");
+                model.addAttribute("response", response);
+                model.addAttribute("complejoId", idComplejo);
+                model.addAttribute("horarioId", idHorario);
+                model.addAttribute("usuario", coordinador);
+                // Recalcular habilitación de botones
+                setBotonesAsistencia(model, coordinador, hoy, ahora);
+                return "Coordinador/coordinador_inicio";
+            }
+            Optional<ComplejoDeportivo> complejoOpt = complejoRepository.findById(idComplejo);
+            if (complejoOpt.isEmpty()) {
+                response.put("message", "El complejo seleccionado no existe");
+                model.addAttribute("response", response);
+                model.addAttribute("complejoId", idComplejo);
+                model.addAttribute("horarioId", idHorario);
+                model.addAttribute("usuario", coordinador);
+                setBotonesAsistencia(model, coordinador, hoy, ahora);
+                return "Coordinador/coordinador_inicio";
+            }
+            ComplejoDeportivo complejo = complejoOpt.get();
+            double distanciaComplejo = calculateDistance(latitud, longitud, complejo.getLatitud(), complejo.getLongitud());
+            System.out.println("Distance to complex: " + distanciaComplejo + " meters, Radius allowed: " + RADIO_PERMITIDO + " meters");
+            if (distanciaComplejo > RADIO_PERMITIDO) {
+                response.put("message", String.format("Estás a %.2f metros del complejo. Debes estar a menos de %.0f metros para registrar asistencia.", distanciaComplejo, RADIO_PERMITIDO));
+                model.addAttribute("response", response);
+                model.addAttribute("complejoId", idComplejo);
+                model.addAttribute("horarioId", idHorario);
+                model.addAttribute("usuario", coordinador);
+                setBotonesAsistencia(model, coordinador, hoy, ahora);
+                return "Coordinador/coordinador_inicio";
+            }
+            if ("salida".equals(tipoRegistro)) {
+                Optional<RegistroAsistencia> entradaHoy = registroAsistenciaRepository
+                        .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "entrada", hoy);
+                if (entradaHoy.isEmpty()) {
+                    response.put("message", "No puedes registrar salida sin haber registrado entrada hoy");
+                    model.addAttribute("response", response);
+                    model.addAttribute("complejoId", idComplejo);
+                    model.addAttribute("horarioId", idHorario);
+                    model.addAttribute("usuario", coordinador);
+                    setBotonesAsistencia(model, coordinador, hoy, ahora);
+                    return "Coordinador/coordinador_inicio";
+                }
+            }
+            List<Horario> horariosHoy = horarioRepository.findByCoordinador(coordinador.getIdUsuario())
+                    .stream()
+                    .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
+                    .toList();
+            boolean horarioValido = false;
+            boolean esTardanza = false;
+            if ("entrada".equals(tipoRegistro)) {
+                Optional<Horario> horarioEntrada = horariosHoy.stream()
+                        .filter(h -> h.getHoraIngreso() != null &&
+                                !ahora.isBefore(h.getHoraIngreso()) &&
+                                ahora.isBefore(h.getHoraIngreso().plusMinutes(10)))
+                        .findFirst();
+                if (horarioEntrada.isPresent()) {
+                    horarioValido = true;
+                    esTardanza = ahora.isAfter(horarioEntrada.get().getHoraIngreso());
+                }
+            } else if ("salida".equals(tipoRegistro)) {
+                Optional<Horario> horarioSalida = horariosHoy.stream()
+                        .filter(h -> h.getHoraSalida() != null &&
+                                !ahora.isBefore(h.getHoraSalida()) &&
+                                ahora.isBefore(h.getHoraSalida().plusMinutes(10)))
+                        .findFirst();
+                if (horarioSalida.isPresent()) {
+                    horarioValido = true;
+                    esTardanza = ahora.isAfter(horarioSalida.get().getHoraSalida());
+                }
+            }
+            if (!horarioValido) {
+                response.put("message", "No estás dentro del horario permitido para registrar " + tipoRegistro);
+                model.addAttribute("response", response);
+                model.addAttribute("complejoId", idComplejo);
+                model.addAttribute("horarioId", idHorario);
+                model.addAttribute("usuario", coordinador);
+                setBotonesAsistencia(model, coordinador, hoy, ahora);
+                return "Coordinador/coordinador_inicio";
+            }
+            RegistroAsistencia registro = new RegistroAsistencia();
+            registro.setCoordinador(coordinador);
+            registro.setComplejo(complejo);
+            registro.setTipoRegistro(tipoRegistro);
+            registro.setFechaHora(LocalDateTime.now(ZoneId.of("America/Lima")));
+            registro.setLatitudCoordinador(latitud);
+            registro.setLongitudCoordinador(longitud);
+            registro.setPrecisionMetros(precision);
+            registro.setDistanciaComplejo(distanciaComplejo);
+            registro.setValidado(true);
+            registro.setEsTardanza(esTardanza);
+            registro.setCreatedAt(LocalDateTime.now());
+            System.out.println("Registro de asistencia: " + registro);
+            registroAsistenciaRepository.save(registro);
+            System.out.println("Registro guardado: " + registro);
+            String mensajeEstado = esTardanza ? " (TARDANZA)" : "";
+            response.put("success", true);
+            response.put("message", "Se registró la " + tipoRegistro + " correctamente" + mensajeEstado);
+            response.put("fechaHora", registro.getFechaHora().toString());
+            response.put("complejo", complejo.getNombre());
+            response.put("esTardanza", esTardanza);
+            model.addAttribute("response", response);
+            model.addAttribute("complejoId", idComplejo);
+            model.addAttribute("horarioId", idHorario);
+            model.addAttribute("usuario", coordinador);
+            setBotonesAsistencia(model, coordinador, hoy, ahora);
+            return "Coordinador/coordinador_inicio";
+        } catch (Exception e) {
+            response.put("message", "Error interno: " + e.getMessage());
+            model.addAttribute("response", response);
+            model.addAttribute("complejoId", idComplejo);
+            model.addAttribute("horarioId", idHorario);
+            model.addAttribute("usuario", coordinador);
+            model.addAttribute("puedeRegistrarEntrada", false);
+            model.addAttribute("puedeRegistrarSalida", false);
+            System.out.println("Error Response: " + response);
+            return "Coordinador/coordinador_inicio";
+        }
+    }
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        double R = 6371000; // Earth radius in meters
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                        Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
+    /**
+     * Endpoint para verificar y registrar faltas automáticamente
+     * Se ejecuta para verificar horarios que ya pasaron sin registro
+     */
+    @PostMapping("/asistencia/verificar-faltas")
+    @ResponseBody
+    public Map<String, Object> verificarFaltas(Principal principal) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Credencial credencial = credencialRepository.findByCorreo(principal.getName());
+            if (credencial == null || credencial.getUsuario() == null) {
+                response.put("success", false);
+                response.put("message", "Usuario no autenticado");
+                return response;
+            }
+            Usuario coordinador = credencial.getUsuario();
+            LocalDate hoy = LocalDate.now(ZoneId.of("America/Lima"));
+            LocalTime ahora = LocalTime.now(ZoneId.of("America/Lima"));
+            List<Horario> horariosHoy = horarioRepository.findByCoordinador(coordinador.getIdUsuario())
+                    .stream()
+                    .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
+                    .toList();
+            int faltasRegistradas = 0;
+            for (Horario horario : horariosHoy) {
+                if (horario.getHoraIngreso() != null) {
+                    LocalTime horaLimiteEntrada = horario.getHoraIngreso().plusMinutes(TOLERANCIA_MINUTOS);
+                    if (ahora.isAfter(horaLimiteEntrada)) {
+                        long registrosEntrada = registroAsistenciaRepository
+                                .countRegistrosPorTipoYFecha(coordinador.getIdUsuario(), "entrada", hoy);
+                        if (registrosEntrada == 0) {
+                            RegistroAsistencia falta = new RegistroAsistencia();
+                            falta.setCoordinador(coordinador);
+                            falta.setComplejo(horario.getComplejoDeportivo());
+                            falta.setTipoRegistro("falta_entrada");
+                            falta.setFechaHora(LocalDateTime.of(hoy, horario.getHoraIngreso()));
+                            falta.setValidado(false);
+                            falta.setEsTardanza(false);
+                            falta.setCreatedAt(LocalDateTime.now());
+                            registroAsistenciaRepository.save(falta);
+                            faltasRegistradas++;
+                        }
+                    }
+                }
+                if (horario.getHoraSalida() != null) {
+                    LocalTime horaLimiteSalida = horario.getHoraSalida().plusMinutes(TOLERANCIA_MINUTOS);
+                    if (ahora.isAfter(horaLimiteSalida)) {
+                        long registrosEntrada = registroAsistenciaRepository
+                                .countRegistrosPorTipoYFecha(coordinador.getIdUsuario(), "entrada", hoy);
+                        long registrosSalida = registroAsistenciaRepository
+                                .countRegistrosPorTipoYFecha(coordinador.getIdUsuario(), "salida", hoy);
+                        if (registrosEntrada > 0 && registrosSalida == 0) {
+                            RegistroAsistencia falta = new RegistroAsistencia();
+                            falta.setCoordinador(coordinador);
+                            falta.setComplejo(horario.getComplejoDeportivo());
+                            falta.setTipoRegistro("falta_salida");
+                            falta.setFechaHora(LocalDateTime.of(hoy, horario.getHoraSalida()));
+                            falta.setValidado(false);
+                            falta.setEsTardanza(false);
+                            falta.setCreatedAt(LocalDateTime.now());
+                            registroAsistenciaRepository.save(falta);
+                            faltasRegistradas++;
+                        }
+                    }
+                }
+            }
+            response.put("success", true);
+            response.put("faltasRegistradas", faltasRegistradas);
+            response.put("message", faltasRegistradas > 0 ?
+                    "Se registraron " + faltasRegistradas + " faltas" :
+                    "No hay faltas pendientes");
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al verificar faltas: " + e.getMessage());
+        }
+        return response;
+    }
+
+    // Helper para recalcular habilitación de botones
+    private void setBotonesAsistencia(Model model, Usuario coordinador, LocalDate hoy, LocalTime ahora) {
+        boolean puedeRegistrarEntrada = false;
+        boolean puedeRegistrarSalida = false;
+        if (coordinador != null) {
+            List<Horario> horariosHoy = horarioRepository.findByCoordinador(coordinador.getIdUsuario())
+                    .stream()
+                    .filter(h -> h.getFecha() != null && h.getFecha().isEqual(hoy))
+                    .toList();
+            Optional<Horario> horarioEntrada = horariosHoy.stream()
+                    .filter(h -> h.getHoraIngreso() != null &&
+                            !ahora.isBefore(h.getHoraIngreso()) &&
+                            ahora.isBefore(h.getHoraIngreso().plusMinutes(TOLERANCIA_MINUTOS)))
+                    .findFirst();
+            Optional<Horario> horarioSalida = horariosHoy.stream()
+                    .filter(h -> h.getHoraSalida() != null &&
+                            !ahora.isBefore(h.getHoraSalida()) &&
+                            ahora.isBefore(h.getHoraSalida().plusMinutes(TOLERANCIA_MINUTOS)))
+                    .findFirst();
+            Optional<RegistroAsistencia> entradaHoy = registroAsistenciaRepository
+                    .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "entrada", hoy);
+            Optional<RegistroAsistencia> salidaHoy = registroAsistenciaRepository
+                    .findUltimoRegistroPorTipoYFecha(coordinador.getIdUsuario(), "salida", hoy);
+            puedeRegistrarEntrada = horarioEntrada.isPresent() && entradaHoy.isEmpty();
+            puedeRegistrarSalida = horarioSalida.isPresent() && salidaHoy.isEmpty() && entradaHoy.isPresent();
+        }
+        model.addAttribute("puedeRegistrarEntrada", puedeRegistrarEntrada);
+        model.addAttribute("puedeRegistrarSalida", puedeRegistrarSalida);
     }
 }

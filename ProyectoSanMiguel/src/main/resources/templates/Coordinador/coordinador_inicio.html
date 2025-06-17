@@ -1,7 +1,5 @@
 <!doctype html>
-<html lang="en">
-  <!-- [Head] start -->
-
+<html lang="en">  <!-- [Head] start -->
   <head th:replace="~{fragments/head_coordinador :: head('Bienvenido Coordinador')}"></head>
   <!-- [Head] end -->
   <!-- [Body] Start -->
@@ -283,22 +281,28 @@
             <div class="card h-100 mb-0">
               <div class="card-header">
                 <h4 class="mb-0">Registra tu entrada o salida</h4>
-              </div>
-              <div class="card-body d-flex flex-column align-items-center justify-content-center">
+              </div>              <div class="card-body d-flex flex-column align-items-center justify-content-center">
+
+                <input type="hidden" id="complejoId" th:value="${complejoId}">
+                <input type="hidden" id="horarioId" th:value="${horarioId}">
+                <input type="hidden" id="responseSuccess" th:value="${response != null ? response.success : false}">
+                <input type="hidden" id="responseMessage" th:value="${response != null ? response.message : ''}">
+                <!-- CSRF token -->
+                <input type="hidden" name="_csrf" id="csrfToken" th:if="${_csrf != null}" th:value="${_csrf.token}">
                 <!-- Botón Registrar Entrada -->
-                <button class="btn btn-danger w-100 mb-3 d-flex align-items-center justify-content-between" id="geoButton" style="font-size: 1.2rem; font-weight: bold;">
-                  Registrar entrada
-                  <i class="ti ti-login"></i>
-                </button>
+                <button class="btn btn-danger w-100 mb-3 d-flex align-items-center justify-content-between" th:disabled="${!puedeRegistrarEntrada}"
+                        onclick="getLocationAndSubmit('entrada')">Registrar entrada <i class="ti ti-login"></i></button>
                 <!-- Botón Registrar Salida -->
-                <button class="btn btn-warning w-100 d-flex align-items-center justify-content-between" id="salidaButton" style="font-size: 1.2rem; font-weight: bold; color: #333;">
-                  Registrar salida
-                  <i class="ti ti-logout"></i>
-                </button>
+                <button class="btn btn-warning w-100 d-flex align-items-center justify-content-between" th:disabled="${!puedeRegistrarSalida}"
+                      onclick="getLocationAndSubmit('salida')">Registrar salida <i class="ti ti-logout"></i></button>
+
                 <div class="overlay" id="overlay"></div>
                 <div style="margin-top: 5%">
                   <p class="" style="font-size: 95%; margin-top: 5%"><strong>NOTA:</strong></p>
-                  <p class="" style="font-size: 95%">Al presionar el botón de entrada se activará la geolocalización, asegúrese de estar dentro del complejo</p>
+                  <p class="small text-muted" style="font-size: 85%">Al presionar el botón de entrada se activará la geolocalización, asegúrese de estar dentro del complejo</p>
+                  <p class="small text-muted" style="font-size: 85%; margin-top: 5px;">
+                    <i class="ti ti-info-circle"></i> Para una mejor precisión, asegúrate de tener el GPS activado y estar en un área abierta.
+                  </p>
                 </div>
               </div>
             </div>
@@ -358,33 +362,31 @@
 
         </div>
       </div>
-    </footer>
+    </footer>
  
     <!-- [Page Specific JS] start -->
-    <script src="../assets/js/plugins/apexcharts.min.js"></script>
-    <script src="../assets/js/widgets/all-earnings-graph.js"></script>
-    <script src="../assets/js/widgets/page-views-graph.js"></script>
-    <script src="../assets/js/widgets/total-task-graph.js"></script>
-    <script src="../assets/js/widgets/download-graph.js"></script>
-    <script src="../assets/js/widgets/customer-rate-graph.js"></script>
-    <script src="../assets/js/widgets/tasks-graph.js"></script>
-    <script src="../assets/js/widgets/total-income-graph.js"></script>
+    <script src="/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/assets/js/widgets/all-earnings-graph.js"></script>
+    <script src="/assets/js/widgets/page-views-graph.js"></script>
+    <script src="/assets/js/widgets/total-task-graph.js"></script>
+    <script src="/assets/js/widgets/download-graph.js"></script>
+    <script src="/assets/js/widgets/customer-rate-graph.js"></script>
+    <script src="/assets/js/widgets/tasks-graph.js"></script>
+    <script src="/assets/js/widgets/total-income-graph.js"></script>
     <!-- [Page Specific JS] end -->
     <!-- Required Js -->
-    <script src="../assets/js/plugins/popper.min.js"></script>
-    <script src="../assets/js/plugins/simplebar.min.js"></script>
-    <script src="../assets/js/plugins/bootstrap.min.js"></script>
+    <script src="/assets/js/plugins/popper.min.js"></script>
+    <script src="/assets/js/plugins/simplebar.min.js"></script>
+    <script src="/assets/js/plugins/bootstrap.min.js"></script>
 
-    <script src="../assets/js/plugins/i18next.min.js"></script>
-    <script src="../assets/js/plugins/i18nextHttpBackend.min.js"></script>
+    <script src="/assets/js/plugins/i18next.min.js"></script>
+    <script src="/assets/js/plugins/i18nextHttpBackend.min.js"></script>
 
-    <script src="../assets/js/icon/custom-font.js"></script>
-    <script src="../assets/js/script.js"></script>
-    <script src="../assets/js/theme.js"></script>
-    <script src="../assets/js/multi-lang.js"></script>
-    <script src="../assets/js/plugins/feather.min.js"></script>
-    
-    
+    <script src="/assets/js/icon/custom-font.js"></script>
+    <script src="/assets/js/script.js"></script>
+    <script src="/assets/js/theme.js"></script>
+    <script src="/assets/js/multi-lang.js"></script>
+    <script src="/assets/js/plugins/feather.min.js"></script>
     <script>
       layout_change('light');
     </script>
@@ -407,178 +409,359 @@
      
     <script>
       main_layout_change('vertical');
-    </script>
-    
+    </script>    
     <style>
-      /* Ítems del menú: blanco */
-      .pc-sidebar .pc-link,
-      .pc-sidebar .pc-mtext,
-      .pc-sidebar .pc-micon {
-        color: #ffffff !important;
-        opacity: 1 !important;
+      .overlay {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: none;
+          z-index: 999;
       }
 
-      /* Títulos de secciones del menú */
-      .pc-sidebar .menu-caption,
-      .pc-sidebar .pc-caption {
-        color: rgba(255, 255, 255, 0.6) !important;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 12px;
+      .spinner {
+          border: 4px solid rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+          border-top: 4px solid white;
+          width: 40px;
+          height: 40px;
+          margin: 10px auto;
+          animation: spin 1s linear infinite;
       }
-      /* Hover: cambia el texto a celeste claro */
-      .pc-sidebar .pc-link:hover,
-      .pc-sidebar .pc-link:focus {
-        background-color: rgba(255, 255, 255, 0.05); /* Fondo sutil */
-        transition: all 0.2s ease-in-out;
+
+      @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+      }
+
+      /* Estilos para el sidebar - texto blanco */
+.pc-sidebar .pc-link,
+.pc-sidebar .pc-mtext,
+.pc-sidebar .pc-micon {
+  color: #ffffff !important;
+  opacity: 1 !important;
+}
+
+.pc-sidebar .menu-caption,
+.pc-sidebar .pc-caption {
+  color: rgba(255, 255, 255, 0.6) !important;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 12px;
+}
+
+.pc-sidebar .pc-link:hover,
+.pc-sidebar .pc-link:focus {
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: all 0.2s ease-in-out;
+}
+    </style>
+
+    <!-- Popup Azul (Inicial) -->
+    <div id="modalConfirmarEntrada" class="modal">
+      <div class="modal-content">
+        <h2>ESTÁS POR ACTIVAR LA GEOLOCALIZACIÓN</h2>
+        <p>⚠️ Asegúrate de estar dentro de tu complejo deportivo asignado, de no estar dentro el registro fallará y deberá intentarlo otra vez</p>
+        <button id="btnConfirmarEntrada" class="btn btn-primary">CONFIRMAR</button>
+        <button id="btnCancelarEntrada" class="btn btn-secondary">CANCELAR</button>
+      </div>
+    </div>
+    <!-- Popup Amarillo (Salida) -->
+    <div id="modalConfirmarSalida" class="modal">
+      <div class="modal-content">
+        <h2>¿DESEAS REGISTRAR TU SALIDA?</h2>
+        <p>Al confirmar, se activará la geolocalización de tu dispositivo para verificar tu ubicación.</p>
+        <button id="btnConfirmarSalida" class="btn btn-primary">CONFIRMAR</button>
+        <button id="btnCancelarSalida" class="btn btn-secondary">CANCELAR</button>
+      </div>
+    </div>
+
+    <!-- Popup Verde (Éxito) -->
+    <div id="modalExito" class="modal">
+      <div class="modal-content">
+        <h2>¡REGISTRO EXITOSO!</h2>
+        <p>EL REGISTRO SE REALIZÓ DE MANERA CORRECTA</p>
+        <p th:if="${response != null}" class="message-text" th:text="${response.message != null ? response.message : 'Registro exitoso'}">Tu registro de asistencia se realizó correctamente</p>
+        <p th:unless="${response != null}" class="message-text">Registro exitoso</p>
+        <p>¡Que tengas un buen día!</p>
+        <button class="btn btn-primary">CERRAR</button>
+      </div>
+    </div>
+
+    <!-- Popup Rojo (Error) -->
+    <div id="modalError" class="modal">
+      <div class="modal-content">
+        <h2>¡ERROR AL REGISTRAR!</h2>
+        <p>EL REGISTRO NO SE REALIZÓ CORRECTAMENTE</p>
+        <p th:if="${response != null}" class="message-text" th:text="${response.message != null ? response.message : 'Error desconocido'}">Debes estar dentro del complejo deportivo para registrar tu asistencia.</p>
+        <p th:unless="${response != null}" class="message-text">Error desconocido</p>
+        <button class="btn btn-primary">ENTENDIDO</button>
+      </div>
+    </div>
+
+
+    <script>
+      console.log("Attendance script loaded");
+      function getLocationAndSubmit(tipoRegistro) {
+        const modal = tipoRegistro === 'entrada' ? document.getElementById('modalConfirmarEntrada') : document.getElementById('modalConfirmarSalida');
+        if (!modal) {
+          console.error("Modal not found for tipoRegistro: " + tipoRegistro);
+          return;
+        }
+        modal.style.display = 'block';
+        const confirmButton = modal.querySelector('.btn-primary');
+        const cancelButton = modal.querySelector('.btn-secondary');
+        if (!confirmButton || !cancelButton) {
+          console.error("Confirm or Cancel button not found in modal");
+          modal.style.display = 'none';
+          return;
+        }
+        confirmButton.onclick = function() {
+          if (!navigator.geolocation) {
+            showErrorModal({ success: false, message: "Tu navegador no soporta geolocalización." });
+            modal.style.display = 'none';
+            return;
+          }
+          // Show overlay/spinner if desired
+          navigator.geolocation.getCurrentPosition(function(position) {
+            submitAttendance(tipoRegistro, position.coords);
+            modal.style.display = 'none';
+          }, function(error) {
+            let msg = 'No se pudo obtener la ubicación. Permite el acceso a la ubicación e intenta de nuevo.';
+            if (error.code === error.PERMISSION_DENIED) msg = 'Debes permitir el acceso a la ubicación para registrar asistencia.';
+            showErrorModal({ success: false, message: msg });
+            modal.style.display = 'none';
+          }, { enableHighAccuracy: true, timeout: 10000 });
+        };
+        cancelButton.onclick = function() {
+          modal.style.display = 'none';
+        };
+      }
+      // Unificada y corregida
+      document.addEventListener('DOMContentLoaded', function() {
+        const btnEntrada = document.querySelector('button[onclick*="getLocationAndSubmit(\'entrada\')"]');
+        const btnSalida = document.querySelector('button[onclick*="getLocationAndSubmit(\'salida\')"]');
+        const modalEntrada = document.getElementById('modalConfirmarEntrada');
+        const modalSalida = document.getElementById('modalConfirmarSalida');
+        const btnConfirmarEntrada = document.getElementById('btnConfirmarEntrada');
+        const btnCancelarEntrada = document.getElementById('btnCancelarEntrada');
+        const btnConfirmarSalida = document.getElementById('btnConfirmarSalida');
+        const btnCancelarSalida = document.getElementById('btnCancelarSalida');
+
+        if (btnEntrada && modalEntrada) {
+          btnEntrada.onclick = function(e) {
+            e.preventDefault();
+            modalEntrada.style.display = 'block';
+          };
+        }
+        if (btnSalida && modalSalida) {
+          btnSalida.onclick = function(e) {
+            e.preventDefault();
+            modalSalida.style.display = 'block';
+          };
+        }
+        if (btnCancelarEntrada && modalEntrada) {
+          btnCancelarEntrada.onclick = function() {
+            modalEntrada.style.display = 'none';
+          };
+        }
+        if (btnCancelarSalida && modalSalida) {
+          btnCancelarSalida.onclick = function() {
+            modalSalida.style.display = 'none';
+          };
+        }
+        if (btnConfirmarEntrada) {
+          btnConfirmarEntrada.onclick = function() {
+            registrarAsistenciaDesdeModal('entrada', modalEntrada);
+          };
+        }
+        if (btnConfirmarSalida) {
+          btnConfirmarSalida.onclick = function() {
+            registrarAsistenciaDesdeModal('salida', modalSalida);
+          };
+        }
+      });
+
+      function registrarAsistenciaDesdeModal(tipoRegistro, modal) {
+        if (!navigator.geolocation) {
+          showErrorModal({ success: false, message: "Tu navegador no soporta geolocalización." });
+          modal.style.display = 'none';
+          return;
+        }
+        navigator.geolocation.getCurrentPosition(function(position) {
+          submitAttendance(tipoRegistro, position.coords);
+          modal.style.display = 'none';
+        }, function(error) {
+          let msg = 'No se pudo obtener la ubicación. Permite el acceso a la ubicación e intenta de nuevo.';
+          if (error.code === error.PERMISSION_DENIED) msg = 'Debes permitir el acceso a la ubicación para registrar asistencia.';
+          showErrorModal({ success: false, message: msg });
+          modal.style.display = 'none';
+        }, { enableHighAccuracy: true, timeout: 10000 });
+      }
+
+      function submitAttendance(tipoRegistro, coords) {
+        const complejoIdElement = document.getElementById('complejoId');
+        const horarioIdElement = document.getElementById('horarioId');
+        const csrfTokenElement = document.getElementById('csrfToken');
+        if (!complejoIdElement || !horarioIdElement) {
+          showErrorModal({ success: false, message: "Error: Datos del complejo u horario no disponibles" });
+          return;
+        }
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/coord/asistencia/registrar';
+        const fields = [
+          { name: 'tipoRegistro', value: tipoRegistro },
+          { name: 'latitud', value: coords.latitude },
+          { name: 'longitud', value: coords.longitude },
+          { name: 'precision', value: coords.accuracy },
+          { name: 'idComplejo', value: complejoIdElement.value },
+          { name: 'idHorario', value: horarioIdElement.value }
+        ];
+        if (csrfTokenElement && csrfTokenElement.value) {
+          fields.push({ name: '_csrf', value: csrfTokenElement.value });
+        }
+        fields.forEach(field => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = field.name;
+          input.value = field.value;
+          form.appendChild(input);
+        });
+        document.body.appendChild(form);
+        form.submit();
+      }
+
+      function showErrorModal(response) {
+        const modal = document.getElementById('modalError');
+        if (!modal) {
+          console.error("Error modal not found");
+          return;
+        }
+        const messageElement = modal.querySelector('.message-text');
+        if (messageElement) {
+          messageElement.textContent = response.message;
+        }
+        modal.style.display = 'block';
+        const closeButton = modal.querySelector('.btn-primary');
+        if (closeButton) {
+          closeButton.onclick = function() {
+            modal.style.display = 'none';
+          };
+        }
+      }
+
+      window.onload = function() {
+        const successModal = document.getElementById('modalExito');
+        const errorModal = document.getElementById('modalError');
+        const responseSuccessElement = document.getElementById('responseSuccess');
+        const responseMessageElement = document.getElementById('responseMessage');
+        if (!responseSuccessElement) return;
+        const responseSuccess = responseSuccessElement.value === 'true';
+        // Only show modal if a registration was attempted (message is not empty)
+        if (successModal && responseSuccess && responseMessageElement && responseMessageElement.value) {
+          successModal.style.display = 'block';
+          const closeButton = successModal.querySelector('.btn-primary');
+          if (closeButton) {
+            closeButton.onclick = function() {
+              successModal.style.display = 'none';
+            };
+          }
+        } else if (errorModal && !responseSuccess && responseMessageElement && responseMessageElement.value) {
+          errorModal.style.display = 'block';
+          const closeButton = errorModal.querySelector('.btn-primary');
+          if (closeButton) {
+            closeButton.onclick = function() {
+              errorModal.style.display = 'none';
+            };
+          }
+        }
+      };
+    </script>
+    <style>
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+      }
+      .modal-content {
+        background-color: white;
+        margin: 15% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 500px;
       }
     </style>
-    <!-- Popup Azul (Inicial) -->
-    <div class="popup popup-blue" id="initialPopup">
-      <h2><strong>ESTAS POR ACTIVAR LA GEOLOCALIZACIÓN</strong></h2>
-      <br>
-      <p>
-        ⚠️ Asegúrate de estar dentro de tu complejo deportivo asignado, de no estar dentro el registro fallará y deberá intentarlo otra vez
-      </p>
-      <button class="popup-button" id="confirmButton">CONFIRMAR</button>
-  </div>
-  
-  <!-- Popup Verde (Éxito) -->
-  <div class="popup popup-green" id="successPopup">
-      <h2><strong>¡REGISTRO EXITOSO!</strong></h2>
-      <h5>EL REGISTRO SE REALIZÓ DE MANERA CORRECTA</h5>
-      <p>Tu registro de asistencia se realizó correctamente<br>
-      ¡Que tengas un buen día!</p>
-      <button class="popup-button" id="closeSuccessButton">CERRAR</button>
-  </div>
-  
-  <!-- Popup Rojo (Error) - Solo diseño, no implementado -->
-  <div class="popup popup-red" id="errorPopup" style="display: none;">
-      <h2>¡ERROR AL REGISTRAR!</h2>
-      <p><strong>EL REGISTRO NO SE REALIZÓ CORRECTAMENTE</strong></p>
-      <p>debido a que te encuentras lejos del complejo deportivo, adeñaste a tu local designado e instruirlo de nuevo.</p>
-      <button class="popup-button">ENTENDIDO</button>
-  </div>
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const geoButton = document.getElementById('geoButton');
-        const overlay = document.getElementById('overlay');
-        const initialPopup = document.getElementById('initialPopup');
-        const successPopup = document.getElementById('successPopup');
-        const confirmButton = document.getElementById('confirmButton');
-        const closeSuccessButton = document.getElementById('closeSuccessButton');
-        
-        // Mostrar popup azul al hacer clic en el botón de entrada
-        geoButton.addEventListener('click', function() {
-            overlay.style.display = 'block';
-            initialPopup.style.display = 'block';
-        });
-        
-        // Confirmar en popup azul muestra popup verde
-        confirmButton.addEventListener('click', function() {
-            initialPopup.style.display = 'none';
-            successPopup.style.display = 'block';
-        });
-        
-        // Cerrar popup verde
-        closeSuccessButton.addEventListener('click', function() {
-            successPopup.style.display = 'none';
-            overlay.style.display = 'none';
-        });
-        
-        // Cerrar popups al hacer clic en el overlay
-        overlay.addEventListener('click', function() {
-            initialPopup.style.display = 'none';
-            successPopup.style.display = 'none';
-            overlay.style.display = 'none';
-        });
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Botones para mostrar los modales
+  const btnEntrada = document.querySelector('button[onclick*="getLocationAndSubmit(\'entrada\')"]');
+  const btnSalida = document.querySelector('button[onclick*="getLocationAndSubmit(\'salida\')"]');
+  const modalEntrada = document.getElementById('modalConfirmarEntrada');
+  const modalSalida = document.getElementById('modalConfirmarSalida');
+  const btnConfirmarEntrada = document.getElementById('btnConfirmarEntrada');
+  const btnCancelarEntrada = document.getElementById('btnCancelarEntrada');
+  const btnConfirmarSalida = document.getElementById('btnConfirmarSalida');
+  const btnCancelarSalida = document.getElementById('btnCancelarSalida');
 
-        // Botón de salida (solo muestra alerta por ahora)
-        const salidaButton = document.getElementById('salidaButton');
-        salidaButton.addEventListener('click', function() {
-            alert('Funcionalidad de registrar salida próximamente.');
-        });
-    });
-</script>
-<style>
-  .popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 300px;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    text-align: center;
-    display: none;
-    z-index: 1000;
-}
+  if (btnEntrada && modalEntrada) {
+    btnEntrada.onclick = function(e) {
+      e.preventDefault();
+      modalEntrada.style.display = 'block';
+    };
+  }
+  if (btnSalida && modalSalida) {
+    btnSalida.onclick = function(e) {
+      e.preventDefault();
+      modalSalida.style.display = 'block';
+    };
+  }
+  if (btnCancelarEntrada && modalEntrada) {
+    btnCancelarEntrada.onclick = function() {
+      modalEntrada.style.display = 'none';
+    };
+  }
+  if (btnCancelarSalida && modalSalida) {
+    btnCancelarSalida.onclick = function() {
+      modalSalida.style.display = 'none';
+    };
+  }
+  if (btnConfirmarEntrada) {
+    btnConfirmarEntrada.onclick = function() {
+      registrarAsistenciaDesdeModal('entrada', modalEntrada);
+    };
+  }
+  if (btnConfirmarSalida) {
+    btnConfirmarSalida.onclick = function() {
+      registrarAsistenciaDesdeModal('salida', modalSalida);
+    };
+  }
+});
 
-.popup-blue {
-    background-color: #4a90e2;
-    color: white;
+function registrarAsistenciaDesdeModal(tipoRegistro, modal) {
+  if (!navigator.geolocation) {
+    showErrorModal({ success: false, message: "Tu navegador no soporta geolocalización." });
+    modal.style.display = 'none';
+    return;
+  }
+  navigator.geolocation.getCurrentPosition(function(position) {
+    submitAttendance(tipoRegistro, position.coords);
+    modal.style.display = 'none';
+  }, function(error) {
+    let msg = 'No se pudo obtener la ubicación. Permite el acceso a la ubicación e intenta de nuevo.';
+    if (error.code === error.PERMISSION_DENIED) msg = 'Debes permitir el acceso a la ubicación para registrar asistencia.';
+    showErrorModal({ success: false, message: msg });
+    modal.style.display = 'none';
+  }, { enableHighAccuracy: true, timeout: 10000 });
 }
-
-.popup-green {
-    background-color: #4CAF50;
-    color: white;
-}
-
-.popup-red {
-    background-color: #f44336;
-    color: white;
-}
-
-.popup h2 {
-    margin-top: 0;
-    font-size: 1.5em;
-}
-
-.popup p {
-    margin-bottom: 20px;
-    font-size: 0.9em;
-    line-height: 1.4;
-}
-
-.popup-button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: white;
-    color: #333;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.popup-blue .popup-button {
-    color: #4a90e2;
-}
-
-.popup-green .popup-button {
-    color: #4CAF50;
-}
-
-.popup-red .popup-button {
-    color: #f44336;
-}
-
-.popup-button:hover {
-    background-color: #f0f0f0;
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: none;
-    z-index: 999;
-}
-</style>
-  </body>
-  <!-- [Body] end -->
+    </script>
+</body>
 </html>
