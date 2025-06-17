@@ -44,6 +44,56 @@
             <div class="card">
               <div class="card-body">
                 <form id="formGenerarReporte">
+
+                  <!-- Rango de Fechas -->
+                  <div class="row mb-4">
+                    <div class="col-12">
+                      <h5 class="mb-3">Rango de Fechas</h5>
+                      <div class="row">
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="hoy">
+                            <i class="ph-duotone ph-calendar me-2"></i>Hoy
+                          </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="ultima_semana">
+                            <i class="ph-duotone ph-calendar-dots me-2"></i>Última semana
+                          </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="ultimo_mes">
+                            <i class="ph-duotone ph-calendar-blank me-2"></i>Último mes
+                          </button>
+                        </div>
+                        <div class="col-md-3 mb-2">
+                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="personalizado">
+                            <i class="ph-duotone ph-calendar-plus me-2"></i>Personalizado
+                          </button>
+                        </div>
+                      </div>
+                      <!-- Input oculto para almacenar el valor seleccionado -->
+                      <input type="hidden" name="rangoFecha" id="rangoFechaHidden">
+
+                      <!-- Campos de fecha personalizada -->
+                      <div id="fechasPersonalizadas" class="row mt-3 d-none">
+                        <div class="col-md-6">
+                          <label for="fechaInicio" class="form-label">Fecha de inicio</label>
+                          <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
+                        </div>
+                        <div class="col-md-6">
+                          <label for="fechaFin" class="form-label">Fecha de fin</label>
+                          <input type="date" class="form-control" id="fechaFin" name="fechaFin">
+                        </div>
+                      </div>
+
+                      <!-- Mostrar período seleccionado -->
+                      <div class="mt-3">
+                        <div class="alert alert-info">
+                          <strong>Período seleccionado:</strong> <span id="periodoSeleccionado">Seleccione un rango de fechas</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   
                   <!-- Tipo de Reporte -->
                   <div class="row mb-3">
@@ -78,55 +128,7 @@
                     </div>
                   </div>
 
-                  <!-- Rango de Fechas -->
-                  <div class="row mb-4">
-                    <div class="col-12">
-                      <h5 class="mb-3">Rango de Fechas</h5>
-                      <div class="row">
-                        <div class="col-md-3 mb-2">
-                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="hoy">
-                            <i class="ph-duotone ph-calendar me-2"></i>Hoy
-                          </button>
-                        </div>
-                        <div class="col-md-3 mb-2">
-                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="ultima_semana">
-                            <i class="ph-duotone ph-calendar-dots me-2"></i>Última semana
-                          </button>
-                        </div>
-                        <div class="col-md-3 mb-2">
-                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="ultimo_mes">
-                            <i class="ph-duotone ph-calendar-blank me-2"></i>Último mes
-                          </button>
-                        </div>
-                        <div class="col-md-3 mb-2">
-                          <button type="button" class="btn btn-outline-primary w-100 rango-fecha-btn" data-rango="personalizado">
-                            <i class="ph-duotone ph-calendar-plus me-2"></i>Personalizado
-                          </button>
-                        </div>
-                      </div>
-                      <!-- Input oculto para almacenar el valor seleccionado -->
-                      <input type="hidden" name="rangoFecha" id="rangoFechaHidden">
-                      
-                      <!-- Campos de fecha personalizada -->
-                      <div id="fechasPersonalizadas" class="row mt-3 d-none">
-                        <div class="col-md-6">
-                          <label for="fechaInicio" class="form-label">Fecha de inicio</label>
-                          <input type="date" class="form-control" id="fechaInicio" name="fechaInicio">
-                        </div>
-                        <div class="col-md-6">
-                          <label for="fechaFin" class="form-label">Fecha de fin</label>
-                          <input type="date" class="form-control" id="fechaFin" name="fechaFin">
-                        </div>
-                      </div>
-                      
-                      <!-- Mostrar período seleccionado -->
-                      <div class="mt-3">
-                        <div class="alert alert-info">
-                          <strong>Período seleccionado:</strong> <span id="periodoSeleccionado">Seleccione un rango de fechas</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+
 
                   <!-- Instalaciones -->
                   <div class="row mb-4">
@@ -554,7 +556,7 @@
           submitBtn.innerHTML = '<i class="ph-duotone ph-spinner me-2"></i>Generando...';
 
           // Enviar solicitud al servidor
-          fetch('/superadmin/reportes/generar', {
+          fetch('/superadmin/reportes/generarpdf', {
             method: 'POST',
             body: formData
           })

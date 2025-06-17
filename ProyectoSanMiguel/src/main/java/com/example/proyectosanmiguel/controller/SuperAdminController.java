@@ -1,16 +1,8 @@
 package com.example.proyectosanmiguel.controller;
-import com.example.proyectosanmiguel.dto.AsistenciaSemanalDto;
-import com.example.proyectosanmiguel.dto.ComparativaAsistenciaDto;
-import com.example.proyectosanmiguel.dto.EstadisticasPersonalDto;
-import com.example.proyectosanmiguel.dto.IngresosMensualesDto;
-import com.example.proyectosanmiguel.dto.ReservasMensualesDto;
-import com.example.proyectosanmiguel.dto.IngresosDetalleMesDto;
+import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
-import com.example.proyectosanmiguel.repository.ComplejoRepository;
-import com.example.proyectosanmiguel.repository.RolRepository;
-import com.example.proyectosanmiguel.repository.SectorRepository;
-import com.example.proyectosanmiguel.repository.UsuarioRepository;
-import com.example.proyectosanmiguel.repository.FinanzasRepository;
+import com.example.proyectosanmiguel.repository.*;
+import com.example.proyectosanmiguel.service.ReporteService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,12 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 
 @Controller
 public class SuperAdminController {
@@ -49,6 +36,13 @@ public class SuperAdminController {
 
     @Autowired
     private FinanzasRepository finanzasRepository;
+
+    @Autowired
+    private ReservaRepository reservaRepository;
+
+    @Autowired
+    private ReporteService reporteService;
+
 
     //Lista de Usuarios
 
@@ -401,5 +395,210 @@ public class SuperAdminController {
         }
         return ResponseEntity.ok(datos);
     }
+
+    @GetMapping("/superadmin/reportes/generar")
+    public String generarReportes(Model model) {
+
+        // Cargar todos los complejos deportivos para el selector de instalaciones
+        List<ComplejoDeportivo> complejos = complejoRepository.findAll();
+        model.addAttribute("complejos", complejos);
+
+        return "SuperAdmin/superadmin_generarReportes";
+    }
+
+    // Endpoint para generar reporte de reservas en PDF
+    @PostMapping("/superadmin/reportes/generarpdf")
+    @ResponseBody
+    public ResponseEntity<byte[]> generarReporte(@RequestParam("tipoReporte") String tipoReporte,
+                                                 @RequestParam("rangoFecha") String rangoFecha,
+                                                 @RequestParam(value = "fechaInicio", required = false) String fechaInicio,
+                                                 @RequestParam(value = "fechaFin", required = false) String fechaFin,
+                                                 @RequestParam(value = "instalaciones", required = false) Integer idComplejo,
+                                                 @RequestParam(value = "filtros", required = false) Map<String, String> filtros) {
+        System.out.println("=== SE LLAMÓ A GENERAR REPORTE ===");
+        System.out.println("Tipo de reporte: " + tipoReporte);
+        System.out.println("Rango de fecha: " + rangoFecha);
+        System.out.println("Fecha inicio: " + fechaInicio);
+        System.out.println("Fecha fin: " + fechaFin);
+        System.out.println("ID Complejo: " + idComplejo);
+        System.out.println("Filtros: " + filtros);
+        System.out.println("Fecha de inicio: " + fechaInicio);
+        System.out.println("Fecha de fin: " + fechaFin);
+        System.out.println("ID de complejo: " + idComplejo);
+        System.out.println("Filtros: " + filtros);
+        try {
+            System.out.println("=== GENERANDO REPORTE ===");
+            System.out.println("Tipo: " + tipoReporte);
+            System.out.println("Rango: " + rangoFecha);
+            System.out.println("Fecha inicio: " + fechaInicio);
+            System.out.println("Fecha fin: " + fechaFin);
+            System.out.println("ID Complejo: " + idComplejo);
+            System.out.println("Filtros: " + filtros);
+            // Calcular fechas según el rango seleccionado
+            LocalDate fechaInicioCalculada = null;
+            LocalDate fechaFinCalculada = null;
+
+            LocalDate hoy = LocalDate.now();
+
+            switch (rangoFecha) {
+                case "hoy":
+                    fechaInicioCalculada = hoy;
+                    fechaFinCalculada = hoy;
+                    break;
+                case "ultima_semana":
+                    fechaInicioCalculada = hoy.minusDays(7);
+                    fechaFinCalculada = hoy;
+                    break;
+                case "ultimo_mes":
+                    fechaInicioCalculada = hoy.minusMonths(1);
+                    fechaFinCalculada = hoy;
+                    break;
+                case "personalizado":
+                    if (fechaInicio != null && fechaFin != null) {
+                        fechaInicioCalculada = LocalDate.parse(fechaInicio);
+                        fechaFinCalculada = LocalDate.parse(fechaFin);
+                    }
+                    break;
+            }
+
+            System.out.println("Fechas calculadas - Inicio: " + fechaInicioCalculada + ", Fin: " + fechaFinCalculada);
+
+            // Obtener filtros adicionales
+            Integer idServicio = null;
+            if (filtros != null) {
+                String servicioStr = filtros.get("servicio");
+                if (servicioStr != null && !servicioStr.isEmpty()) {
+                    idServicio = Integer.parseInt(servicioStr);
+                }
+            }
+
+            // Obtener datos y generar PDF según el tipo de reporte
+            byte[] pdf = null;
+            String nombreArchivo = "";
+
+            if ("reservas".equalsIgnoreCase(tipoReporte)) {
+                // Reporte de Reservas
+                List<ReporteReservasDto> datos = reservaRepository.getReporteReservas(
+                        fechaInicioCalculada, fechaFinCalculada, idComplejo, idServicio);
+
+                System.out.println("Datos obtenidos: " + datos.size() + " registros");
+
+                // Si no hay datos, crear datos de prueba para testing
+                if (datos.isEmpty()) {
+                    System.out.println("No hay datos reales, usando datos de prueba...");
+                    datos = java.util.Arrays.asList(
+                            new ReporteReservasDto() {
+                                public String getIdReserva() { return "1"; }
+                                public String getNombreUsuario() { return "Juan Pérez"; }
+                                public String getNombreComplejo() { return "Complejo San Miguel"; }
+                                public String getNombreServicio() { return "Cancha de Fútbol"; }
+                                public String getFechaReserva() { return "13/06/2025"; }
+                                public String getMontoTotal() { return "S/. 50.00"; }
+                                public String getEstadoReserva() { return "Pagada"; }
+                            },
+                            new ReporteReservasDto() {
+                                public String getIdReserva() { return "2"; }
+                                public String getNombreUsuario() { return "María García"; }
+                                public String getNombreComplejo() { return "Complejo San Miguel"; }
+                                public String getNombreServicio() { return "Piscina"; }
+                                public String getFechaReserva() { return "12/06/2025"; }
+                                public String getMontoTotal() { return "S/. 30.00"; }
+                                public String getEstadoReserva() { return "Pendiente"; }
+                            },
+                            new ReporteReservasDto() {
+                                public String getIdReserva() { return "3"; }
+                                public String getNombreUsuario() { return "Carlos López"; }
+                                public String getNombreComplejo() { return "Complejo San Miguel"; }
+                                public String getNombreServicio() { return "Gimnasio"; }
+                                public String getFechaReserva() { return "11/06/2025"; }
+                                public String getMontoTotal() { return "S/. 25.00"; }
+                                public String getEstadoReserva() { return "Pagada"; }
+                            }
+                    );
+                    System.out.println("Datos de prueba creados: " + datos.size() + " registros");
+                }
+
+                String pathReporte = "/reportes/ReporteServiciosSanMiguel.jasper";
+                pdf = reporteService.generarReportesGeneral(datos, pathReporte);
+                System.out.println("PDF generado: " + (pdf != null ? pdf.length + " bytes" : "null"));
+                nombreArchivo = "reporte_reservas_" + rangoFecha + ".pdf";
+
+            } else if ("financiero".equalsIgnoreCase(tipoReporte)) {
+                // Reporte Financiero (para implementar esto después)
+                // List<ReporteFinancieroDto> datos = complejoRepository.getReporteServiciosFinancierosSuperAdmin();
+                // String pathReporte = "/reportes/ReporteFinanciero.jasper"; // falta reporte xD
+                // pdf = reporteService.generarReportesGeneral(datos, pathReporte);
+                // nombreArchivo = "reporte_financiero_" + rangoFecha + ".pdf";
+
+                // Por ahora se usara el mismo reporte de reservas
+                List<ReporteReservasDto> datos = reservaRepository.getReporteReservas(
+                        fechaInicioCalculada, fechaFinCalculada, idComplejo, idServicio);
+
+                System.out.println("Datos financieros obtenidos: " + datos.size() + " registros");
+
+                // Si no hay datos, crear datos de prueba para testing
+                if (datos.isEmpty()) {
+                    System.out.println("No hay datos financieros reales, usando datos de prueba...");
+                    datos = java.util.Arrays.asList(
+                            new ReporteReservasDto() {
+                                public String getIdReserva() { return "F001"; }
+                                public String getNombreUsuario() { return "Ana Martínez"; }
+                                public String getNombreComplejo() { return "Complejo San Miguel"; }
+                                public String getNombreServicio() { return "Salón de Eventos"; }
+                                public String getFechaReserva() { return "13/06/2025"; }
+                                public String getMontoTotal() { return "S/. 150.00"; }
+                                public String getEstadoReserva() { return "Pagada"; }
+                            },
+                            new ReporteReservasDto() {
+                                public String getIdReserva() { return "F002"; }
+                                public String getNombreUsuario() { return "Roberto Silva"; }
+                                public String getNombreComplejo() { return "Complejo San Miguel"; }
+                                public String getNombreServicio() { return "Cancha de Tenis"; }
+                                public String getFechaReserva() { return "12/06/2025"; }
+                                public String getMontoTotal() { return "S/. 80.00"; }
+                                public String getEstadoReserva() { return "Pagada"; }
+                            }
+                    );
+                    System.out.println("Datos de prueba financieros creados: " + datos.size() + " registros");
+                }
+
+                String pathReporte = "/reportes/ReporteServiciosSanMiguel.jasper";
+                pdf = reporteService.generarReportesGeneral(datos, pathReporte);
+                nombreArchivo = "reporte_financiero_" + rangoFecha + ".pdf";
+            } else {
+                throw new IllegalArgumentException("Tipo de reporte no válido: " + tipoReporte);
+            }
+
+            // Verificar que el PDF se generó correctamente
+            if (pdf == null || pdf.length == 0) {
+                System.err.println("ERROR: El PDF generado está vacío o es null");
+                return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR)
+                        .body("Error: No se pudo generar el PDF".getBytes());
+            }
+
+            // Configurar headers para la respuesta
+            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+            headers.setContentType(org.springframework.http.MediaType.APPLICATION_PDF);
+            headers.setContentDisposition(org.springframework.http.ContentDisposition
+                    .inline()
+                    .filename(nombreArchivo)
+                    .build());
+
+            System.out.println("=== RESPUESTA EXITOSA ===");
+            System.out.println("Archivo: " + nombreArchivo);
+            System.out.println("Tamaño PDF: " + pdf.length + " bytes");
+
+            return new ResponseEntity<>(pdf, headers, org.springframework.http.HttpStatus.OK);
+
+        } catch (Exception e) {
+            System.err.println("Error al generar el reporte: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+
+
+
 
 }

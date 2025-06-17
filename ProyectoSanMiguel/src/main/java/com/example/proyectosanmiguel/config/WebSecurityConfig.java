@@ -112,7 +112,7 @@ public class WebSecurityConfig {
 
 
         http.csrf(csrf -> csrf
-                .ignoringRequestMatchers("/ai/**", "/api/**", "/chat", "/ai/chat")
+                .ignoringRequestMatchers("/ai/**", "/api/**", "/chat", "/ai/chat","/superadmin/reportes/generarpdf")
         );
 
         http.authorizeHttpRequests(authz -> authz
