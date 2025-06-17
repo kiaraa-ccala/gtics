@@ -19,7 +19,6 @@ INSERT INTO complejodeportivo (idComplejoDeportivo, nombre, direccion, idSector,
 (9, 'Campo Deportivo Pando Norte', 'Calle Pando Norte 300', 3, '999999999', -1234575, -7654329),
 (10, 'Skatepark San Miguel', 'Av. Bertolotto 1200', 1, '999999999', -1234576, -7654330);
 
-select * from complejodeportivo;
 INSERT INTO servicio (idServicio, nombre) VALUES
 (1, 'Cancha de Grass'),
 (2, 'Cancha de Losa'),

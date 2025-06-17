@@ -1,0 +1,154 @@
+-- Sectores del distrito
+INSERT INTO sector (idSector, nombre) VALUES
+(1, 'Costanera'),
+(2, 'La Paz'),
+(3, 'Pando'),
+(4, 'Maranga'),
+(5, 'La Arboleda'),
+(6, 'Otro distrito');
+
+-- Complejos deportivos en el distrito
+INSERT INTO complejodeportivo (idComplejoDeportivo, nombre, direccion, idSector, numeroSoporte, latitud, longitud) VALUES
+(1, 'Polideportivo Maranga', 'Av. La Marina 2200', 4, '999999999', -1234567, -7654321),
+(2, 'Parque Juan Pablo II', 'Av. Costanera 450', 1, '999999999', -1234568, -7654322),
+(3, 'Complejo Deportivo Pando', 'Av. Universitaria 1800', 3, '999999999', -1234569, -7654323),
+(4, 'Parque Media Luna', 'Calle Media Luna 150', 2, '999999999', -1234570, -7654324),
+(5, 'Complejo Deportivo Arboleda', 'Av. Brígida Silva 600', 5, '999999999', -1234571, -7654325),
+(6, 'Cancha Deportiva Costanera', 'Av. Costanera 600', 1, '999999999', -1234572, -7654326),
+(7, 'Gimnasio Municipal', 'Jr. Federico Blume 150', 2, '999999999', -1234573, -7654327),
+(8, 'Polideportivo La Paz', 'Jr. La Paz 400', 2, '999999999', -1234574, -7654328),
+(9, 'Campo Deportivo Pando Norte', 'Calle Pando Norte 300', 3, '999999999', -1234575, -7654329),
+(10, 'Skatepark San Miguel', 'Av. Bertolotto 1200', 1, '999999999', -1234576, -7654330);
+
+-- Indexacion de servicios deportivos
+INSERT INTO servicio (idServicio, nombre) VALUES
+(1, 'Cancha de Grass'),
+(2, 'Cancha de Losa'),
+(3, 'Gimnasio'),
+(4, 'Piscina'),
+(5, 'Pista de Atletismo');
+
+-- Asociacion de servicios deportivos con sus respectivos complejos deportivos
+INSERT INTO instanciaservicio (idInstanciaServicio, idServicio, idComplejoDeportivo, nombre, capacidadMaxima, modoAcceso) VALUES
+(1, 3, 1, 'Gimnasio Principal', '30', 'Libre'),
+(2, 4, 1, 'Piscina Principal', '30', 'Libre'),
+(3, 2, 1, 'Cancha de Losa A', '20', 'Libre'),
+(4, 2, 1, 'Cancha de Losa B', '20', 'Libre'),
+(5, 5, 2, 'Pista de Atletismo Principal', '30', 'Libre'),
+(6, 1, 2, 'Cancha de Grass A', '20', 'Libre'),
+(7, 1, 2, 'Cancha de Grass B', '20', 'Libre'),
+(8, 1, 3, 'Cancha de Grass A', '20', 'Libre'),
+(9, 1, 3, 'Cancha de Grass B', '20', 'Libre'),
+(10, 2, 3, 'Cancha de Losa A', '20', 'Libre'),
+(11, 2, 3, 'Cancha de Losa B', '20', 'Libre'),
+(12, 2, 4, 'Cancha de Losa A', '20', 'Libre'),
+(13, 2, 4, 'Cancha de Losa B', '20', 'Libre'),
+(14, 5, 4, 'Pista de Atletismo Principal', '30', 'Libre'),
+(15, 1, 5, 'Cancha de Grass A', '20', 'Libre'),
+(16, 1, 5, 'Cancha de Grass B', '20', 'Libre'),
+(17, 1, 6, 'Cancha de Grass A', '20', 'Libre'),
+(18, 1, 6, 'Cancha de Grass B', '20', 'Libre'),
+(19, 3, 7, 'Gimnasio Principal', '30', 'Libre'),
+(20, 3, 8, 'Gimnasio Principal', '30', 'Libre'),
+(21, 4, 8, 'Piscina Principal', '30', 'Libre'),
+(22, 2, 8, 'Cancha de Losa A', '20', 'Libre'),
+(23, 2, 8, 'Cancha de Losa B', '20', 'Libre'),
+(24, 1, 9, 'Cancha de Grass A', '20', 'Libre'),
+(25, 1, 9, 'Cancha de Grass B', '20', 'Libre'),
+(26, 2, 9, 'Cancha de Losa A', '20', 'Libre'),
+(27, 2, 9, 'Cancha de Losa B', '20', 'Libre'),
+(28, 5, 10, 'Pista de Atletismo Principal', '30', 'Libre');
+
+-- Tarifario por tipo de servicio de acuerdo a horario para los distintos servicios 
+
+-- Cancha de Grass (idServicio = 1)
+INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
+(1, 1, 'Uso libre', 'Lunes', '08:00:00', '14:00:00', 20),
+(2, 1, 'Uso libre', 'Lunes', '14:00:00', '20:00:00', 30),
+(3, 1, 'Uso libre', 'Martes', '08:00:00', '14:00:00', 20),
+(4, 1, 'Uso libre', 'Martes', '14:00:00', '20:00:00', 30),
+(5, 1, 'Uso libre', 'Miércoles', '08:00:00', '14:00:00', 20),
+(6, 1, 'Uso libre', 'Miércoles', '14:00:00', '20:00:00', 30),
+(7, 1, 'Uso libre', 'Jueves', '08:00:00', '14:00:00', 20),
+(8, 1, 'Uso libre', 'Jueves', '14:00:00', '20:00:00', 30),
+(9, 1, 'Uso libre', 'Viernes', '08:00:00', '14:00:00', 20),
+(10, 1, 'Uso libre', 'Viernes', '14:00:00', '20:00:00', 30),
+(11, 1, 'Uso libre', 'Sábado', '08:00:00', '14:00:00', 20),
+(12, 1, 'Uso libre', 'Sábado', '14:00:00', '20:00:00', 30),
+(13, 1, 'Uso libre', 'Domingo', '08:00:00', '14:00:00', 20),
+(14, 1, 'Uso libre', 'Domingo', '14:00:00', '20:00:00', 30);
+
+-- Cancha de Losa (idServicio = 2)
+INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
+(15, 2, 'Uso libre', 'Lunes', '08:00:00', '14:00:00', 15),
+(16, 2, 'Uso libre', 'Lunes', '14:00:00', '20:00:00', 25),
+(17, 2, 'Uso libre', 'Martes', '08:00:00', '14:00:00', 15),
+(18, 2, 'Uso libre', 'Martes', '14:00:00', '20:00:00', 25),
+(19, 2, 'Uso libre', 'Miércoles', '08:00:00', '14:00:00', 15),
+(20, 2, 'Uso libre', 'Miércoles', '14:00:00', '20:00:00', 25),
+(21, 2, 'Uso libre', 'Jueves', '08:00:00', '14:00:00', 15),
+(22, 2, 'Uso libre', 'Jueves', '14:00:00', '20:00:00', 25),
+(23, 2, 'Uso libre', 'Viernes', '08:00:00', '14:00:00', 15),
+(24, 2, 'Uso libre', 'Viernes', '14:00:00', '20:00:00', 25),
+(25, 2, 'Uso libre', 'Sábado', '08:00:00', '14:00:00', 15),
+(26, 2, 'Uso libre', 'Sábado', '14:00:00', '20:00:00', 25),
+(27, 2, 'Uso libre', 'Domingo', '08:00:00', '14:00:00', 15),
+(28, 2, 'Uso libre', 'Domingo', '14:00:00', '20:00:00', 25);
+
+-- Gimnasio (idServicio = 3)
+INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
+(29, 3, 'Uso libre', 'Lunes', '08:00:00', '14:00:00', 10),
+(30, 3, 'Uso libre', 'Lunes', '14:00:00', '20:00:00', 15),
+(31, 3, 'Uso libre', 'Martes', '08:00:00', '14:00:00', 10),
+(32, 3, 'Uso libre', 'Martes', '14:00:00', '20:00:00', 15),
+(33, 3, 'Uso libre', 'Miércoles', '08:00:00', '14:00:00', 10),
+(34, 3, 'Uso libre', 'Miércoles', '14:00:00', '20:00:00', 15),
+(35, 3, 'Uso libre', 'Jueves', '08:00:00', '14:00:00', 10),
+(36, 3, 'Uso libre', 'Jueves', '14:00:00', '20:00:00', 15),
+(37, 3, 'Uso libre', 'Viernes', '08:00:00', '14:00:00', 10),
+(38, 3, 'Uso libre', 'Viernes', '14:00:00', '20:00:00', 15),
+(39, 3, 'Uso libre', 'Sábado', '08:00:00', '14:00:00', 10),
+(40, 3, 'Uso libre', 'Sábado', '14:00:00', '20:00:00', 15),
+(41, 3, 'Uso libre', 'Domingo', '08:00:00', '14:00:00', 10),
+(42, 3, 'Uso libre', 'Domingo', '14:00:00', '20:00:00', 15);
+
+-- Piscina (idServicio = 4)
+INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
+(43, 4, 'Uso libre', 'Lunes', '08:00:00', '14:00:00', 8),
+(44, 4, 'Uso libre', 'Lunes', '14:00:00', '20:00:00', 12),
+(45, 4, 'Uso libre', 'Martes', '08:00:00', '14:00:00', 8),
+(46, 4, 'Uso libre', 'Martes', '14:00:00', '20:00:00', 12),
+(47, 4, 'Uso libre', 'Miércoles', '08:00:00', '14:00:00', 8),
+(48, 4, 'Uso libre', 'Miércoles', '14:00:00', '20:00:00', 12),
+(49, 4, 'Uso libre', 'Jueves', '08:00:00', '14:00:00', 8),
+(50, 4, 'Uso libre', 'Jueves', '14:00:00', '20:00:00', 12),
+(51, 4, 'Uso libre', 'Viernes', '08:00:00', '14:00:00', 8),
+(52, 4, 'Uso libre', 'Viernes', '14:00:00', '20:00:00', 12),
+(53, 4, 'Uso libre', 'Sábado', '08:00:00', '14:00:00', 8),
+(54, 4, 'Uso libre', 'Sábado', '14:00:00', '20:00:00', 12),
+(55, 4, 'Uso libre', 'Domingo', '08:00:00', '14:00:00', 8),
+(56, 4, 'Uso libre', 'Domingo', '14:00:00', '20:00:00', 12);
+
+-- Pista de Atletismo (idServicio = 5)
+INSERT INTO tarifa (idTarifa, idServicio, tipoServicio, diaSemana, horaInicio, horaFin, monto) VALUES
+(57, 5, 'Uso libre', 'Lunes', '08:00:00', '14:00:00', 5),
+(58, 5, 'Uso libre', 'Lunes', '14:00:00', '20:00:00', 8),
+(59, 5, 'Uso libre', 'Martes', '08:00:00', '14:00:00', 5),
+(60, 5, 'Uso libre', 'Martes', '14:00:00', '20:00:00', 8),
+(61, 5, 'Uso libre', 'Miércoles', '08:00:00', '14:00:00', 5),
+(62, 5, 'Uso libre', 'Miércoles', '14:00:00', '20:00:00', 8),
+(63, 5, 'Uso libre', 'Jueves', '08:00:00', '14:00:00', 5),
+(64, 5, 'Uso libre', 'Jueves', '14:00:00', '20:00:00', 8),
+(65, 5, 'Uso libre', 'Viernes', '08:00:00', '14:00:00', 5),
+(66, 5, 'Uso libre', 'Viernes', '14:00:00', '20:00:00', 8),
+(67, 5, 'Uso libre', 'Sábado', '08:00:00', '14:00:00', 5),
+(68, 5, 'Uso libre', 'Sábado', '14:00:00', '20:00:00', 8),
+(69, 5, 'Uso libre', 'Domingo', '08:00:00', '14:00:00', 5),
+(70, 5, 'Uso libre', 'Domingo', '14:00:00', '20:00:00', 8);
+
+INSERT INTO descuento (idDescuento, codigo, tipoDescuento, valor, fechaInicio, fechaFinal, idServicio) VALUES
+(1, 'VERANO2025', 'Porcentaje', 10, '2025-01-01', '2025-03-31', 4),
+(2, 'NUEVOUSUARIO', 'Porcentaje', 5, '2025-01-01', '2025-12-31', 3),
+(3, 'DEPORTE10', 'Porcentaje', 10, '2025-01-01', '2025-12-31', 1),
+(4, 'PISTALIBRE', 'Porcentaje', 15, '2025-01-01', '2025-06-30', 5),
+(5, 'FINSEMANA', 'Porcentaje', 20, '2025-01-01', '2025-12-31', 2);

@@ -1,0 +1,78 @@
+
+====================================
+SISTEMA DE RESERVA DEPORTIVA - SAN MIGUEL
+====================================
+
+SECTORES DEL DISTRITO
+- Costanera
+- La Paz
+- Pando
+- Maranga
+- La Arboleda
+- Otro distrito
+
+COMPLEJOS DEPORTIVOS (Nombre - Dirección - Sector)
+1. Polideportivo Maranga - Av. La Marina 2200 - Maranga
+2. Parque Juan Pablo II - Av. Costanera 450 - Costanera
+3. Complejo Deportivo Pando - Av. Universitaria 1800 - Pando
+4. Parque Media Luna - Calle Media Luna 150 - La Paz
+5. Complejo Deportivo Arboleda - Av. Brígida Silva 600 - La Arboleda
+6. Cancha Deportiva Costanera - Av. Costanera 600 - Costanera
+7. Gimnasio Municipal - Jr. Federico Blume 150 - La Paz
+8. Polideportivo La Paz - Jr. La Paz 400 - La Paz
+9. Campo Deportivo Pando Norte - Calle Pando Norte 300 - Pando
+10. Skatepark San Miguel - Av. Bertolotto 1200 - Costanera
+
+TIPOS DE SERVICIO
+- Cancha de Grass
+- Cancha de Losa
+- Gimnasio
+- Piscina
+- Pista de Atletismo
+
+INSTANCIAS DE SERVICIOS 
+1. Gimnasio Principal - Polideportivo Maranga - Capacidad: 30 - Acceso: Libre
+2. Piscina Principal - Polideportivo Maranga - Capacidad: 30 - Acceso: Libre
+3. Cancha de Losa A - Polideportivo Maranga - Capacidad: 20 - Acceso: Libre
+4. Cancha de Losa B - Polideportivo Maranga - Capacidad: 20 - Acceso: Libre
+5. Pista de Atletismo Principal - Parque Juan Pablo II - Capacidad: 30 - Acceso: Libre
+6. Cancha de Grass A - Parque Juan Pablo II - Capacidad: 20 - Acceso: Libre
+7. Cancha de Grass B - Parque Juan Pablo II - Capacidad: 20 - Acceso: Libre
+8. Cancha de Grass A - Complejo Deportivo Pando - Capacidad: 20 - Acceso: Libre
+9. Cancha de Grass B - Complejo Deportivo Pando - Capacidad: 20 - Acceso: Libre
+10. Cancha de Losa A - Complejo Deportivo Pando - Capacidad: 20 - Acceso: Libre
+11. Cancha de Losa B - Complejo Deportivo Pando - Capacidad: 20 - Acceso: Libre
+12. Cancha de Losa A - Parque Media Luna - Capacidad: 20 - Acceso: Libre
+13. Cancha de Losa B - Parque Media Luna - Capacidad: 20 - Acceso: Libre
+14. Pista de Atletismo Principal - Parque Media Luna - Capacidad: 30 - Acceso: Libre
+15. Cancha de Grass A - Complejo Deportivo Arboleda - Capacidad: 20 - Acceso: Libre
+16. Cancha de Grass B - Complejo Deportivo Arboleda - Capacidad: 20 - Acceso: Libre
+17. Cancha de Grass A - Cancha Deportiva Costanera - Capacidad: 20 - Acceso: Libre
+18. Cancha de Grass B - Cancha Deportiva Costanera - Capacidad: 20 - Acceso: Libre
+19. Gimnasio Principal - Gimnasio Municipal - Capacidad: 30 - Acceso: Libre
+20. Gimnasio Principal - Polideportivo La Paz - Capacidad: 30 - Acceso: Libre
+21. Piscina Principal - Polideportivo La Paz - Capacidad: 30 - Acceso: Libre
+22. Cancha de Losa A - Polideportivo La Paz - Capacidad: 20 - Acceso: Libre
+23. Cancha de Losa B - Polideportivo La Paz - Capacidad: 20 - Acceso: Libre
+24. Cancha de Grass A - Campo Deportivo Pando Norte - Capacidad: 20 - Acceso: Libre
+25. Cancha de Grass B - Campo Deportivo Pando Norte - Capacidad: 20 - Acceso: Libre
+26. Cancha de Losa A - Campo Deportivo Pando Norte - Capacidad: 20 - Acceso: Libre
+27. Cancha de Losa B - Campo Deportivo Pando Norte - Capacidad: 20 - Acceso: Libre
+28. Pista de Atletismo Principal - Skatepark San Miguel - Capacidad: 30 - Acceso: Libre
+
+TARIFAS DE USO (por servicio, tramo horario)
+
+- Cancha de Grass: S/20 (mañana) - S/30 (tarde)
+- Cancha de Losa: S/15 - S/25
+- Gimnasio: S/10 - S/15
+- Piscina: S/8 - S/12
+- Pista de Atletismo: S/5 - S/8
+
+DESCUENTOS ACTIVOS
+- VERANO2025: 10% Piscina (enero-marzo)
+- NUEVOUSUARIO: 5% Gimnasio (todo el año)
+- DEPORTE10: 10% Grass sintético
+- PISTALIBRE: 15% Pista de atletismo (hasta junio)
+- FINSEMANA: 20% Losa (todo el año)
+
+- Dueño del chatbot: Municipalidad de San Miguel

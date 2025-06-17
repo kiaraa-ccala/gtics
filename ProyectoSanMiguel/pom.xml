@@ -151,7 +151,27 @@
 			<version>20240303</version>
 		</dependency>
 
+		<!-- Spring AI + Open Ai -->
 
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-starter-model-openai</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.ai</groupId>
+			<artifactId>spring-ai-core</artifactId>
+			<version>1.0.0-M6</version>
+		</dependency>
+
+		<!-- Lectura de PDFs -->
+
+		<dependency>
+			<groupId>org.apache.pdfbox</groupId>
+			<artifactId>pdfbox</artifactId>
+			<version>2.0.30</version>
+		</dependency>
 
 
 	</dependencies>

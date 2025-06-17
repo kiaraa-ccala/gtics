@@ -108,20 +108,20 @@ public class WebSecurityConfig {
 
                             request.getSession().setAttribute("error", "Credenciales incorrectas o usuario no válido");
                             response.sendRedirect("/inicio");
-                        })
+                        })                );
 
 
-                );
+        http.csrf(csrf -> csrf
+                .ignoringRequestMatchers("/ai/**", "/api/**", "/chat", "/ai/chat")
+        );
 
         http.authorizeHttpRequests(authz -> authz
+                .requestMatchers("/ai/**", "/ai/chat", "/api/**", "/inicio", "/", "/css/**", "/js/**", "/images/**").permitAll()
                 .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("Superadministrador")
                 .requestMatchers("/admin", "/admin/**").hasAnyAuthority("Administrador")
                 .requestMatchers("/coord", "/coord/**").hasAnyAuthority("Coordinador")
                 .requestMatchers("/vecino", "/vecino/**").hasAnyAuthority("Vecino")
-                .requestMatchers("/api/dni/**").permitAll()
                 .anyRequest().permitAll());
-
-
 
         http.logout(logout -> logout
                 .logoutUrl("/salir")
@@ -130,8 +130,10 @@ public class WebSecurityConfig {
                 .invalidateHttpSession(true)
                 .permitAll()
         );
+
         http.exceptionHandling(exception -> exception
                 .accessDeniedHandler((request, response, accessDeniedException) -> {
+                    
                     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
                     if (auth == null || !auth.isAuthenticated() || auth.getPrincipal().equals("anonymousUser")) {
