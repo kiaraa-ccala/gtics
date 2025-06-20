@@ -42,7 +42,7 @@ public class ReporteService {
             return null;
         }
     }
-    public byte[] generarReportesGeneral(List<?> datos, String PathReporte) {
+    public byte[] generarReportesGeneral(List<?> datos, String PathReporte, Map<String, Object> parametrosPersonalizados) {
         try {
             System.out.println("=== INICIANDO GENERACIÓN DE REPORTE ===");
             System.out.println("Path del reporte: " + PathReporte);
@@ -93,6 +93,11 @@ public class ReporteService {
                 System.out.println("Forma2 cargada exitosamente");
             } else {
                 System.err.println("WARNING: No se pudo cargar forma2");
+            }
+
+            // Agregar los parámetros personalizados (nombre, cargo, etc.)
+            if (parametrosPersonalizados != null) {
+                parametros.putAll(parametrosPersonalizados);
             }
 
             // Cargar datos del reporte

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
 import java.util.*;
@@ -414,7 +415,8 @@ public class SuperAdminController {
                                                  @RequestParam(value = "fechaInicio", required = false) String fechaInicio,
                                                  @RequestParam(value = "fechaFin", required = false) String fechaFin,
                                                  @RequestParam(value = "instalaciones", required = false) Integer idComplejo,
-                                                 @RequestParam(value = "filtros", required = false) Map<String, String> filtros) {
+                                                 @RequestParam(value = "filtros", required = false) Map<String, String> filtros,
+                                                 Principal principal) {
         System.out.println("=== SE LLAMÓ A GENERAR REPORTE ===");
         System.out.println("Tipo de reporte: " + tipoReporte);
         System.out.println("Rango de fecha: " + rangoFecha);
@@ -427,13 +429,18 @@ public class SuperAdminController {
         System.out.println("ID de complejo: " + idComplejo);
         System.out.println("Filtros: " + filtros);
         try {
-            System.out.println("=== GENERANDO REPORTE ===");
-            System.out.println("Tipo: " + tipoReporte);
-            System.out.println("Rango: " + rangoFecha);
-            System.out.println("Fecha inicio: " + fechaInicio);
-            System.out.println("Fecha fin: " + fechaFin);
-            System.out.println("ID Complejo: " + idComplejo);
-            System.out.println("Filtros: " + filtros);
+            // Obtener el usuario autenticado
+            String correo = principal.getName();
+            Optional<Usuario> usuarioOpt = usuarioRepository.findByCredencial_Correo(correo);
+            String nombre = "";
+            String cargo = "Gestor-DTI (SuperAdmin)";
+            if (usuarioOpt.isPresent()) {
+                Usuario usuario = usuarioOpt.get();
+                nombre = usuario.getNombre() + " " + usuario.getApellido();
+                // cargo fijo para SuperAdmin
+            }
+            System.out.println("Usuario autenticado: " + nombre + " - " + cargo);
+
             // Calcular fechas según el rango seleccionado
             LocalDate fechaInicioCalculada = null;
             LocalDate fechaFinCalculada = null;
@@ -475,13 +482,40 @@ public class SuperAdminController {
             // Obtener datos y generar PDF según el tipo de reporte
             byte[] pdf = null;
             String nombreArchivo = "";
+            Map<String, Object> parametrosReporte = new HashMap<>();
+            parametrosReporte.put("nombre", nombre);
+            parametrosReporte.put("cargo", cargo);
+            // ...puedes agregar más parámetros si tu servicio lo requiere...
 
             if ("reservas".equalsIgnoreCase(tipoReporte)) {
                 // Reporte de Reservas
-                List<ReporteReservasDto> datos = reservaRepository.getReporteReservas(
+                List<ReporteReservasDto> datosOriginales = reservaRepository.getReporteReservas(
                         fechaInicioCalculada, fechaFinCalculada, idComplejo, idServicio);
 
-                System.out.println("Datos obtenidos: " + datos.size() + " registros");
+                System.out.println("Datos obtenidos: " + datosOriginales.size() + " registros");
+
+                // Mapear idReserva a solo el número correlativo
+                List<ReporteReservasDto> datos = new ArrayList<>();
+                int folio = 1;
+                for (ReporteReservasDto d : datosOriginales) {
+                    final String folioStr = String.valueOf(folio);
+                    final String nombreUsuario = d.getNombreUsuario();
+                    final String nombreComplejo = d.getNombreComplejo();
+                    final String nombreServicio = d.getNombreServicio();
+                    final String fechaReserva = d.getFechaReserva();
+                    final String montoTotal = d.getMontoTotal();
+                    final String estadoReserva = d.getEstadoReserva();
+                    datos.add(new ReporteReservasDto() {
+                        public String getIdReserva() { return folioStr; }
+                        public String getNombreUsuario() { return nombreUsuario; }
+                        public String getNombreComplejo() { return nombreComplejo; }
+                        public String getNombreServicio() { return nombreServicio; }
+                        public String getFechaReserva() { return fechaReserva; }
+                        public String getMontoTotal() { return montoTotal; }
+                        public String getEstadoReserva() { return estadoReserva; }
+                    });
+                    folio++;
+                }
 
                 // Si no hay datos, crear datos de prueba para testing
                 if (datos.isEmpty()) {
@@ -519,8 +553,7 @@ public class SuperAdminController {
                 }
 
                 String pathReporte = "/reportes/ReporteServiciosSanMiguel.jasper";
-                pdf = reporteService.generarReportesGeneral(datos, pathReporte);
-                System.out.println("PDF generado: " + (pdf != null ? pdf.length + " bytes" : "null"));
+                pdf = reporteService.generarReportesGeneral(datos, pathReporte, parametrosReporte);
                 nombreArchivo = "reporte_reservas_" + rangoFecha + ".pdf";
 
             } else if ("financiero".equalsIgnoreCase(tipoReporte)) {
@@ -541,7 +574,7 @@ public class SuperAdminController {
                     System.out.println("No hay datos financieros reales, usando datos de prueba...");
                     datos = java.util.Arrays.asList(
                             new ReporteReservasDto() {
-                                public String getIdReserva() { return "F001"; }
+                                public String getIdReserva() { return "#F001"; }
                                 public String getNombreUsuario() { return "Ana Martínez"; }
                                 public String getNombreComplejo() { return "Complejo San Miguel"; }
                                 public String getNombreServicio() { return "Salón de Eventos"; }
@@ -550,7 +583,7 @@ public class SuperAdminController {
                                 public String getEstadoReserva() { return "Pagada"; }
                             },
                             new ReporteReservasDto() {
-                                public String getIdReserva() { return "F002"; }
+                                public String getIdReserva() { return "#F002"; }
                                 public String getNombreUsuario() { return "Roberto Silva"; }
                                 public String getNombreComplejo() { return "Complejo San Miguel"; }
                                 public String getNombreServicio() { return "Cancha de Tenis"; }
@@ -563,7 +596,7 @@ public class SuperAdminController {
                 }
 
                 String pathReporte = "/reportes/ReporteServiciosSanMiguel.jasper";
-                pdf = reporteService.generarReportesGeneral(datos, pathReporte);
+                pdf = reporteService.generarReportesGeneral(datos, pathReporte, parametrosReporte);
                 nombreArchivo = "reporte_financiero_" + rangoFecha + ".pdf";
             } else {
                 throw new IllegalArgumentException("Tipo de reporte no válido: " + tipoReporte);

@@ -2,6 +2,7 @@
 <jasperReport name="Coffee" language="java" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="ced95029-b569-4027-895c-af2843a4e088">
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
 	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="net.sf.jasperreports.report.locale" value="es_PE"/>
 	<style name="Title" fontName="Times New Roman" fontSize="50.0" bold="true"/>
 	<style name="SubTitle" forecolor="#736343" fontName="SansSerif" fontSize="18.0"/>
 	<style name="Column header" forecolor="#666666" fontName="SansSerif" fontSize="12.0" bold="true"/>
@@ -15,6 +16,8 @@
 	<parameter name="forma1" class="java.io.InputStream"/>
 	<parameter name="forma2" class="java.io.InputStream"/>
 	<parameter name="watermark" class="java.io.InputStream"/>
+	<parameter name="nombre" class="java.lang.String"/>
+	<parameter name="cargo" class="java.lang.String"/>
 	<field name="idReserva" class="java.lang.String"/>
 	<field name="nombreUsuario" class="java.lang.String"/>
 	<field name="nombreComplejo" class="java.lang.String"/>
@@ -35,7 +38,7 @@
 		<element kind="staticText" uuid="1a652692-054a-40f3-ade5-68d8da36626d" x="293" y="-20" width="251" height="68" forecolor="#FFFFFF" fontName="SansSerif" bold="true" vTextAlign="Middle" style="Title">
 			<text><![CDATA[Reporte]]></text>
 		</element>
-		<element kind="image" uuid="249d0dc5-9df9-466e-bfce-9c9f018e291d" x="-110" y="-70" width="369" height="155">
+		<element kind="image" uuid="249d0dc5-9df9-466e-bfce-9c9f018e291d" x="-40" y="-70" width="369" height="155">
 			<expression><![CDATA[$P{forma2}]]></expression>
 		</element>
 		<element kind="image" uuid="4edafe60-6f9c-46fd-a8ff-44d959fb3647" x="0" y="0" width="159" height="69">
@@ -46,73 +49,67 @@
 		</element>
 	</title>
 	<pageHeader splitType="Stretch"/>
-	<columnHeader height="25">
-		<element kind="staticText" uuid="f4b55c10-a45a-459a-937c-719f2e68d9c5" x="0" y="0" width="40" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[ID]]></text>
+	<columnHeader height="32">
+		<element kind="staticText" uuid="f4b55c10-a45a-459a-937c-719f2e68d9c5" x="10" y="6" width="79" height="20" hTextAlign="Left" vTextAlign="Middle">
+			<text><![CDATA[Generado por:]]></text>
 		</element>
-		<element kind="staticText" uuid="869ce6d0-927e-42f6-b5c4-42d3705971a6" x="50" y="0" width="80" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[Cliente/Vecino]]></text>
+		<element kind="line" uuid="955662fb-54c5-4c52-a706-761490ea8211" stretchType="NoStretch" x="0" y="30" width="555" height="1" forecolor="#0058AB">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<pen lineWidth="4.0"/>
 		</element>
-		<element kind="staticText" uuid="6884020e-e13c-49d5-9537-d15d069b1337" x="140" y="0" width="80" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[Servicio]]></text>
+		<element kind="textField" uuid="d72e24f4-e675-42ec-b890-788d4b3c9c9d" x="100" y="6" width="248" height="20" vTextAlign="Middle">
+			<expression><![CDATA[$P{nombre}]]></expression>
 		</element>
-		<element kind="staticText" uuid="612a5115-8893-407a-a7e0-1a734d50f20d" x="230" y="0" width="100" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[Complejo]]></text>
-		</element>
-		<element kind="staticText" uuid="dcf72d25-4d0a-46f8-916b-043ceefe591a" x="340" y="0" width="70" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[Fecha]]></text>
-		</element>
-		<element kind="staticText" uuid="2fa281ad-3909-4b6b-b052-35a633f72dbb" x="420" y="0" width="60" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[Pago (S/.)]]></text>
-		</element>
-		<element kind="staticText" uuid="3fed6652-3b3b-45a5-bf6b-385d509be953" x="492" y="0" width="60" height="20" hTextAlign="Center" vTextAlign="Middle">
-			<text><![CDATA[Estado]]></text>
+		<element kind="textField" uuid="e485b43d-9489-4515-a36b-0623a65e1044" x="394" y="6" width="150" height="20" hTextAlign="Center" vTextAlign="Middle">
+			<expression><![CDATA[$P{cargo}]]></expression>
 		</element>
 	</columnHeader>
 	<detail>
 		<band height="106" splitType="Stretch">
-			<element kind="frame" uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766" mode="Opaque" x="0" y="0" width="555" height="15" style="Row"/>
-			<element kind="textField" uuid="d174cc85-a9d6-45f8-ba3c-5dbeafde74bf" x="80" y="20" width="100" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="d174cc85-a9d6-45f8-ba3c-5dbeafde74bf" x="80" y="10" width="100" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{idReserva}]]></expression>
 			</element>
-			<element kind="staticText" uuid="e4959d4d-407c-46b7-8e9a-e2c438383057" x="10" y="20" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
-				<text><![CDATA[ID Reserva:]]></text>
+			<element kind="staticText" uuid="e4959d4d-407c-46b7-8e9a-e2c438383057" x="10" y="10" width="40" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+				<text><![CDATA[N°:]]></text>
 			</element>
-			<element kind="staticText" uuid="13f5a05f-e18f-4310-9c42-fd33d8689447" x="190" y="20" width="80" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="staticText" uuid="13f5a05f-e18f-4310-9c42-fd33d8689447" x="190" y="10" width="90" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
 				<text><![CDATA[Cliente/Vecino:]]></text>
 			</element>
-			<element kind="textField" uuid="58de395a-a4fb-4856-b6f4-5b2b7d6d9342" x="280" y="20" width="264" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="58de395a-a4fb-4856-b6f4-5b2b7d6d9342" x="293" y="10" width="264" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{nombreUsuario}]]></expression>
 			</element>
-			<element kind="staticText" uuid="56ebc92b-966b-4744-8624-1a8b4113219a" x="10" y="50" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="staticText" uuid="56ebc92b-966b-4744-8624-1a8b4113219a" x="10" y="40" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
 				<text><![CDATA[Complejo:]]></text>
 			</element>
-			<element kind="textField" uuid="a8c9bb88-d258-4279-abfd-2de856c91495" x="80" y="50" width="250" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="a8c9bb88-d258-4279-abfd-2de856c91495" x="80" y="40" width="250" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{nombreComplejo}]]></expression>
 			</element>
-			<element kind="staticText" uuid="5c888621-0d9a-4f76-a0ee-9d1eb19f2181" x="340" y="50" width="46" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="staticText" uuid="5c888621-0d9a-4f76-a0ee-9d1eb19f2181" x="340" y="40" width="46" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
 				<text><![CDATA[Servicio:]]></text>
 			</element>
-			<element kind="textField" uuid="ba378c4f-1c0d-4547-9bc7-cc0f3660b5a7" x="394" y="50" width="150" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="ba378c4f-1c0d-4547-9bc7-cc0f3660b5a7" x="394" y="40" width="150" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{nombreServicio}]]></expression>
 			</element>
-			<element kind="staticText" uuid="0573403d-4f94-4031-9d4f-8e8e7a78cd88" x="10" y="80" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="staticText" uuid="0573403d-4f94-4031-9d4f-8e8e7a78cd88" x="10" y="70" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
 				<text><![CDATA[Fecha:]]></text>
 			</element>
-			<element kind="textField" uuid="c8eb561f-db0d-40e8-8600-3cdccb6b226c" x="80" y="80" width="100" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="c8eb561f-db0d-40e8-8600-3cdccb6b226c" x="80" y="70" width="100" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{fechaReserva}]]></expression>
 			</element>
-			<element kind="staticText" uuid="3d6a45c1-6318-4540-8448-0688d6e30d16" x="190" y="80" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="staticText" uuid="3d6a45c1-6318-4540-8448-0688d6e30d16" x="190" y="70" width="60" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
 				<text><![CDATA[Pago (S/.):]]></text>
 			</element>
-			<element kind="textField" uuid="326a63c9-c8f2-459a-9095-5f9cba6f9985" x="259" y="80" width="100" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="326a63c9-c8f2-459a-9095-5f9cba6f9985" x="259" y="70" width="100" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{montoTotal}]]></expression>
 			</element>
-			<element kind="staticText" uuid="4f282950-0688-47e1-9026-e24f7e33da62" x="368" y="80" width="52" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
+			<element kind="staticText" uuid="4f282950-0688-47e1-9026-e24f7e33da62" x="368" y="70" width="52" height="20" bold="true" hTextAlign="Left" vTextAlign="Middle">
 				<text><![CDATA[Estado:]]></text>
 			</element>
-			<element kind="textField" uuid="c2d6dc0b-54bd-4907-ba2a-d8436e6f01bd" x="432" y="80" width="112" height="20" vTextAlign="Middle">
+			<element kind="textField" uuid="c2d6dc0b-54bd-4907-ba2a-d8436e6f01bd" x="432" y="70" width="112" height="20" vTextAlign="Middle">
 				<expression><![CDATA[$F{estadoReserva}]]></expression>
+			</element>
+			<element kind="line" uuid="dbafd027-cac5-4839-973f-b8d732c04430" x="0" y="100" width="552" height="1" forecolor="#696969">
+				<pen lineStyle="Dashed"/>
 			</element>
 		</band>
 	</detail>

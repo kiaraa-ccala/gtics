@@ -16,6 +16,13 @@
 
 <div class="pc-container" style="background: #e0f6ff">
   <div class="pc-content">
+    <!-- ALERTA GLOBAL -->
+    <div id="alertaGlobalFixed" style="position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; min-width: 300px; max-width: 600px; display: none;"></div>
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.71c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1-2.002 0 1 1 0 0 1 2.002 0z"/>
+      </symbol>
+    </svg>
     <!-- [ breadcrumb ] start -->
     <div class="page-header">
       <div class="page-block">
@@ -216,6 +223,28 @@
   main_layout_change('vertical');
 </script>
 
+<!-- ALERTA GLOBAL -->
+<script>
+  function mostrarAlertaGlobal(mensaje, tipo = 'warning') {
+    const contenedor = document.getElementById('alertaGlobalFixed');
+    if (!contenedor) return;
+    contenedor.innerHTML = `
+      <div class="alert alert-${tipo} d-flex align-items-center alert-dismissible fade show shadow-lg" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <div>${mensaje}</div>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert" aria-label="Cerrar"></button>
+      </div>
+    `;
+    contenedor.style.display = 'block';
+    setTimeout(() => {
+      if(contenedor) {
+        contenedor.style.display = 'none';
+        contenedor.innerHTML = '';
+      }
+    }, 6000);
+  }
+</script>
+
 <!-- Custom JavaScript -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
@@ -242,6 +271,28 @@
     const fechasPersonalizadas = document.getElementById('fechasPersonalizadas');
     const periodoSeleccionado = document.getElementById('periodoSeleccionado');
     const rangoFechaHidden = document.getElementById('rangoFechaHidden');
+    const fechaInicioInput = document.getElementById('fechaInicio');
+    const fechaFinInput = document.getElementById('fechaFin');
+
+    // Validaciones de fecha en tiempo real
+    fechaInicioInput.addEventListener('change', function() {
+      if (this.value) {
+        fechaFinInput.min = this.value;
+      }
+      if (fechaFinInput.value && new Date(fechaFinInput.value) < new Date(this.value)) {
+        mostrarAlertaGlobal('La fecha de fin no puede ser anterior a la fecha de inicio.', 'warning');
+        fechaFinInput.value = '';
+        actualizarPeriodoSeleccionado();
+      }
+    });
+
+    fechaFinInput.addEventListener('change', function() {
+      if (fechaInicioInput.value && this.value && new Date(this.value) < new Date(fechaInicioInput.value)) {
+        mostrarAlertaGlobal('La fecha de fin no puede ser anterior a la fecha de inicio.', 'warning');
+        this.value = '';
+        actualizarPeriodoSeleccionado();
+      }
+    });
 
     rangoFechaBtns.forEach(btn => {
       btn.addEventListener('click', function() {
@@ -476,14 +527,14 @@
       // Validar que se haya seleccionado un tipo de reporte
       const tipoReporte = document.querySelector('input[name="tipoReporte"]:checked');
       if (!tipoReporte) {
-        alert('Por favor seleccione un tipo de reporte');
+        mostrarAlertaGlobal('Por favor seleccione un tipo de reporte', 'warning');
         return;
       }
 
       // Validar que se haya seleccionado un rango de fechas
       const rangoFecha = rangoFechaHidden.value;
       if (!rangoFecha) {
-        alert('Por favor seleccione un rango de fechas');
+        mostrarAlertaGlobal('Por favor seleccione un rango de fechas', 'warning');
         return;
       }
 
@@ -492,11 +543,11 @@
         const fechaInicio = document.getElementById('fechaInicio').value;
         const fechaFin = document.getElementById('fechaFin').value;
         if (!fechaInicio || !fechaFin) {
-          alert('Por favor complete las fechas de inicio y fin');
+          mostrarAlertaGlobal('Por favor complete las fechas de inicio y fin', 'warning');
           return;
         }
         if (new Date(fechaInicio) > new Date(fechaFin)) {
-          alert('La fecha de inicio no puede ser mayor que la fecha de fin');
+          mostrarAlertaGlobal('La fecha de inicio no puede ser mayor que la fecha de fin', 'warning');
           return;
         }
       }
@@ -586,11 +637,11 @@
                 window.URL.revokeObjectURL(url);
 
                 // Mostrar mensaje de éxito
-                alert('Reporte generado exitosamente');
+                mostrarAlertaGlobal('Reporte generado exitosamente', 'success');
               })
               .catch(error => {
                 console.error('Error:', error);
-                alert('Error al generar el reporte. Por favor, inténtelo de nuevo.');
+                mostrarAlertaGlobal('Error al generar el reporte. Por favor, inténtelo de nuevo.', 'danger');
               })
               .finally(() => {
                 // Restaurar botón
