@@ -444,8 +444,8 @@
                   </div>
                 </div>
               </div>              <div class="tab-pane" id="ecomtab-3" role="tabpanel" aria-labelledby="ecomtab-tab-3">
-                <form id="formPagoFinal" action="/vecino/guardarPago" method="post" enctype="multipart/form-data">
-                  <input type="hidden" id="idReservaPagoFinal" name="idReserva" th:value="${reservasPendientes[0]?.idReserva}">
+                <form id="formPagoFinal" action="/vecino/procesarPagoConMetodo" method="post" enctype="multipart/form-data">
+                  <input type="hidden" id="idReservaPagoFinal" name="idReserva" th:value="${reservasPendientes != null and !reservasPendientes.isEmpty() ? reservasPendientes[0].idReserva : ''}">
                   <input type="hidden" id="codigoCuponPagoFinal" name="codigoCupon" value="">
                   <input type="hidden" id="metodoPagoInput" name="metodoPago" value="">
                   <input type="file" id="comprobanteFileInput" name="comprobanteFile" style="display: none;">
@@ -1146,7 +1146,9 @@
             idReserva = reservasPendientesData[0].idReserva;
           }
           
-          if (idReservaFinal && idReserva) idReservaFinal.value = idReserva;
+          if (idReservaFinal && idReserva) {
+            idReservaFinal.value = idReserva;
+          }
 
           // Agregar el método de pago al formulario
           let metodoPagoInput = document.getElementById('metodoPagoInput');
@@ -1188,13 +1190,17 @@
           btnProcesarPagoResumen.addEventListener("click", procesarPago);
         }
       });
-    </script><script th:inline="javascript">
+    </script>    <script th:inline="javascript">
       // Variables globales
       let descuentoAplicadoActual = 0;
       let totalOriginal = [[${totalReservas}]] || 0;
       let reservaConDescuento = null;
+      
       // Solo incluir los datos necesarios para evitar referencias circulares
-      let reservasPendientesData = [
+      let reservasPendientesData = [];
+      
+      /*[# th:if="${hayReservasPendientes}"]*/
+      reservasPendientesData = [
         /*[# th:each="reserva : ${reservasPendientes}"]*/
         {
           idReserva: /*[[${reserva.idReserva}]]*/ 0,
@@ -1203,8 +1209,16 @@
         }/*[# th:if="${!reservaStat.last}"]*/,/*[/]*/
         /*[/]*/
       ];
+      /*[/]*/
       
-      document.addEventListener('DOMContentLoaded', function() {        // Configurar eventos para todas las pestañas
+      document.addEventListener('DOMContentLoaded', function() {
+        // Solo configurar eventos si hay reservas pendientes
+        if (!reservasPendientesData || reservasPendientesData.length === 0) {
+          console.log('No hay reservas pendientes, omitiendo configuración de cupones');
+          return;
+        }
+        
+        // Configurar eventos para todas las pestañas
         const btnAplicarCupon = document.getElementById('btnAplicarCupon');
         const btnAplicarCupon2 = document.getElementById('btnAplicarCupon2');
         const btnAplicarCupon3 = document.getElementById('btnAplicarCupon3');
@@ -1216,11 +1230,18 @@
         if (btnAplicarCupon2) {
           btnAplicarCupon2.addEventListener('click', () => aplicarCuponHandler('2'));
         }
-          if (btnAplicarCupon3) {
+        
+        if (btnAplicarCupon3) {
           btnAplicarCupon3.addEventListener('click', () => aplicarCuponHandler('3'));
         }
       });
-        function aplicarCuponHandler(sufijo = '') {
+      function aplicarCuponHandler(sufijo = '') {
+        // Verificar que hay reservas pendientes
+        if (!reservasPendientesData || reservasPendientesData.length === 0) {
+          console.log('No hay reservas pendientes para aplicar cupón');
+          return;
+        }
+        
         const codigoCupon = document.getElementById('inputCupon' + sufijo).value.trim();
         const selectReserva = document.getElementById('selectReserva' + sufijo);
         let idReserva = null;
@@ -1265,7 +1286,7 @@
         btnAplicar.disabled = true;
         btnAplicar.textContent = 'Validando...';
         
-        fetch('/vecino/aplicarDescuento', {
+        fetch('/vecino/public/aplicarDescuento', {
           method: 'POST',
           headers: {'Content-Type': 'application/x-www-form-urlencoded'},
           body: new URLSearchParams({
@@ -1597,6 +1618,9 @@
         cursor: pointer;
       }
     </style>
+
+    <!-- Chat Widget -->
+    <div th:replace="~{fragments/chat_widget :: chat-widget}"></div>
 
   </body>
   <!-- [Body] end -->

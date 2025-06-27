@@ -1,6 +1,5 @@
 package com.example.proyectosanmiguel.controller;
 
-// Java core imports
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -14,8 +13,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
 import java.util.*;
 import java.util.stream.Collectors;
-
-// Spring imports
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -29,8 +26,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-// Project specific imports
 import com.example.proyectosanmiguel.dto.ReservaCostoDto;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
@@ -115,34 +110,28 @@ public class VecinoController {
         model.addAttribute("instanciaServicios", instanciaServicios);
         model.addAttribute("servicios", servicios);
         return "Vecino/vecino_servicios";
-    }    @GetMapping("/pagos")
+    }
+
+    @GetMapping("/pagos")
     public String mostrarPasarelaPago(Model model, @RequestParam(value = "codigoCupon", required = false) String codigoCupon) {
         Usuario usuario = obtenerUsuarioAutenticado();
-
         if (usuario == null) {
             return "redirect:/login";
         }
-
-        // Obtener reservas pendientes de pago - sin dependencias estrictas
         List<Reserva> reservasPendientes = reservaRepository.findByUsuario_IdUsuario(usuario.getIdUsuario())
                 .stream()
                 .filter(r -> r.getEstado() == 0 && r.getInformacionPago() != null
                         && "Pendiente".equalsIgnoreCase(r.getInformacionPago().getEstado()))
                 .toList();
-
-        // Calcular totales - manejar caso sin reservas
         double total = reservasPendientes.stream()
                 .mapToDouble(r -> r.getInformacionPago().getTotal().doubleValue())
                 .sum();
-
         double descuentoAplicado = 0;
         double totalConDescuento = total;
 
-        // Validar cupón solo si hay reservas pendientes y cupón proporcionado
         if (codigoCupon != null && !codigoCupon.isEmpty() && !reservasPendientes.isEmpty()) {
             try {
                 Map<String, Object> descuentoData = validarCupon(codigoCupon, reservasPendientes.get(0).getIdReserva());
-
                 if ((boolean) descuentoData.get("valido")) {
                     descuentoAplicado = (double) descuentoData.get("descuento");
                     totalConDescuento = total - descuentoAplicado;
@@ -154,46 +143,36 @@ public class VecinoController {
                     model.addAttribute("mensajeDescuento", "El cupón no aplica a ninguno de los servicios.");
                 }
             } catch (Exception e) {
-                // Manejar errores de validación de cupón graciosamente
                 model.addAttribute("mensajeDescuento", "Error al validar cupón. Intenta nuevamente.");
             }
         } else if (codigoCupon != null && !codigoCupon.isEmpty() && reservasPendientes.isEmpty()) {
             model.addAttribute("mensajeDescuento", "No hay reservas pendientes para aplicar el cupón.");
         }
-
-        // Obtener credenciales de manera segura
         Credencial credencial = null;
         try {
             credencial = credencialRepository.findByCorreo(usuario.getCredencial().getCorreo());
         } catch (Exception e) {
-            // Crear credencial temporal si hay problemas
             credencial = new Credencial();
             credencial.setCorreo(usuario.getCredencial() != null ? usuario.getCredencial().getCorreo() : "");
         }
-
-        // Agregar atributos al modelo - siempre disponibles
         model.addAttribute("usuario", usuario);
         model.addAttribute("credencial", credencial);
         model.addAttribute("reservasPendientes", reservasPendientes);
         model.addAttribute("totalReservas", totalConDescuento);
         model.addAttribute("hayReservasPendientes", !reservasPendientes.isEmpty());
-
         return "Vecino/vecino_pagos";
     }
 
 
     private Usuario obtenerUsuarioAutenticado() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
         String correo;
         if (principal instanceof UserDetails) {
             correo = ((UserDetails) principal).getUsername();
         } else {
             correo = principal.toString();
         }
-
         System.out.println("Correo autenticado: " + correo);
-
         Credencial credencial = credencialRepository.findByCorreo(correo);
         if (credencial == null) {
             System.out.println("No se encontró credencial para el correo");
@@ -342,10 +321,12 @@ public class VecinoController {
                     
             } else {
                 // Otros métodos de pago: confirmación inmediata
+                System.out.println("DEBUG: ANTES - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado());
+                
                 pago.setEstado("Pagado");
                 reserva.setEstado(1); // 1 = Activo/Pagado
                 
-                System.out.println("DEBUG: Pago digital configurado - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado());
+                System.out.println("DEBUG: DESPUÉS DEL SET - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado());
                 
                 // Configurar tipo de pago
                 if ("tarjeta".equalsIgnoreCase(metodoPago)) {
@@ -359,6 +340,8 @@ public class VecinoController {
                 } else {
                     pago.setTipo("Digital"); // Por defecto para otros métodos
                 }
+                
+                System.out.println("DEBUG: Pago digital configurado - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado() + ", Tipo: " + pago.getTipo());
                 
                 redirectAttributes.addFlashAttribute("mensajeExito", "Pago realizado correctamente. Tu reserva está confirmada.");
             }            // Guardar cambios en la base de datos con logging
@@ -407,7 +390,7 @@ public class VecinoController {
         reserva.setHoraInicio(horaInicio);
         reserva.setHoraFin(horaFin);
         reserva.setFechaHoraRegistro(LocalDateTime.now());
-        reserva.setEstado(0); // 0 = Pendiente
+        reserva.setEstado(0);
 
         String correo = SecurityContextHolder.getContext().getAuthentication().getName();
         Optional<Credencial> optionalCredencial = credencialRepository.findOptionalByCorreo(correo);
@@ -428,7 +411,6 @@ public class VecinoController {
         InstanciaServicio instancia = instanciaOpt.get();
         reserva.setInstanciaServicio(instancia);
 
-        // Buscar la tarifa correspondiente
         Tarifa tarifa = tarifaRepository.findAll().stream()
                 .filter(t -> t.getServicio().getIdServicio().equals(instancia.getServicio().getIdServicio()))
                 .filter(t -> t.getDiaSemana().equalsIgnoreCase(obtenerDia(reserva.getFecha())))
@@ -441,7 +423,6 @@ public class VecinoController {
             return "redirect:/vecino/crearReserva?idInstancia=" + instancia.getIdInstanciaServicio();
         }
 
-        // Crear InformacionPago
         InformacionPago pago = new InformacionPago();
         pago.setFecha(LocalDate.now());
         pago.setHora(LocalTime.now());
@@ -476,17 +457,14 @@ public class VecinoController {
         }
     }
 
-    // Método privado para validar cupones (usado tanto por el endpoint REST como por métodos internos)
     private Map<String, Object> validarCupon(String codigo, Integer idReserva) {
         Map<String, Object> resp = new HashMap<>();
 
         try {
-            // Imprimir los datos recibidos
             System.out.println("=== INICIO VALIDAR CUPON ===");
             System.out.println("Código de cupón recibido: '" + codigo + "'");
             System.out.println("ID de reserva recibido: " + idReserva);
 
-            // Verificar que el parámetro idReserva no sea null
             if (idReserva == null) {
                 resp.put("valido", false);
                 resp.put("mensaje", "El ID de reserva no puede ser nulo.");
@@ -496,8 +474,6 @@ public class VecinoController {
 
             LocalDate hoy = LocalDate.now();
             System.out.println("Fecha actual: " + hoy);
-            
-            // Primero verificar si existe el cupón en general
             System.out.println("Buscando cupón con código: '" + codigo.trim() + "'");
             Optional<Descuento> descSimple = descuentoRepository.findByCodigo(codigo.trim());
             System.out.println("Resultado de búsqueda por código: " + (descSimple.isPresent() ? "ENCONTRADO" : "NO ENCONTRADO"));
@@ -505,13 +481,22 @@ public class VecinoController {
             if (descSimple.isEmpty()) {
                 resp.put("valido", false);
                 resp.put("mensaje", "Código de descuento no existe.");
+                resp.put("codigoBuscado", codigo.trim());
+                resp.put("longitudCodigo", codigo.trim().length());
                 System.out.println("ERROR: Cupón '" + codigo + "' no existe en la base de datos");
+                System.out.println("Código buscado (longitud " + codigo.trim().length() + "): '" + codigo.trim() + "'");
                 
-                // Debug adicional: verificar todos los cupones existentes
                 System.out.println("=== LISTANDO TODOS LOS CUPONES EXISTENTES ===");
+                List<Map<String, Object>> cuponesDB = new ArrayList<>();
                 descuentoRepository.findAll().forEach(d -> {
-                    System.out.println("Cupón DB: '" + d.getCodigo() + "' - Servicio ID: " + d.getServicio().getIdServicio());
+                    Map<String, Object> cuponInfo = new HashMap<>();
+                    cuponInfo.put("codigo", d.getCodigo());
+                    cuponInfo.put("longitud", d.getCodigo().length());
+                    cuponInfo.put("servicioId", d.getServicio().getIdServicio());
+                    cuponesDB.add(cuponInfo);
+                    System.out.println("Cupón DB: '" + d.getCodigo() + "' (longitud: " + d.getCodigo().length() + ") - Servicio ID: " + d.getServicio().getIdServicio());
                 });
+                resp.put("cuponesExistentes", cuponesDB);
                 System.out.println("=== FIN LISTA CUPONES ===");
                 
                 return resp;
@@ -523,7 +508,6 @@ public class VecinoController {
             System.out.println("Fecha final: " + descSimpleValue.getFechaFinal());
             System.out.println("ID Servicio del cupón: " + descSimpleValue.getServicio().getIdServicio());
             
-            // Buscar el descuento válido por código y fecha
             Optional<Descuento> descOpt = descuentoRepository.findValidDescuentoByCodigoAndFecha(codigo.trim(), hoy);
 
             if (descOpt.isEmpty()) {
@@ -537,7 +521,6 @@ public class VecinoController {
             Descuento descuento = descOpt.get();
             System.out.println("Descuento encontrado: " + descuento.getCodigo());
 
-            // Obtener la reserva desde idReserva
             Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
             if (reservaOpt.isEmpty()) {
                 resp.put("valido", false);
@@ -549,12 +532,10 @@ public class VecinoController {
             Reserva reserva = reservaOpt.get();
             System.out.println("Reserva encontrada: " + reserva.getIdReserva());
 
-            // Obtener idServicio desde la InstanciaServicio de la reserva
             Integer idServicioReserva = reserva.getInstanciaServicio().getServicio().getIdServicio();
             System.out.println("ID del servicio en la reserva: " + idServicioReserva);
             System.out.println("ID del servicio del cupón: " + descuento.getServicio().getIdServicio());
 
-            // Verificar si el descuento aplica para el servicio de la reserva
             if (!descuento.getServicio().getIdServicio().equals(idServicioReserva)) {
                 resp.put("valido", false);
                 resp.put("mensaje", "El descuento no aplica para este servicio.");
@@ -562,7 +543,6 @@ public class VecinoController {
                 return resp;
             }
 
-            // Usar el total de la información de pago de la reserva
             if (reserva.getInformacionPago() == null) {
                 resp.put("valido", false);
                 resp.put("mensaje", "La reserva no tiene información de pago asociada.");
@@ -573,7 +553,6 @@ public class VecinoController {
             BigDecimal total = BigDecimal.valueOf(reserva.getInformacionPago().getTotal());
             System.out.println("Total de la reserva: " + total);
 
-            // Calcular el descuento
             BigDecimal descuentoAplicado = BigDecimal.ZERO;
             if ("PORCENTAJE".equalsIgnoreCase(descuento.getTipoDescuento())) {
                 descuentoAplicado = total.multiply(BigDecimal.valueOf(descuento.getValor() / 100.0));
@@ -583,18 +562,15 @@ public class VecinoController {
                 System.out.println("Descuento fijo: S/." + descuento.getValor());
             }
 
-            // Verificar que el descuento no sea mayor al monto de la tarifa
             if (descuentoAplicado.compareTo(total) > 0) {
-                descuentoAplicado = total; // No puede ser mayor al total
+                descuentoAplicado = total;
             }
 
-            // Calcular el total con descuento
             BigDecimal totalConDescuento = total.subtract(descuentoAplicado);
             if (totalConDescuento.compareTo(BigDecimal.ZERO) < 0) {
                 totalConDescuento = BigDecimal.ZERO;
             }
 
-            // Respuesta exitosa con el descuento aplicado
             resp.put("valido", true);
             resp.put("descuento", descuentoAplicado);
             resp.put("totalConDescuento", totalConDescuento);
@@ -611,7 +587,7 @@ public class VecinoController {
             resp.put("mensaje", "Error interno del servidor: " + e.getMessage());
             return resp;
         }
-    }// Endpoint de diagnóstico para probar cupones (público para testing)
+    }
     @GetMapping("/diagnosticar-cupon/{codigo}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> diagnosticarCupon(@PathVariable String codigo) {
@@ -621,17 +597,28 @@ public class VecinoController {
             System.out.println("=== DIAGNÓSTICO DE CUPÓN ===");
             System.out.println("Código a diagnosticar: '" + codigo + "'");
             
-            // Verificar si existe el cupón
             Optional<Descuento> descOpt = descuentoRepository.findByCodigo(codigo.trim());
-            
-            if (descOpt.isEmpty()) {
+              if (descOpt.isEmpty()) {
                 resp.put("existe", false);
                 resp.put("mensaje", "Cupón no encontrado en la base de datos");
                 
-                // Listar todos los cupones
-                List<String> cupones = descuentoRepository.findAll().stream()
-                    .map(Descuento::getCodigo)
-                    .collect(Collectors.toList());
+                List<Map<String, Object>> cupones = new ArrayList<>();
+                descuentoRepository.findAll().forEach(d -> {
+                    Map<String, Object> cupon = new HashMap<>();
+                    cupon.put("codigo", d.getCodigo());
+                    cupon.put("servicio", d.getServicio().getNombre());
+                    cupon.put("idServicio", d.getServicio().getIdServicio());
+                    cupon.put("tipo", d.getTipoDescuento());
+                    cupon.put("valor", d.getValor());
+                    cupon.put("fechaInicio", d.getFechaInicio().toString());
+                    cupon.put("fechaFinal", d.getFechaFinal().toString());
+                    
+                    LocalDate hoy = LocalDate.now();
+                    boolean vigente = !hoy.isBefore(d.getFechaInicio()) && !hoy.isAfter(d.getFechaFinal());
+                    cupon.put("vigente", vigente);
+                    
+                    cupones.add(cupon);
+                });
                 resp.put("cuponesExistentes", cupones);
                 
                 return ResponseEntity.ok(resp);
@@ -646,25 +633,24 @@ public class VecinoController {
             resp.put("fechaFinal", descuento.getFechaFinal().toString());
             resp.put("idServicio", descuento.getServicio().getIdServicio());
             resp.put("nombreServicio", descuento.getServicio().getNombre());
-            
-            // Verificar validez de fecha
             LocalDate hoy = LocalDate.now();
             boolean fechaValida = !hoy.isBefore(descuento.getFechaInicio()) && !hoy.isAfter(descuento.getFechaFinal());
             resp.put("fechaValida", fechaValida);
             resp.put("fechaActual", hoy.toString());
-              // Verificar reservas compatibles con diferentes estados
+            
+            Optional<Descuento> descValidoOpt = descuentoRepository.findValidDescuentoByCodigoAndFecha(codigo.trim(), hoy);
+            resp.put("validoConMetodoRepository", descValidoOpt.isPresent());
             List<Reserva> todasLasReservas = reservaRepository.findAll().stream()
                 .filter(r -> r.getInstanciaServicio().getServicio().getIdServicio().equals(descuento.getServicio().getIdServicio()))
                 .collect(Collectors.toList());
             
             List<Reserva> reservasPendientes = todasLasReservas.stream()
-                .filter(r -> r.getEstado().equals(0))  // Estado 0 = Pendiente
+                .filter(r -> r.getEstado().equals(0))
                 .collect(Collectors.toList());
                 
             resp.put("totalReservasServicio", todasLasReservas.size());
             resp.put("reservasPendientes", reservasPendientes.size());
             
-            // Información detallada de estados
             Map<Integer, Long> estadosReservas = todasLasReservas.stream()
                 .collect(Collectors.groupingBy(Reserva::getEstado, Collectors.counting()));
             resp.put("estadosReservas", estadosReservas);
@@ -680,73 +666,101 @@ public class VecinoController {
             resp.put("mensaje", "Error en diagnóstico: " + e.getMessage());
             return ResponseEntity.status(500).body(resp);
         }
-    }    // Endpoint de prueba para verificar conectividad AJAX
-    @PostMapping("/test-ajax")
+    }    // Endpoint para diagnosticar una reserva específica y su compatibilidad con cupones
+    @GetMapping("/public/diagnosticar-reserva/{idReserva}")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> testAjax() {
-        Map<String, Object> resp = new HashMap<>();
-        resp.put("status", "success");
-        resp.put("message", "AJAX funciona correctamente");
-        resp.put("timestamp", LocalDateTime.now().toString());
-        
-        System.out.println("Test AJAX ejecutado correctamente");
-        return ResponseEntity.ok(resp);
-    }
-
-    // Endpoint público para diagnóstico de cupones (sin autenticación para testing)
-    @GetMapping("/public/diagnosticar-cupon/{codigo}")
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> diagnosticarCuponPublico(@PathVariable String codigo) {
+    public ResponseEntity<Map<String, Object>> diagnosticarReserva(@PathVariable Integer idReserva) {
         Map<String, Object> resp = new HashMap<>();
         
         try {
-            System.out.println("=== DIAGNÓSTICO PÚBLICO DE CUPÓN ===");
-            System.out.println("Código a diagnosticar: '" + codigo + "'");
+            System.out.println("=== DIAGNÓSTICO DE RESERVA ===");
+            System.out.println("ID de reserva: " + idReserva);
             
-            // Verificar si existe el cupón
-            Optional<Descuento> descOpt = descuentoRepository.findByCodigo(codigo.trim());
-            
-            if (descOpt.isEmpty()) {
+            Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
+            if (reservaOpt.isEmpty()) {
                 resp.put("existe", false);
-                resp.put("mensaje", "Cupón no encontrado en la base de datos");
-                
-                // Listar todos los cupones
-                List<String> cupones = descuentoRepository.findAll().stream()
-                    .map(Descuento::getCodigo)
-                    .collect(Collectors.toList());
-                resp.put("cuponesExistentes", cupones);
-                
+                resp.put("mensaje", "Reserva no encontrada");
                 return ResponseEntity.ok(resp);
             }
             
-            Descuento descuento = descOpt.get();
+            Reserva reserva = reservaOpt.get();
             resp.put("existe", true);
-            resp.put("codigo", descuento.getCodigo());
-            resp.put("tipoDescuento", descuento.getTipoDescuento());
-            resp.put("valor", descuento.getValor());
-            resp.put("fechaInicio", descuento.getFechaInicio().toString());
-            resp.put("fechaFinal", descuento.getFechaFinal().toString());
-            resp.put("idServicio", descuento.getServicio().getIdServicio());
-            resp.put("nombreServicio", descuento.getServicio().getNombre());
+            resp.put("idReserva", reserva.getIdReserva());
+            resp.put("fecha", reserva.getFecha().toString());
+            resp.put("estado", reserva.getEstado());
+            resp.put("servicio", reserva.getInstanciaServicio().getServicio().getNombre());
+            resp.put("idServicio", reserva.getInstanciaServicio().getServicio().getIdServicio());
+            resp.put("complejo", reserva.getInstanciaServicio().getComplejoDeportivo().getNombre());
             
-            // Verificar validez de fecha
-            LocalDate hoy = LocalDate.now();
-            boolean fechaValida = !hoy.isBefore(descuento.getFechaInicio()) && !hoy.isAfter(descuento.getFechaFinal());
-            resp.put("fechaValida", fechaValida);
-            resp.put("fechaActual", hoy.toString());
+            if (reserva.getInformacionPago() != null) {
+                resp.put("tieneInfoPago", true);
+                resp.put("total", reserva.getInformacionPago().getTotal());
+                resp.put("estadoPago", reserva.getInformacionPago().getEstado());
+            } else {
+                resp.put("tieneInfoPago", false);
+            }
             
-            System.out.println("Diagnóstico público completado para: " + codigo);
+            // Buscar cupones compatibles con esta reserva
+            List<Map<String, Object>> cuponesCompatibles = new ArrayList<>();
+            descuentoRepository.findAll().forEach(d -> {
+                if (d.getServicio().getIdServicio().equals(reserva.getInstanciaServicio().getServicio().getIdServicio())) {
+                    Map<String, Object> cupon = new HashMap<>();
+                    cupon.put("codigo", d.getCodigo());
+                    cupon.put("tipo", d.getTipoDescuento());
+                    cupon.put("valor", d.getValor());
+                    
+                    LocalDate hoy = LocalDate.now();
+                    boolean vigente = !hoy.isBefore(d.getFechaInicio()) && !hoy.isAfter(d.getFechaFinal());
+                    cupon.put("vigente", vigente);
+                    cupon.put("fechaInicio", d.getFechaInicio().toString());
+                    cupon.put("fechaFinal", d.getFechaFinal().toString());
+                    
+                    cuponesCompatibles.add(cupon);
+                }
+            });
+            
+            resp.put("cuponesCompatibles", cuponesCompatibles);
+            
+            System.out.println("Diagnóstico de reserva completado");
             
             return ResponseEntity.ok(resp);
             
         } catch (Exception e) {
-            System.out.println("ERROR en diagnóstico público: " + e.getMessage());
+            System.out.println("ERROR en diagnóstico de reserva: " + e.getMessage());
             e.printStackTrace();
             resp.put("error", true);
             resp.put("mensaje", "Error en diagnóstico: " + e.getMessage());
             return ResponseEntity.status(500).body(resp);
         }
-    }    @GetMapping("/historial-pagos")
+    }
+
+    @GetMapping("/public/test-promo10/{idReserva}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> testPromo10(@PathVariable Integer idReserva) {
+        Map<String, Object> resp = new HashMap<>();
+        
+        try {
+            System.out.println("=== TEST DIRECTO PROMO10 ===");
+            System.out.println("ID Reserva: " + idReserva);
+            
+            Map<String, Object> resultado = validarCupon("PROMO10", idReserva);
+            
+            resp.putAll(resultado);
+            resp.put("timestampTest", java.time.LocalDateTime.now().toString());
+            resp.put("idReservaTested", idReserva);
+            
+            return ResponseEntity.ok(resp);
+            
+        } catch (Exception e) {
+            resp.put("error", true);
+            resp.put("mensaje", "Error en test: " + e.getMessage());
+            resp.put("stackTrace", e.getClass().getSimpleName());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(resp);
+        }
+    }
+
+    @GetMapping("/historial-pagos")
     public String mostrarHistorialPagos(Model model, 
                                        @RequestParam(value = "page", defaultValue = "0") int page,
                                        @RequestParam(value = "size", defaultValue = "10") int size) {
@@ -851,20 +865,17 @@ public class VecinoController {
         
         Reserva reserva = reservaOpt.get();
         
-        // Verificar que la reserva pertenece al usuario autenticado
         Usuario usuario = obtenerUsuarioAutenticado();
         if (!reserva.getUsuario().getIdUsuario().equals(usuario.getIdUsuario())) {
             redirectAttributes.addFlashAttribute("error", "No tienes permisos para realizar esta acción.");
             return "redirect:/vecino/historial-pagos";
         }
         
-        // Verificar que el pago esté rechazado
         if (!"Rechazado".equalsIgnoreCase(reserva.getInformacionPago().getEstado())) {
             redirectAttributes.addFlashAttribute("error", "Solo puedes reenviar comprobantes de pagos rechazados.");
             return "redirect:/vecino/historial-pagos";
         }
         
-        // Cambiar estado a pendiente para permitir nuevo envío
         reserva.getInformacionPago().setEstado("Pendiente");
         reserva.setEstado(0); // Pendiente
         
@@ -889,17 +900,14 @@ public class VecinoController {
         }
         
         try {
-            // Obtener todas las reservas del usuario
             List<Reserva> todasReservas = reservaRepository.findByUsuario_IdUsuario(usuario.getIdUsuario());
             debug.put("totalReservas", todasReservas.size());
             
-            // Filtrar reservas con información de pago
             List<Reserva> reservasConPago = todasReservas.stream()
                     .filter(r -> r.getInformacionPago() != null)
                     .collect(Collectors.toList());
             debug.put("reservasConPago", reservasConPago.size());
             
-            // Detalles de cada reserva
             List<Map<String, Object>> detallesReservas = new ArrayList<>();
             for (Reserva r : todasReservas) {
                 Map<String, Object> detalle = new HashMap<>();
@@ -921,7 +929,6 @@ public class VecinoController {
             }
             debug.put("detallesReservas", detallesReservas);
             
-            // Estadísticas
             debug.put("usuario", usuario.getNombre() + " " + usuario.getApellido());
             debug.put("correo", usuario.getCredencial().getCorreo());
             
@@ -933,7 +940,6 @@ public class VecinoController {
         return debug;
     }
     
-    // ENDPOINT TEMPORAL PARA VERIFICAR ESTADOS DESPUÉS DE PAGO
     @GetMapping("/debug-estado-reserva/{idReserva}")
     @ResponseBody
     public Map<String, Object> debugEstadoReserva(@PathVariable Integer idReserva) {
@@ -976,8 +982,7 @@ public class VecinoController {
         }
     }
 
-    // Métodos auxiliares para el procesamiento de archivos de comprobantes
-    
+
     /**
      * Valida el tipo de archivo basándose en la extensión
      */
@@ -1060,8 +1065,7 @@ public class VecinoController {
                 .filter(r -> "Pagado".equalsIgnoreCase(r.getInformacionPago().getEstado()))
                 .mapToDouble(r -> r.getInformacionPago().getTotal())
                 .sum());
-        model.addAttribute("hayHistorialPagos", !reservasConPago.isEmpty());
-        model.addAttribute("debug", true);
+        model.addAttribute("pagosPorMetodo", Collections.emptyMap());
         
         // Métodos de pago
         Map<String, Long> pagosPorMetodo = reservasConPago.stream()
@@ -1459,7 +1463,6 @@ public class VecinoController {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
             
-            // Buscar la reserva
             Optional<Reserva> optReserva = reservaRepository.findById(idReserva);
             if (optReserva.isEmpty()) {
                 return ResponseEntity.notFound().build();
@@ -1467,18 +1470,15 @@ public class VecinoController {
             
             Reserva reserva = optReserva.get();
             
-            // Verificar que la reserva pertenece al usuario autenticado
             if (!reserva.getUsuario().getIdUsuario().equals(usuario.getIdUsuario())) {
                 return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
             }
             
-            // Verificar que tiene información de pago y está pagado
-            if (reserva.getInformacionPago() == null || 
+            if (reserva.getInformacionPago() == null ||
                 !"Pagado".equalsIgnoreCase(reserva.getInformacionPago().getEstado())) {
                 return ResponseEntity.badRequest().build();
             }
             
-            // Generar contenido HTML simple para el PDF
             String htmlContent = generarHTMLComprobante(reserva);
             
             // Por ahora, devolver como HTML (puedes agregar una librería de PDF después)
@@ -1560,7 +1560,7 @@ public class VecinoController {
                     <div class="info-row">
                         <span class="label">Horario:</span>
                         <span class="value">%s - %s</span>
-                    </div>
+                                       </div>
                 </div>
                 
                 <div class="section">
@@ -1613,6 +1613,7 @@ public class VecinoController {
             </body>
             </html>
             """,
+
             reserva.getIdReserva(),
             reserva.getIdReserva(),
             reserva.getInstanciaServicio().getComplejoDeportivo().getNombre(),
@@ -1635,6 +1636,102 @@ public class VecinoController {
             reserva.getInformacionPago().getTotal(),
             ahora.format(formateadorCompleto)
         );
+    }
+
+    // Endpoint temporal público para debug - REMOVER EN PRODUCCIÓN
+    @PostMapping("/public/aplicarDescuento")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> aplicarDescuentoPublico(@RequestParam("codigo") String codigo,
+                                                @RequestParam("idReserva") Integer idReserva) {
+        try {
+            System.out.println("=== ENDPOINT PÚBLICO DE DEBUG ===");
+            System.out.println("Código recibido: " + codigo);
+            System.out.println("ID Reserva recibido: " + idReserva);
+            
+            Map<String, Object> resultado = validarCupon(codigo, idReserva);
+            return ResponseEntity.ok(resultado);
+        } catch (Exception e) {
+            Map<String, Object> resp = new HashMap<>();
+            resp.put("valido", false);
+            resp.put("mensaje", "Error interno del servidor: " + e.getMessage());
+            System.out.println("ERROR EXCEPTION en aplicarDescuentoPublico: " + e.getMessage());
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(resp);
+        }
+    }
+
+    // Método de debug para verificar estados
+    @GetMapping("/debug/reserva/{id}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> debugReserva(@PathVariable Integer id) {
+        Map<String, Object> debug = new HashMap<>();
+        
+        Optional<Reserva> optReserva = reservaRepository.findById(id);
+        if (optReserva.isPresent()) {
+            Reserva reserva = optReserva.get();
+            debug.put("idReserva", reserva.getIdReserva());
+            debug.put("estadoReserva", reserva.getEstado());
+            
+            if (reserva.getInformacionPago() != null) {
+                debug.put("idPago", reserva.getInformacionPago().getIdInformacionPago());
+                debug.put("estadoPago", reserva.getInformacionPago().getEstado());
+                debug.put("tipoPago", reserva.getInformacionPago().getTipo());
+                debug.put("totalPago", reserva.getInformacionPago().getTotal());
+                debug.put("fechaPago", reserva.getInformacionPago().getFecha());
+            } else {
+                debug.put("informacionPago", "null");
+            }
+            
+            debug.put("success", true);
+        } else {
+            debug.put("success", false);
+            debug.put("mensaje", "Reserva no encontrada");
+        }
+        
+        return ResponseEntity.ok(debug);
+    }
+
+    // Método para forzar actualización de estado
+    @PostMapping("/forzarActualizacionEstado")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<Map<String, Object>> forzarActualizacionEstado(@RequestParam Integer idReserva, @RequestParam Integer nuevoEstado) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Optional<Reserva> optReserva = reservaRepository.findById(idReserva);
+            if (optReserva.isPresent()) {
+                Reserva reserva = optReserva.get();
+                System.out.println("DEBUG FORZAR: Estado actual: " + reserva.getEstado());
+                
+                reserva.setEstado(nuevoEstado);
+                System.out.println("DEBUG FORZAR: Nuevo estado asignado: " + reserva.getEstado());
+                
+                Reserva reservaGuardada = reservaRepository.save(reserva);
+                reservaRepository.flush();
+                
+                System.out.println("DEBUG FORZAR: Estado después de guardar: " + reservaGuardada.getEstado());
+                
+                // Verificar desde la base de datos
+                Optional<Reserva> verificacion = reservaRepository.findById(idReserva);
+                if (verificacion.isPresent()) {
+                    System.out.println("DEBUG FORZAR: Estado verificado desde BD: " + verificacion.get().getEstado());
+                    response.put("estadoFinal", verificacion.get().getEstado());
+                }
+                
+                response.put("success", true);
+                response.put("mensaje", "Estado actualizado correctamente");
+            } else {
+                response.put("success", false);
+                response.put("mensaje", "Reserva no encontrada");
+            }
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("mensaje", "Error: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return ResponseEntity.ok(response);
     }
 
 }

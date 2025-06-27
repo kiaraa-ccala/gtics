@@ -1333,9 +1333,95 @@
                 card.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0)';
                 });
-            });
-        </script>
+            });        </script>
         <!-- [ Scripts ] end -->
+
+        <!-- Chatbot Floating Button -->
+        <div class="chatbot-floating-btn" onclick="openChatbot()">
+            <i class="bi bi-chat-dots-fill"></i>
+            <span class="tooltip-text">¡Pregúntame algo!</span>
+        </div>
+
+        <style>
+        .chatbot-floating-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            color: white;
+            font-size: 24px;
+            animation: pulse 2s infinite;
+        }
+
+        .chatbot-floating-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 25px rgba(39, 174, 96, 0.6);
+        }
+
+        .chatbot-floating-btn .tooltip-text {
+            position: absolute;
+            right: 70px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .chatbot-floating-btn:hover .tooltip-text {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(39, 174, 96, 0.8);
+            }
+            100% {
+                box-shadow: 0 4px 20px rgba(39, 174, 96, 0.4);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .chatbot-floating-btn {
+                bottom: 20px;
+                right: 20px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .chatbot-floating-btn .tooltip-text {
+                display: none;
+            }
+        }
+        </style>
+
+        <script>
+            function openChatbot() {
+                window.open('/chat', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+            }
+        </script>
 
     </body>
 

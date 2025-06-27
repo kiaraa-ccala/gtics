@@ -434,11 +434,10 @@
               "first": "Primero",
               "last": "Último",
               "next": "Siguiente",
-              "previous": "Anterior"
-            }
-          },          order: [[9, 'desc']], // Ordenar por fecha de registro descendente (nueva posición)
-          columnDefs: [
-            { targets: [0, 6, 7, 8, 10], className: 'text-center' }, // Ajustado para nueva columna
+              "previous": "Anterior"            }
+          },
+          order: [[9, 'desc']], // Ordenar por fecha de registro descendente (nueva posición)
+          columnDefs: [            { targets: [0, 6, 7, 8, 10], className: 'text-center' }, // Ajustado para nueva columna
             { targets: [10], orderable: false } // Ajustado para nueva columna
           ],
           pageLength: 10,

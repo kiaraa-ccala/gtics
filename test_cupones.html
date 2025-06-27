@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Cupón PROMO10</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #2980b9; }
+        .result {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px 0;
+            white-space: pre-wrap;
+            font-family: monospace;
+        }
+        .success { background: #d4edda; color: #155724; }
+        .error { background: #f8d7da; color: #721c24; }
+        input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Test de Cupón PROMO10</h1>
+        
+        <h2>1. Verificar Cupón</h2>
+        <button onclick="verificarCupon()">Verificar PROMO10</button>
+        <div id="resultadoVerificar" class="result" style="display:none;"></div>
+        
+        <h2>2. Aplicar Cupón (Endpoint Público)</h2>
+        <div>
+            <input type="text" id="codigo" value="PROMO10" placeholder="Código cupón">
+            <input type="number" id="idReserva" value="22" placeholder="ID Reserva">
+            <button onclick="aplicarCuponPublico()">Aplicar Cupón</button>
+        </div>
+        <div id="resultadoAplicar" class="result" style="display:none;"></div>
+        
+        <h2>3. Test Directo</h2>
+        <button onclick="testDirecto()">Test PROMO10 con Reserva 22</button>
+        <div id="resultadoTest" class="result" style="display:none;"></div>
+    </div>
+
+    <script>
+        const baseUrl = 'http://localhost:8080/vecino';
+        
+        async function verificarCupon() {
+            const resultDiv = document.getElementById('resultadoVerificar');
+            
+            try {
+                const response = await fetch(`${baseUrl}/public/diagnosticar-cupon/PROMO10`);
+                const data = await response.json();
+                
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result ' + (data.existe ? 'success' : 'error');
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Error: ' + error.message + '\nAsegúrate de que la aplicación esté ejecutándose en localhost:8080';
+            }
+        }
+        
+        async function aplicarCuponPublico() {
+            const codigo = document.getElementById('codigo').value;
+            const idReserva = document.getElementById('idReserva').value;
+            const resultDiv = document.getElementById('resultadoAplicar');
+            
+            console.log('Enviando:', {codigo, idReserva});
+            
+            try {
+                const response = await fetch(`${baseUrl}/public/aplicarDescuento`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams({
+                        codigo: codigo,
+                        idReserva: idReserva
+                    })
+                });
+                
+                const data = await response.json();
+                
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result ' + (data.valido ? 'success' : 'error');
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+        
+        async function testDirecto() {
+            const resultDiv = document.getElementById('resultadoTest');
+            
+            try {
+                const response = await fetch(`${baseUrl}/public/test-promo10/22`);
+                const data = await response.json();
+                
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result ' + (data.valido ? 'success' : 'error');
+                resultDiv.textContent = JSON.stringify(data, null, 2);
+                
+            } catch (error) {
+                resultDiv.style.display = 'block';
+                resultDiv.className = 'result error';
+                resultDiv.textContent = 'Error: ' + error.message;
+            }
+        }
+    </script>
+</body>
+</html>

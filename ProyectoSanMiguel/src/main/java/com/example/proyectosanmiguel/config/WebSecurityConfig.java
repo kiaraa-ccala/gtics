@@ -108,15 +108,10 @@ public class WebSecurityConfig {
 
                             request.getSession().setAttribute("error", "Credenciales incorrectas o usuario no válido");
                             response.sendRedirect("/inicio");
-                        })                );
-
-
-        http.csrf(csrf -> csrf
-                .ignoringRequestMatchers("/ai/**", "/api/**", "/chat", "/ai/chat","/superadmin/reportes/generarpdf")
-        );
-
-        http.authorizeHttpRequests(authz -> authz
-                .requestMatchers("/ai/**", "/ai/chat", "/api/**", "/inicio", "/", "/css/**", "/js/**", "/images/**").permitAll()
+                        })                );        http.csrf(csrf -> csrf
+                .ignoringRequestMatchers("/ai/**", "/api/**", "/chat", "/ai/chat", "/ai/chat/stream", "/superadmin/reportes/generarpdf", "/vecino/public/**", "/vecino/webhook/**")
+        );        http.authorizeHttpRequests(authz -> authz
+                .requestMatchers("/ai/**", "/ai/chat", "/ai/chat/stream", "/api/**", "/chat", "/inicio", "/", "/css/**", "/js/**", "/images/**", "/vecino/public/**", "/vecino/webhook/**", "/vecino/debug/**", "/vecino/forzarActualizacionEstado").permitAll()
                 .requestMatchers("/superadmin", "/superadmin/**").hasAnyAuthority("Superadministrador")
                 .requestMatchers("/admin", "/admin/**").hasAnyAuthority("Administrador")
                 .requestMatchers("/coord", "/coord/**").hasAnyAuthority("Coordinador")
