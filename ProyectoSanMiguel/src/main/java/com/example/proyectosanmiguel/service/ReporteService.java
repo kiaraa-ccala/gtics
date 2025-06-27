@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -66,6 +67,7 @@ public class ReporteService {
             InputStream watermarkStream = getClass().getResourceAsStream("/imagenes/watermarkSANM.png");
             InputStream forma1Stream = getClass().getResourceAsStream("/imagenes/forma1.png");
             InputStream forma2Stream = getClass().getResourceAsStream("/imagenes/forma2.png");
+            parametros.put(JRParameter.REPORT_LOCALE, new Locale("es", "ES"));
 
             if (logoStream != null) {
                 parametros.put("logomuni", logoStream);
