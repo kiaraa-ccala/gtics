@@ -1693,6 +1693,21 @@ INSERT INTO descuento (codigo, tipoDescuento, valor, fechaInicio, fechaFinal, id
 ('TENIS10', 'PORCENTAJE', 10.0, '2024-01-01', '2025-12-31', 4),
 ('VOLLEY15', 'FIJO', 15.0, '2024-01-01', '2025-12-31', 5);
 
+INSERT IGNORE INTO descuento (codigo, tipoDescuento, valor, fechaInicio, fechaFinal, idServicio) VALUES
+-- Descuentos para Cancha de Grass (idServicio = 1)
+('PROMO10', 'FIJO', 10.0, '2024-01-01', '2025-12-31', 1),
+('GRASS20', 'PORCENTAJE', 20.0, '2024-01-01', '2025-12-31', 1),
+
+-- Descuentos para Piscina (idServicio = 4)  
+('TENIS10', 'PORCENTAJE', 10.0, '2024-01-01', '2025-12-31', 4),
+('PISCINA10', 'FIJO', 10.0, '2024-01-01', '2025-12-31', 4),
+('PISCINA20', 'PORCENTAJE', 20.0, '2024-01-01', '2025-12-31', 4),
+
+-- Otros servicios
+('FUTBOL15', 'PORCENTAJE', 15.0, '2024-01-01', '2025-12-31', 2),
+('BASKET25', 'PORCENTAJE', 25.0, '2024-01-01', '2025-12-31', 3),
+('ATLETISMO15', 'PORCENTAJE', 15.0, '2024-01-01', '2025-12-31', 5);
+
 -- CREAMOS UNA RESERVA DE PRUEBA PARA PROBAR EL CUPÓN DEPORTE10
 -- Creamos la información de pago primero
 INSERT INTO informacionpago (
