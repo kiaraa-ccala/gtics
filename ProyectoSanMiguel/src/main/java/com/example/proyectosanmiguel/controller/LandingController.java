@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
 
 @Controller
-@RequestMapping("/")
 public class LandingController {
 
     @Autowired
@@ -29,7 +28,7 @@ public class LandingController {
     /**
      * Página principal del landing (Home page)
      */
-    @GetMapping("")
+    @GetMapping("/")
     public String home(Model model) {
         return index(model);
     }
@@ -37,7 +36,7 @@ public class LandingController {
     /**
      * Página principal del landing (index)
      */
-    @GetMapping("index")
+    @GetMapping("/index")
     public String index(Model model) {
         try {
             // Obtener información para mostrar en el landing
@@ -71,7 +70,7 @@ public class LandingController {
     /**
      * Página de información sobre los servicios
      */
-    @GetMapping("servicios")
+    @GetMapping("/servicios")
     public String servicios(Model model) {
         try {
             List<Servicio> servicios = servicioRepository.findAll();
@@ -90,7 +89,7 @@ public class LandingController {
     }    /**
      * Página de información sobre los complejos deportivos
      */
-    @GetMapping("complejos-deportivos")
+    @GetMapping("/complejos-deportivos")
     public String complejosDeportivos(Model model) {
         try {
             List<ComplejoDeportivo> complejos = complejoRepository.findAll();
@@ -111,7 +110,7 @@ public class LandingController {
     /**
      * Página de contacto
      */
-    @GetMapping("contacto")
+    @GetMapping("/contacto")
     public String contacto(Model model) {
         return "landing/contacto";
     }
@@ -119,13 +118,13 @@ public class LandingController {
     /**
      * Página sobre nosotros
      */
-    @GetMapping("nosotros")
+    @GetMapping("/nosotros")
     public String nosotros(Model model) {
         return "landing/nosotros";
     }    /**
      * Redirección a login para acceder a reservas
      */
-    @GetMapping("reservas")
+    @GetMapping("/reservas")
     public String reservas() {
         return "redirect:/inicio?message=Debes iniciar sesión para acceder a las reservas";
     }
@@ -133,7 +132,7 @@ public class LandingController {
     /**
      * Página de términos y condiciones
      */
-    @GetMapping("terminos")
+    @GetMapping("/terminos")
     public String terminos(Model model) {
         return "landing/terminos";
     }
@@ -141,7 +140,7 @@ public class LandingController {
     /**
      * Página de política de privacidad
      */
-    @GetMapping("privacidad")
+    @GetMapping("/privacidad")
     public String privacidad(Model model) {
         return "landing/privacidad";
     }
