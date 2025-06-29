@@ -36,7 +36,9 @@ public class ChatController {
         } catch (Exception e) {
             throw new RuntimeException("Error al cargar los documentos de contexto: " + e.getMessage(), e);
         }
-    }@PostMapping("/chat")
+    }
+
+    @PostMapping("/chat")
     public String chat(@RequestParam String message) {
         // Buscar fragmentos relevantes del contexto
         List<DocumentEmbedding> relevantChunks = embeddingHelper.findRelevantChunks(embeddings, message, 3);
@@ -54,7 +56,9 @@ public class ChatController {
                 .user(message)
                 .call()
                 .content();
-    }    @GetMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    }
+
+    @GetMapping(value = "/chat/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public SseEmitter chatStream(@RequestParam String message) {
         SseEmitter emitter = new SseEmitter(30000L); // 30 segundos timeout
         
