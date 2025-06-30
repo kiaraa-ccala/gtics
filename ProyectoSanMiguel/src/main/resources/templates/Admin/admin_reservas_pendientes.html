@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head_admin :: head('Reservas Pendientes de Verificación')}"></head>
+
+<body data-pc-preset="preset-1" data-pc-sidebar-caption="true" data-pc-layout="vertical" data-pc-direction="ltr" data-pc-theme_contrast="" data-pc-theme="light">
+  <!-- Loader -->
+  <div class="loader-bg">
+    <div class="loader-track">
+      <div class="loader-fill"></div>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <nav th:replace="~{fragments/Sidebar_Admin :: sidebar}"></nav>
+
+  <!-- Header -->
+  <header th:replace="~{fragments/navbar :: header}"></header>
+
+  <!-- [ Main Content ] start -->
+  <div class="pc-container">
+    <div class="pc-content">
+      <!-- [ breadcrumb ] start -->
+      <div class="page-header">
+        <div class="page-block">
+          <div class="row align-items-center">
+            <div class="col-md-12">
+              <div class="page-header-title">
+                <h2 class="mb-0">Reservas Pendientes de Verificación</h2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ breadcrumb ] end -->
+
+      <!-- Alertas de mensajes -->
+      <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <i class="ti ti-check-circle me-2"></i>
+        <span th:text="${mensajeExito}">Mensaje de éxito</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+
+      <div th:if="${mensajeInfo}" class="alert alert-info alert-dismissible fade show" role="alert">
+        <i class="ti ti-info-circle me-2"></i>
+        <span th:text="${mensajeInfo}">Mensaje informativo</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+
+      <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <i class="ti ti-alert-circle me-2"></i>
+        <span th:text="${error}">Mensaje de error</span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+
+      <!-- [ Main Content ] start -->
+      <div class="row">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header d-flex align-items-center justify-content-between">
+              <h5 class="mb-0">Reservas con Pago Pendiente de Verificación</h5>
+              <div class="d-flex align-items-center">
+                <span class="badge bg-warning me-2" th:text="${#lists.size(reservasPendientes)} + ' pendientes'">0 pendientes</span>
+                <button class="btn btn-sm btn-outline-primary" onclick="location.reload()">
+                  <i class="ti ti-refresh me-1"></i>Actualizar
+                </button>
+              </div>
+            </div>
+            <div class="card-body">
+              
+              <!-- Mensaje cuando no hay reservas pendientes -->
+              <div th:if="${#lists.isEmpty(reservasPendientes)}" class="text-center py-5">
+                <div class="mb-3">
+                  <i class="ti ti-clipboard-check" style="font-size: 3rem; color: #28a745;"></i>
+                </div>
+                <h5 class="text-muted">No hay reservas pendientes de verificación</h5>
+                <p class="text-muted">Todas las reservas han sido procesadas.</p>
+              </div>
+
+              <!-- Tabla de reservas pendientes -->
+              <div th:if="${!#lists.isEmpty(reservasPendientes)}" class="table-responsive">
+                <table class="table table-hover align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th>ID</th>
+                      <th>Vecino</th>
+                      <th>Servicio</th>
+                      <th>Fecha Reserva</th>
+                      <th>Monto</th>
+                      <th>Tipo Pago</th>
+                      <th>Comprobante</th>
+                      <th>Estado</th>
+                      <th class="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr th:each="reserva : ${reservasPendientes}">
+                      <td>
+                        <span class="badge bg-secondary" th:text="'#' + ${reserva.idReserva}">ID</span>
+                      </td>
+                      <td>
+                        <div class="d-flex align-items-center">
+                          <div class="flex-shrink-0">
+                            <div class="avtar avtar-s bg-light-primary">
+                              <i class="ti ti-user"></i>
+                            </div>
+                          </div>
+                          <div class="flex-grow-1 ms-3">
+                            <h6 class="mb-0" th:text="${reserva.usuario?.nombre} + ' ' + ${reserva.usuario?.apellido}">Nombre Usuario</h6>
+                            <small class="text-muted" th:text="'DNI: ' + ${reserva.usuario?.dni}">DNI</small><br>
+                            <small class="text-muted" th:text="${reserva.usuario?.credencial?.correo}">Email</small>
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <div>
+                          <h6 class="mb-1" th:text="${reserva.instanciaServicio?.servicio?.nombre}">Servicio</h6>
+                          <small class="text-muted" th:text="${reserva.instanciaServicio?.servicio?.complejo?.nombre}">Complejo</small><br>
+                          <small class="text-muted" th:text="${#temporals.format(reserva.instanciaServicio?.horario?.horaInicio, 'HH:mm')} + ' - ' + ${#temporals.format(reserva.instanciaServicio?.horario?.horaFin, 'HH:mm')}">Horario</small>
+                        </div>
+                      </td>
+                      <td>
+                        <span th:text="${#temporals.format(reserva.fechaReserva, 'dd/MM/yyyy HH:mm')}">Fecha</span>
+                      </td>
+                      <td>
+                        <span class="fw-bold text-success" th:text="'S/. ' + ${#numbers.formatDecimal(reserva.informacionPago?.total, 1, 2)}">Monto</span>
+                      </td>
+                      <td>
+                        <span class="badge" 
+                              th:class="${reserva.informacionPago?.metodoPago == 'Transferencia'} ? 'bg-info' : 'bg-warning'"
+                              th:text="${reserva.informacionPago?.metodoPago}">Tipo</span>
+                      </td>
+                      <td>
+                        <div th:if="${reserva.informacionPago?.comprobanteUrl != null and !#strings.isEmpty(reserva.informacionPago?.comprobanteUrl)}">
+                          <button class="btn btn-sm btn-outline-primary" 
+                                  th:onclick="'verComprobante(' + ${reserva.idReserva} + ')'">
+                            <i class="ti ti-file-description me-1"></i>Ver
+                          </button>
+                        </div>
+                        <div th:if="${reserva.informacionPago?.comprobanteUrl == null or #strings.isEmpty(reserva.informacionPago?.comprobanteUrl)}">
+                          <span class="text-muted">Sin comprobante</span>
+                        </div>
+                      </td>
+                      <td>
+                        <span class="badge bg-warning">
+                          <i class="ti ti-clock me-1"></i>Pendiente Verificación
+                        </span>
+                      </td>
+                      <td class="text-center">
+                        <div class="btn-group" role="group">
+                          <button class="btn btn-sm btn-success" 
+                                  th:onclick="'aprobarReserva(' + ${reserva.idReserva} + ')'"
+                                  title="Aprobar reserva">
+                            <i class="ti ti-check"></i>
+                          </button>
+                          <button class="btn btn-sm btn-danger" 
+                                  th:onclick="'rechazarReserva(' + ${reserva.idReserva} + ')'"
+                                  title="Rechazar reserva">
+                            <i class="ti ti-x"></i>
+                          </button>
+                          <button class="btn btn-sm btn-outline-info" 
+                                  th:onclick="'verDetalles(' + ${reserva.idReserva} + ')'"
+                                  title="Ver detalles">
+                            <i class="ti ti-eye"></i>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- [ Main Content ] end -->
+    </div>
+  </div>
+
+  <!-- Modal para ver comprobante -->
+  <div class="modal fade" id="modalComprobante" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Comprobante de Pago</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center" id="contenidoComprobante">
+          <!-- El contenido se carga dinámicamente -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para aprobar reserva -->
+  <div class="modal fade" id="modalAprobar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formAprobar" method="post" th:action="@{/admin/aprobar-reserva}">
+          <div class="modal-header">
+            <h5 class="modal-title text-success">
+              <i class="ti ti-check-circle me-2"></i>Aprobar Reserva
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="idReserva" id="idReservaAprobar">
+            <div class="alert alert-success">
+              <i class="ti ti-info-circle me-2"></i>
+              ¿Está seguro de que desea aprobar esta reserva? El vecino será notificado automáticamente.
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Observaciones (opcional)</label>
+              <textarea class="form-control" name="observaciones" rows="3" 
+                        placeholder="Agregue observaciones si es necesario..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success">
+              <i class="ti ti-check me-2"></i>Aprobar Reserva
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para rechazar reserva -->
+  <div class="modal fade" id="modalRechazar" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="formRechazar" method="post" th:action="@{/admin/rechazar-reserva}">
+          <div class="modal-header">
+            <h5 class="modal-title text-danger">
+              <i class="ti ti-x-circle me-2"></i>Rechazar Reserva
+            </h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="idReserva" id="idReservaRechazar">
+            <div class="alert alert-danger">
+              <i class="ti ti-alert-triangle me-2"></i>
+              ¿Está seguro de que desea rechazar esta reserva? Esta acción no se puede deshacer.
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Motivo del rechazo <span class="text-danger">*</span></label>
+              <textarea class="form-control" name="motivoRechazo" rows="3" 
+                        placeholder="Explique el motivo del rechazo..." required></textarea>
+              <small class="text-muted">Este motivo será enviado al vecino por correo electrónico.</small>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">
+              <i class="ti ti-x me-2"></i>Rechazar Reserva
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal para ver detalles -->
+  <div class="modal fade" id="modalDetalles" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="ti ti-file-description me-2"></i>Detalles de la Reserva
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body" id="contenidoDetalles">
+          <!-- El contenido se carga dinámicamente -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script th:src="@{/assets/js/plugins/bootstrap.min.js}"></script>
+  <script th:src="@{/assets/js/plugins/feather.min.js}"></script>
+  <script th:src="@{/assets/js/layout-horizontal.js}"></script>
+  <script th:src="@{/assets/js/script.js}"></script>
+
+  <script>
+    function verComprobante(idReserva) {
+      // Obtener la información de la reserva para mostrar el comprobante
+      // Por ahora, mostrar mensaje de que se está cargando
+      $('#contenidoComprobante').html('<div class="text-center"><i class="ti ti-loader fa-spin fs-2 mb-3"></i><br>Cargando comprobante...</div>');
+      $('#modalComprobante').modal('show');
+      
+      // Aquí deberías hacer una llamada AJAX para obtener la URL del comprobante
+      // y mostrarlo. Por simplicidad, simulo la carga:
+      setTimeout(() => {
+        $('#contenidoComprobante').html(`
+          <div class="alert alert-info">
+            <i class="ti ti-info-circle me-2"></i>
+            Funcionalidad de visualización de comprobantes pendiente de implementar.
+          </div>
+          <p>ID de Reserva: ${idReserva}</p>
+        `);
+      }, 1000);
+    }
+
+    function aprobarReserva(idReserva) {
+      $('#idReservaAprobar').val(idReserva);
+      $('#modalAprobar').modal('show');
+    }
+
+    function rechazarReserva(idReserva) {
+      $('#idReservaRechazar').val(idReserva);
+      $('#modalRechazar').modal('show');
+    }
+
+    function verDetalles(idReserva) {
+      $('#contenidoDetalles').html('<div class="text-center"><i class="ti ti-loader fa-spin fs-2 mb-3"></i><br>Cargando detalles...</div>');
+      $('#modalDetalles').modal('show');
+      
+      // Llamada AJAX para obtener detalles
+      $.get('/admin/reserva-detalles/' + idReserva)
+        .done(function(response) {
+          if (response.success) {
+            const data = response.data;
+            const html = `
+              <div class="row">
+                <div class="col-md-6">
+                  <h6 class="border-bottom pb-2 mb-3">Información de la Reserva</h6>
+                  <p><strong>ID:</strong> #${data.idReserva}</p>
+                  <p><strong>Fecha:</strong> ${new Date(data.fechaReserva).toLocaleString('es-ES')}</p>
+                  <p><strong>Estado:</strong> 
+                    <span class="badge bg-warning">Pendiente Verificación</span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="border-bottom pb-2 mb-3">Información del Vecino</h6>
+                  <p><strong>Nombre:</strong> ${data.usuario?.nombre} ${data.usuario?.apellido}</p>
+                  <p><strong>DNI:</strong> ${data.usuario?.dni}</p>
+                  <p><strong>Email:</strong> ${data.usuario?.email}</p>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="border-bottom pb-2 mb-3">Información del Servicio</h6>
+                  <p><strong>Servicio:</strong> ${data.servicio?.nombre}</p>
+                  <p><strong>Complejo:</strong> ${data.servicio?.complejo}</p>
+                  <p><strong>Horario:</strong> ${data.servicio?.horario}</p>
+                </div>
+                <div class="col-md-6">
+                  <h6 class="border-bottom pb-2 mb-3">Información del Pago</h6>
+                  <p><strong>Monto:</strong> S/. ${parseFloat(data.pago?.total).toFixed(2)}</p>
+                  <p><strong>Estado:</strong> ${data.pago?.estado}</p>
+                  <p><strong>Fecha Pago:</strong> ${data.pago?.fechaPago ? new Date(data.pago.fechaPago).toLocaleString('es-ES') : 'N/A'}</p>
+                </div>
+              </div>
+            `;
+            $('#contenidoDetalles').html(html);
+          } else {
+            $('#contenidoDetalles').html(`
+              <div class="alert alert-danger">
+                <i class="ti ti-alert-circle me-2"></i>
+                Error al cargar los detalles: ${response.message}
+              </div>
+            `);
+          }
+        })
+        .fail(function() {
+          $('#contenidoDetalles').html(`
+            <div class="alert alert-danger">
+              <i class="ti ti-alert-circle me-2"></i>
+              Error de conexión al cargar los detalles.
+            </div>
+          `);
+        });
+    }
+
+    // Auto-cerrar alertas después de 5 segundos
+    setTimeout(function() {
+      $('.alert').alert('close');
+    }, 5000);
+  </script>
+</body>
+</html>

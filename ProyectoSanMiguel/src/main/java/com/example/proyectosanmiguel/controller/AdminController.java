@@ -29,6 +29,7 @@ import java.time.LocalTime;
 import java.time.format.TextStyle;
 import java.time.temporal.WeekFields;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -64,10 +65,14 @@ public class AdminController {
     private HorarioSemanalRepository horarioSemanalRepository;
 
     @Autowired
-    private FotoRepository fotoRepository;
+    private FotoRepository fotoRepository;    @Autowired
+    private MantenimientoRepository mantenimientoRepository;
 
     @Autowired
-    private MantenimientoRepository mantenimientoRepository;
+    private ReservaRepository reservaRepository;
+
+    @Autowired
+    private InformacionPagoRepository informacionPagoRepository;
 
     @Autowired
     private EmailService emailService;
@@ -797,16 +802,357 @@ public class AdminController {
         mantenimiento.setFechaFin(fechaFin);
         mantenimiento.setHoraInicio(horaInicio);
         mantenimiento.setHoraFin(horaFin);
-        mantenimiento.setComplejoDeportivo(complejo);
-
-        mantenimientoRepository.save(mantenimiento);
+        mantenimiento.setComplejoDeportivo(complejo);        mantenimientoRepository.save(mantenimiento);
         redirectAttributes.addFlashAttribute("exito", "¡Mantenimiento guardado correctamente!");
         return "redirect:/admin/servicios/monitoreo";
-
-
-
-
     }
 
+    // ========== GESTIÓN DE RESERVAS ==========
+      @GetMapping("/aceptar-reservas")
+    public String mostrarReservasPendientes(Model model) {
+        // Obtener todas las reservas y filtrar por estado
+        List<Reserva> todasReservas = reservaRepository.findAll();
+        List<Reserva> reservasPendientes = todasReservas.stream()
+                .filter(r -> r.getEstado() == 0 || r.getEstado() == 2) // Estado 0: Pendiente de pago, Estado 2: Pendiente de verificación
+                .filter(r -> r.getInformacionPago() != null) // Solo reservas con información de pago
+                .sorted((r1, r2) -> r2.getFechaHoraRegistro().compareTo(r1.getFechaHoraRegistro())) // Más recientes primero
+                .collect(Collectors.toList());
+        
+        model.addAttribute("reservasPendientes", reservasPendientes);
+        return "Admin/admin_aceptar_reservas";
+    }
 
+    @PostMapping("/gestionar-reserva")
+    @Transactional
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> gestionarReserva(
+            @RequestParam("idReserva") Integer idReserva,
+            @RequestParam("accion") String accion,
+            @RequestParam(value = "motivo", required = false) String motivo) {
+        
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            // Buscar la reserva
+            Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
+            if (reservaOpt.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Reserva no encontrada");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            Reserva reserva = reservaOpt.get();
+            
+            if ("aceptar".equals(accion)) {
+                // Aceptar reserva
+                reserva.setEstado(1); // 1 = Activo/Aprobado
+                
+                // Cambiar estado del pago a "Pagado"
+                if (reserva.getInformacionPago() != null) {
+                    reserva.getInformacionPago().setEstado("Pagado");
+                    informacionPagoRepository.save(reserva.getInformacionPago());
+                }
+                
+                reservaRepository.save(reserva);
+                
+                response.put("success", true);
+                response.put("message", "Reserva aceptada exitosamente");
+                
+                // Aquí se podría enviar un email de notificación al usuario
+                // emailService.enviarNotificacionReservaAceptada(reserva);
+                
+            } else if ("rechazar".equals(accion)) {
+                // Rechazar reserva
+                reserva.setEstado(3); // 3 = Rechazado
+                
+                // Cambiar estado del pago a "Rechazado"
+                if (reserva.getInformacionPago() != null) {
+                    reserva.getInformacionPago().setEstado("Rechazado");
+                    // Opcional: guardar el motivo del rechazo
+                    // reserva.getInformacionPago().setMotivoRechazo(motivo);
+                    informacionPagoRepository.save(reserva.getInformacionPago());
+                }
+                
+                reservaRepository.save(reserva);
+                
+                response.put("success", true);
+                response.put("message", "Reserva rechazada exitosamente");
+                
+                // Aquí se podría enviar un email de notificación al usuario
+                // emailService.enviarNotificacionReservaRechazada(reserva, motivo);
+                
+            } else {
+                response.put("success", false);
+                response.put("message", "Acción no válida");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error interno del servidor: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }    @GetMapping("/obtener-comprobante/{idReserva}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerComprobante(@PathVariable Integer idReserva) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Optional<Reserva> reservaOpt = reservaRepository.findById(idReserva);
+            if (reservaOpt.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Reserva no encontrada");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+            }
+            
+            Reserva reserva = reservaOpt.get();
+            
+            if (reserva.getInformacionPago() == null) {
+                response.put("success", false);
+                response.put("message", "No hay información de pago");
+                return ResponseEntity.badRequest().body(response);
+            }
+            
+            InformacionPago pago = reserva.getInformacionPago();
+            
+            // Solo devolver información si es pago en efectivo
+            if ("Efectivo".equalsIgnoreCase(pago.getTipo())) {
+                response.put("success", true);
+                response.put("comprobanteUrl", "/uploads/comprobantes/comprobante_reserva_" + idReserva + ".jpg");
+                response.put("tipoArchivo", "imagen");
+                response.put("message", "Comprobante encontrado");
+                
+            } else {
+                response.put("success", false);
+                response.put("message", "No hay comprobante disponible para este tipo de pago");
+            }
+            
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al obtener comprobante: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    // ========== GESTIÓN DE APROBACIÓN DE RESERVAS ==========
+    
+    /**
+     * Muestra la página de reservas pendientes de verificación
+     */
+    @GetMapping("/reservas-pendientes")
+    public String mostrarReservasPendientes(Model model) {
+        // Obtener reservas con estado 2 (Pendiente de Verificación)
+        List<Reserva> reservasPendientes = reservaRepository.findAll().stream()
+                .filter(r -> r.getEstado() == 2) // Estado 2 = Pendiente de Verificación
+                .sorted(Comparator.comparing(Reserva::getFechaReserva).reversed())
+                .collect(Collectors.toList());
+        
+        model.addAttribute("reservasPendientes", reservasPendientes);
+        return "Admin/admin_reservas_pendientes";
+    }
+    
+    /**
+     * Aprueba una reserva pendiente de verificación
+     */
+    @PostMapping("/aprobar-reserva")
+    @Transactional
+    public String aprobarReserva(@RequestParam("idReserva") Integer idReserva,
+                                @RequestParam(value = "observaciones", required = false) String observaciones,
+                                RedirectAttributes redirectAttributes) {
+        try {
+            Optional<Reserva> optReserva = reservaRepository.findById(idReserva);
+            if (optReserva.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "No se encontró la reserva.");
+                return "redirect:/admin/reservas-pendientes";
+            }
+            
+            Reserva reserva = optReserva.get();
+            
+            // Verificar que esté en estado pendiente
+            if (reserva.getEstado() != 2) {
+                redirectAttributes.addFlashAttribute("error", 
+                    "La reserva no está en estado pendiente de verificación.");
+                return "redirect:/admin/reservas-pendientes";
+            }
+            
+            // Actualizar estado de la reserva a ACTIVA
+            reserva.setEstado(1); // 1 = Activo/Aprobado
+            reservaRepository.saveAndFlush(reserva);
+            
+            // Actualizar estado del pago
+            InformacionPago pago = reserva.getInformacionPago();
+            if (pago != null) {
+                pago.setEstado("Pagado");
+                informacionPagoRepository.saveAndFlush(pago);
+            }
+            
+            // Log para debugging
+            System.out.println("=== RESERVA APROBADA POR ADMINISTRADOR ===");
+            System.out.println("ID Reserva: " + idReserva);
+            System.out.println("Estado actualizado a: " + reserva.getEstado());
+            System.out.println("Observaciones: " + observaciones);
+            
+            // Enviar email de confirmación al usuario (opcional)
+            try {
+                if (reserva.getUsuario() != null && reserva.getUsuario().getCredencial() != null) {
+                    String email = reserva.getUsuario().getCredencial().getCorreo();
+                    String asunto = "Reserva Aprobada - Municipalidad de San Miguel";
+                    String mensaje = "Su reserva ha sido aprobada exitosamente. " +
+                                   "Puede consultar los detalles en su cuenta de vecino.";
+                    emailService.enviarCorreo(email, asunto, mensaje);
+                }
+            } catch (Exception emailError) {
+                System.err.println("Error al enviar email de confirmación: " + emailError.getMessage());
+            }
+            
+            redirectAttributes.addFlashAttribute("mensajeExito", 
+                "Reserva aprobada exitosamente. El vecino ha sido notificado.");
+            return "redirect:/admin/reservas-pendientes";
+            
+        } catch (Exception e) {
+            System.err.println("Error al aprobar reserva: " + e.getMessage());
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", 
+                "Error al aprobar la reserva: " + e.getMessage());
+            return "redirect:/admin/reservas-pendientes";
+        }
+    }
+    
+    /**
+     * Rechaza una reserva pendiente de verificación
+     */
+    @PostMapping("/rechazar-reserva")
+    @Transactional
+    public String rechazarReserva(@RequestParam("idReserva") Integer idReserva,
+                                 @RequestParam("motivoRechazo") String motivoRechazo,
+                                 RedirectAttributes redirectAttributes) {
+        try {
+            Optional<Reserva> optReserva = reservaRepository.findById(idReserva);
+            if (optReserva.isEmpty()) {
+                redirectAttributes.addFlashAttribute("error", "No se encontró la reserva.");
+                return "redirect:/admin/reservas-pendientes";
+            }
+            
+            Reserva reserva = optReserva.get();
+            
+            // Verificar que esté en estado pendiente
+            if (reserva.getEstado() != 2) {
+                redirectAttributes.addFlashAttribute("error", 
+                    "La reserva no está en estado pendiente de verificación.");
+                return "redirect:/admin/reservas-pendientes";
+            }
+            
+            // Actualizar estado de la reserva a RECHAZADA
+            reserva.setEstado(3); // 3 = Rechazado
+            reservaRepository.saveAndFlush(reserva);
+            
+            // Actualizar estado del pago
+            InformacionPago pago = reserva.getInformacionPago();
+            if (pago != null) {
+                pago.setEstado("Rechazado");
+                informacionPagoRepository.saveAndFlush(pago);
+            }
+            
+            // Log para debugging
+            System.out.println("=== RESERVA RECHAZADA POR ADMINISTRADOR ===");
+            System.out.println("ID Reserva: " + idReserva);
+            System.out.println("Estado actualizado a: " + reserva.getEstado());
+            System.out.println("Motivo rechazo: " + motivoRechazo);
+            
+            // Enviar email de notificación al usuario (opcional)
+            try {
+                if (reserva.getUsuario() != null && reserva.getUsuario().getCredencial() != null) {
+                    String email = reserva.getUsuario().getCredencial().getCorreo();
+                    String asunto = "Reserva Rechazada - Municipalidad de San Miguel";
+                    String mensaje = "Su reserva ha sido rechazada. Motivo: " + motivoRechazo + 
+                                   ". Puede contactar con nosotros para más información.";
+                    emailService.enviarCorreo(email, asunto, mensaje);
+                }
+            } catch (Exception emailError) {
+                System.err.println("Error al enviar email de rechazo: " + emailError.getMessage());
+            }
+            
+            redirectAttributes.addFlashAttribute("mensajeInfo", 
+                "Reserva rechazada. El vecino ha sido notificado del motivo.");
+            return "redirect:/admin/reservas-pendientes";
+            
+        } catch (Exception e) {
+            System.err.println("Error al rechazar reserva: " + e.getMessage());
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("error", 
+                "Error al rechazar la reserva: " + e.getMessage());
+            return "redirect:/admin/reservas-pendientes";
+        }
+    }
+    
+    /**
+     * API endpoint para obtener detalles de una reserva pendiente
+     */
+    @GetMapping("/reserva-detalles/{idReserva}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> obtenerDetallesReserva(@PathVariable Integer idReserva) {
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            Optional<Reserva> optReserva = reservaRepository.findById(idReserva);
+            if (optReserva.isEmpty()) {
+                response.put("success", false);
+                response.put("message", "Reserva no encontrada");
+                return ResponseEntity.notFound().build();
+            }
+            
+            Reserva reserva = optReserva.get();
+            Map<String, Object> detalles = new HashMap<>();
+            
+            detalles.put("idReserva", reserva.getIdReserva());
+            detalles.put("fechaReserva", reserva.getFechaReserva());
+            detalles.put("estado", reserva.getEstado());
+            
+            // Información del usuario
+            if (reserva.getUsuario() != null) {
+                Map<String, Object> usuario = new HashMap<>();
+                usuario.put("nombre", reserva.getUsuario().getNombre());
+                usuario.put("apellido", reserva.getUsuario().getApellido());
+                usuario.put("dni", reserva.getUsuario().getDni());
+                if (reserva.getUsuario().getCredencial() != null) {
+                    usuario.put("email", reserva.getUsuario().getCredencial().getCorreo());
+                }
+                detalles.put("usuario", usuario);
+            }
+            
+            // Información del pago
+            if (reserva.getInformacionPago() != null) {
+                Map<String, Object> pago = new HashMap<>();
+                pago.put("total", reserva.getInformacionPago().getTotal());
+                pago.put("estado", reserva.getInformacionPago().getEstado());
+                pago.put("fechaPago", reserva.getInformacionPago().getFechaPago());
+                detalles.put("pago", pago);
+            }
+            
+            // Información del servicio
+            if (reserva.getInstanciaServicio() != null) {
+                Map<String, Object> servicio = new HashMap<>();
+                servicio.put("nombre", reserva.getInstanciaServicio().getServicio().getNombre());
+                servicio.put("horario", reserva.getInstanciaServicio().getHorario().getHoraInicio() + 
+                           " - " + reserva.getInstanciaServicio().getHorario().getHoraFin());
+                if (reserva.getInstanciaServicio().getServicio().getComplejo() != null) {
+                    servicio.put("complejo", reserva.getInstanciaServicio().getServicio().getComplejo().getNombre());
+                }
+                detalles.put("servicio", servicio);
+            }
+            
+            response.put("success", true);
+            response.put("data", detalles);
+            return ResponseEntity.ok(response);
+            
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("message", "Error al obtener detalles: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

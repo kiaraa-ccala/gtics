@@ -4,8 +4,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
-public class ChatbotViewController {    @GetMapping("/chat")
+public class ChatbotViewController {
+    @GetMapping("/chat")
     public String chatbotView() {
+
         return "chat/chat_new";
     }
 }
