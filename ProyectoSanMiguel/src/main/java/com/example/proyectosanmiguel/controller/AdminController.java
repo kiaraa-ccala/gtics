@@ -4,11 +4,6 @@ import com.example.proyectosanmiguel.dto.*;
 import com.example.proyectosanmiguel.entity.*;
 import com.example.proyectosanmiguel.repository.*;
 import com.example.proyectosanmiguel.service.EmailService;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -809,7 +804,7 @@ public class AdminController {
 
     // ========== GESTIÓN DE RESERVAS ==========
       @GetMapping("/aceptar-reservas")
-    public String mostrarReservasPendientes(Model model) {
+    public String mostrarReservasParaAceptar(Model model) {
         // Obtener todas las reservas y filtrar por estado
         List<Reserva> todasReservas = reservaRepository.findAll();
         List<Reserva> reservasPendientes = todasReservas.stream()
@@ -948,7 +943,7 @@ public class AdminController {
         // Obtener reservas con estado 2 (Pendiente de Verificación)
         List<Reserva> reservasPendientes = reservaRepository.findAll().stream()
                 .filter(r -> r.getEstado() == 2) // Estado 2 = Pendiente de Verificación
-                .sorted(Comparator.comparing(Reserva::getFechaReserva).reversed())
+                .sorted(Comparator.comparing(Reserva::getFecha).reversed())
                 .collect(Collectors.toList());
         
         model.addAttribute("reservasPendientes", reservasPendientes);
@@ -1001,9 +996,10 @@ public class AdminController {
                 if (reserva.getUsuario() != null && reserva.getUsuario().getCredencial() != null) {
                     String email = reserva.getUsuario().getCredencial().getCorreo();
                     String asunto = "Reserva Aprobada - Municipalidad de San Miguel";
-                    String mensaje = "Su reserva ha sido aprobada exitosamente. " +
-                                   "Puede consultar los detalles en su cuenta de vecino.";
-                    emailService.enviarCorreo(email, asunto, mensaje);
+                    Map<String, Object> variables = new HashMap<>();
+                    variables.put("nombreUsuario", reserva.getUsuario().getNombre());
+                    variables.put("idReserva", reserva.getIdReserva());
+                    emailService.enviarEmail(email, asunto, "email/reserva-aprobada", variables);
                 }
             } catch (Exception emailError) {
                 System.err.println("Error al enviar email de confirmación: " + emailError.getMessage());
@@ -1022,9 +1018,7 @@ public class AdminController {
         }
     }
     
-    /**
-     * Rechaza una reserva pendiente de verificación
-     */
+
     @PostMapping("/rechazar-reserva")
     @Transactional
     public String rechazarReserva(@RequestParam("idReserva") Integer idReserva,
@@ -1068,9 +1062,11 @@ public class AdminController {
                 if (reserva.getUsuario() != null && reserva.getUsuario().getCredencial() != null) {
                     String email = reserva.getUsuario().getCredencial().getCorreo();
                     String asunto = "Reserva Rechazada - Municipalidad de San Miguel";
-                    String mensaje = "Su reserva ha sido rechazada. Motivo: " + motivoRechazo + 
-                                   ". Puede contactar con nosotros para más información.";
-                    emailService.enviarCorreo(email, asunto, mensaje);
+                    Map<String, Object> variables = new HashMap<>();
+                    variables.put("nombreUsuario", reserva.getUsuario().getNombre());
+                    variables.put("idReserva", reserva.getIdReserva());
+                    variables.put("motivoRechazo", motivoRechazo);
+                    emailService.enviarEmail(email, asunto, "email/reserva-rechazada", variables);
                 }
             } catch (Exception emailError) {
                 System.err.println("Error al enviar email de rechazo: " + emailError.getMessage());
@@ -1089,9 +1085,7 @@ public class AdminController {
         }
     }
     
-    /**
-     * API endpoint para obtener detalles de una reserva pendiente
-     */
+
     @GetMapping("/reserva-detalles/{idReserva}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> obtenerDetallesReserva(@PathVariable Integer idReserva) {
@@ -1109,7 +1103,7 @@ public class AdminController {
             Map<String, Object> detalles = new HashMap<>();
             
             detalles.put("idReserva", reserva.getIdReserva());
-            detalles.put("fechaReserva", reserva.getFechaReserva());
+            detalles.put("fechaReserva", reserva.getFecha());
             detalles.put("estado", reserva.getEstado());
             
             // Información del usuario
@@ -1129,7 +1123,8 @@ public class AdminController {
                 Map<String, Object> pago = new HashMap<>();
                 pago.put("total", reserva.getInformacionPago().getTotal());
                 pago.put("estado", reserva.getInformacionPago().getEstado());
-                pago.put("fechaPago", reserva.getInformacionPago().getFechaPago());
+                pago.put("fecha", reserva.getInformacionPago().getFecha());
+                pago.put("hora", reserva.getInformacionPago().getHora());
                 detalles.put("pago", pago);
             }
             
@@ -1137,10 +1132,10 @@ public class AdminController {
             if (reserva.getInstanciaServicio() != null) {
                 Map<String, Object> servicio = new HashMap<>();
                 servicio.put("nombre", reserva.getInstanciaServicio().getServicio().getNombre());
-                servicio.put("horario", reserva.getInstanciaServicio().getHorario().getHoraInicio() + 
-                           " - " + reserva.getInstanciaServicio().getHorario().getHoraFin());
-                if (reserva.getInstanciaServicio().getServicio().getComplejo() != null) {
-                    servicio.put("complejo", reserva.getInstanciaServicio().getServicio().getComplejo().getNombre());
+                servicio.put("instancia", reserva.getInstanciaServicio().getNombre());
+                servicio.put("horario", reserva.getHoraInicio() + " - " + reserva.getHoraFin());
+                if (reserva.getInstanciaServicio().getComplejoDeportivo() != null) {
+                    servicio.put("complejo", reserva.getInstanciaServicio().getComplejoDeportivo().getNombre());
                 }
                 detalles.put("servicio", servicio);
             }
