@@ -34,7 +34,7 @@ import com.example.proyectosanmiguel.repository.*;
 @RequestMapping("/vecino")
 public class VecinoController {
     
-    @Autowired
+    @Autowired          
     private ComplejoRepository complejoRepository;
     @Autowired
     private InformacionPagoRepository informacionPagoRepository;
@@ -283,44 +283,52 @@ public class VecinoController {
         // Actualizar el total con el descuento aplicado
         pago.setTotal(totalFinal.doubleValue());
         pago.setFecha(LocalDate.now());
-        pago.setHora(LocalTime.now());        // TODOS LOS PAGOS AHORA VAN AL ADMINISTRADOR PARA VERIFICACIÓN
+        pago.setHora(LocalTime.now());        // Procesar según el método de pago
         try {
             System.out.println("DEBUG: Procesando pago con método: " + metodoPago + " para reserva: " + idReserva);
             
             if ("efectivo".equalsIgnoreCase(metodoPago)) {
-                // Validaciones para pago en efectivo (requiere comprobante)
-                System.out.println("DEBUG: Procesando pago en efectivo");
-                System.out.println("DEBUG: ComprobanteFile: " + (comprobanteFile != null ? "presente" : "null"));
-                System.out.println("DEBUG: ComprobanteFile isEmpty: " + (comprobanteFile != null ? comprobanteFile.isEmpty() : "N/A"));
-                
+                // Validaciones para pago en efectivo
                 if (comprobanteFile == null || comprobanteFile.isEmpty()) {
-                    System.out.println("DEBUG: Error - Sin comprobante");
                     redirectAttributes.addFlashAttribute("error", "Debe subir un comprobante de pago para el pago en efectivo.");
                     return "redirect:/vecino/pagos";
                 }
                 
                 String fileName = comprobanteFile.getOriginalFilename();
-                System.out.println("DEBUG: Nombre archivo: " + fileName);
-                
                 if (fileName == null || !isValidFileType(fileName)) {
-                    System.out.println("DEBUG: Error - Formato inválido. Archivo: " + fileName);
                     redirectAttributes.addFlashAttribute("error", "Formato de archivo no válido. Solo se permiten JPG, PNG y PDF.");
                     return "redirect:/vecino/pagos";
                 }
                 
                 if (comprobanteFile.getSize() > 5 * 1024 * 1024) {
-                    System.out.println("DEBUG: Error - Archivo muy grande: " + comprobanteFile.getSize() + " bytes");
                     redirectAttributes.addFlashAttribute("error", "El archivo es muy grande. Tamaño máximo permitido: 5MB.");
                     return "redirect:/vecino/pagos";
                 }
 
-                System.out.println("DEBUG: Comprobante válido, procesando...");
                 // Procesar comprobante
                 procesarComprobanteFile(comprobanteFile, reserva.getIdReserva());
-                pago.setTipo("Efectivo");
                 
+                // Configurar pago en efectivo como pendiente de verificación
+                pago.setEstado("Pendiente_Verificacion");
+                pago.setTipo("Efectivo");
+                reserva.setEstado(2); // 2 = Pendiente de Verificación
+                
+                System.out.println("DEBUG: Pago en efectivo configurado - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado());
+                
+                redirectAttributes.addFlashAttribute("mensajeExito", 
+                    "Pago en efectivo registrado exitosamente. Tu comprobante ha sido recibido y está pendiente de verificación. " +
+                    "Revisaremos tu comprobante en un plazo de 24-48 horas.");
+                    
             } else {
-                // Para otros métodos (tarjeta, yape, plin, etc.) también van a verificación
+                // Otros métodos de pago: confirmación inmediata
+                System.out.println("DEBUG: ANTES - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado());
+                
+                pago.setEstado("Pagado");
+                reserva.setEstado(1); // 1 = Activo/Pagado
+                
+                System.out.println("DEBUG: DESPUÉS DEL SET - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado());
+                
+                // Configurar tipo de pago
                 if ("tarjeta".equalsIgnoreCase(metodoPago)) {
                     pago.setTipo("Tarjeta");
                 } else if ("paypal".equalsIgnoreCase(metodoPago)) {
@@ -330,34 +338,13 @@ public class VecinoController {
                 } else if ("plin".equalsIgnoreCase(metodoPago)) {
                     pago.setTipo("Plin");
                 } else {
-                    pago.setTipo("Digital");
+                    pago.setTipo("Digital"); // Por defecto para otros métodos
                 }
-            }
-            
-            // LÓGICA DIFERENCIADA: Solo efectivo va al administrador
-            if ("efectivo".equalsIgnoreCase(metodoPago)) {
-                // PAGO EN EFECTIVO: Va al administrador para verificación
-                pago.setEstado("Pendiente_Verificacion");
-                reserva.setEstado(2); // 2 = Pendiente de Verificación del Administrador
                 
-                System.out.println("DEBUG: Pago en efectivo enviado al administrador - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado() + ", Tipo: " + pago.getTipo());
+                System.out.println("DEBUG: Pago digital configurado - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado() + ", Tipo: " + pago.getTipo());
                 
-                redirectAttributes.addFlashAttribute("mensajeInfo", 
-                    "Su comprobante de pago ha sido enviado al administrador para verificación. " +
-                    "Recibirá una notificación una vez que el pago sea aprobado o rechazado.");
-                    
-            } else {
-                // PAGOS DIGITALES: Procesamiento automático
-                pago.setEstado("Pagado");
-                reserva.setEstado(1); // 1 = Activo/Confirmado
-                
-                System.out.println("DEBUG: Pago digital procesado automáticamente - Estado pago: " + pago.getEstado() + ", Estado reserva: " + reserva.getEstado() + ", Tipo: " + pago.getTipo());
-                
-                redirectAttributes.addFlashAttribute("mensajeExito", 
-                    "¡Pago procesado exitosamente! Su reserva ha sido confirmada y está activa.");
-            }
-            
-            // Guardar cambios en la base de datos con logging
+                redirectAttributes.addFlashAttribute("mensajeExito", "Pago realizado correctamente. Tu reserva está confirmada.");
+            }            // Guardar cambios en la base de datos con logging
             System.out.println("DEBUG: Guardando información de pago...");
             System.out.println("DEBUG: Estado antes de guardar - Pago: " + pago.getEstado() + ", Reserva: " + reserva.getEstado());
             
@@ -389,6 +376,9 @@ public class VecinoController {
 
         return "redirect:/vecino/misReservas";
     }
+
+
+    @PostMapping("/guardarReserva")
     public String guardarReserva(@ModelAttribute Reserva reserva,
                                  @RequestParam("bloqueHorario") String bloqueHorario,
                                  RedirectAttributes redirectAttributes) {

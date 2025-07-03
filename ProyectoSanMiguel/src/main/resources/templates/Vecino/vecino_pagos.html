@@ -444,7 +444,7 @@
                   </div>
                 </div>
               </div>              <div class="tab-pane" id="ecomtab-3" role="tabpanel" aria-labelledby="ecomtab-tab-3">
-                <form id="formPagoFinal" action="/vecino/guardarPago" method="post" enctype="multipart/form-data">
+                <form id="formPagoFinal" action="/vecino/procesarPagoConMetodo" method="post" enctype="multipart/form-data">
                   <input type="hidden" id="idReservaPagoFinal" name="idReserva" th:value="${reservasPendientes != null and !reservasPendientes.isEmpty() ? reservasPendientes[0].idReserva : ''}">
                   <input type="hidden" id="codigoCuponPagoFinal" name="codigoCupon" value="">
                   <input type="hidden" id="metodoPagoInput" name="metodoPago" value="">
@@ -689,7 +689,7 @@
                         </ul>
                         <div class="card-footer">
                           <div class="d-grid">
-                            <button type="button" class="btn btn-primary" id="btnProcesarPagoResumen" onclick="mostrarModalConfirmacion()">Procesar pago</button>
+                            <button type="submit" class="btn btn-primary" id="btnProcesarPagoResumen">Procesar pago</button>
                           </div>
                         </div>
                       </div>
@@ -826,56 +826,6 @@
     </div>
 
     <!-- [ Main Content ] end -->
-    
-    <!-- Modal de Confirmación de Pago -->
-    <div class="modal fade" id="modalConfirmarPago" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">
-              <i class="ti ti-credit-card me-2"></i>Confirmar Pago
-            </h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-          </div>
-          <div class="modal-body">
-            <div class="alert alert-info">
-              <i class="ti ti-info-circle me-2"></i>
-              <strong>¿Está seguro de procesar este pago?</strong>
-            </div>
-            <div class="row">
-              <div class="col-12">
-                <div class="card border">
-                  <div class="card-body p-3">
-                    <h6 class="mb-3">Resumen del Pago:</h6>
-                    <ul class="list-unstyled mb-0">
-                      <li class="d-flex justify-content-between align-items-center">
-                        <span>Método de pago:</span>
-                        <span id="metodoPagoModal" class="fw-bold">-</span>
-                      </li>
-                      <li class="d-flex justify-content-between align-items-center">
-                        <span>Total a pagar:</span>
-                        <span id="totalPagoModal" class="fw-bold text-success">-</span>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="alert alert-warning mt-3">
-              <i class="ti ti-alert-triangle me-2"></i>
-              Su solicitud de pago será enviada al administrador para su verificación y aprobación.
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-success" onclick="confirmarPago()">
-              <i class="ti ti-check me-2"></i>Confirmar y Procesar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    
     <div th:replace="~{fragments/footer_superadmin :: footer}"></div>
 
 
@@ -1060,14 +1010,12 @@
           return;
         }
 
-        // Cerrar modal de archivo y mostrar modal de confirmación
+        // Cerrar modal y procesar pago en efectivo
         const modal = bootstrap.Modal.getInstance(document.getElementById('uploadFile'));
         modal.hide();
         
-        // Mostrar el modal de confirmación para pago en efectivo
-        setTimeout(() => {
-          mostrarModalConfirmacionEfectivo();
-        }, 500); // Esperar a que se cierre el modal anterior
+        // Marcar que es pago en efectivo y procesar
+        procesarPagoConMetodo('efectivo');
       });
 
       // Función para validar archivos subidos
@@ -1140,11 +1088,35 @@
       document.addEventListener('DOMContentLoaded', function() {
         const btnProcesarPagoResumen = document.getElementById("btnProcesarPagoResumen");
         const formPagoFinal = document.getElementById("formPagoFinal");
-        // Función actualizada para procesar el pago con modal de confirmación
+          // Función común para procesar el pago
         function procesarPago(event) {
-          // Esta función ya no se usa, toda la lógica está en mostrarModalConfirmacion()
-          // Se mantiene por compatibilidad pero redirige al nuevo flujo
-          mostrarModalConfirmacion();
+          event.preventDefault(); // Prevenir el envío automático del formulario
+          
+          const selectedPayment = document.querySelector('input[name="payoptradio1"]:checked');
+          if (!selectedPayment) {
+            alert("Por favor selecciona un método de pago.");
+            return;
+          }
+
+          if (selectedPayment.id === "payopn-check-1") {
+            // Validar tarjeta
+            const numero = document.querySelector('input[placeholder*="XXXX"]').value;
+            const mes = document.querySelector('input[placeholder="Mes (MM)"]').value;
+            const año = document.querySelector('input[placeholder="Año (AA)"]').value;
+            const cvv = document.querySelector('input[placeholder="CVV"]').value;
+
+            if (!numero || !mes || !año || !cvv) {
+              alert("Completa todos los campos de la tarjeta.");
+              return;
+            }
+            procesarPagoConMetodo('tarjeta');
+          } else if (selectedPayment.id === "payopn-check-2") {
+            procesarPagoConMetodo('paypal');
+          } else if (selectedPayment.id === "payopn-check-3") {
+            const modal = new bootstrap.Modal(document.getElementById("uploadFile"));
+            modal.show();
+            return;
+          }
         }
 
         // Función específica para procesar pago con método determinado
@@ -1189,35 +1161,6 @@
           }
           metodoPagoInput.value = metodoPago;
 
-          // Para pago en efectivo, necesitamos manejar el archivo
-          if (metodoPago === 'efectivo') {
-            // Buscar el input file de Uppy o crear uno nuevo
-            let comprobanteInput = document.getElementById('comprobanteFileInput');
-            if (!comprobanteInput) {
-              comprobanteInput = document.createElement('input');
-              comprobanteInput.type = 'file';
-              comprobanteInput.id = 'comprobanteFileInput';
-              comprobanteInput.name = 'comprobanteFile';
-              comprobanteInput.style.display = 'none';
-              formPagoFinal.appendChild(comprobanteInput);
-            }
-            
-            // Intentar obtener el archivo de Uppy
-            const uppyFileInput = document.querySelector('.pc-uppy-3 input[type="file"]');
-            if (uppyFileInput && uppyFileInput.files && uppyFileInput.files.length > 0) {
-              // Crear un nuevo DataTransfer para copiar el archivo
-              const dt = new DataTransfer();
-              for (let i = 0; i < uppyFileInput.files.length; i++) {
-                dt.items.add(uppyFileInput.files[i]);
-              }
-              comprobanteInput.files = dt.files;
-              console.log('Archivo copiado:', comprobanteInput.files[0].name);
-            } else {
-              alert('Error: No se encontró el archivo. Por favor, vuelve a subirlo.');
-              return;
-            }
-          }
-
           // Mostrar estado de proceso
           const alerta = document.getElementById('pagoEnProceso');
           if (alerta) {
@@ -1239,18 +1182,6 @@
 
           // Enviar el formulario
           setTimeout(() => {
-            console.log('Enviando formulario con método:', metodoPago);
-            console.log('ID Reserva:', idReservaFinal ? idReservaFinal.value : 'No encontrado');
-            console.log('Código cupón:', codigoCuponFinal ? codigoCuponFinal.value : 'No encontrado');
-            console.log('Acción del formulario:', formPagoFinal.action);
-            
-            // Verificar que el formulario existe
-            if (!formPagoFinal) {
-              console.error('ERROR: No se encontró el formulario formPagoFinal');
-              alert('Error: No se encontró el formulario de pago');
-              return;
-            }
-            
             formPagoFinal.submit();
           }, 1000);
         }
@@ -1687,163 +1618,6 @@
         cursor: pointer;
       }
     </style>
-
-    <!-- Nuevas funciones para el modal de confirmación -->
-    <script>
-      function mostrarModalConfirmacion() {
-        const selectedPayment = document.querySelector('input[name="payoptradio1"]:checked');
-        if (!selectedPayment) {
-          alert("Por favor selecciona un método de pago.");
-          return;
-        }
-
-        // Determinar el método de pago
-        let metodoPago = '';
-        
-        if (selectedPayment.id === "payopn-check-1") {
-          metodoPago = "Tarjeta de Crédito/Débito";
-          // Validar campos de tarjeta
-          const numero = document.querySelector('input[placeholder*="XXXX"]').value;
-          const mes = document.querySelector('input[placeholder="Mes (MM)"]').value;
-          const año = document.querySelector('input[placeholder="Año (AA)"]').value;
-          const cvv = document.querySelector('input[placeholder="CVV"]').value;
-
-          if (!numero || !mes || !año || !cvv) {
-            alert("Completa todos los campos de la tarjeta.");
-            return;
-          }
-        } else if (selectedPayment.id === "payopn-check-2") {
-          metodoPago = "PayPal";
-        } else if (selectedPayment.id === "payopn-check-3") {
-          metodoPago = "Pago en Efectivo";
-          
-          // Para pago en efectivo, mostrar primero el modal de subida de archivos
-          const modal = new bootstrap.Modal(document.getElementById("uploadFile"));
-          modal.show();
-          return; // Salir aquí, el proceso continúa desde el modal de archivo
-        } else if (selectedPayment.id === "payopn-check-4") {
-          metodoPago = "Yape";
-        } else if (selectedPayment.id === "payopn-check-5") {
-          metodoPago = "Plin";
-        }
-
-        // Obtener el total
-        const totalElement = document.getElementById('totalConDescuento3');
-        const total = totalElement ? totalElement.textContent : 'S/.0.00';
-
-        // Actualizar el modal
-        document.getElementById('metodoPagoModal').textContent = metodoPago;
-        document.getElementById('totalPagoModal').textContent = total;
-
-        // Mostrar mensaje diferente según el tipo de pago
-        const alertaModal = document.querySelector('#modalConfirmarPago .alert-warning');
-        if (selectedPayment.id === "payopn-check-3") {
-          // Pago en efectivo - va al administrador
-          alertaModal.innerHTML = `
-            <i class="ti ti-alert-triangle me-2"></i>
-            Su comprobante será enviado al administrador para verificación y aprobación.
-          `;
-        } else {
-          // Pagos digitales - procesamiento automático
-          alertaModal.innerHTML = `
-            <i class="ti ti-check-circle me-2"></i>
-            Su pago será procesado automáticamente y la reserva se activará de inmediato.
-          `;
-          alertaModal.className = "alert alert-success mt-3";
-        }
-
-        // Mostrar el modal
-        const modal = new bootstrap.Modal(document.getElementById('modalConfirmarPago'));
-        modal.show();
-      }
-
-      function confirmarPago() {
-        console.log("=== INICIANDO CONFIRMACIÓN DE PAGO ===");
-        
-        const selectedPayment = document.querySelector('input[name="payoptradio1"]:checked');
-        console.log("Método de pago seleccionado:", selectedPayment);
-        
-        if (!selectedPayment) {
-          alert("Error: No se encontró método de pago seleccionado.");
-          return;
-        }
-        
-        let metodoPago = '';
-        if (selectedPayment.id === "payopn-check-1") {
-          metodoPago = 'tarjeta';
-        } else if (selectedPayment.id === "payopn-check-2") {
-          metodoPago = 'paypal';
-        } else if (selectedPayment.id === "payopn-check-3") {
-          metodoPago = 'efectivo';
-        } else if (selectedPayment.id === "payopn-check-4") {
-          metodoPago = 'yape';
-        } else if (selectedPayment.id === "payopn-check-5") {
-          metodoPago = 'plin';
-        }
-        
-        console.log("Método de pago determinado:", metodoPago);
-        
-        // Configurar el método de pago en el formulario
-        const metodoPagoInput = document.getElementById('metodoPagoInput');
-        if (metodoPagoInput) {
-          metodoPagoInput.value = metodoPago;
-          console.log("Método de pago configurado en input:", metodoPagoInput.value);
-        } else {
-          console.error("No se encontró el input metodoPagoInput");
-        }
-        
-        // Cerrar el modal antes de enviar
-        const modal = bootstrap.Modal.getInstance(document.getElementById('modalConfirmarPago'));
-        if (modal) {
-          modal.hide();
-        }
-        
-        // Enviar el formulario
-        const formPagoFinal = document.getElementById("formPagoFinal");
-        if (formPagoFinal) {
-          console.log("Enviando formulario...");
-          console.log("Acción del formulario:", formPagoFinal.action);
-          console.log("Método del formulario:", formPagoFinal.method);
-          
-          // Desactivar botón para evitar doble envío
-          const btnConfirmar = document.querySelector('#modalConfirmarPago .btn-success');
-          if (btnConfirmar) {
-            btnConfirmar.disabled = true;
-            btnConfirmar.innerHTML = '<i class="ti ti-loader fa-spin me-2"></i>Procesando...';
-          }
-          
-          formPagoFinal.submit();
-        } else {
-          console.error("No se encontró el formulario formPagoFinal");
-          alert("Error: No se pudo enviar el formulario.");
-        }
-      }
-
-      function validarComprobanteAntesDeProcesar() {
-        const fileInput = document.querySelector('input[type="file"]');
-        return fileInput && fileInput.files && fileInput.files.length > 0;
-      }
-
-      function mostrarModalConfirmacionEfectivo() {
-        // Validar que hay archivo subido
-        if (!validarComprobanteAntesDeProcesar()) {
-          alert("Debe subir un comprobante válido para el pago en efectivo.");
-          return;
-        }
-
-        // Obtener el total
-        const totalElement = document.getElementById('totalConDescuento3');
-        const total = totalElement ? totalElement.textContent : 'S/.0.00';
-
-        // Actualizar el modal de confirmación
-        document.getElementById('metodoPagoModal').textContent = "Pago en Efectivo";
-        document.getElementById('totalPagoModal').textContent = total;
-
-        // Mostrar el modal de confirmación
-        const modal = new bootstrap.Modal(document.getElementById('modalConfirmarPago'));
-        modal.show();
-      }
-    </script>
 
     <!-- Chat Widget -->
     <div th:replace="~{fragments/chat_widget :: chat-widget}"></div>
