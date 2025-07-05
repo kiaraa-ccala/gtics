@@ -34,7 +34,7 @@ import com.example.proyectosanmiguel.repository.*;
 @RequestMapping("/vecino")
 public class VecinoController {
     
-    @Autowired
+    @Autowired          
     private ComplejoRepository complejoRepository;
     @Autowired
     private InformacionPagoRepository informacionPagoRepository;
