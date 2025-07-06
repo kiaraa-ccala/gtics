@@ -1,9 +1,17 @@
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\chatbot\ChatController.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\chatbot\DocumentEmbedding.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\chatbot\EmbeddingHelper.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\chatbot\MockChatController.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\chatbot\PdfTxtLoader.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\AIConfig.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\AppConfig.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\S3Config.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\WebConfig.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\config\WebSecurityConfig.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\AdminController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ApiController.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ChatbotViewController.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ChatViewController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ComplejoApiController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\ComplejoController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\CoordinadorController.java
@@ -13,6 +21,7 @@ C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\ja
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\S3TestController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\SessionController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\SuperAdminController.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\TestWidgetController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\controller\VecinoController.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\AsistenciaSemanalDto.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\ComparativaAsistenciaDto.java
@@ -28,6 +37,7 @@ C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\ja
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\HorarioTurnoDto.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\IngresosDetalleMesDto.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\IngresosMensualesDto.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\RegistroAsistenciaRequest.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\ReporteFinancieroDto.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\ReporteHorarioDto.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\dto\ReporteReservasDto.java
@@ -48,6 +58,7 @@ C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\ja
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\InstanciaServicio.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\InstanciaServicioId.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Mantenimiento.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\RegistroAsistencia.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Reporte.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Reserva.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\entity\Rol.java
@@ -71,6 +82,7 @@ C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\ja
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\InformacionPagoRepository.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\InstanciaServicioRepository.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\MantenimientoRepository.java
+C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\RegistroAsistenciaRepository.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\ReporteRepository.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\ReservaRepository.java
 C:\Users\Tony\Desktop\GIT_Repositories\GTICs\gtics\ProyectoSanMiguel\src\main\java\com\example\proyectosanmiguel\repository\RolRepository.java
