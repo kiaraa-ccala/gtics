@@ -438,6 +438,14 @@
                 .chat-button i {
                     font-size: 20px;
                 }
+
+                /* Error message styles */
+                .message.error-message .message-content {
+                    color: #ff6b6b;
+                    background-color: #fff5f5;
+                    border-left: 3px solid #ff6b6b;
+                    padding-left: 10px;
+                }
             }
 
             @media (max-width: 480px) {
@@ -478,10 +486,9 @@
                         <h4>¡Hola! ¿En qué puedo ayudarte?</h4>
                         <p>Estoy aquí para ayudarte con información sobre nuestros servicios deportivos.</p>
                         <div class="welcome-suggestions">
-                            <button class="suggestion-btn" onclick="sendSuggestion('¿Cuáles son los horarios de atención?')">📅 Horarios de atención</button>
-                            <button class="suggestion-btn" onclick="sendSuggestion('¿Cuánto cuestan las canchas?')">💰 Precios y tarifas</button>
+                            <button class="suggestion-btn" onclick="sendSuggestion('¿Qué reservas tengo actualmente?')">📅 Resumen de tus reservas</button>
                             <button class="suggestion-btn" onclick="sendSuggestion('¿Qué complejos deportivos tienen?')">🏟️ Complejos deportivos</button>
-                            <button class="suggestion-btn" onclick="sendSuggestion('¿Cómo hago una reserva?')">📝 Proceso de reserva</button>
+                            <button class="suggestion-btn" onclick="sendSuggestion('Quiero hacer una reserva')">📝 Iniciar proceso de reserva</button>
                         </div>
                     </div>
                 </div>
@@ -608,6 +615,35 @@
                     return messageDiv.querySelector('.message-content');
                 }
 
+                addBotMessageWithTyping(text) {
+                    const botMessageContent = this.addBotMessage('');
+                    
+                    // Simulate typing effect
+                    let currentIndex = 0;
+                    const typingSpeed = 30; // milliseconds per character
+                    
+                    const typeText = () => {
+                        if (currentIndex < text.length) {
+                            const currentText = text.substring(0, currentIndex + 1);
+                            const currentTime = new Date().toLocaleTimeString('es-ES', {
+                                hour: '2-digit',
+                                minute: '2-digit'
+                            });
+                            botMessageContent.innerHTML = this.formatMessage(currentText) + 
+                                `<div class="message-time">${currentTime}</div>`;
+                            currentIndex++;
+                            this.scrollToBottom();
+                            setTimeout(typeText, typingSpeed);
+                        } else {
+                            // Typing finished
+                            this.setInputState(true);
+                        }
+                    };
+
+                    // Start typing animation
+                    setTimeout(typeText, 100);
+                }
+
                 createMessageElement(content, type) {
                     const messageDiv = document.createElement('div');
                     messageDiv.className = `message ${type}`;
@@ -638,49 +674,34 @@
                     this.showTyping();
                     
                     try {
-                        const eventSource = new EventSource(`/ai/chat/stream?message=${encodeURIComponent(message)}`);
-                        const botMessageContent = this.addBotMessage('');
-                        let fullResponse = '';
-                        
-                        this.hideTyping();
-                        
-                        eventSource.onmessage = (event) => {
-                            const chunk = event.data;
-                            fullResponse += chunk;
-                            botMessageContent.innerHTML = this.formatMessage(fullResponse) + 
-                                `<div class="message-time">${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div>`;
-                            this.scrollToBottom();
-                        };
-                        
-                        eventSource.onerror = (error) => {
-                            console.error('EventSource error:', error);
-                            eventSource.close();
-                            
-                            if (fullResponse === '') {
-                                botMessageContent.innerHTML = '❌ Lo siento, ha ocurrido un error. Por favor, intenta nuevamente.' +
-                                    `<div class="message-time">${new Date().toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' })}</div>`;
-                            }
-                            
-                            this.setInputState(true);
-                            this.hideTyping();
-                        };
-                        
-                        eventSource.addEventListener('end', () => {
-                            eventSource.close();
-                            this.setInputState(true);
+                        // Use fetch API for proper AJAX request
+                        const response = await fetch('/ai/chat', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/x-www-form-urlencoded',
+                            },
+                            body: `message=${encodeURIComponent(message)}`
                         });
+
+                        this.hideTyping();
+
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+
+                        const botResponse = await response.text();
                         
-                        setTimeout(() => {
-                            if (eventSource.readyState !== EventSource.CLOSED) {
-                                eventSource.close();
-                                this.setInputState(true);
-                            }
-                        }, 30000);
+                        // Add bot response with typing animation
+                        this.addBotMessageWithTyping(botResponse);
                         
                     } catch (error) {
                         console.error('Error sending message:', error);
                         this.hideTyping();
-                        this.addBotMessage('❌ Error de conexión. Por favor, intenta nuevamente.');
+                        
+                        const errorMessageElement = this.addBotMessage('❌ Lo siento, ha ocurrido un error. Por favor, intenta nuevamente.');
+                        // Add error styling to the message element
+                        errorMessageElement.closest('.message').classList.add('error-message');
+                        
                         this.setInputState(true);
                     }
                 }

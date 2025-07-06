@@ -204,15 +204,18 @@ public class VecinoController {
                             instancia.get().getComplejoDeportivo().getIdComplejoDeportivo());
 
             reserva.setUsuario(usuario);
+
             model.addAttribute("reserva", reserva);
             model.addAttribute("instanciaServicios", instanciaServicios);
-            model.addAttribute("complejo", instancia.get().getComplejoDeportivo()); // ✅ Agregado
+            model.addAttribute("complejo", instancia.get().getComplejoDeportivo());
 
             return "Vecino/vecino_formulario_complejo";
         } else {
             return "redirect:/vecino/listarComplejos";
         }
-    }    @PostMapping("/guardarPago")
+    }
+
+    @PostMapping("/guardarPago")
     @Transactional
     public String guardarPago(@RequestParam("idReserva") Integer idReserva,
                               @RequestParam(value = "codigoCupon", required = false) String codigoCupon,

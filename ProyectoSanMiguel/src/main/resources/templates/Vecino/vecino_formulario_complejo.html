@@ -32,7 +32,7 @@
                     <div class="col-md-12">
                       <div class="page-header-title">
                         <h1 class="mb-0">Nueva reserva</h1>
-                        <h5 class="mb-0">Complejo deportivo #<span th:text="${complejo.idComplejoDeportivo}"></span></h5>
+                        <h5 class="mb-0">Complejo deportivo #<span th:text="${complejo.idComplejoDeportivo}" id = "idComplejo" ></span></h5>
                       </div>
                     </div>
                   </div>
@@ -114,25 +114,26 @@
                                         th:value="${i.idInstanciaServicio}"
                                         th:text="${i.nombre}"></option>
                               </select>
+                              <!-- Campo oculto para debugging -->
+                              <input type="hidden" id="debugInstancia" name="debugInstancia" />
                             </div>
 
                             <div class="col-md-12 mb-3">
                               <label class="form-label">Seleccione fecha</label>
-                              <input id="inputFecha" class="form-control" th:field="*{fecha}" placeholder="Selecciona una fecha" readonly />
+                              <input type="date" id="inputFecha" class="form-control" th:field="*{fecha}" placeholder="Selecciona una fecha" />
 
                             </div>
-
-
 
                             <div class="col-md-12 mb-3">
                             <label class="form-label">Horario disponible</label>
                               <select class="form-select" name="bloqueHorario" id="selectHorario" required>
                                 <option value="">-- Selecciona un horario --</option>
-                                <option value="08:00-10:00">08:00 – 10:00</option>
-                                <option value="10:00-12:00">10:00 – 12:00</option>
-                                <option value="12:00-14:00">12:00 – 14:00</option>
                               </select>
-
+                              <div id="infoPrecios" class="mt-2 text-muted small" style="display: none;">
+                                <i class="fas fa-info-circle"></i> Los precios se muestran por hora
+                              </div>
+                              <!-- Campo oculto para debugging -->
+                              <input type="hidden" id="debugHorario" name="debugHorario" />
                             </div>
 
                           </div>
@@ -142,7 +143,7 @@
 
                     <!-- BOTÓN DE RESERVA -->
                     <div class="text-center">
-                      <button type="submit" class="btn btn-lg btn-primary" style="width: 200px;">
+                      <button type="submit" id="btnReservar" class="btn btn-lg btn-primary" style="width: 200px;">
                         <i class="bi bi-credit-card me-2"></i> Reservar
                       </button>
                     </div>
@@ -175,9 +176,6 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/es.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 
-
-
-
     <script>
   layout_change('light');
 </script>
@@ -201,7 +199,6 @@
 <script>
   main_layout_change('vertical');
 </script>
-
 
     <!-- [Page Specific JS] start -->
     <script>
@@ -250,8 +247,7 @@
         padding: 1rem;
       }
     </style>
-   
-  
+
     <!-- Modal HTML con las clases CSS -->
 <div class="modal fade cart-modal" id="cartModal" tabindex="-1" aria-labelledby="cartModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
@@ -354,20 +350,51 @@
         const inputFecha = document.getElementById("inputFecha");
         const selectInstancia = document.getElementById("selectInstancia");
         const selectHorario = document.getElementById("selectHorario");
+        const infoPrecios = document.getElementById("infoPrecios");
+        const id = document.getElementById("idComplejo");
 
         let fechasDisponibles = [];
         let flatpickrInstance = null;
 
+        // Función para validar que el ID de instancia sea válido
+        function esIdValido(id) {
+          return id && id !== '' && id !== 'null' && id !== 'undefined' && !isNaN(parseInt(id)) && parseInt(id) > 0;
+        }
+
+        // Función para resetear horarios
+        function resetHorarios() {
+          selectHorario.innerHTML = '<option value="">-- Selecciona un horario --</option>';
+          infoPrecios.style.display = 'none';
+        }
+
         selectInstancia.addEventListener("change", function () {
           const id = this.value;
 
-          // Reset horarios
-          selectHorario.innerHTML = '<option value="">-- Selecciona un horario --</option>';
+          // Reset horarios y ocultar info de precios
+          resetHorarios();
+          
+          // Limpiar el input de fecha cuando se cambia la instancia
+          inputFecha.value = '';
+          
+          // Validar que el ID sea válido
+          if (!esIdValido(id)) {
+            console.log('ID de instancia no válido:', id);
+            return;
+          }
 
+          console.log('Cargando fechas para instancia:', id);
+          
           // Obtener fechas disponibles
           fetch(`/api/complejos/fechasDisponibles?idInstancia=${id}`)
-                  .then(res => res.json())
+                  .then(res => {
+                    console.log('Respuesta del servidor (fechas):', res);
+                    if (!res.ok) {
+                      throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                  })
                   .then(fechas => {
+                    console.log('Fechas disponibles:', fechas);
                     fechasDisponibles = fechas;
 
                     if (flatpickrInstance) flatpickrInstance.destroy();
@@ -377,27 +404,68 @@
                       dateFormat: "Y-m-d",
                       enable: fechasDisponibles,
                       onChange: function (selectedDates, dateStr) {
-                        if (dateStr) {
+                        console.log('Flatpickr onChange:', dateStr, 'ID:', id);
+                        if (dateStr && esIdValido(id)) {
                           cargarHorasDisponibles(id, dateStr);
                         }
                       }
                     });
+                  })
+                  .catch(error => {
+                    console.error('Error al cargar fechas:', error);
+                    console.error('ID enviado:', id);
+                    console.error('URL completa:', `/api/complejos/fechasDisponibles?idInstancia=${id}`);
+                    // NO mostrar alert aquí para evitar confusión
+                    console.warn('Las fechas no se pudieron cargar, pero continuando...');
                   });
         });
 
         function cargarHorasDisponibles(idInstancia, fecha) {
+          // Validar parámetros
+          if (!esIdValido(idInstancia)) {
+            console.error('ID de instancia no válido:', idInstancia);
+            resetHorarios();
+            return;
+          }
+          
+          if (!fecha || fecha === '') {
+            console.error('Fecha no válida:', fecha);
+            resetHorarios();
+            return;
+          }
+
+          console.log('Cargando horarios para instancia:', idInstancia, 'fecha:', fecha);
+          
+          // Mostrar loading state
+          selectHorario.innerHTML = '<option value="">Cargando horarios...</option>';
+          
           fetch(`/api/complejos/disponibilidad?idInstancia=${idInstancia}&fecha=${fecha}`)
-                  .then(res => res.json())
+                  .then(res => {
+                    console.log('Respuesta del servidor (horarios):', res);
+                    if (!res.ok) {
+                      throw new Error(`HTTP error! status: ${res.status}`);
+                    }
+                    return res.json();
+                  })
                   .then(data => {
+                    console.log('Datos de disponibilidad:', data);
                     selectHorario.innerHTML = '<option value="">-- Selecciona un horario --</option>';
 
                     if (data.fechaLlena || !data.bloques || data.bloques.length === 0) {
-                      alert("No hay horarios disponibles para esta fecha.");
+                      infoPrecios.style.display = 'none';
+                      const option = new Option("No hay horarios disponibles", "");
+                      option.disabled = true;
+                      selectHorario.add(option);
                       return;
                     }
 
+                    // Mostrar info de precios
+                    infoPrecios.style.display = 'block';
+
                     data.bloques.forEach(bloque => {
                       const horas = bloque.horasDisponibles;
+                      const monto = parseFloat(bloque.monto).toFixed(2);
+                      
                       for (let i = 0; i < horas.length - 1; i++) {
                         const h1 = horas[i];
                         const h2 = horas[i + 1];
@@ -407,25 +475,118 @@
                         const h2Num = parseInt(h2.split(':')[0]);
 
                         if (h2Num === h1Num + 1) {
-                          const label = `${h1} – ${h2} (S/ ${bloque.monto})`;
-                          const value = `${h1}-${h2}`;
+                          const horaInicio = h1.substring(0, 5); // Formato HH:MM
+                          const horaFin = h2.substring(0, 5);
+                          const label = `${horaInicio} - ${horaFin} (S/ ${monto})`;
+                          const value = `${horaInicio}-${horaFin}`; // Formato correcto para el backend
                           const opt = new Option(label, value);
                           selectHorario.add(opt);
+                          
+                          console.log('Horario agregado:', label, 'Valor:', value);
                         }
                       }
                     });
+                  })
+                  .catch(error => {
+                    console.error('Error al cargar horarios:', error);
+                    console.error('Parámetros enviados - idInstancia:', idInstancia, 'fecha:', fecha);
+                    console.error('URL completa:', `/api/complejos/disponibilidad?idInstancia=${idInstancia}&fecha=${fecha}`);
+                    selectHorario.innerHTML = '<option value="">Error al cargar horarios</option>';
+                    infoPrecios.style.display = 'none';
+                    // NO mostrar alert aquí para evitar confusión
+                    console.warn('Los horarios no se pudieron cargar, mostrando mensaje en el select');
                   });
         }
-      });
-    </script>
 
+        // También cargar horarios si se cambia la fecha y ya hay una instancia seleccionada
+        inputFecha.addEventListener('change', function() {
+          const fecha = this.value;
+          const idInstancia = selectInstancia.value;
+          
+          console.log('Cambio de fecha - fecha:', fecha, 'idInstancia:', idInstancia);
+          
+          // Validar que ambos valores sean válidos
+          if (fecha && fecha !== '' && esIdValido(idInstancia)) {
+            cargarHorasDisponibles(idInstancia, fecha);
+          } else {
+            console.log('Reseteando horarios - fecha o instancia no válida');
+            resetHorarios();
+          }
+        });
+
+        // Validación del formulario antes de enviar
+        const form = document.querySelector('form');
+        const btnReservar = document.getElementById('btnReservar');
+        const debugHorario = document.getElementById('debugHorario');
+        const debugInstancia = document.getElementById('debugInstancia');
+
+        // Actualizar campos de debug cuando cambien los selects
+        selectInstancia.addEventListener('change', function() {
+          debugInstancia.value = this.value;
+          console.log('Instancia seleccionada:', this.value);
+        });
+
+        selectHorario.addEventListener('change', function() {
+          const horario = this.value;
+          console.log('Horario seleccionado:', horario);
+          debugHorario.value = horario;
+        });
+
+        form.addEventListener('submit', function(e) {
+          console.log('Intentando enviar formulario...');
+          
+          const instancia = selectInstancia.value;
+          const fecha = inputFecha.value;
+          const horario = selectHorario.value;
+          
+          console.log('Valores del formulario:', {
+            instancia: instancia,
+            fecha: fecha,
+            horario: horario
+          });
+
+          // Actualizar campos de debug
+          debugHorario.value = horario;
+          debugInstancia.value = instancia;
+
+          // Validaciones
+          if (!esIdValido(instancia)) {
+            e.preventDefault();
+            alert('Por favor, selecciona una cancha válida.');
+            return false;
+          }
+
+          if (!fecha || fecha === '') {
+            e.preventDefault();
+            alert('Por favor, selecciona una fecha.');
+            return false;
+          }
+
+          if (!horario || horario === '' || horario === '-- Selecciona un horario --') {
+            e.preventDefault();
+            alert('Por favor, selecciona un horario disponible.');
+            return false;
+          }
+
+          // Validar formato del horario (debe ser HH:MM-HH:MM)
+          if (!horario.match(/^\d{2}:\d{2}-\d{2}:\d{2}$/)) {
+            e.preventDefault();
+            alert('El formato del horario no es válido. Por favor, selecciona un horario de la lista.');
+            console.error('Formato de horario inválido:', horario);
+            return false;
+          }
+
+          console.log('Formulario válido, enviando...');
+          btnReservar.disabled = true;
+          btnReservar.innerHTML = '<i class="bi bi-hourglass me-2"></i> Procesando...';
+          
+          return true;
+        });
+      });
     </script>
 
     <!-- Chat Widget -->
     <div th:replace="~{fragments/chat_widget :: chat-widget}"></div>
-
-
-
 
   </body>
   <!-- [Body] end -->
