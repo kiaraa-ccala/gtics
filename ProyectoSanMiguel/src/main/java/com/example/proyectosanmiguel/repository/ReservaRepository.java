@@ -61,12 +61,12 @@ public interface ReservaRepository extends JpaRepository<Reserva, Integer> {
             "  WHEN r.estado = 2 THEN 'Cancelada' " +
             "  ELSE 'Desconocido' " +
             "END as estadoReserva " +
-            "FROM Reserva r " +
-            "INNER JOIN Usuario u ON r.idUsuario = u.idUsuario " +
-            "INNER JOIN InstanciaServicio isv ON r.idInstanciaServicio = isv.idInstanciaServicio " +
-            "INNER JOIN Servicio s ON isv.idServicio = s.idServicio " +
-            "INNER JOIN ComplejoDeportivo cd ON isv.idComplejoDeportivo = cd.idComplejoDeportivo " +
-            "LEFT JOIN InformacionPago ip ON r.idInformacionPago = ip.idInformacionPago " +
+            "FROM reserva r " +
+            "INNER JOIN usuario u ON r.idUsuario = u.idUsuario " +
+            "INNER JOIN instanciaservicio isv ON r.idInstanciaServicio = isv.idInstanciaServicio " +
+            "INNER JOIN servicio s ON isv.idServicio = s.idServicio " +  //
+            "INNER JOIN complejodeportivo cd ON isv.idComplejoDeportivo = cd.idComplejoDeportivo " +
+            "LEFT JOIN informacionpago ip ON r.idInformacionPago = ip.idInformacionPago " +
             "WHERE (:fechaInicio IS NULL OR r.fecha >= :fechaInicio) " +
             "AND (:fechaFin IS NULL OR r.fecha <= :fechaFin) " +
             "AND (:idComplejo IS NULL OR cd.idComplejoDeportivo = :idComplejo) " +
