@@ -492,3 +492,38 @@ var slideToggle = (target, duration = 0) => {
 
 // =======================================================
 // =======================================================
+function enviarAsistencia(tipoRegistro, coords) {
+  console.log('enviarAsistencia()', tipoRegistro, coords);
+  const complejoId = document.getElementById('complejoId') ? document.getElementById('complejoId').value : '';
+  const horarioId = document.getElementById('horarioId') ? document.getElementById('horarioId').value : '';
+  const csrfInput = document.getElementById('csrfToken');
+  const data = new URLSearchParams();
+  data.append('tipoRegistro', tipoRegistro);
+  data.append('latitud', coords.latitude);
+  data.append('longitud', coords.longitude);
+  data.append('precision', coords.accuracy);
+  data.append('idComplejo', complejoId);
+  data.append('idHorario', horarioId);
+  if (csrfInput) {
+    data.append(csrfInput.name, csrfInput.value);
+  }
+  fetch('/coord/asistencia/registrar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: data,
+    credentials: 'same-origin'
+  })
+  .then(response => response.json())
+  .then(json => {
+    if (json.success) {
+      showModal('modalExito');
+    } else {
+      document.getElementById('mensajeError').textContent = json.message || 'Error al registrar asistencia. Inténtelo de nuevo.';
+      showModal('modalError');
+    }
+  })
+  .catch(err => {
+    document.getElementById('mensajeError').textContent = 'Error al registrar asistencia. Inténtelo de nuevo.';
+    showModal('modalError');
+  });
+}

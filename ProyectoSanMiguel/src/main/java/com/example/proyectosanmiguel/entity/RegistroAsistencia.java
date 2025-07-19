@@ -23,6 +23,10 @@ public class RegistroAsistencia {
     @JoinColumn(name = "id_complejo", referencedColumnName = "idComplejoDeportivo")
     private ComplejoDeportivo complejo;
     
+    @ManyToOne
+    @JoinColumn(name = "id_horario", referencedColumnName = "idHorario")
+    private Horario horario;
+    
     @Column(name = "tipo_registro")
     private String tipoRegistro; // 'entrada' o 'salida'
     

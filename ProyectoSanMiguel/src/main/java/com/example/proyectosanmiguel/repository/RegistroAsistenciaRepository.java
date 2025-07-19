@@ -34,4 +34,16 @@ public interface RegistroAsistenciaRepository extends JpaRepository<RegistroAsis
     long countRegistrosPorTipoYFecha(@Param("idCoordinador") Integer idCoordinador,
                                      @Param("tipo") String tipo,
                                      @Param("fecha") LocalDate fecha);
+    
+    @Query(value = "SELECT * FROM registro_asistencia ra " +
+           "WHERE ra.id_coordinador = :idCoordinador " +
+           "AND ra.tipo_registro = :tipo " +
+           "AND DATE(ra.fecha_hora) = :fecha " +
+           "AND ra.id_horario = :idHorario " +
+           "ORDER BY ra.fecha_hora DESC LIMIT 1", 
+           nativeQuery = true)
+    Optional<RegistroAsistencia> findUltimoRegistroPorTipoYFechaYHorario(@Param("idCoordinador") Integer idCoordinador,
+                                                                        @Param("tipo") String tipo,
+                                                                        @Param("fecha") LocalDate fecha,
+                                                                        @Param("idHorario") Integer idHorario);
 }
