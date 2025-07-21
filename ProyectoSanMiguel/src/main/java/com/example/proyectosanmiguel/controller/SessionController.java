@@ -140,8 +140,9 @@ public class SessionController {
                 // Enviar correo con EmailService
                 Map<String, Object> datos = new HashMap<>();
                 datos.put("nombreCompleto", usuario.getNombre() + " " + usuario.getApellido());
-                datos.put("enlace", appUrlBase + "/resetpassword?token=" + token);
-                System.out.println("Enlace: " + appUrlBase + "/resetpassword?token=" + token);
+                String enlacelargo= appUrlBase+"/resetpassword?token="+token;
+                datos.put("enlace", enlacelargo);
+                System.out.println("Enlace: "+appUrlBase+"/resetpassword?token="+token);
 
 
                 try {
